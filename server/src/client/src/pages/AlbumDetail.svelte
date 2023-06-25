@@ -127,12 +127,13 @@
         .play-all {
             position: absolute;
             bottom: 0;
-            right: 1rem;
+            right: 2rem;
             transform: translateY(50%);
 
             button {
                 border-radius: 100%;
-                padding: 1rem;
+                width: 3.5rem;
+                height: 3.5rem;
                 background-color: #474787;
                 border: none;
                 cursor: pointer;

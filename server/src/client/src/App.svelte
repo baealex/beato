@@ -149,7 +149,7 @@
             <Route path="/artist" component={Artist} />
             <Route path="/setting" component={Setting} />
             <Route
-                path="/now-play"
+                path="/now"
                 onClickMusic={handleClickPlaylistMusic}
                 component={Now}
             />
@@ -203,6 +203,9 @@
                     </div>
                 </div>
                 <div class="action">
+                    <button class="skip-back" on:click={playPrev}>
+                        <Play />
+                    </button>
                     <button on:click={handleClickPause}>
                         {#if playing}
                             <Pause />
@@ -210,7 +213,10 @@
                             <Play />
                         {/if}
                     </button>
-                    <button on:click={handleClickStop}>
+                    <button class="skip-forward" on:click={playNext}>
+                        <Play />
+                    </button>
+                    <button class="cross" on:click={handleClickStop}>
                         <Cross />
                     </button>
                     <input
@@ -220,7 +226,7 @@
                         max="1"
                         step="0.05"
                     />
-                    <Link to="/now-play">
+                    <Link to="/now">
                         <button>
                             <Menu />
                         </button>
@@ -261,7 +267,9 @@
                 gap: 0.25rem;
 
                 button {
-                    padding: 0.5rem;
+                    position: relative;
+                    width: 3rem;
+                    height: 3rem;
                     border-radius: 0.25rem;
                     background-color: transparent;
                     color: white;
@@ -273,13 +281,49 @@
                     transition: background-color 0.25s ease-in-out;
 
                     :global(svg) {
-                        width: 1rem;
-                        height: 1rem;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 1.5rem;
+                        height: 1.5rem;
                     }
 
                     &:hover {
                         background-color: rgba(255, 255, 255, 0.2);
                     }
+                }
+
+                .cross,
+                .skip-back,
+                .skip-forward {
+                    :global(svg) {
+                        width: 1rem;
+                        height: 1rem;
+                    }
+                }
+
+                .skip-back,
+                .skip-forward {
+                    :global(svg) {
+                        transform: translate(-70%, -50%);
+                    }
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        display: block;
+                        top: 50%;
+                        right: 30%;
+                        transform: translate(-50%, -50%);
+                        width: 0.1rem;
+                        height: 0.75rem;
+                        background-color: #fff;
+                    }
+                }
+
+                .skip-back {
+                    transform: scaleX(-1);
                 }
 
                 input[type="range"] {
