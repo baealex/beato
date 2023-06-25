@@ -1,0 +1,10 @@
+version: "2.0"
+
+services:
+  app:
+    # image: USERNAME/IMAGE:TAG
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    ports:
+      - 3030:3000

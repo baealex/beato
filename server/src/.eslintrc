@@ -1,0 +1,52 @@
+{
+    "root": true,
+    "env": {
+        "es6": true,
+        "jest": true,
+        "node": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ]
+    },
+    "overrides": [
+        {
+            "env": {
+                "jest/globals": true
+            },
+            "extends": [
+                "plugin:jest/recommended"
+            ],
+            "files": [
+                "**/__tests__/**/*.[jt]s?(x)",
+                "**/?(*.)+(spec|test).[tj]s?(x)",
+                "./jest.setup.ts"
+            ],
+            "plugins": [
+                "jest"
+            ]
+        }
+    ]
+}
