@@ -119,12 +119,20 @@ export const sockerManager = (socket: Socket) => {
                 if (!$music) {
                     await models.music.create({
                         data: {
-                            name: title,
-                            artistId: $artist.id,
-                            albumId: $album.id,
+                            name: title || file.split('.')[0],
                             duration,
                             trackNumber: track.no || 0,
                             filePath: file,
+                            Album: {
+                                connect: {
+                                    id: $album.id,
+                                },
+                            },
+                            Artist: {
+                                connect: {
+                                    id: $artist.id,
+                                },
+                            },
                             Genre: {
                                 connect: $genres.map((genre) => ({
                                     id: genre.id,
