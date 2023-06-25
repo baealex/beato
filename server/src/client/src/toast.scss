@@ -1,0 +1,48 @@
+@keyframes toast-slide {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 100%);
+    }
+
+    10% {
+        opacity: 1;
+        transform: translate(-50%, 0%);
+    }
+
+    90% {
+        opacity: 1;
+        transform: translate(-50%, 0%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 100%);
+    }
+}
+
+.toast-container {
+    position: fixed;
+    z-index: 1001;
+}
+
+.toast {
+    pointer-events: none;
+    position: fixed;
+    box-sizing: border-box;
+    width: 400px;
+    border-radius: 16px;
+    max-width: 100%;
+    bottom: 80px + 8px;
+    left: 50%;
+    padding: 16px;
+    color: #fff;
+    text-align: center;
+    background: #222;
+    transform: translate(-50%, 100%);
+    animation: toast-slide 4s ease 1;
+}
+
+.toast.have-event {
+    pointer-events: all;
+    cursor: pointer;
+}

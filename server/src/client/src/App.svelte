@@ -1,83 +1,132 @@
 <script lang="ts">
-    import { afterUpdate, onMount } from "svelte";
-    import { Router, Route } from "svelte-routing";
+    import { onMount } from "svelte";
+    import { Router, Route, Link } from "svelte-routing";
 
+    import Music from "./pages/Music.svelte";
     import Album from "./pages/Album.svelte";
     import Artist from "./pages/Artist.svelte";
     import Setting from "./pages/Setting.svelte";
+    import NowPlay from "./pages/NowPlay.svelte";
 
     import SiteHeader from "./components/SiteHeader.svelte";
-    import Main from "./pages/Music.svelte";
-    import { socket } from "./modules/socket";
 
-    import type { Music } from "./models/type";
+    import Cross from "./icons/Cross.svelte";
+    import Pause from "./icons/Pause.svelte";
+    import Play from "./icons/Play.svelte";
+    import Menu from "./icons/Menu.svelte";
+
+    import { playlist } from "./store/playlist";
+
+    import { socket } from "./modules/socket";
+    import { toast } from "./modules/ui/toast";
+
+    import type { Music as MusicModel } from "./models/type";
 
     let audioElement: HTMLAudioElement;
     let chunks: Buffer[] = [];
-    let selectedMusic: Music = null;
     let playing = false;
-    let isRepeat = true;
     let volume = 0.5;
     let progress = 0;
     let countFlag = false;
 
-    socket.on("audio", async (chunk: Buffer | null) => {
-        if (!chunk) {
-            return;
+    $: {
+        if ($playlist.items[$playlist.selected]) {
+            document.title = `${$playlist.items[$playlist.selected].name} - ${
+                $playlist.items[$playlist.selected].artist.name
+            }`;
         }
-        chunks = [...chunks, chunk];
-        audioElement.src = URL.createObjectURL(
-            new Blob(chunks, { type: "audio/mpeg" })
-        );
-        if (audioElement.paused) {
-            audioElement.load();
-            await audioElement.play();
-        }
-    });
+    }
 
     $: {
-        if (selectedMusic) {
-            document.title = `${selectedMusic.name} - ${selectedMusic.artist.name}`;
+        if (audioElement) {
+            audioElement.volume = volume;
         }
     }
 
     onMount(() => {
+        socket.on("audio", async (chunk: Buffer | "end") => {
+            if (chunk === "end") {
+                audioElement.src = URL.createObjectURL(
+                    new Blob(chunks, { type: "audio/mpeg" })
+                );
+                await audioElement.play();
+                playing = true;
+                audioElement.onended = playNext;
+                return;
+            }
+            chunks.push(chunk);
+        });
+
         audioElement.addEventListener("timeupdate", () => {
             progress =
-                (audioElement.currentTime / selectedMusic.duration) * 100;
+                (audioElement.currentTime /
+                    $playlist.items[$playlist.selected].duration) *
+                100;
 
-            if (progress >= 30 && countFlag) {
+            if (progress >= 80 && countFlag) {
                 countFlag = false;
-                socket.emit("count", selectedMusic.id);
+                socket.emit("count", $playlist.items[$playlist.selected].id);
             }
         });
     });
 
-    afterUpdate(() => {
-        audioElement.onended = () => {
-            playing = false;
-            if (isRepeat) {
-                handleClickMusic(selectedMusic);
-            }
-        };
+    const handleClickMusic = (music: MusicModel) => {
+        if (!$playlist.items.map((item) => item.id).includes(music.id)) {
+            $playlist.items = [...$playlist.items, music];
+            toast("플레이리스트에 추가되었습니다.");
+        }
 
+        if ($playlist.selected === null) {
+            chunks = [];
+            countFlag = true;
+            $playlist.selected = 0;
+            socket.emit("file", $playlist.items[$playlist.selected].filePath);
+        }
+    };
+
+    const playNext = () => {
+        $playlist.selected = $playlist.selected + 1;
+        if ($playlist.selected >= $playlist.items.length) {
+            $playlist.selected = 0;
+        }
+
+        chunks = [];
+        countFlag = true;
+        socket.emit("file", $playlist.items[$playlist.selected].filePath);
+    };
+
+    const playPrev = () => {
+        $playlist.selected = $playlist.selected - 1;
+        if ($playlist.selected < 0) {
+            $playlist.selected = $playlist.items.length - 1;
+        }
+
+        chunks = [];
+        countFlag = true;
+        socket.emit("file", $playlist.items[$playlist.selected].filePath);
+    };
+
+    const handleClickPause = () => {
+        playing = !playing;
         if (playing) {
             audioElement.play();
         } else {
             audioElement.pause();
         }
+    };
 
-        audioElement.volume = volume;
-    });
+    const handleClickStop = () => {
+        playing = false;
+        countFlag = false;
+        audioElement.pause();
+        audioElement.currentTime = 0;
+    };
 
-    const handleClickMusic = (music: Music) => {
-        document.title = `${music.name} - ${music.artist.name}`;
-
+    const handleClickPlaylistMusic = (idx: number) => {
+        $playlist.selected = idx;
         chunks = [];
-        playing = true;
         countFlag = true;
-        selectedMusic = music;
-        socket.emit("file", selectedMusic.filePath);
+        socket.emit("file", $playlist.items[$playlist.selected].filePath);
     };
 </script>
 
@@ -85,15 +134,20 @@
     <Router>
         <SiteHeader dance={playing} />
         <div class="container">
-            <Route path="/" onClickMusic={handleClickMusic} component={Main} />
+            <Route path="/" onClickMusic={handleClickMusic} component={Music} />
             <Route path="/album" component={Album} />
             <Route path="/artist" component={Artist} />
             <Route path="/setting" component={Setting} />
+            <Route
+                path="/now-play"
+                onClickMusic={handleClickPlaylistMusic}
+                component={NowPlay}
+            />
         </div>
 
-        <audio bind:this={audioElement} controls />
+        <audio bind:this={audioElement} />
 
-        <div class="audio" class:open={selectedMusic}>
+        <div class="audio" class:open={$playlist.items[$playlist.selected]}>
             <div
                 class="progress"
                 on:keydown={() => {}}
@@ -101,13 +155,13 @@
                     if (e.buttons === 1) {
                         audioElement.currentTime =
                             (e.clientX / window.innerWidth) *
-                            selectedMusic.duration;
+                            $playlist.items[$playlist.selected].duration;
                     }
                 }}
                 on:click={(e) => {
                     audioElement.currentTime =
                         (e.clientX / window.innerWidth) *
-                        selectedMusic.duration;
+                        $playlist.items[$playlist.selected].duration;
                 }}
             >
                 <div class="progress-bar" style={`width: ${progress}%`} />
@@ -116,40 +170,48 @@
                 <div class="music">
                     <img
                         class="album-art"
-                        src={selectedMusic ? selectedMusic.album.cover : ""}
+                        src={$playlist.items[$playlist.selected]
+                            ? $playlist.items[$playlist.selected].album.cover
+                            : ""}
                         alt=""
                     />
                     <div class="info">
                         <div class="title">
-                            {selectedMusic ? selectedMusic.name : ""}
+                            {$playlist.items[$playlist.selected]
+                                ? $playlist.items[$playlist.selected].name
+                                : ""}
                         </div>
                         <div class="artist">
-                            {selectedMusic ? selectedMusic.artist.name : ""}
+                            {$playlist.items[$playlist.selected]
+                                ? $playlist.items[$playlist.selected].artist
+                                      .name
+                                : ""}
                         </div>
                     </div>
                 </div>
                 <div class="action">
-                    <button on:click={() => (isRepeat = !isRepeat)}>
-                        {isRepeat ? "Repeat: ON" : "Repeat: OFF"}
+                    <button on:click={handleClickPause}>
+                        {#if playing}
+                            <Pause />
+                        {:else}
+                            <Play />
+                        {/if}
                     </button>
-                    <button
-                        on:click={() => {
-                            selectedMusic = null;
-                            playing = false;
-                        }}
-                    >
-                        Stop
-                    </button>
-                    <button on:click={() => (playing = !playing)}>
-                        {playing ? "Pause" : "Play"}
+                    <button on:click={handleClickStop}>
+                        <Cross />
                     </button>
                     <input
-                        type="range"
                         bind:value={volume}
+                        type="range"
                         min="0"
                         max="1"
-                        step="0.01"
+                        step="0.05"
                     />
+                    <Link to="/now-play">
+                        <button>
+                            <Menu />
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>
@@ -157,24 +219,12 @@
 </main>
 
 <style lang="scss">
-    audio {
-        display: none;
-    }
-
     .audio {
-        transform: translateY(100%);
-        bottom: 0;
-        left: 0;
-        width: 100%;
         display: flex;
         flex-direction: column;
-        background-color: #1a1a1a;
+        background-color: #111111;
         gap: 0.5rem;
         transition: transform 0.25s ease-in-out;
-
-        &.open {
-            transform: translateY(0%);
-        }
 
         .music {
             display: flex;
@@ -200,7 +250,7 @@
                 button {
                     padding: 0.5rem;
                     border-radius: 0.25rem;
-                    background-color: rgba(255, 255, 255, 0.1);
+                    background-color: transparent;
                     color: white;
                     border: none;
                     cursor: pointer;
@@ -208,6 +258,11 @@
                     font-weight: bold;
                     text-transform: uppercase;
                     transition: background-color 0.25s ease-in-out;
+
+                    :global(svg) {
+                        width: 1rem;
+                        height: 1rem;
+                    }
 
                     &:hover {
                         background-color: rgba(255, 255, 255, 0.2);
