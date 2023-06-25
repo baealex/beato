@@ -46,7 +46,11 @@ export const musicTypeDefs = `
 
 export const musicResolvers: IResolvers = {
     Query: {
-        allMusics: models.music.findMany,
+        allMusics: () => models.music.findMany({
+            orderBy: {
+                playCount: 'desc',
+            },
+        }),
         music: (_, { id }: Music) => models.music.findUnique({
             where: {
                 id: Number(id),

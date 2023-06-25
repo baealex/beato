@@ -6,7 +6,7 @@
     import Album from "./pages/Album.svelte";
     import Artist from "./pages/Artist.svelte";
     import Setting from "./pages/Setting.svelte";
-    import NowPlay from "./pages/NowPlay.svelte";
+    import Now from "./pages/Now.svelte";
 
     import SiteHeader from "./components/SiteHeader.svelte";
 
@@ -21,6 +21,7 @@
     import { toast } from "./modules/ui/toast";
 
     import type { Music as MusicModel } from "./models/type";
+    import AlbumDetail from "./pages/AlbumDetail.svelte";
 
     let audioElement: HTMLAudioElement;
     let chunks: Buffer[] = [];
@@ -74,6 +75,8 @@
         if (!$playlist.items.map((item) => item.id).includes(music.id)) {
             $playlist.items = [...$playlist.items, music];
             toast("플레이리스트에 추가되었습니다.");
+        } else {
+            toast("이미 플레이리스트에 추가되어 있습니다.");
         }
 
         if ($playlist.selected === null) {
@@ -136,12 +139,18 @@
         <div class="container">
             <Route path="/" onClickMusic={handleClickMusic} component={Music} />
             <Route path="/album" component={Album} />
+            <Route
+                path="/album/:id"
+                onClickMusic={handleClickMusic}
+                component={AlbumDetail}
+                let:params
+            />
             <Route path="/artist" component={Artist} />
             <Route path="/setting" component={Setting} />
             <Route
                 path="/now-play"
                 onClickMusic={handleClickPlaylistMusic}
-                component={NowPlay}
+                component={Now}
             />
         </div>
 

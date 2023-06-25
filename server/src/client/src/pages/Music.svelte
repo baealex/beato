@@ -1,5 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { fly } from "svelte/transition";
+
     import type { Music } from "../models/type";
     import { musics } from "../store/musics";
     import { graphQLRequest } from "../api";

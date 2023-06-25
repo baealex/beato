@@ -1,12 +1,15 @@
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import { albumResolvers, albumTypeDefs } from './album';
 import { musicResolvers, musicTypeDefs } from './music';
 
 const schema = makeExecutableSchema({
     typeDefs: [
-        musicTypeDefs
+        albumTypeDefs,
+        musicTypeDefs,
     ],
     resolvers: [
-        musicResolvers
+        albumResolvers,
+        musicResolvers,
     ],
 });
 

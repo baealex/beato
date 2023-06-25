@@ -1,10 +1,11 @@
 <script lang="ts">
     import { playlist } from "../store/playlist";
+    import { fly } from "svelte/transition";
 
     export let onClickMusic: (idx: number) => void;
 </script>
 
-<ul>
+<ul in:fly={{ y: 200, duration: 200 }} out:fly={{ y: -200, duration: 200 }}>
     {#each $playlist.items as music, idx}
         <li
             class:active={$playlist.selected === idx}
