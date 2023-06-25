@@ -3,6 +3,7 @@
     import { Link } from "svelte-routing";
 
     import type { Album } from "../models/type";
+    import { getImage } from "../modules/image";
     import { graphQLRequest } from "../api";
 
     let albums: Album[] = [];
@@ -32,7 +33,7 @@
             <div class="item">
                 <img
                     class="album-cover"
-                    src={album.cover}
+                    src={getImage(album.cover)}
                     alt=""
                     loading="lazy"
                 />

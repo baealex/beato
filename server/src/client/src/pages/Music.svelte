@@ -5,6 +5,7 @@
     import type { Music } from "../models/type";
     import { musics } from "../store/musics";
     import { graphQLRequest } from "../api";
+    import { getImage } from "../modules/image";
 
     export let onClickMusic: (music: Music) => void;
 
@@ -43,7 +44,7 @@
         >
             <img
                 class="album-art"
-                src={music.album.cover}
+                src={getImage(music.album.cover)}
                 alt=""
                 loading="lazy"
             />

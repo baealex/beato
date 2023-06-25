@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
 
     import type { Album, Music } from "../models/type";
+    import { getImage } from "../modules/image";
     import { graphQLRequest } from "../api";
     import Play from "../icons/Play.svelte";
 
@@ -43,7 +44,12 @@
 
 {#if album}
     <div class="album">
-        <img class="album-cover" src={album.cover} alt="" loading="lazy" />
+        <img
+            class="album-cover"
+            src={getImage(album.cover)}
+            alt=""
+            loading="lazy"
+        />
         <div class="album-title">
             {album.name}
         </div>

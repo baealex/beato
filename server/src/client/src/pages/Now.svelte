@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { getImage } from "../modules/image";
     import { playlist } from "../store/playlist";
     import { fly } from "svelte/transition";
 
@@ -18,7 +19,7 @@
         >
             <img
                 class="album-art"
-                src={music.album.cover}
+                src={getImage(music.album.cover)}
                 alt=""
                 loading="lazy"
             />

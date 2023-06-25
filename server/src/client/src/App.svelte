@@ -22,6 +22,7 @@
 
     import type { Music as MusicModel } from "./models/type";
     import AlbumDetail from "./pages/AlbumDetail.svelte";
+    import { getImage } from "./modules/image";
 
     let audioElement: HTMLAudioElement;
     let chunks: Buffer[] = [];
@@ -180,7 +181,10 @@
                     <img
                         class="album-art"
                         src={$playlist.items[$playlist.selected]
-                            ? $playlist.items[$playlist.selected].album.cover
+                            ? getImage(
+                                  $playlist.items[$playlist.selected].album
+                                      .cover
+                              )
                             : ""}
                         alt=""
                     />
