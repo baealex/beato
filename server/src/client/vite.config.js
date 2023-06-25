@@ -10,6 +10,9 @@ export default defineConfig({
             '/api': {
                 target: 'http://localhost:4000',
             },
+            '/cache': {
+                target: 'http://localhost:4000',
+            },
             '/graphql': {
                 target: 'http://localhost:4000',
             },

@@ -19,6 +19,9 @@
             <li>
                 <Link to="/artist">Artist</Link>
             </li>
+            <li>
+                <Link to="/setting">Setting</Link>
+            </li>
         </ul>
     </nav>
 </header>
@@ -29,6 +32,7 @@
         top: 0;
         left: 0;
         width: 100%;
+        height: 60px;
         background-color: #000;
         color: #eee;
         display: flex;
@@ -82,7 +86,11 @@
     }
 
     nav :global(a) {
-        color: #fff;
+        color: #888;
         text-decoration: none;
+    }
+
+    nav :global([aria-current="page"]) {
+        color: #fff;
     }
 </style>

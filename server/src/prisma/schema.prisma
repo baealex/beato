@@ -12,18 +12,20 @@ datasource db {
 
 model Artist {
   id        Int      @id @default(autoincrement())
-  name      String
+  name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Album     Album[]
+  Music     Music[]
 }
 
 model Album {
   id            Int      @id @default(autoincrement())
   name          String
+  cover         String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  publishedYear Int
+  publishedYear String
   Music         Music[]
   Artist        Artist   @relation(fields: [artistId], references: [id])
   artistId      Int
@@ -31,7 +33,7 @@ model Album {
 
 model Genre {
   id        Int      @id @default(autoincrement())
-  name      String
+  name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Music     Music[]
@@ -43,8 +45,11 @@ model Music {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   Album         Album           @relation(fields: [albumId], references: [id])
+  Artist        Artist          @relation(fields: [artistId], references: [id])
   albumId       Int
-  duration      Int
+  artistId      Int
+  filePath      String
+  duration      Float
   playCount     Int             @default(0)
   trackNumber   Int
   Genre         Genre[]

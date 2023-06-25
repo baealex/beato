@@ -4,6 +4,7 @@ body {
     min-height: 100%;
     margin: 0;
     padding: 0;
+    user-select: none;
 }
 
 *, *::before, *::after {
@@ -22,4 +23,26 @@ body {
     background: #000;
     color: #eee;
     padding: 60px 0 80px;
+}
+
+.album-art {
+    width: 45px;
+    height: 45px;
+    border-radius: 0.25rem;
+    object-fit: cover;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .title {
+        font-size: 1rem;
+    }
+
+    .artist {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
 }

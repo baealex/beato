@@ -6,10 +6,29 @@ import { gql } from '~/modules/graphql';
 export const musicType = gql`
     type Music {
         id: ID!
-        name: String
-        email: String!
-        createdAt: String!
-        updatedAt: String!
+        name: String!
+        duration: Float!
+        trackNumber: Int!
+        filePath: String!
+        artist: Artist!
+        album: Album!
+        genres: [Genre!]!
+    }
+
+    type Artist {
+        id: ID!
+        name: String!
+    }
+
+    type Album {
+        id: ID!
+        name: String!
+        cover: String!
+    }
+
+    type Genre {
+        id: ID!
+        name: String!
     }
 `;
 
@@ -31,6 +50,27 @@ export const musicResolvers: IResolvers = {
         music: (_, { id }: Music) => models.music.findUnique({
             where: {
                 id: Number(id),
+            },
+        }),
+    },
+    Music: {
+        artist: (music: Music) => models.artist.findUnique({
+            where: {
+                id: music.artistId,
+            },
+        }),
+        album: (music: Music) => models.album.findUnique({
+            where: {
+                id: music.albumId,
+            },
+        }),
+        genres: (music: Music) => models.genre.findMany({
+            where: {
+                Music: {
+                    some: {
+                        id: music.id,
+                    },
+                },
             },
         }),
     },
