@@ -28,10 +28,6 @@
 
 <style lang="scss">
     header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
         height: 60px;
         background-color: #000;
         color: #eee;
@@ -44,19 +40,19 @@
 
     @keyframes dance {
         0% {
-            transform: rotate(0deg);
+            transform: rotate(0deg) scale(1);
         }
         25% {
             transform: rotate(5deg);
         }
         50% {
-            transform: rotate(0deg);
+            transform: rotate(0deg) scale(1.2);
         }
         75% {
             transform: rotate(-5deg);
         }
         100% {
-            transform: rotate(0deg);
+            transform: rotate(0deg) scale(1);
         }
     }
 

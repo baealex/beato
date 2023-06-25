@@ -19,28 +19,37 @@
     let isRepeat = true;
     let volume = 0.5;
     let progress = 0;
+    let countFlag = false;
 
-    socket.on("audio", (chunk: Buffer | null) => {
+    socket.on("audio", async (chunk: Buffer | null) => {
         if (!chunk) {
             return;
         }
-
-        chunks.push(chunk);
-
-        if (chunks.length < 2) {
-            return;
-        }
-
-        audioElement.src = URL.createObjectURL(new Blob(chunks));
+        chunks = [...chunks, chunk];
+        audioElement.src = URL.createObjectURL(
+            new Blob(chunks, { type: "audio/mpeg" })
+        );
         if (audioElement.paused) {
-            audioElement.play();
+            audioElement.load();
+            await audioElement.play();
         }
     });
+
+    $: {
+        if (selectedMusic) {
+            document.title = `${selectedMusic.name} - ${selectedMusic.artist.name}`;
+        }
+    }
 
     onMount(() => {
         audioElement.addEventListener("timeupdate", () => {
             progress =
                 (audioElement.currentTime / selectedMusic.duration) * 100;
+
+            if (progress >= 30 && countFlag) {
+                countFlag = false;
+                socket.emit("count", selectedMusic.id);
+            }
         });
     });
 
@@ -62,8 +71,11 @@
     });
 
     const handleClickMusic = (music: Music) => {
+        document.title = `${music.name} - ${music.artist.name}`;
+
         chunks = [];
         playing = true;
+        countFlag = true;
         selectedMusic = music;
         socket.emit("file", selectedMusic.filePath);
     };
@@ -72,10 +84,12 @@
 <main>
     <Router>
         <SiteHeader dance={playing} />
-        <Route path="/" onClickMusic={handleClickMusic} component={Main} />
-        <Route path="/album" component={Album} />
-        <Route path="/artist" component={Artist} />
-        <Route path="/setting" component={Setting} />
+        <div class="container">
+            <Route path="/" onClickMusic={handleClickMusic} component={Main} />
+            <Route path="/album" component={Album} />
+            <Route path="/artist" component={Artist} />
+            <Route path="/setting" component={Setting} />
+        </div>
 
         <audio bind:this={audioElement} controls />
 
@@ -148,7 +162,6 @@
     }
 
     .audio {
-        position: fixed;
         transform: translateY(100%);
         bottom: 0;
         left: 0;
@@ -176,6 +189,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.5rem;
+            flex-wrap: wrap;
 
             .action {
                 display: flex;

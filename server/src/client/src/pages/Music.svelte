@@ -10,6 +10,7 @@
         const { data } = await graphQLRequest<"allMusics", Music[]>(`
             query {
                 allMusics {
+                    id
                     name
                     filePath
                     duration

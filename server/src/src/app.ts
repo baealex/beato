@@ -11,7 +11,7 @@ export default express()
     .use(express.static(path.resolve('client/dist'), {
         extensions: ['html']
     }))
-    .use('/cache', express.static(path.resolve('temp')))
+    .use('/cache', express.static(path.resolve('cache')))
     .use(express.json())
     .use('/graphql', graphqlHTTP({
         schema,
