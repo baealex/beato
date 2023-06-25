@@ -21,11 +21,15 @@
                     id
                     name
                     cover
+                    artist {
+                        name
+                    }
                     musics {
                         id
                         name
                         filePath
                         duration
+                        trackNumber
                         artist {
                             name
                         }
@@ -53,6 +57,9 @@
         <div class="album-title">
             {album.name}
         </div>
+        <div class="album-artist">
+            {album.artist.name}
+        </div>
         <div class="play-all">
             <button
                 on:click={() => {
@@ -66,8 +73,8 @@
         </div>
     </div>
 {/if}
-{#if album?.musics}
-    <ul>
+<ul>
+    {#if album?.musics}
         {#each album.musics as music}
             <li
                 on:keydown={(e) => {
@@ -79,7 +86,7 @@
             >
                 <div class="info">
                     <div class="title">
-                        {music.name}
+                        {music.trackNumber}. {music.name}
                     </div>
                     <div class="artist">
                         {music.artist.name}
@@ -87,8 +94,8 @@
                 </div>
             </li>
         {/each}
-    </ul>
-{/if}
+    {/if}
+</ul>
 
 <style lang="scss">
     .album {
@@ -112,6 +119,11 @@
             font-weight: bold;
         }
 
+        .album-artist {
+            font-size: 1rem;
+            color: #aaa;
+        }
+
         .play-all {
             position: absolute;
             bottom: 0;
@@ -126,6 +138,11 @@
                 cursor: pointer;
                 color: #fff;
                 transition: background-color 0.2s;
+
+                :global(svg) {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
 
                 &:hover {
                     background-color: #515199;
