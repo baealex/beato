@@ -1,13 +1,9 @@
 <script>
     import { Link } from "svelte-routing";
-
-    export let dance = false;
+    import Beato from "./Beato.svelte";
 </script>
 
 <header>
-    <h1 class:animate-dance={dance} class:animate-dance--paused={!dance}>
-        {`(㇏(•̀ᵥᵥ•́)ノ)`}
-    </h1>
     <nav>
         <ul>
             <li>
@@ -28,65 +24,70 @@
 
 <style lang="scss">
     header {
+        position: relative;
         height: 60px;
         background-color: #000;
         color: #eee;
         display: flex;
+        gap: 5rem;
         align-items: center;
         justify-content: space-between;
-        padding: 1rem;
         border-bottom: 1px solid #333;
     }
 
-    @keyframes dance {
-        0% {
-            transform: rotate(0deg) scale(1);
-        }
-        25% {
-            transform: rotate(5deg);
-        }
-        50% {
-            transform: rotate(0deg) scale(1.2);
-        }
-        75% {
-            transform: rotate(-5deg);
-        }
-        100% {
-            transform: rotate(0deg) scale(1);
-        }
-    }
+    nav {
+        position: relative;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
 
-    header h1 {
-        margin: 0;
-        font-size: 1rem;
-        font-family: "Press Start 2P", cursive;
-
-        &.animate-dance {
-            animation: dance 1s infinite;
+        &::-webkit-scrollbar {
+            display: none;
         }
 
-        &.animate-dance--paused {
-            animation-play-state: paused;
+        ::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 59px;
+            background: linear-gradient(
+                to left,
+                rgba(0, 0, 0, 0.05) 0%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            pointer-events: none;
         }
     }
 
     nav ul {
         display: flex;
+        align-items: center;
         list-style: none;
         margin: 0;
-        padding: 0;
+        padding: 0 1rem;
+        gap: 1rem;
     }
 
     nav li {
-        margin-left: 1rem;
+        font-size: 1rem;
     }
 
     nav :global(a) {
         color: #888;
+        padding: 1rem 0;
         text-decoration: none;
     }
 
     nav :global([aria-current="page"]) {
         color: #fff;
+        border-bottom: 2px solid #fff;
     }
 </style>

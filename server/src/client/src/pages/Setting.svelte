@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Beato from "../components/Beato.svelte";
     import { socket } from "../modules/socket";
 
     let blockScreen = false;
@@ -22,9 +23,7 @@
 
     {#if blockScreen}
         <div class="screen-block">
-            <div class="icon">
-                {`(㇏(•̀ᵥᵥ•́)ノ)`}
-            </div>
+            <Beato spin={true} />
             <div>Syncing...</div>
         </div>
     {/if}
@@ -51,15 +50,6 @@
         gap: 0.5rem;
     }
 
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(-360deg);
-        }
-    }
-
     .screen-block {
         width: 100%;
         height: 100%;
@@ -74,9 +64,5 @@
         align-items: center;
         justify-content: center;
         gap: 3rem;
-
-        .icon {
-            animation: spin 1s ease-in-out infinite;
-        }
     }
 </style>
