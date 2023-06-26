@@ -5,6 +5,7 @@ import { parseBuffer } from 'music-metadata';
 import type { Socket } from 'socket.io';
 
 import models from '../models';
+import { walk } from '../modules/file';
 
 export const sockerManager = (socket: Socket) => {
     console.log('a user connected');
@@ -14,15 +15,49 @@ export const sockerManager = (socket: Socket) => {
     socket.on('sync-music', async () => {
         console.log('sync-music');
         try {
-            const files = fs.readdirSync(path.resolve('./sample'));
+            const files = (await walk(path.resolve('./music')))
+                .filter((file) =>
+                    file.endsWith('.mp3') ||
+                    file.endsWith('.wav') ||
+                    file.endsWith('.flac'));
 
-            for (const file of files.filter((file) => file.endsWith('.mp3'))) {
+            const existMusics = await models.music.findMany({});
+
+            for (const existMusic of existMusics) {
+                if (!files.includes(existMusic.filePath)) {
+                    console.log('delete... ' + existMusic.filePath);
+                    await models.music.delete({
+                        where: {
+                            id: existMusic.id,
+                        },
+                    });
+                }
+            }
+
+            const filteredFiles = files.filter((file) => {
+                for (const existMusic of existMusics) {
+                    if (existMusic.filePath === file) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            for (const file of filteredFiles) {
                 console.log('sync... ' + file);
-                const data = fs.readFileSync(path.resolve('./sample', file));
+                const data = fs.readFileSync(path.resolve('./music', file));
 
                 const { format, common } = await parseBuffer(data);
                 const { duration } = format;
-                const { title, artist, album, picture, genre, year, track } = common;
+                const {
+                    title = file.split('/').pop().split('.').shift(),
+                    artist = 'unknown',
+                    album = 'unknown',
+                    picture,
+                    genre,
+                    year = (new Date()).getFullYear(),
+                    track
+                } = common;
 
                 let $artist = await models.artist.findFirst({
                     where: {
@@ -52,7 +87,7 @@ export const sockerManager = (socket: Socket) => {
                         data: {
                             name: album,
                             cover: '',
-                            publishedYear: year?.toString() || (new Date()).getFullYear().toString(),
+                            publishedYear: year.toString(),
                             Artist: {
                                 connect: {
                                     id: $artist.id,
@@ -119,7 +154,7 @@ export const sockerManager = (socket: Socket) => {
                 if (!$music) {
                     await models.music.create({
                         data: {
-                            name: title || file.split('.')[0],
+                            name: title,
                             duration,
                             trackNumber: track.no || 0,
                             filePath: file,
@@ -140,15 +175,6 @@ export const sockerManager = (socket: Socket) => {
                             }
                         },
                     });
-                } else if ($music.filePath !== file) {
-                    await models.music.update({
-                        where: {
-                            id: $music.id,
-                        },
-                        data: {
-                            filePath: file,
-                        },
-                    });
                 }
             }
         } catch (error) {
@@ -162,7 +188,7 @@ export const sockerManager = (socket: Socket) => {
     });
 
     socket.on('file', (file) => {
-        stream = fs.createReadStream(path.resolve('./sample', file));
+        stream = fs.createReadStream(path.resolve('./music', file));
         stream.on('data', (chunk) => {
             socket.emit('audio', chunk);
         });
