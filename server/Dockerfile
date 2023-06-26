@@ -8,6 +8,8 @@ COPY ./src/package-lock.json ./
 RUN npm i
 
 COPY ./src/ ./
+RUN ln -s /app/prisma /data
+RUN ln -s /app/music /music
 
 ENTRYPOINT ["npm", "run"]
 CMD ["start"]
