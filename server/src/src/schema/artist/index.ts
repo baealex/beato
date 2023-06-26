@@ -51,7 +51,13 @@ export const artistTypeDefs = `
 
 export const artistResolvers: IResolvers = {
     Query: {
-        allArtists: models.artist.findMany,
+        allArtists: () => models.artist.findMany({
+            orderBy: {
+                Music: {
+                    _count: 'desc',
+                },
+            },
+        }),
         artist: (_, { id }: Artist) => models.artist.findUnique({
             where: {
                 id: Number(id),
