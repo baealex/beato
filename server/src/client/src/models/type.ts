@@ -4,10 +4,8 @@ export interface Music {
     duration: number;
     trackNumber: number;
     filePath: string;
-    artist: {
-        name: string;
-    };
-    album: Pick<Album, 'id' | 'name' | 'cover'>;
+    artist: Artist;
+    album: Album;
     genres: {
         name: string;
     }[];
@@ -21,4 +19,14 @@ export interface Album {
         name: string;
     };
     musics: Music[];
+}
+
+export interface Artist {
+    id: number;
+    name: string;
+    latestAlbum: Album;
+    albums: Album[];
+    albumCount: number;
+    musics: Music[];
+    musicCount: number;
 }

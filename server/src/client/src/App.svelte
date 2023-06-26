@@ -24,6 +24,7 @@
     import type { Music as MusicModel } from "./models/type";
     import AlbumDetail from "./pages/AlbumDetail.svelte";
     import { getImage } from "./modules/image";
+    import ArtistDetail from "./pages/ArtistDetail.svelte";
 
     let audioElement: HTMLAudioElement;
     let chunks: Buffer[] = [];
@@ -194,6 +195,12 @@
                 onClickMusic={handleClickMusic}
             />
             <Route path="/artist" component={Artist} />
+            <Route
+                path="/artist/:id"
+                let:params
+                component={ArtistDetail}
+                onClickMusic={handleClickMusic}
+            />
             <Route path="/setting" component={Setting} />
         </div>
 

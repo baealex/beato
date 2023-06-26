@@ -4,9 +4,10 @@
 
     import type { Album } from "../models/type";
     import { getImage } from "../modules/image";
+
     import { graphQLRequest } from "../api";
 
-    let albums: Album[] = [];
+    import { albums } from "../store";
 
     onMount(async () => {
         const { data } = await graphQLRequest<"allAlbums", Album[]>(`
@@ -23,12 +24,12 @@
             }
         `);
 
-        albums = data.allAlbums;
+        $albums = data.allAlbums;
     });
 </script>
 
 <div class="grid">
-    {#each albums as album}
+    {#each $albums as album}
         <Link to={`/album/${album.id}`}>
             <div class="item">
                 <img
