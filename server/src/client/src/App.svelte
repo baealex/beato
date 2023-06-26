@@ -64,10 +64,13 @@
         });
 
         audioElement.addEventListener("timeupdate", () => {
-            progress =
-                (audioElement.currentTime /
-                    $playlist.items[$playlist.selected].duration) *
-                100;
+            progress = Number(
+                (
+                    (audioElement.currentTime /
+                        $playlist.items[$playlist.selected].duration) *
+                    100
+                ).toFixed(2)
+            );
 
             if (progress >= 80 && countFlag) {
                 countFlag = false;
@@ -237,7 +240,10 @@
                         $playlist.items[$playlist.selected].duration;
                 }}
             >
-                <div class="progress-bar" style={`width: ${progress}%`} />
+                <div
+                    class="progress-bar"
+                    style={`transform: translate(-${100 - progress}%, 0)`}
+                />
             </div>
             {#if $playlist.items[$playlist.selected]}
                 <div class="player">
@@ -416,6 +422,9 @@
 
             .progress-bar {
                 height: 100%;
+                width: 100%;
+                transform: translate(-100%, 0);
+                transition: transform 0.25s ease-in-out;
                 background-color: #a076f1;
             }
 
