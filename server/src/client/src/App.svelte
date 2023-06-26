@@ -8,6 +8,7 @@
     import Setting from "./pages/Setting.svelte";
 
     import Now from "./components/Now.svelte";
+    import PlayDetail from "./components/Player.svelte";
     import SiteHeader from "./components/SiteHeader.svelte";
 
     import Cross from "./icons/Cross.svelte";
@@ -23,8 +24,8 @@
 
     import type { Music as MusicModel } from "./models/type";
     import AlbumDetail from "./pages/AlbumDetail.svelte";
-    import { getImage } from "./modules/image";
     import ArtistDetail from "./pages/ArtistDetail.svelte";
+    import Player from "./components/Player.svelte";
 
     let audioElement: HTMLAudioElement;
     let chunks: Buffer[] = [];
@@ -32,8 +33,6 @@
     let volume = 0.5;
     let progress = 0;
     let countFlag = false;
-
-    let isOpenNow = false;
 
     $: {
         if ($playlist.items[$playlist.selected]) {
@@ -130,7 +129,7 @@
         socket.emit("file", $playlist.items[$playlist.selected].filePath);
     };
 
-    const handleClickPause = () => {
+    const handleClickPlay = () => {
         playing = !playing;
 
         if (playing) {
@@ -158,6 +157,17 @@
         chunks = [];
         countFlag = true;
         socket.emit("file", $playlist.items[$playlist.selected].filePath);
+    };
+
+    const handleClickProgress = (e: MouseEvent | TouchEvent) => {
+        const rect = (
+            e.currentTarget as HTMLDivElement
+        ).getBoundingClientRect();
+        const x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
+        const width = rect.width;
+        const percent = (x - rect.left) / width;
+        const duration = $playlist.items[$playlist.selected].duration;
+        audioElement.currentTime = duration * percent;
     };
 
     const handleDeletePlaylistMusic = (idx: number) => {
@@ -213,225 +223,19 @@
             <Route path="/setting" component={Setting} />
         </div>
 
-        <Now
-            isOpen={isOpenNow}
-            onClose={() => {
-                isOpenNow = false;
-            }}
-            onClickMusic={handleClickPlaylistMusic}
-            onDeleteMusic={handleDeletePlaylistMusic}
+        <Player
+            bind:audioElement
+            bind:playing
+            bind:volume
+            bind:progress
+            music={$playlist.items[$playlist.selected]}
+            onClickPlay={handleClickPlay}
+            onClickStop={handleClickStop}
+            onClickNext={playNext}
+            onClickPrev={playPrev}
+            onClickProgress={handleClickProgress}
+            onClickNowMusic={handleClickPlaylistMusic}
+            onDeleteNowMusic={handleDeletePlaylistMusic}
         />
-
-        <audio bind:this={audioElement} />
-        <div class="audio" class:open={$playlist.items[$playlist.selected]}>
-            <div
-                class="progress"
-                on:keydown={() => {}}
-                on:mousemove={(e) => {
-                    if (e.buttons === 1) {
-                        audioElement.currentTime =
-                            (e.clientX / window.innerWidth) *
-                            $playlist.items[$playlist.selected].duration;
-                    }
-                }}
-                on:click={(e) => {
-                    audioElement.currentTime =
-                        (e.clientX / window.innerWidth) *
-                        $playlist.items[$playlist.selected].duration;
-                }}
-            >
-                <div
-                    class="progress-bar"
-                    style={`transform: translate(-${100 - progress}%, 0)`}
-                />
-            </div>
-            {#if $playlist.items[$playlist.selected]}
-                <div class="player">
-                    <div class="music">
-                        <img
-                            alt=""
-                            class="album-art"
-                            src={getImage(
-                                $playlist.items[$playlist.selected].album.cover
-                            )}
-                        />
-                        <div class="info">
-                            <div class="title">
-                                {$playlist.items[$playlist.selected].name}
-                            </div>
-                            <div class="artist">
-                                {$playlist.items[$playlist.selected].artist
-                                    .name}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="action">
-                        <button class="skip-back" on:click={playPrev}>
-                            <Play />
-                        </button>
-                        <button on:click={handleClickPause}>
-                            {#if playing}
-                                <Pause />
-                            {:else}
-                                <Play />
-                            {/if}
-                        </button>
-                        <button class="skip-forward" on:click={playNext}>
-                            <Play />
-                        </button>
-                        <button class="cross" on:click={handleClickStop}>
-                            <Cross />
-                        </button>
-                        <input
-                            bind:value={volume}
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.05"
-                        />
-                        <button on:click={() => (isOpenNow = !isOpenNow)}>
-                            <Menu />
-                        </button>
-                    </div>
-                </div>
-            {/if}
-        </div>
     </Router>
 </main>
-
-<style lang="scss">
-    .audio {
-        display: flex;
-        flex-direction: column;
-        background-color: #111111;
-        gap: 0.5rem;
-        transition: transform 0.25s ease-in-out;
-
-        .music {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .player {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem;
-            flex-wrap: wrap;
-
-            .action {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 0.25rem;
-
-                button {
-                    position: relative;
-                    width: 3rem;
-                    height: 3rem;
-                    border-radius: 0.25rem;
-                    background-color: transparent;
-                    color: white;
-                    border: none;
-                    cursor: pointer;
-                    font-size: 0.8rem;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    transition: background-color 0.25s ease-in-out;
-
-                    :global(svg) {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        width: 1.5rem;
-                        height: 1.5rem;
-                    }
-
-                    &:hover {
-                        background-color: rgba(255, 255, 255, 0.2);
-                    }
-                }
-
-                .cross,
-                .skip-back,
-                .skip-forward {
-                    :global(svg) {
-                        width: 1rem;
-                        height: 1rem;
-                    }
-                }
-
-                .skip-back,
-                .skip-forward {
-                    :global(svg) {
-                        transform: translate(-70%, -50%);
-                    }
-
-                    &::after {
-                        content: "";
-                        position: absolute;
-                        display: block;
-                        top: 50%;
-                        right: 30%;
-                        transform: translate(-50%, -50%);
-                        width: 0.1rem;
-                        height: 0.75rem;
-                        background-color: #fff;
-                    }
-                }
-
-                .skip-back {
-                    transform: scaleX(-1);
-                }
-
-                input[type="range"] {
-                    -webkit-appearance: none;
-                    width: 100px;
-                    height: 0.25rem;
-                    background-color: rgba(255, 255, 255, 0.1);
-                    border-radius: 0.25rem;
-                    outline: none;
-                    transition: background-color 0.25s ease-in-out;
-
-                    &::-webkit-slider-thumb {
-                        -webkit-appearance: none;
-                        appearance: none;
-                        width: 0.75rem;
-                        height: 0.75rem;
-                        background-color: #a076f1;
-                        border-radius: 50%;
-                        cursor: pointer;
-                    }
-
-                    &:hover {
-                        background-color: rgba(255, 255, 255, 0.2);
-                    }
-                }
-            }
-        }
-
-        .progress {
-            width: 100%;
-            height: 0.25rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            transition: height 0.25s ease-in-out;
-
-            .progress-bar {
-                height: 100%;
-                width: 100%;
-                transform: translate(-100%, 0);
-                transition: transform 0.25s ease-in-out;
-                background-color: #a076f1;
-            }
-
-            &:hover {
-                cursor: pointer;
-                height: 0.5rem;
-            }
-        }
-    }
-</style>
