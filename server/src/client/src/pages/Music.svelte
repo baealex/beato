@@ -1,6 +1,5 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { get } from "svelte/store";
 
     import Shuffle from "../icons/Shuffle.svelte";
     import Play from "../icons/Play.svelte";

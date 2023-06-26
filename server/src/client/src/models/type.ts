@@ -3,6 +3,7 @@ export interface Music {
     name: string;
     duration: number;
     trackNumber: number;
+    playCount: number;
     filePath: string;
     artist: Artist;
     album: Album;

@@ -189,7 +189,6 @@
             />
             <Route path="/album" component={Album} />
             <Route
-                let:params
                 path="/album/:id"
                 component={AlbumDetail}
                 onClickMusic={handleClickMusic}
@@ -197,7 +196,6 @@
             <Route path="/artist" component={Artist} />
             <Route
                 path="/artist/:id"
-                let:params
                 component={ArtistDetail}
                 onClickMusic={handleClickMusic}
             />

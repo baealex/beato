@@ -1,6 +1,7 @@
 <script lang="ts">
     import Beato from "../components/Beato.svelte";
     import { socket } from "../modules/socket";
+    import { toast } from "../modules/ui/toast";
 
     let blockScreen = false;
 
@@ -10,6 +11,11 @@
     };
 
     socket.on("sync-music", (state: "done" | "error") => {
+        if (state === "done") {
+            toast("Sync music done");
+        } else {
+            toast("Sync music error");
+        }
         blockScreen = false;
     });
 </script>

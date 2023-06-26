@@ -1,6 +1,4 @@
 <script>
-    import { Link } from "svelte-routing";
-
     export let dance = false;
     export let spin = false;
     export let hasSpeechBubble = false;
@@ -13,7 +11,7 @@
     class:animate-spin={spin}
     class:animate-spin--paused={!spin}
 >
-    {`(㇏(•̀ᵥᵥ•́)ノ)`}
+    {"(㇏(•̀ᵥᵥ•́)ノ)"}
 </div>
 
 <style lang="scss">

@@ -1,6 +1,5 @@
 <script>
     import { Link } from "svelte-routing";
-    import Beato from "./Beato.svelte";
 </script>
 
 <header>
@@ -51,7 +50,7 @@
             display: none;
         }
 
-        ::before {
+        &::before {
             content: "";
             position: fixed;
             top: 0;

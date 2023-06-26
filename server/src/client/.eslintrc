@@ -1,0 +1,19 @@
+{
+    "root": true,
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "parser": "svelte-eslint-parser",
+    "parserOptions": {
+        "parser": "@typescript-eslint/parser"
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.ts"
+            ],
+            "parser": "@typescript-eslint/parser"
+        }
+    ]
+}
