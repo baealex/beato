@@ -15,6 +15,14 @@
     export let onClickPlayAll: () => void;
     export let onClickPlayShuffle: () => void;
 
+    let search = "";
+
+    $: visibleMusics = $musics.filter(
+        (music) =>
+            music.name.toLowerCase().includes(search.toLowerCase()) ||
+            music.artist.name.toLowerCase().includes(search.toLowerCase())
+    );
+
     onMount(async () => {
         const { data } = await graphQLRequest<"allMusics", Music[]>(`
             query {
@@ -40,17 +48,27 @@
 </script>
 
 <div class="controls">
-    <button on:click={onClickPlayAll}>
-        <Play />
-        전체 재생
-    </button>
-    <button on:click={onClickPlayShuffle}>
-        <Shuffle />
-        랜덤 재생
-    </button>
+    <div>
+        <input
+            class="search"
+            type="text"
+            placeholder="검색"
+            bind:value={search}
+        />
+    </div>
+    <div class="buttons">
+        <button on:click={onClickPlayAll}>
+            <Play />
+            전체 재생
+        </button>
+        <button on:click={onClickPlayShuffle}>
+            <Shuffle />
+            랜덤 재생
+        </button>
+    </div>
 </div>
 <ul>
-    {#each $musics as music}
+    {#each visibleMusics as music}
         <li
             on:keydown={(e) => {
                 if (e.key === "Enter") {
@@ -87,7 +105,29 @@
     .controls {
         padding: 1rem;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .search {
+        padding: 0.5rem;
+        border: none;
+        background-color: #222;
+        border-radius: 0.5rem;
+        color: #eee;
+        font-size: 0.8rem;
+        font-weight: 600;
+        width: 10rem;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         gap: 0.5rem;
     }
 
