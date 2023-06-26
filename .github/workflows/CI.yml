@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'server/**'
 
   pull_request:
     branches:
       - main
+    paths:
+      - 'server/**'
 
 jobs:
   build:
@@ -25,17 +29,29 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Install
-      run: npm ci
+      run: npm i
       working-directory: server/src
-
-    - name: Lint
+    
+    - name: Lint (Server)
       run: npm run lint
       working-directory: server/src
-
-    - name: Test
+    
+    - name: Test (Server)
       run: npm run test
       working-directory: server/src
-
-    - name: Build
+    
+    - name: Build (Server)
       run: npm run build
       working-directory: server/src
+    
+    - name: Lint (Client)
+      run: npm run lint
+      working-directory: server/src/client/src
+
+    - name: Test (Client)
+      run: npm run test
+      working-directory: server/src/client/src
+
+    - name: Build (Client)
+      run: npm run build
+      working-directory: server/src/client/src
