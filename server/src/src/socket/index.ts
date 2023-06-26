@@ -7,7 +7,7 @@ import type { Socket } from 'socket.io';
 import models from '../models';
 import { walk } from '../modules/file';
 
-export const sockerManager = (socket: Socket) => {
+export const socketManager = (socket: Socket) => {
     console.log('a user connected');
 
     let stream: fs.ReadStream;
@@ -62,7 +62,7 @@ export const sockerManager = (socket: Socket) => {
                     picture,
                     genre,
                     year = (new Date()).getFullYear(),
-                    track: { no: trackNumber = 0 }
+                    track,
                 } = common;
 
                 let $artist = await models.artist.findFirst({
@@ -166,7 +166,7 @@ export const sockerManager = (socket: Socket) => {
                             sampleRate,
                             name: title,
                             duration,
-                            trackNumber,
+                            trackNumber: track?.no || 0,
                             filePath: file,
                             Album: {
                                 connect: {

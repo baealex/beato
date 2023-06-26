@@ -2,11 +2,11 @@ import app from './app';
 import http from 'http';
 import { Server } from 'socket.io';
 
-import { sockerManager } from './socket';
+import { socketManager } from './socket';
 
 const server = http.createServer(app);
 const io = new Server(server);
-io.on('connection', sockerManager);
+io.on('connection', socketManager);
 
 const PORT = process.env.PORT || 3000;
 
