@@ -1,5 +1,5 @@
 import express from 'express';
-import { graphqlHTTP } from 'express-graphql';
+import { createHandler } from 'graphql-http/lib/use/express';
 import path from 'path';
 
 import logger from './modules/logger';
@@ -13,7 +13,7 @@ export default express()
     }))
     .use('/cache', express.static(path.resolve('cache')))
     .use(express.json())
-    .use('/graphql', graphqlHTTP({
+    .use('/graphql', createHandler({
         schema,
     }))
     .use('/api', router)
