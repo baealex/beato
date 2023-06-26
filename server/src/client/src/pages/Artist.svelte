@@ -1,13 +1,18 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { Link } from "svelte-routing";
 
-    import type { Artist } from "../models/type";
+    import type { Artist, Music } from "../models/type";
     import { getImage } from "../modules/image";
 
     import { graphQLRequest } from "../api";
 
     import { artists } from "../store";
+    import SubPage from "../components/SubPage.svelte";
+    import ArtistDetail from "./ArtistDetail.svelte";
+
+    let selectedId: number | null = null;
+    let isOpenDetail = false;
+    export let onClickMusic: (music: Music) => void;
 
     onMount(async () => {
         const { data } = await graphQLRequest<"allArtists", Artist[]>(`
@@ -30,31 +35,46 @@
 
 <ul>
     {#each $artists as artist}
-        <Link to={`/artist/${artist.id}`}>
-            <li>
-                <img
-                    loading="lazy"
-                    src={getImage(artist.latestAlbum.cover)}
-                    alt={artist.name}
-                />
-                <div class="info">
-                    <div class="name">
-                        {artist.name}
+        <li
+            on:click={() => {
+                selectedId = artist.id;
+                isOpenDetail = true;
+            }}
+        >
+            <img
+                loading="lazy"
+                src={getImage(artist.latestAlbum.cover)}
+                alt={artist.name}
+            />
+            <div class="info">
+                <div class="name">
+                    {artist.name}
+                </div>
+                <div class="count">
+                    <div class="album">
+                        {artist.albumCount}개의 앨범
                     </div>
-                    <div class="count">
-                        <div class="album">
-                            {artist.albumCount}개의 앨범
-                        </div>
-                        <span> / </span>
-                        <div class="music">
-                            {artist.musicCount}개의 음악
-                        </div>
+                    <span> / </span>
+                    <div class="music">
+                        {artist.musicCount}개의 음악
                     </div>
                 </div>
-            </li>
-        </Link>
+            </div>
+        </li>
     {/each}
 </ul>
+
+<SubPage
+    isOpen={isOpenDetail}
+    onClose={() => {
+        selectedId = null;
+        isOpenDetail = false;
+    }}
+>
+    {#if selectedId}
+        <ArtistDetail id={String(selectedId)} {onClickMusic} />
+    {/if}
+</SubPage>
 
 <style lang="scss">
     :global(a) {

@@ -12,7 +12,7 @@
     export let onDeleteMusic: (idx: number) => void;
 </script>
 
-<SubPage {isOpen}>
+<SubPage {isOpen} hasHeader={false}>
     <div class="list">
         {#each $playlist.items as music, idx}
             <SwipeCard

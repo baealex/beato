@@ -1,16 +1,29 @@
 <script lang="ts">
+    import Left from "../icons/Left.svelte";
+
     export let isOpen = false;
+    export let hasHeader = true;
+    export let onClose: () => void = null;
 </script>
 
 <div class="sub-page" class:open={isOpen}>
-    <slot />
+    {#if hasHeader}
+        <div class="header">
+            <button on:click={onClose}>
+                <Left />
+            </button>
+        </div>
+    {/if}
+    <div class="content">
+        <slot />
+    </div>
 </div>
 
 <style lang="scss">
     .sub-page {
         opacity: 0;
         transform: translateY(100%);
-        background-color: rgba(0, 0, 0, 0.95);
+        background-color: #000;
         position: fixed;
         display: flex;
         flex-direction: column;
@@ -24,6 +37,40 @@
         &.open {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        height: 60px;
+        background-color: #111111;
+        color: #ffffff;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-bottom: 1px solid #333333;
+
+        button {
+            background-color: transparent;
+            border: none;
+            color: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            cursor: pointer;
+
+            :global(svg) {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
         }
     }
 </style>

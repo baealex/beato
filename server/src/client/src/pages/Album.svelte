@@ -1,13 +1,18 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { Link } from "svelte-routing";
 
-    import type { Album } from "../models/type";
+    import type { Album, Music } from "../models/type";
     import { getImage } from "../modules/image";
 
     import { graphQLRequest } from "../api";
 
     import { albums } from "../store";
+    import SubPage from "../components/SubPage.svelte";
+    import AlbumDetail from "./AlbumDetail.svelte";
+
+    let selectedId: number | null = null;
+    let isOpenDetail = false;
+    export let onClickMusic: (music: Music) => void;
 
     onMount(async () => {
         const { data } = await graphQLRequest<"allAlbums", Album[]>(`
@@ -30,24 +35,40 @@
 
 <div class="grid">
     {#each $albums as album}
-        <Link to={`/album/${album.id}`}>
-            <div class="item">
-                <img
-                    class="album-cover"
-                    src={getImage(album.cover)}
-                    alt=""
-                    loading="lazy"
-                />
-                <div class="album-title">
-                    {album.name}
-                </div>
-                <div class="album-artist">
-                    {album.artist.name}
-                </div>
+        <div
+            class="item"
+            on:click={() => {
+                selectedId = album.id;
+                isOpenDetail = true;
+            }}
+        >
+            <img
+                class="album-cover"
+                src={getImage(album.cover)}
+                alt=""
+                loading="lazy"
+            />
+            <div class="album-title">
+                {album.name}
             </div>
-        </Link>
+            <div class="album-artist">
+                {album.artist.name}
+            </div>
+        </div>
     {/each}
 </div>
+
+<SubPage
+    isOpen={isOpenDetail}
+    onClose={() => {
+        selectedId = null;
+        isOpenDetail = false;
+    }}
+>
+    {#if selectedId}
+        <AlbumDetail id={String(selectedId)} {onClickMusic} />
+    {/if}
+</SubPage>
 
 <style lang="scss">
     .grid {

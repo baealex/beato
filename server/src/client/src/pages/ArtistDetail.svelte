@@ -6,9 +6,13 @@
     import { getImage } from "../modules/image";
 
     import { graphQLRequest } from "../api";
+    import SubPage from "../components/SubPage.svelte";
+    import AlbumDetail from "./AlbumDetail.svelte";
 
     export let id = "";
     let artist: Artist = null;
+    let selectedId: number | null = null;
+    let isOpenDetail = false;
     export let onClickMusic: (music: Music) => void = () => {};
 
     onMount(async () => {
@@ -51,8 +55,8 @@
     });
 </script>
 
-{#if artist}
-    <section>
+<section>
+    {#if artist}
         <div class="artist-name">
             <img src={getImage(artist.latestAlbum.cover)} alt="" />
             {artist.name}
@@ -62,20 +66,23 @@
         <div class="artist-albums">
             <ul>
                 {#each artist.albums as album}
-                    <Link to={`/album/${album.id}`}>
-                        <li>
-                            <img
-                                loading="lazy"
-                                src={getImage(album.cover)}
-                                alt={album.name}
-                            />
-                            <div class="info">
-                                <div class="name">
-                                    {album.name}
-                                </div>
+                    <li
+                        on:click={() => {
+                            selectedId = album.id;
+                            isOpenDetail = true;
+                        }}
+                    >
+                        <img
+                            loading="lazy"
+                            src={getImage(album.cover)}
+                            alt={album.name}
+                        />
+                        <div class="info">
+                            <div class="name">
+                                {album.name}
                             </div>
-                        </li>
-                    </Link>
+                        </div>
+                    </li>
                 {/each}
             </ul>
         </div>
@@ -110,8 +117,20 @@
                 {/each}
             </ul>
         </div>
-    </section>
-{/if}
+    {/if}
+</section>
+
+<SubPage
+    isOpen={isOpenDetail}
+    onClose={() => {
+        selectedId = null;
+        isOpenDetail = false;
+    }}
+>
+    {#if selectedId}
+        <AlbumDetail id={String(selectedId)} {onClickMusic} />
+    {/if}
+</SubPage>
 
 <style lang="scss">
     section {
@@ -153,7 +172,7 @@
                 li {
                     img {
                         width: 100%;
-                        height: 100%;
+                        max-height: 100%;
                         object-fit: cover;
                     }
 

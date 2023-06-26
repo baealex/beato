@@ -187,13 +187,21 @@
                 onClickPlayAll={handleClickPlayAll}
                 onClickPlayShuffle={handleClickPlayShuffle}
             />
-            <Route path="/album" component={Album} />
+            <Route
+                path="/album"
+                component={Album}
+                onClickMusic={handleClickMusic}
+            />
             <Route
                 path="/album/:id"
                 component={AlbumDetail}
                 onClickMusic={handleClickMusic}
             />
-            <Route path="/artist" component={Artist} />
+            <Route
+                path="/artist"
+                component={Artist}
+                onClickMusic={handleClickMusic}
+            />
             <Route
                 path="/artist/:id"
                 component={ArtistDetail}
