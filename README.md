@@ -31,13 +31,13 @@ Self host music streaming platform
 - [x] Count the number of times music is listened to
 - [ ] Make your own playlist
 - [ ] Audio transcoding
-- [ ] Mobile-friendly
+- [ ] Mobile-friendly (Preparing app for background playback)
 
 <br>
 
 ## Self-host
 
-⚠️ Warning This application under development may be unstable.
+⚠️ **Warning** This application under development may be unstable.
 
 ### use NodeJS
 
@@ -47,7 +47,7 @@ Please place the 'music' folder at the 'server/src' of the project.
 git clone https://github.com/baealex/beato
 cd beato/server/src
 ln -s YOUR_MUSIC_PATH music
-npm i && npm run build:client && npm run start
+git pull && npm i && npm run build:client && npm run start
 ```
 
 you can connect to `http://localhost:4000`
