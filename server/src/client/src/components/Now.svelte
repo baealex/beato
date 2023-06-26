@@ -3,25 +3,27 @@
 
     import { getImage } from "../modules/image";
     import { playlist } from "../store/playlist";
+    import SwipeCard from "./SwipeCard.svelte";
 
     export let listOpen = false;
     export let onClose: () => void;
     export let onClickMusic: (idx: number) => void;
+    export let onDeleteMusic: (idx: number) => void;
 </script>
 
 <div class="now" class:open={listOpen}>
     <div class="list">
-        <ul>
-            {#each $playlist.items as music, idx}
-                <li
-                    class:active={$playlist.selected === idx}
-                    on:keydown={(e) => {
-                        if (e.key === "Enter") {
-                            onClickMusic(idx);
-                        }
-                    }}
-                    on:click={() => onClickMusic(idx)}
-                >
+        {#each $playlist.items as music, idx}
+            <SwipeCard
+                onClick={() => onClickMusic(idx)}
+                menus={[
+                    {
+                        label: "Delete",
+                        onClick: () => onDeleteMusic(idx),
+                    },
+                ]}
+            >
+                <div class="item" class:active={$playlist.selected === idx}>
                     <img
                         class="album-art"
                         src={getImage(music.album.cover)}
@@ -36,9 +38,9 @@
                             {music.artist.name}
                         </div>
                     </div>
-                </li>
-            {/each}
-        </ul>
+                </div>
+            </SwipeCard>
+        {/each}
     </div>
     <div class="action">
         <button on:click={onClose}>
@@ -103,12 +105,8 @@
         }
     }
 
-    ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-
-        li {
+    .list {
+        .item {
             cursor: pointer;
             padding: 1rem;
             display: flex;

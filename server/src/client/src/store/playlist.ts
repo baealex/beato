@@ -21,6 +21,5 @@ playlist.set(
         : INITIAL_STATE);
 
 playlist.subscribe((value) => {
-    console.log('playlist changed', value);
     localStorage.setItem('playlist', JSON.stringify(value));
 });

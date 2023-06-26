@@ -141,6 +141,24 @@
         countFlag = true;
         socket.emit("file", $playlist.items[$playlist.selected].filePath);
     };
+
+    const handleDeletePlaylistMusic = (idx: number) => {
+        $playlist.items = $playlist.items.filter((_, i) => i !== idx);
+
+        if ($playlist.selected === idx) {
+            handleClickPlaylistMusic(0);
+        }
+
+        if ($playlist.selected > idx) {
+            playPrev();
+        }
+
+        if ($playlist.items.length === 0) {
+            handleClickStop();
+        }
+
+        toast("플레이리스트에서 삭제되었습니다.");
+    };
 </script>
 
 <main>
@@ -165,6 +183,7 @@
                 nowListOpen = false;
             }}
             onClickMusic={handleClickPlaylistMusic}
+            onDeleteMusic={handleDeletePlaylistMusic}
         />
 
         <audio bind:this={audioElement} />
