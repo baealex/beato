@@ -8,6 +8,7 @@ export const musicType = gql`
         id: ID!
         name: String!
         duration: Float!
+        playCount: Int!
         trackNumber: Int!
         filePath: String!
         artist: Artist!

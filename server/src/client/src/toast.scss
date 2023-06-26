@@ -1,7 +1,7 @@
 @keyframes toast-slide {
     0% {
         opacity: 0;
-        transform: translate(-50%, -100%);
+        transform: translate(-50%, 100%);
     }
 
     10% {
@@ -16,7 +16,7 @@
 
     100% {
         opacity: 0;
-        transform: translate(-50%, -100%);
+        transform: translate(-50%, 100%);
     }
 }
 
@@ -32,7 +32,7 @@
     width: 400px;
     border-radius: 16px;
     max-width: 100%;
-    top: 60px + 8px;
+    bottom: 80px + 8px;
     left: 50%;
     padding: 16px;
     color: #fff;

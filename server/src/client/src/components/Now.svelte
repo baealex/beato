@@ -27,7 +27,7 @@
                     <img
                         class="album-art"
                         src={getImage(music.album.cover)}
-                        alt=""
+                        alt={music.name}
                         loading="lazy"
                     />
                     <div class="info">

@@ -24,6 +24,7 @@
                     name
                     filePath
                     duration
+                    playCount
                     artist {
                         name
                     }
@@ -70,7 +71,13 @@
                     {music.name}
                 </div>
                 <div class="artist">
-                    {music.artist.name}
+                    <div>
+                        {music.artist.name}
+                    </div>
+                    <div>
+                        {Math.floor(music.duration / 60)}분 /
+                        {music.playCount}회 재생
+                    </div>
                 </div>
             </div>
         </li>
@@ -112,6 +119,7 @@
     ul {
         margin: 0;
         padding: 0;
+        width: 100%;
         list-style: none;
 
         li {
@@ -121,6 +129,14 @@
             flex-direction: row;
             align-items: center;
             gap: 0.5rem;
+            width: 100%;
+
+            .artist {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
 
             &:hover {
                 background-color: rgba(255, 255, 255, 0.1);
