@@ -34,6 +34,44 @@ export const sockerManager = (socket: Socket) => {
                 }
             }
 
+            const existAlbums = await models.album.findMany({
+                include: {
+                    Music: true,
+                },
+            });
+
+            for (const existAlbum of existAlbums) {
+                if (existAlbum.Music.length === 0) {
+                    console.log('delete... ' + existAlbum.name);
+                    await models.album.delete({
+                        where: {
+                            id: existAlbum.id,
+                        },
+                    });
+                }
+            }
+
+            const existArtists = await models.artist.findMany({
+                include: {
+                    Album: {
+                        include: {
+                            Music: true,
+                        },
+                    },
+                },
+            });
+
+            for (const existArtist of existArtists) {
+                if (existArtist.Album.length === 0) {
+                    console.log('delete... ' + existArtist.name);
+                    await models.artist.delete({
+                        where: {
+                            id: existArtist.id,
+                        },
+                    });
+                }
+            }
+
             const filteredFiles = files.filter((file) => {
                 for (const existMusic of existMusics) {
                     if (existMusic.filePath === file) {
