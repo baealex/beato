@@ -15,6 +15,7 @@
     import Play from "./icons/Play.svelte";
     import Menu from "./icons/Menu.svelte";
 
+    import { musics } from "./store/musics";
     import { playlist } from "./store/playlist";
 
     import { socket } from "./modules/socket";
@@ -88,6 +89,19 @@
             $playlist.selected = 0;
             socket.emit("file", $playlist.items[$playlist.selected].filePath);
         }
+    };
+
+    const handleClickPlayAll = () => {
+        $playlist.selected = 0;
+        $playlist.items = [...$musics];
+        handleClickPlaylistMusic(0);
+    };
+
+    const handleClickPlayShuffle = () => {
+        const shuffleMusics = [...$musics].sort(() => Math.random() - 0.5);
+        $playlist.selected = 0;
+        $playlist.items = shuffleMusics;
+        handleClickPlaylistMusic(0);
     };
 
     const playNext = () => {
@@ -165,7 +179,13 @@
     <Router>
         <SiteHeader />
         <div class="container">
-            <Route path="/" component={Music} onClickMusic={handleClickMusic} />
+            <Route
+                path="/"
+                component={Music}
+                onClickMusic={handleClickMusic}
+                onClickPlayAll={handleClickPlayAll}
+                onClickPlayShuffle={handleClickPlayShuffle}
+            />
             <Route path="/album" component={Album} />
             <Route
                 let:params

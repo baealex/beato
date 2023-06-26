@@ -1,13 +1,20 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { fly } from "svelte/transition";
+    import { get } from "svelte/store";
+
+    import Shuffle from "../icons/Shuffle.svelte";
+    import Play from "../icons/Play.svelte";
 
     import type { Music } from "../models/type";
-    import { musics } from "../store/musics";
-    import { graphQLRequest } from "../api";
     import { getImage } from "../modules/image";
 
+    import { graphQLRequest } from "../api";
+
+    import { musics } from "../store/musics";
+
     export let onClickMusic: (music: Music) => void;
+    export let onClickPlayAll: () => void;
+    export let onClickPlayShuffle: () => void;
 
     onMount(async () => {
         const { data } = await graphQLRequest<"allMusics", Music[]>(`
@@ -32,6 +39,16 @@
     });
 </script>
 
+<div class="controls">
+    <button on:click={onClickPlayAll}>
+        <Play />
+        전체 재생
+    </button>
+    <button on:click={onClickPlayShuffle}>
+        <Shuffle />
+        랜덤 재생
+    </button>
+</div>
 <ul>
     {#each $musics as music}
         <li
@@ -61,6 +78,37 @@
 </ul>
 
 <style lang="scss">
+    .controls {
+        padding: 1rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    button {
+        padding: 0.5rem;
+        border: none;
+        background-color: #222;
+        border-radius: 0.5rem;
+        color: #eee;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+
+        :global(svg) {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+
     ul {
         margin: 0;
         padding: 0;
