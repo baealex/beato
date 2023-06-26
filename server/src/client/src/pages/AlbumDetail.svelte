@@ -127,7 +127,7 @@
         .play-all {
             position: absolute;
             bottom: 0;
-            right: 2rem;
+            right: 1rem;
             transform: translateY(50%);
 
             button {

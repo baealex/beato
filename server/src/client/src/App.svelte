@@ -1,13 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { Router, Route, Link } from "svelte-routing";
+    import { Router, Route } from "svelte-routing";
 
     import Music from "./pages/Music.svelte";
     import Album from "./pages/Album.svelte";
     import Artist from "./pages/Artist.svelte";
     import Setting from "./pages/Setting.svelte";
-    import Now from "./pages/Now.svelte";
 
+    import Now from "./components/Now.svelte";
     import SiteHeader from "./components/SiteHeader.svelte";
 
     import Cross from "./icons/Cross.svelte";
@@ -30,6 +30,8 @@
     let volume = 0.5;
     let progress = 0;
     let countFlag = false;
+
+    let nowListOpen = false;
 
     $: {
         if ($playlist.items[$playlist.selected]) {
@@ -112,11 +114,18 @@
 
     const handleClickPause = () => {
         playing = !playing;
+
         if (playing) {
+            if (!audioElement.src) {
+                handleClickPlaylistMusic($playlist.selected);
+                return;
+            }
+
             audioElement.play();
-        } else {
-            audioElement.pause();
+            return;
         }
+
+        audioElement.pause();
     };
 
     const handleClickStop = () => {
@@ -136,27 +145,29 @@
 
 <main>
     <Router>
-        <SiteHeader dance={playing} />
+        <SiteHeader />
         <div class="container">
-            <Route path="/" onClickMusic={handleClickMusic} component={Music} />
+            <Route path="/" component={Music} onClickMusic={handleClickMusic} />
             <Route path="/album" component={Album} />
             <Route
-                path="/album/:id"
-                onClickMusic={handleClickMusic}
-                component={AlbumDetail}
                 let:params
+                path="/album/:id"
+                component={AlbumDetail}
+                onClickMusic={handleClickMusic}
             />
             <Route path="/artist" component={Artist} />
             <Route path="/setting" component={Setting} />
-            <Route
-                path="/now"
-                onClickMusic={handleClickPlaylistMusic}
-                component={Now}
-            />
         </div>
 
-        <audio bind:this={audioElement} />
+        <Now
+            listOpen={nowListOpen}
+            onClose={() => {
+                nowListOpen = false;
+            }}
+            onClickMusic={handleClickPlaylistMusic}
+        />
 
+        <audio bind:this={audioElement} />
         <div class="audio" class:open={$playlist.items[$playlist.selected]}>
             <div
                 class="progress"
@@ -176,63 +187,56 @@
             >
                 <div class="progress-bar" style={`width: ${progress}%`} />
             </div>
-            <div class="player">
-                <div class="music">
-                    <img
-                        class="album-art"
-                        src={$playlist.items[$playlist.selected]
-                            ? getImage(
-                                  $playlist.items[$playlist.selected].album
-                                      .cover
-                              )
-                            : ""}
-                        alt=""
-                    />
-                    <div class="info">
-                        <div class="title">
-                            {$playlist.items[$playlist.selected]
-                                ? $playlist.items[$playlist.selected].name
-                                : ""}
-                        </div>
-                        <div class="artist">
-                            {$playlist.items[$playlist.selected]
-                                ? $playlist.items[$playlist.selected].artist
-                                      .name
-                                : ""}
+            {#if $playlist.items[$playlist.selected]}
+                <div class="player">
+                    <div class="music">
+                        <img
+                            alt=""
+                            class="album-art"
+                            src={getImage(
+                                $playlist.items[$playlist.selected].album.cover
+                            )}
+                        />
+                        <div class="info">
+                            <div class="title">
+                                {$playlist.items[$playlist.selected].name}
+                            </div>
+                            <div class="artist">
+                                {$playlist.items[$playlist.selected].artist
+                                    .name}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="action">
-                    <button class="skip-back" on:click={playPrev}>
-                        <Play />
-                    </button>
-                    <button on:click={handleClickPause}>
-                        {#if playing}
-                            <Pause />
-                        {:else}
+                    <div class="action">
+                        <button class="skip-back" on:click={playPrev}>
                             <Play />
-                        {/if}
-                    </button>
-                    <button class="skip-forward" on:click={playNext}>
-                        <Play />
-                    </button>
-                    <button class="cross" on:click={handleClickStop}>
-                        <Cross />
-                    </button>
-                    <input
-                        bind:value={volume}
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.05"
-                    />
-                    <Link to="/now">
-                        <button>
+                        </button>
+                        <button on:click={handleClickPause}>
+                            {#if playing}
+                                <Pause />
+                            {:else}
+                                <Play />
+                            {/if}
+                        </button>
+                        <button class="skip-forward" on:click={playNext}>
+                            <Play />
+                        </button>
+                        <button class="cross" on:click={handleClickStop}>
+                            <Cross />
+                        </button>
+                        <input
+                            bind:value={volume}
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                        />
+                        <button on:click={() => (nowListOpen = !nowListOpen)}>
                             <Menu />
                         </button>
-                    </Link>
+                    </div>
                 </div>
-            </div>
+            {/if}
         </div>
     </Router>
 </main>
