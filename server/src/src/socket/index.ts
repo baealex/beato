@@ -14,66 +14,21 @@ export const sockerManager = (socket: Socket) => {
 
     socket.on('sync-music', async () => {
         console.log('sync-music');
+        socket.emit('sync-music', 'syncing...');
+
         try {
             const files = (await walk(path.resolve('./music')))
                 .filter((file) =>
                     file.endsWith('.mp3') ||
                     file.endsWith('.wav') ||
                     file.endsWith('.flac'));
+            console.log(`find ${files.length} files`);
+            socket.emit('sync-music', `find ${files.length} files`);
 
-            const existMusics = await models.music.findMany({});
-
-            for (const existMusic of existMusics) {
-                if (!files.includes(existMusic.filePath)) {
-                    console.log('delete... ' + existMusic.filePath);
-                    await models.music.delete({
-                        where: {
-                            id: existMusic.id,
-                        },
-                    });
-                }
-            }
-
-            const existAlbums = await models.album.findMany({
-                include: {
-                    Music: true,
-                },
-            });
-
-            for (const existAlbum of existAlbums) {
-                if (existAlbum.Music.length === 0) {
-                    console.log('delete... ' + existAlbum.name);
-                    await models.album.delete({
-                        where: {
-                            id: existAlbum.id,
-                        },
-                    });
-                }
-            }
-
-            const existArtists = await models.artist.findMany({
-                include: {
-                    Album: {
-                        include: {
-                            Music: true,
-                        },
-                    },
-                },
-            });
-
-            for (const existArtist of existArtists) {
-                if (existArtist.Album.length === 0) {
-                    console.log('delete... ' + existArtist.name);
-                    await models.artist.delete({
-                        where: {
-                            id: existArtist.id,
-                        },
-                    });
-                }
-            }
+            let $existMusics = await models.music.findMany();
 
             const filteredFiles = files.filter((file) => {
-                for (const existMusic of existMusics) {
+                for (const existMusic of $existMusics) {
                     if (existMusic.filePath === file) {
                         return false;
                     }
@@ -81,8 +36,13 @@ export const sockerManager = (socket: Socket) => {
                 return true;
             });
 
+            console.log(`indexing ${filteredFiles.length} files`);
+            socket.emit('sync-music', `indexing ${filteredFiles.length} files`);
+
             for (const file of filteredFiles) {
-                console.log('sync... ' + file);
+                console.log(`sync... ${file}`);
+                socket.emit('sync-music', `sync... ${filteredFiles.indexOf(file) + 1}/${filteredFiles.length}`);
+
                 const data = fs.readFileSync(path.resolve('./music', file));
 
                 const { format, common } = await parseBuffer(data);
@@ -213,6 +173,69 @@ export const sockerManager = (socket: Socket) => {
                             }
                         },
                     });
+                } else if ($music.filePath !== file) {
+                    await models.music.update({
+                        where: {
+                            id: $music.id,
+                        },
+                        data: {
+                            filePath: file,
+                        },
+                    });
+                }
+            }
+
+            $existMusics = await models.music.findMany({});
+
+            for (const music of $existMusics) {
+                if (!files.includes(music.filePath)) {
+                    console.log(`delete music from db... ${music.name}`);
+                    socket.emit('sync-music', `delete music from db... ${music.name}`);
+                    await models.music.delete({
+                        where: {
+                            id: music.id,
+                        },
+                    });
+                }
+            }
+
+            const $existAlbums = await models.album.findMany({
+                include: {
+                    Music: true,
+                },
+            });
+
+            for (const album of $existAlbums) {
+                if (album.Music.length === 0) {
+                    console.log(`delete album from db... ${album.name}`);
+                    socket.emit('sync-music', `delete album from db... ${album.name}`);
+                    await models.album.delete({
+                        where: {
+                            id: album.id,
+                        },
+                    });
+                }
+            }
+
+            const $existArtists = await models.artist.findMany({
+                include: {
+                    Album: {
+                        include: {
+                            Music: true,
+                        },
+                    },
+                },
+            });
+
+            for (const artist of $existArtists) {
+                if (artist.Album.length === 0) {
+                    console.log(`delete artist from db... ${artist.name}`);
+                    socket.emit('sync-music', `delete artist from db... ${artist.name}`);
+                    await models.artist.delete({
+                        where: {
+                            id: artist.id,
+                        },
+                    });
                 }
             }
         } catch (error) {
@@ -226,13 +249,17 @@ export const sockerManager = (socket: Socket) => {
     });
 
     socket.on('file', (file) => {
-        stream = fs.createReadStream(path.resolve('./music', file));
-        stream.on('data', (chunk) => {
-            socket.emit('audio', chunk);
-        });
-        stream.on('end', () => {
+        if (fs.existsSync(path.resolve('./music', file))) {
+            stream = fs.createReadStream(path.resolve('./music', file));
+            stream.on('data', (chunk) => {
+                socket.emit('audio', chunk);
+            });
+            stream.on('end', () => {
+                socket.emit('audio', 'end');
+            });
+        } else {
             socket.emit('audio', 'end');
-        });
+        }
     });
 
     socket.on('count', async (id: string) => {

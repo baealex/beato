@@ -4,33 +4,37 @@
     import { toast } from "../modules/ui/toast";
 
     let blockScreen = false;
+    let message = "";
 
     const handleClickSyncMusic = () => {
         blockScreen = true;
         socket.emit("sync-music");
     };
 
-    socket.on("sync-music", (state: "done" | "error") => {
-        if (state === "done") {
-            toast("Sync music done");
+    socket.on("sync-music", (serverMessage: string | "done" | "error") => {
+        if (serverMessage === "done") {
+            toast("Synced music");
+            blockScreen = false;
+        } else if (serverMessage === "error") {
+            toast("Error syncing music");
+            blockScreen = false;
         } else {
-            toast("Sync music error");
+            message = serverMessage;
         }
-        blockScreen = false;
     });
 </script>
 
 <div class="continer">
     <h1>Setting</h1>
     <section>
-        <p>Sync music from your server :</p>
+        <p>Indexing music from your server :</p>
         <button on:click={handleClickSyncMusic}>Start</button>
     </section>
 
     {#if blockScreen}
         <div class="screen-block">
             <Beato spin={true} />
-            <div>Syncing...</div>
+            <div>{message}</div>
         </div>
     {/if}
 </div>
