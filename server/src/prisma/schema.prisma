@@ -50,6 +50,10 @@ model Music {
   artistId      Int
   filePath      String
   duration      Float
+  codec         String
+  container     String
+  bitrate       Float
+  sampleRate    Float
   playCount     Int             @default(0)
   trackNumber   Int
   Genre         Genre[]

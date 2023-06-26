@@ -20,7 +20,9 @@ export const sockerManager = (socket: Socket) => {
             const files = (await walk(path.resolve('./music')))
                 .filter((file) =>
                     file.endsWith('.mp3') ||
+                    file.endsWith('.aac') ||
                     file.endsWith('.wav') ||
+                    file.endsWith('.ogg') ||
                     file.endsWith('.flac'));
             console.log(`find ${files.length} files`);
             socket.emit('sync-music', `find ${files.length} files`);
@@ -46,7 +48,13 @@ export const sockerManager = (socket: Socket) => {
                 const data = fs.readFileSync(path.resolve('./music', file));
 
                 const { format, common } = await parseBuffer(data);
-                const { duration } = format;
+                const {
+                    container = '',
+                    codec = '',
+                    bitrate = 0,
+                    duration = 0,
+                    sampleRate = 0,
+                } = format;
                 const {
                     title = file.split('/').pop().split('.').shift(),
                     artist = 'unknown',
@@ -54,7 +62,7 @@ export const sockerManager = (socket: Socket) => {
                     picture,
                     genre,
                     year = (new Date()).getFullYear(),
-                    track
+                    track: { no: trackNumber = 0 }
                 } = common;
 
                 let $artist = await models.artist.findFirst({
@@ -152,9 +160,13 @@ export const sockerManager = (socket: Socket) => {
                 if (!$music) {
                     await models.music.create({
                         data: {
+                            codec,
+                            container,
+                            bitrate,
+                            sampleRate,
                             name: title,
                             duration,
-                            trackNumber: track.no || 0,
+                            trackNumber,
                             filePath: file,
                             Album: {
                                 connect: {
