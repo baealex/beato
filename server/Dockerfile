@@ -9,6 +9,7 @@ RUN npm i
 
 COPY ./src/ ./
 RUN ln -s /app/prisma /data
+RUN ln -s /app/cache /cache
 RUN ln -s /app/music /music
 
 ENTRYPOINT ["npm", "run"]
