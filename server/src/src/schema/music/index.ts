@@ -2,12 +2,17 @@ import { IResolvers } from '@graphql-tools/utils';
 
 import models, { Music } from '~/models';
 import { gql } from '~/modules/graphql';
+import { artistType } from '../artist';
+import { albumType } from '../album';
 
 export const musicType = gql`
     type Music {
         id: ID!
         name: String!
         duration: Float!
+        codec: String!
+        bitrate: Float!
+        sampleRate: Float!
         playCount: Int!
         trackNumber: Int!
         filePath: String!
@@ -16,21 +21,14 @@ export const musicType = gql`
         genres: [Genre!]!
     }
 
-    type Artist {
-        id: ID!
-        name: String!
-    }
-
-    type Album {
-        id: ID!
-        name: String!
-        cover: String!
-    }
-
     type Genre {
         id: ID!
         name: String!
     }
+
+    ${artistType}
+
+    ${albumType}
 `;
 
 export const musicQuery = gql`

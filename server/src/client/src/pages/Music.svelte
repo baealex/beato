@@ -30,6 +30,7 @@
                     id
                     name
                     filePath
+                    codec
                     duration
                     playCount
                     artist {
@@ -86,6 +87,11 @@
             <div class="info">
                 <div class="title">
                     {music.name}
+                    {#if music.codec.toLowerCase() === "flac"}
+                        <span class="codec">
+                            {music.codec}
+                        </span>
+                    {/if}
                 </div>
                 <div class="artist">
                     <div>
@@ -176,6 +182,21 @@
                 align-items: center;
                 justify-content: space-between;
                 flex-wrap: wrap;
+            }
+
+            .title {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                .codec {
+                    border: 1px solid #333;
+                    color: #eee;
+                    padding: 0.1rem 0.5rem;
+                    border-radius: 0.5rem;
+                    font-size: 0.6rem;
+                    font-weight: 400;
+                }
             }
 
             &:hover {

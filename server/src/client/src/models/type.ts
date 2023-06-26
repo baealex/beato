@@ -2,6 +2,9 @@ export interface Music {
     id: number;
     name: string;
     duration: number;
+    codec: string;
+    bitrate: number;
+    sampleRate: number;
     trackNumber: number;
     playCount: number;
     filePath: string;

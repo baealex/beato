@@ -2,6 +2,8 @@ import { IResolvers } from '@graphql-tools/utils';
 
 import models, { Artist } from '~/models';
 import { gql } from '~/modules/graphql';
+import { albumType } from '../album';
+import { musicType } from '../music';
 
 export const artistType = gql`
     type Artist {
@@ -14,27 +16,9 @@ export const artistType = gql`
         musicCount: Int!
     }
 
-    type Music {
-        id: ID!
-        name: String!
-        duration: Float!
-        trackNumber: Int!
-        filePath: String!
-        artist: Artist!
-        album: Album!
-        genres: [Genre!]!
-    }
+    ${albumType}
 
-    type Album {
-        id: ID!
-        name: String!
-        cover: String!
-    }
-
-    type Genre {
-        id: ID!
-        name: String!
-    }
+    ${musicType}
 `;
 
 export const artistQuery = gql`
