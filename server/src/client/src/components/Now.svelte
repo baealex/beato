@@ -1,17 +1,18 @@
 <script lang="ts">
+    import SubPage from "./SubPage.svelte";
+    import SwipeCard from "./SwipeCard.svelte";
     import Cross from "../icons/Cross.svelte";
 
     import { getImage } from "../modules/image";
     import { playlist } from "../store/playlist";
-    import SwipeCard from "./SwipeCard.svelte";
 
-    export let listOpen = false;
+    export let isOpen = false;
     export let onClose: () => void;
     export let onClickMusic: (idx: number) => void;
     export let onDeleteMusic: (idx: number) => void;
 </script>
 
-<div class="now" class:open={listOpen}>
+<SubPage {isOpen}>
     <div class="list">
         {#each $playlist.items as music, idx}
             <SwipeCard
@@ -47,60 +48,40 @@
             <Cross />
         </button>
     </div>
-</div>
+</SubPage>
 
 <style lang="scss">
-    .now {
-        opacity: 0;
-        transform: translateY(100%);
-        position: fixed;
+    .list {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .action {
         display: flex;
-        flex-direction: column;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.95);
-        z-index: 100;
-        transition: all 0.25s ease-out;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding: 0.5rem;
 
-        &.open {
-            opacity: 1;
-            transform: translateY(0%);
-        }
+        button {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.25rem;
+            background-color: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background-color 0.25s ease-in-out;
 
-        .list {
-            flex: 1;
-            overflow-y: auto;
-        }
+            :global(svg) {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
 
-        .action {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            padding: 0.5rem;
-
-            button {
-                width: 3rem;
-                height: 3rem;
-                border-radius: 0.25rem;
-                background-color: transparent;
-                color: white;
-                border: none;
-                cursor: pointer;
-                font-size: 0.8rem;
-                font-weight: bold;
-                text-transform: uppercase;
-                transition: background-color 0.25s ease-in-out;
-
-                :global(svg) {
-                    width: 1.5rem;
-                    height: 1.5rem;
-                }
-
-                &:hover {
-                    background-color: rgba(255, 255, 255, 0.2);
-                }
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
             }
         }
     }

@@ -33,7 +33,7 @@
     let progress = 0;
     let countFlag = false;
 
-    let nowListOpen = false;
+    let isOpenNow = false;
 
     $: {
         if ($playlist.items[$playlist.selected]) {
@@ -203,9 +203,9 @@
         </div>
 
         <Now
-            listOpen={nowListOpen}
+            isOpen={isOpenNow}
             onClose={() => {
-                nowListOpen = false;
+                isOpenNow = false;
             }}
             onClickMusic={handleClickPlaylistMusic}
             onDeleteMusic={handleDeletePlaylistMusic}
@@ -275,7 +275,7 @@
                             max="1"
                             step="0.05"
                         />
-                        <button on:click={() => (nowListOpen = !nowListOpen)}>
+                        <button on:click={() => (isOpenNow = !isOpenNow)}>
                             <Menu />
                         </button>
                     </div>
