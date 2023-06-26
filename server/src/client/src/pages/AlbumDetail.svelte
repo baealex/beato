@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { beforeUpdate } from "svelte";
+    import { onMount } from "svelte";
 
     import type { Album, Music } from "../models/type";
     import { getImage } from "../modules/image";
@@ -10,7 +10,7 @@
     let album: Album = null;
     export let onClickMusic: (music: Music) => void;
 
-    beforeUpdate(async () => {
+    onMount(async () => {
         if (!id) {
             return;
         }

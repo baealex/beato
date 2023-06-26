@@ -1,6 +1,5 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { Link } from "svelte-routing";
 
     import type { Artist, Music } from "../models/type";
     import { getImage } from "../modules/image";
