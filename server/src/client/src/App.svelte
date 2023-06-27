@@ -97,9 +97,9 @@
                 $playlist.items = $playlist.items.map(switchLike);
 
                 if (isLiked) {
-                    toast("Removed from favorite");
-                } else {
                     toast("Added to favorite");
+                } else {
+                    toast("Removed from favorite");
                 }
             }
         );

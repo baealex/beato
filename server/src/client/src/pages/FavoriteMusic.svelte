@@ -13,8 +13,6 @@
 
     let search = "";
 
-    console.log($musics.filter((m) => m.isLiked));
-
     $: visibleMusics = $musics.filter(
         (m) =>
             m.isLiked &&
