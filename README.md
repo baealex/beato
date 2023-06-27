@@ -38,6 +38,12 @@ Self host music streaming platform
 
 <br>
 
+## Demo site
+
+[beato-demo.baejino.com](https://beato-demo.baejino.com/)
+
+<br>
+
 ## Self-host
 
 ⚠️ **Warning** This application under development may be unstable.
