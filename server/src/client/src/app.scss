@@ -26,7 +26,6 @@ main {
     padding: 0;
     user-select: none;
     overflow: hidden;
-    font-family: 'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 *,
@@ -63,9 +62,24 @@ main {
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, sans-serif;
     background: #000;
     color: #eee;
+}
+
+button {
+    cursor: pointer;
+}
+
+.clickable {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
 }
 
 .album-art {

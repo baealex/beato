@@ -70,7 +70,6 @@
         socket.on(
             "audio",
             async ({ id, chunk }: { id: string; chunk: Buffer | "end" }) => {
-                console.log("audio", id, chunk);
                 if (chunk === "end") {
                     if ($playlist.items[$playlist.selected].id === id) {
                         setAndPlayAudio(savedChunk[id]);

@@ -53,24 +53,34 @@
         };
         setRandomBorderRadius();
     });
+
+    const handleMoveProgress = (e: MouseEvent | TouchEvent) => {
+        if (e instanceof MouseEvent && e.buttons === 1) {
+            onClickProgress(e);
+            return;
+        }
+
+        if (
+            window.TouchEvent &&
+            e instanceof TouchEvent &&
+            e.touches.length === 1
+        ) {
+            onClickProgress(e);
+        }
+    };
 </script>
 
 {#if music}
     <div class="audio" class:open={music}>
         <div
             class="progress"
-            on:keydown={() => {}}
-            on:mousemove={(e) => {
-                if (e.buttons === 1) {
-                    onClickProgress(e);
-                }
-            }}
-            on:touchmove={(e) => {
-                if (e.touches.length === 1) {
-                    onClickProgress(e);
-                }
-            }}
+            role="slider"
+            tabindex="0"
+            aria-valuenow={progress}
             on:click={onClickProgress}
+            on:keydown={() => {}}
+            on:mousemove={handleMoveProgress}
+            on:touchmove={handleMoveProgress}
         >
             <div
                 class="bar"
@@ -78,7 +88,13 @@
             />
         </div>
         <div class="player">
-            <div class="music" on:click={() => (isOpenDetail = true)}>
+            <div
+                class="music"
+                role="button"
+                tabindex="0"
+                on:click={() => (isOpenDetail = true)}
+                on:keydown={() => (isOpenDetail = true)}
+            >
                 <img
                     class="album-art"
                     alt={music.album.name}
@@ -177,17 +193,13 @@
             </div>
             <div
                 class="progress"
-                on:mousemove={(e) => {
-                    if (e.buttons === 1) {
-                        onClickProgress(e);
-                    }
-                }}
-                on:touchmove={(e) => {
-                    if (e.touches.length === 1) {
-                        onClickProgress(e);
-                    }
-                }}
+                role="slider"
+                tabindex="0"
+                aria-valuenow={progress}
                 on:click={onClickProgress}
+                on:keydown={() => {}}
+                on:mousemove={handleMoveProgress}
+                on:touchmove={handleMoveProgress}
             >
                 <div
                     class="bar"
@@ -294,17 +306,16 @@
             background-color: rgba(255, 255, 255, 0.1);
             transition: height 0.25s ease-in-out;
 
+            &:hover {
+                cursor: pointer;
+                height: 0.5rem;
+            }
+
             .bar {
                 height: 100%;
                 width: 100%;
                 transform: translate(-100%, 0);
-                transition: transform 0.25s;
                 background-color: #a076f1;
-            }
-
-            &:hover {
-                cursor: pointer;
-                height: 0.5rem;
             }
         }
 

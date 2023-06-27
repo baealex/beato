@@ -46,22 +46,17 @@
 <ul>
     {#if album?.musics}
         {#each album.musics as music}
-            <li
-                on:keydown={(e) => {
-                    if (e.key === "Enter") {
-                        onClickMusic(music);
-                    }
-                }}
-                on:click={() => onClickMusic(music)}
-            >
-                <div class="info">
-                    <div class="title">
-                        {music.trackNumber}. {music.name}
+            <li>
+                <button class="clickable" on:click={() => onClickMusic(music)}>
+                    <div class="info">
+                        <div class="title">
+                            {music.trackNumber}. {music.name}
+                        </div>
+                        <div class="artist">
+                            {music.artist.name}
+                        </div>
                     </div>
-                    <div class="artist">
-                        {music.artist.name}
-                    </div>
-                </div>
+                </button>
             </li>
         {/each}
     {/if}
@@ -106,7 +101,6 @@
                 height: 3.5rem;
                 background-color: #474787;
                 border: none;
-                cursor: pointer;
                 color: #fff;
                 transition: background-color 0.2s;
 
@@ -125,18 +119,23 @@
     ul {
         margin: 0;
         padding: 0;
+        width: 100%;
         list-style: none;
 
         li {
-            cursor: pointer;
-            padding: 1rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 0.5rem;
+            button {
+                color: #eee;
+                font-size: 0.8rem;
+                cursor: pointer;
+                padding: 1rem;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5rem;
 
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.1);
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
             }
         }
     }

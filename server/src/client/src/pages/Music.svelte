@@ -40,40 +40,35 @@
         </button>
     </div>
 </div>
-<ul>
+<ul aria-label="Music List">
     {#each visibleMusics as music}
-        <li
-            on:keydown={(e) => {
-                if (e.key === "Enter") {
-                    onClickMusic(music);
-                }
-            }}
-            on:click={() => onClickMusic(music)}
-        >
-            <Image
-                class="album-art"
-                alt={music.album.name}
-                src={music.album.cover}
-            />
-            <div class="info">
-                <div class="title">
-                    {music.name}
-                    {#if music.codec.toLowerCase() === "flac"}
-                        <span class="codec">
-                            {music.codec}
-                        </span>
-                    {/if}
-                </div>
-                <div class="artist">
-                    <div>
-                        {music.artist.name}
+        <li>
+            <button class="clickable" on:click={() => onClickMusic(music)}>
+                <Image
+                    class="album-art"
+                    alt={music.album.name}
+                    src={music.album.cover}
+                />
+                <div class="info">
+                    <div class="title">
+                        {music.name}
+                        {#if music.codec.toLowerCase() === "flac"}
+                            <span class="codec">
+                                {music.codec}
+                            </span>
+                        {/if}
                     </div>
-                    <div>
-                        {Math.floor(music.duration / 60)}분 /
-                        {music.playCount}회 재생
+                    <div class="artist">
+                        <div>
+                            {music.artist.name}
+                        </div>
+                        <div>
+                            {Math.floor(music.duration / 60)}분 /
+                            {music.playCount}회 재생
+                        </div>
                     </div>
                 </div>
-            </div>
+            </button>
         </li>
     {/each}
 </ul>
@@ -107,29 +102,28 @@
         flex-direction: row;
         align-items: center;
         gap: 0.5rem;
-    }
 
-    button {
-        padding: 0.5rem;
-        border: none;
-        background-color: #222;
-        border-radius: 0.5rem;
-        color: #eee;
-        font-size: 0.8rem;
-        font-weight: 600;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
+        button {
+            padding: 0.5rem;
+            border: none;
+            background-color: #222;
+            border-radius: 0.5rem;
+            color: #eee;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.5rem;
 
-        :global(svg) {
-            width: 1rem;
-            height: 1rem;
-        }
+            :global(svg) {
+                width: 1rem;
+                height: 1rem;
+            }
 
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
         }
     }
 
@@ -140,13 +134,21 @@
         list-style: none;
 
         li {
-            cursor: pointer;
-            padding: 1rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 0.5rem;
-            width: 100%;
+            button {
+                color: #eee;
+                font-size: 0.8rem;
+                cursor: pointer;
+                padding: 1rem;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 0.5rem;
+                width: 100%;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+            }
 
             .artist {
                 display: flex;
@@ -168,10 +170,6 @@
                     font-size: 0.6rem;
                     font-weight: 400;
                 }
-            }
-
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.1);
             }
         }
     }

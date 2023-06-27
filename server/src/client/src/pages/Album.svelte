@@ -7,21 +7,15 @@
 
     import { albums } from "../store";
 
-    let selectedId: number | null = null;
+    let selectedId: string | null = null;
     let isOpenDetail = false;
     export let onClickMusic: (music: Music) => void;
 </script>
 
 <div class="grid">
     {#each $albums as album}
-        <div
-            class="item"
-            on:keydown={(e) => {
-                if (e.key === "Enter") {
-                    selectedId = album.id;
-                    isOpenDetail = true;
-                }
-            }}
+        <button
+            class="clickable item"
             on:click={() => {
                 selectedId = album.id;
                 isOpenDetail = true;
@@ -34,7 +28,7 @@
             <div class="album-artist">
                 {album.artist.name}
             </div>
-        </div>
+        </button>
     {/each}
 </div>
 

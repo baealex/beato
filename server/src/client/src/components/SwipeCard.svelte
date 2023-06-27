@@ -66,6 +66,9 @@
 
 <div
     class="swipe-card"
+    tabindex="0"
+    role="slider"
+    aria-valuenow={accX}
     on:mousedown={handleFocusIn}
     on:touchstart={handleFocusIn}
     on:mouseup={handleFocusOut}
@@ -75,6 +78,8 @@
 >
     <div
         class="menu"
+        tabindex="0"
+        role="button"
         bind:this={menu}
         on:mousedown={(e) => e.stopPropagation()}
         on:touchstart={(e) => e.stopPropagation()}

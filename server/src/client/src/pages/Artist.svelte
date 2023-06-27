@@ -7,40 +7,37 @@
 
     import { artists } from "../store";
 
-    let selectedId: number | null = null;
+    let selectedId: string | null = null;
     let isOpenDetail = false;
     export let onClickMusic: (music: Music) => void;
 </script>
 
 <ul>
     {#each $artists as artist}
-        <li
-            on:keydown={(e) => {
-                if (e.key === "Enter") {
+        <li>
+            <button
+                class="clickable"
+                on:click={() => {
                     selectedId = artist.id;
                     isOpenDetail = true;
-                }
-            }}
-            on:click={() => {
-                selectedId = artist.id;
-                isOpenDetail = true;
-            }}
-        >
-            <Image src={artist.latestAlbum.cover} alt={artist.name} />
-            <div class="info">
-                <div class="name">
-                    {artist.name}
-                </div>
-                <div class="count">
-                    <div class="album">
-                        {artist.albumCount}개의 앨범
+                }}
+            >
+                <Image src={artist.latestAlbum.cover} alt={artist.name} />
+                <div class="info">
+                    <div class="name">
+                        {artist.name}
                     </div>
-                    <span> / </span>
-                    <div class="music">
-                        {artist.musicCount}개의 음악
+                    <div class="count">
+                        <div class="album">
+                            {artist.albumCount}개의 앨범
+                        </div>
+                        <span> / </span>
+                        <div class="music">
+                            {artist.musicCount}개의 음악
+                        </div>
                     </div>
                 </div>
-            </div>
+            </button>
         </li>
     {/each}
 </ul>
@@ -68,7 +65,7 @@
         padding: 0;
         list-style: none;
 
-        li {
+        li button {
             cursor: pointer;
             padding: 1rem;
             display: flex;

@@ -11,7 +11,7 @@
 
     export let id = "";
     let artist: Artist = null;
-    let selectedId: number | null = null;
+    let selectedId: string | null = null;
     let isOpenDetail = false;
     export let onClickMusic: (music: Music) => void = () => {};
 
@@ -58,24 +58,21 @@
         <div class="artist-albums">
             <ul>
                 {#each artist.albums as album}
-                    <li
-                        on:keydown={(e) => {
-                            if (e.key === "Enter") {
+                    <li>
+                        <button
+                            class="clickable"
+                            on:click={() => {
                                 selectedId = album.id;
                                 isOpenDetail = true;
-                            }
-                        }}
-                        on:click={() => {
-                            selectedId = album.id;
-                            isOpenDetail = true;
-                        }}
-                    >
-                        <Image src={album.cover} alt={album.name} />
-                        <div class="info">
-                            <div class="name">
-                                {album.name}
+                            }}
+                        >
+                            <Image src={album.cover} alt={album.name} />
+                            <div class="info">
+                                <div class="name">
+                                    {album.name}
+                                </div>
                             </div>
-                        </div>
+                        </button>
                     </li>
                 {/each}
             </ul>
@@ -85,27 +82,25 @@
         <div class="artist-musics">
             <ul>
                 {#each artist.musics as music}
-                    <li
-                        on:keydown={(e) => {
-                            if (e.key === "Enter") {
-                                onClickMusic(music);
-                            }
-                        }}
-                        on:click={() => onClickMusic(music)}
-                    >
-                        <Image
-                            class="album-art"
-                            src={music.album.cover}
-                            alt={music.album.name}
-                        />
-                        <div class="info">
-                            <div class="title">
-                                {music.name}
+                    <li>
+                        <button
+                            class="clickable"
+                            on:click={() => onClickMusic(music)}
+                        >
+                            <Image
+                                class="album-art"
+                                src={music.album.cover}
+                                alt={music.album.name}
+                            />
+                            <div class="info">
+                                <div class="title">
+                                    {music.name}
+                                </div>
+                                <div class="artist">
+                                    {music.album.name}
+                                </div>
                             </div>
-                            <div class="artist">
-                                {music.album.name}
-                            </div>
-                        </div>
+                        </button>
                     </li>
                 {/each}
             </ul>
@@ -182,8 +177,7 @@
                 padding: 0;
                 list-style: none;
 
-                li {
-                    cursor: pointer;
+                li button {
                     padding: 1rem;
                     display: flex;
                     flex-direction: row;
