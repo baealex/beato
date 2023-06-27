@@ -48,6 +48,7 @@
             new Blob(chunks, { type: "audio/mpeg" })
         );
         playing = true;
+        countFlag = true;
         await audioElement.play();
         audioElement.onended = playNext;
     };
@@ -118,7 +119,6 @@
         }
 
         if ($playlist.selected === null) {
-            countFlag = true;
             $playlist.selected = 0;
             requestFile($playlist.items[$playlist.selected].id);
         }
@@ -149,7 +149,6 @@
         if ($playlist.selected >= $playlist.items.length) {
             $playlist.selected = 0;
         }
-        countFlag = true;
         requestFile($playlist.items[$playlist.selected].id);
     };
 
@@ -158,7 +157,6 @@
         if ($playlist.selected < 0) {
             $playlist.selected = $playlist.items.length - 1;
         }
-        countFlag = true;
         requestFile($playlist.items[$playlist.selected].id);
     };
 
@@ -187,7 +185,6 @@
 
     const handleClickPlaylistMusic = (idx: number) => {
         $playlist.selected = idx;
-        countFlag = true;
         requestFile($playlist.items[$playlist.selected].id);
     };
 
