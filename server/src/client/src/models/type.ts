@@ -8,6 +8,7 @@ export interface Music {
     trackNumber: number;
     playCount: number;
     filePath: string;
+    isLiked: boolean;
     artist: Artist;
     album: Album;
     genres: {

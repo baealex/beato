@@ -9,6 +9,9 @@
                 <Link to="/">Music</Link>
             </li>
             <li>
+                <Link to="/favorite">Favorite</Link>
+            </li>
+            <li>
                 <Link to="/album">Album</Link>
             </li>
             <li>

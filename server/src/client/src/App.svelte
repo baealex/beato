@@ -6,6 +6,7 @@
     import Player from "./components/Player.svelte";
     import Loading from "./components/Loading.svelte";
     import Music from "./pages/Music.svelte";
+    import FavoriteMusic from "./pages/FavoriteMusic.svelte";
     import Album from "./pages/Album.svelte";
     import AlbumDetail from "./pages/AlbumDetail.svelte";
     import Artist from "./pages/Artist.svelte";
@@ -80,6 +81,26 @@
                     savedChunk[id] = [];
                 }
                 savedChunk[id].push(chunk);
+            }
+        );
+
+        socket.on(
+            "like",
+            ({ id, isLiked }: { id: string; isLiked: boolean }) => {
+                const switchLike = (music: MusicModel) => {
+                    if (music.id === id) {
+                        music.isLiked = isLiked;
+                    }
+                    return music;
+                };
+                $musics = $musics.map(switchLike);
+                $playlist.items = $playlist.items.map(switchLike);
+
+                if (isLiked) {
+                    toast("Removed from favorite");
+                } else {
+                    toast("Added to favorite");
+                }
             }
         );
 
@@ -215,6 +236,11 @@
 
         toast("Deleted from playlist");
     };
+
+    const handleClickLike = () => {
+        const selectedMusic = $playlist.items[$playlist.selected];
+        socket.emit("like", selectedMusic.id);
+    };
 </script>
 
 <main>
@@ -225,6 +251,13 @@
             <Route
                 path="/"
                 component={Music}
+                onClickMusic={handleClickMusic}
+                onClickPlayAll={handleClickPlayAll}
+                onClickPlayShuffle={handleClickPlayShuffle}
+            />
+            <Route
+                path="/favorite"
+                component={FavoriteMusic}
                 onClickMusic={handleClickMusic}
                 onClickPlayAll={handleClickPlayAll}
                 onClickPlayShuffle={handleClickPlayShuffle}
@@ -262,6 +295,7 @@
             onClickStop={handleClickStop}
             onClickNext={playNext}
             onClickPrev={playPrev}
+            onClickLike={handleClickLike}
             onClickProgress={handleClickProgress}
             onClickNowMusic={handleClickPlaylistMusic}
             onDeleteNowMusic={handleDeletePlaylistMusic}

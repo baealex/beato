@@ -2,17 +2,20 @@
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
 
-    import SubPage from "./SubPage.svelte";
     import Now from "./Now.svelte";
+    import SubPage from "./SubPage.svelte";
+    import BottomPanel from "./BottomPanel.svelte";
+
     import Play from "../icons/Play.svelte";
     import Pause from "../icons/Pause.svelte";
     import Cross from "../icons/Cross.svelte";
     import Menu from "../icons/Menu.svelte";
+    import Heart from "../icons/Heart.svelte";
+    import MoreVerticalFill from "../icons/MoreVerticalFill.svelte";
 
     import type { Music } from "../models/type";
 
     import { getImage } from "../modules/image";
-    import BottomPanel from "./BottomPanel.svelte";
 
     export let music: Music;
     export let audioElement: HTMLAudioElement;
@@ -23,12 +26,14 @@
     export let onClickNext: () => void;
     export let onClickPrev: () => void;
     export let onClickStop: () => void;
+    export let onClickLike: () => void;
     export let onClickNowMusic: (idx: number) => void;
     export let onDeleteNowMusic: (idx: number) => void;
     export let onClickProgress: (e: MouseEvent | TouchEvent) => void;
 
     let isOpenDetailPanel = false;
     let isOpenDetail = false;
+    let isOpenMenu = false;
     let isOpenNow = false;
 
     $: totalTime = `${Math.floor(music?.duration / 60) | 0}:${(
@@ -173,17 +178,19 @@
                     alt={music.album.name}
                 />
             </div>
-            <button
-                class="clickable title"
-                on:click={() => (isOpenDetailPanel = true)}
-            >
-                <div class="name">
-                    {music.name}
-                </div>
-                <div class="artist">
-                    {music.artist.name}
-                </div>
-            </button>
+            <div class="title-info">
+                <button
+                    class="clickable title"
+                    on:click={() => (isOpenDetailPanel = true)}
+                >
+                    <div class="name">
+                        {music.name}
+                    </div>
+                    <div class="artist">
+                        {music.artist.name}
+                    </div>
+                </button>
+            </div>
             <div class="time-info">
                 <div class="current-time">
                     {currentTime}
@@ -208,18 +215,39 @@
                 />
             </div>
             <div class="action">
-                <button class="icon-button skip-back" on:click={onClickPrev}>
-                    <Play />
+                <button
+                    class="icon-button fill"
+                    on:click={() => (isOpenMenu = true)}
+                >
+                    <MoreVerticalFill />
                 </button>
-                <button class="icon-button" on:click={onClickPlay}>
-                    {#if playing}
-                        <Pause />
-                    {:else}
+                <div>
+                    <button
+                        class="icon-button skip-back"
+                        on:click={onClickPrev}
+                    >
                         <Play />
-                    {/if}
-                </button>
-                <button class="icon-button skip-forward" on:click={onClickNext}>
-                    <Play />
+                    </button>
+                    <button class="icon-button" on:click={onClickPlay}>
+                        {#if playing}
+                            <Pause />
+                        {:else}
+                            <Play />
+                        {/if}
+                    </button>
+                    <button
+                        class="icon-button skip-forward"
+                        on:click={onClickNext}
+                    >
+                        <Play />
+                    </button>
+                </div>
+                <button
+                    class="icon-button heart"
+                    class:like={music.isLiked}
+                    on:click={onClickLike}
+                >
+                    <Heart />
                 </button>
             </div>
         </div>
@@ -227,9 +255,7 @@
 
     <BottomPanel bind:isOpen={isOpenDetailPanel}>
         <div class="panel-content">
-            <div class="panel-title">
-                {music.name}
-            </div>
+            <div class="panel-title">Related to this music</div>
             <button
                 class="clickable linkable panel-album"
                 on:click={() => {
@@ -260,6 +286,10 @@
                 </div>
             </button>
         </div>
+    </BottomPanel>
+
+    <BottomPanel bind:isOpen={isOpenMenu}>
+        <div>Work in Progress</div>
     </BottomPanel>
 {/if}
 
@@ -355,8 +385,8 @@
                 gap: 0.25rem;
 
                 .cross,
-                .skip-back,
-                .volume {
+                .volume,
+                .skip-back {
                     @media (max-width: 768px) {
                         display: none;
                     }
@@ -429,17 +459,21 @@
             }
         }
 
-        .title {
+        .title-info {
             margin-top: 2.5rem;
+            width: 500px;
+            max-width: 90%;
 
-            .name {
-                margin-bottom: 0.5rem;
-                font-weight: bold;
-            }
+            .title {
+                .name {
+                    margin-bottom: 0.5rem;
+                    font-weight: bold;
+                }
 
-            .artist {
-                font-size: 0.875rem;
-                color: #888;
+                .artist {
+                    font-size: 0.875rem;
+                    color: #888;
+                }
             }
         }
 
@@ -471,6 +505,26 @@
 
         .action {
             margin-top: 2rem;
+            width: 500px;
+            max-width: 90%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .fill,
+            .heart {
+                :global(svg) {
+                    width: 1.25rem;
+                    height: 1.25rem;
+                }
+            }
+
+            .heart.like {
+                :global(svg) {
+                    fill: #a076f1;
+                    color: #a076f1;
+                }
+            }
 
             button {
                 width: 4rem;

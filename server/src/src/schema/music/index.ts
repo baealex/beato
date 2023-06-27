@@ -16,6 +16,7 @@ export const musicType = gql`
         playCount: Int!
         trackNumber: Int!
         filePath: String!
+        isLiked: Boolean!
         artist: Artist!
         album: Album!
         genres: [Genre!]!
@@ -76,5 +77,10 @@ export const musicResolvers: IResolvers = {
                 },
             },
         }),
+        isLiked: (music: Music) => models.musicLike.findFirst({
+            where: {
+                musicId: music.id,
+            },
+        }).then((like) => !!like),
     },
 };
