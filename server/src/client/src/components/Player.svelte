@@ -8,6 +8,7 @@
     import Cross from "../icons/Cross.svelte";
     import Menu from "../icons/Menu.svelte";
     import Now from "./Now.svelte";
+    import { onMount } from "svelte";
 
     export let music: Music;
     export let audioElement: HTMLAudioElement;
@@ -24,6 +25,36 @@
 
     let isOpenDetail = false;
     let isOpenNow = false;
+
+    $: totalTime = `${Math.floor(music?.duration / 60) | 0}:${(
+        "0" +
+        (Math.round(music?.duration) % 60)
+    ).slice(-2)}`;
+    $: currentTime = `${
+        (Math.floor(music?.duration * (progress / 100)) / 60) | 0
+    }:${("0" + (Math.floor(music?.duration * (progress / 100)) % 60)).slice(
+        -2
+    )}`;
+
+    let randomBorderRadius = "50% 50% 50% 50%";
+
+    onMount(() => {
+        const setRandomBorderRadius = () => {
+            if (playing) {
+                const makeRandom = () => {
+                    const random = Math.floor(Math.random() * 100);
+                    if (random < 25) {
+                        return "25%";
+                    } else {
+                        return `${random}%`;
+                    }
+                };
+                randomBorderRadius = `${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`;
+            }
+            setTimeout(setRandomBorderRadius, 1000);
+        };
+        setRandomBorderRadius();
+    });
 </script>
 
 {#if music}
@@ -115,20 +146,16 @@
             </div>
             <img
                 class:playing
+                style={`border-radius: ${randomBorderRadius}`}
                 src={getImage(music.album.cover)}
                 alt={music.album.name}
             />
             <div class="time-info">
                 <div class="current-time">
-                    {((music.duration * (progress / 100)) / 60) | 0}
-                    :{(
-                        "0" +
-                        Math.round((music.duration * (progress / 100)) % 60)
-                    ).slice(-2)}
+                    {currentTime}
                 </div>
                 <div class="total-time">
-                    {(music.duration / 60) | 0}
-                    :{("0" + Math.round(music.duration % 60)).slice(-2)}
+                    {totalTime}
                 </div>
             </div>
             <div
@@ -347,24 +374,6 @@
             color: #888;
         }
 
-        @keyframes wave {
-            0% {
-                border-radius: 50% 50% 50% 50%;
-            }
-            25% {
-                border-radius: 50% 80% 80% 50%;
-            }
-            50% {
-                border-radius: 50% 50% 50% 80%;
-            }
-            75% {
-                border-radius: 80% 50% 50% 50%;
-            }
-            100% {
-                border-radius: 50% 50% 50% 50%;
-            }
-        }
-
         img {
             width: 300px;
             height: 300px;
@@ -372,7 +381,8 @@
             border-radius: 50%;
 
             &.playing {
-                animation: wave 3s infinite ease-in-out;
+                transition: border-radius 1s
+                    cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
         }
 
