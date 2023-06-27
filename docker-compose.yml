@@ -2,7 +2,7 @@ version: "2.0"
 
 services:
   app:
-    image: baealex/baeto
+    image: baealex/beato
     volumes:
       - ./server/src/prisma:/data
       - ./server/src/cache:/cache
