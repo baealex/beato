@@ -1,7 +1,7 @@
 
 <p align="center">
     <a href="https://github.com/baealex/Cally/">
-        <img width="200px" src="https://github.com/baealex/beato/assets/35596687/59c7b5fd-abb3-4bfc-aec1-961c3b19f4e6">
+        <img width="200px" src="https://github.com/baealex/beato/assets/35596687/c96552c6-8a32-416c-a7be-274ee83a176d">
     </a>
 </p>
 
@@ -15,15 +15,16 @@
 
 Self host music streaming platform
 
-![_1](https://github.com/baealex/beato/assets/35596687/ce4cd1a3-4e2d-41b3-9ea8-5fcf3122d2f9)
+![_1](https://github.com/baealex/beato/assets/35596687/e23594e3-5d0d-41f8-9f4a-6b503136e418)
 
-![_2](https://github.com/baealex/beato/assets/35596687/69ab72d6-96a3-433d-a88f-145acd1148af)
+![_2](https://github.com/baealex/beato/assets/35596687/13bdd8e1-bbab-4a6e-88a8-9a13151d8ed7)
 
-![_3](https://github.com/baealex/beato/assets/35596687/f658b973-cb68-41ff-a95d-2f20d1a08591)
+![_3](https://github.com/baealex/beato/assets/35596687/5588ee54-e140-48b9-9a03-c19d4cbd8e75)
 
-![_4](https://github.com/baealex/beato/assets/35596687/20b3745c-c039-4b5a-a947-6457de3177ef)
+![_4](https://github.com/baealex/beato/assets/35596687/6c5e9a04-86ff-4761-bd22-ef27a4e02034)
 
-![_5](https://github.com/baealex/beato/assets/35596687/1a79091d-b02a-4bf2-8458-b7b3d6e4fdb0)
+![_5](https://github.com/baealex/beato/assets/35596687/63d3462e-dc9e-4397-a7f6-6c130165f8c5)
+
 
 <br>
 
