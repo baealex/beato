@@ -123,8 +123,10 @@
                 height: 1rem;
             }
 
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.1);
+            @media (hover: hover) {
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
             }
         }
     }
@@ -147,8 +149,10 @@
                 gap: 0.5rem;
                 width: 100%;
 
-                &:hover {
-                    background-color: rgba(255, 255, 255, 0.1);
+                @media (hover: hover) {
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.1);
+                    }
                 }
             }
 

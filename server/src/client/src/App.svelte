@@ -270,9 +270,9 @@
                 <Album onClickMusic={handleClickMusic} />
             </div>
         </Route>
-        <Route path="/album/:id">
+        <Route path="/album/:id" let:params>
             <div class="container">
-                <AlbumDetail onClickMusic={handleClickMusic} />
+                <AlbumDetail id={params.id} onClickMusic={handleClickMusic} />
             </div>
         </Route>
         <Route path="/artist">
@@ -280,9 +280,9 @@
                 <Artist onClickMusic={handleClickMusic} />
             </div>
         </Route>
-        <Route path="/artist/:id">
+        <Route path="/artist/:id" let:params>
             <div class="container">
-                <ArtistDetail onClickMusic={handleClickMusic} />
+                <ArtistDetail id={params.id} onClickMusic={handleClickMusic} />
             </div>
         </Route>
         <Route path="/setting">

@@ -71,8 +71,10 @@
             overflow: hidden;
             padding-bottom: 0.5rem;
 
-            &:hover {
-                background-color: #222222;
+            @media (hover: hover) {
+                &:hover {
+                    background-color: #222222;
+                }
             }
 
             :global(.album-cover) {
@@ -83,6 +85,7 @@
             }
 
             .album-title {
+                width: 100%;
                 padding: 0 0.5rem;
                 font-size: 1.2rem;
                 font-weight: bold;

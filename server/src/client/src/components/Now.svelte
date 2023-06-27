@@ -80,8 +80,10 @@
                 height: 1.5rem;
             }
 
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.2);
+            @media (hover: hover) {
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.2);
+                }
             }
         }
     }
@@ -99,7 +101,7 @@
                 border-left: 0.25rem solid #a076f1;
             }
 
-            &:hover {
+            &:active {
                 background-color: rgba(255, 255, 255, 0.1);
             }
         }

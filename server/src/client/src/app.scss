@@ -62,8 +62,13 @@ main {
 }
 
 body {
-    font-family: 'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, sans-serif;
     background: #000;
+    font-family: 'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    word-wrap: break-word;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
     color: #eee;
 }
 
@@ -87,7 +92,7 @@ button {
 
     &::after {
         position: absolute;
-        right: 10px;
+        right: 16px;
         top: 50%;
         width: 10px;
         height: 10px;
@@ -120,7 +125,13 @@ button {
         height: 1.5rem;
     }
 
-    &:hover {
+    @media (hover: hover) {
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    }
+
+    &:active {
         background-color: rgba(255, 255, 255, 0.2);
     }
 }

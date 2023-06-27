@@ -346,9 +346,11 @@
             background-color: rgba(255, 255, 255, 0.1);
             transition: height 0.25s ease-in-out;
 
-            &:hover {
-                cursor: pointer;
-                height: 0.5rem;
+            @media (hover: hover) {
+                &:hover {
+                    cursor: pointer;
+                    height: 0.5rem;
+                }
             }
 
             .bar {
@@ -376,6 +378,18 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+            }
+
+            .info {
+                width: calc(100% - 45px - 0.5rem);
+
+                .title {
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
             }
 
             .action {
@@ -412,7 +426,7 @@
                         cursor: pointer;
                     }
 
-                    &:hover {
+                    &:active {
                         background-color: rgba(255, 255, 255, 0.2);
                     }
                 }
@@ -535,7 +549,7 @@
                 cursor: pointer;
                 transition: background-color 0.25s ease-in-out;
 
-                &:hover {
+                &:active {
                     background-color: rgba(255, 255, 255, 0.2);
                 }
             }

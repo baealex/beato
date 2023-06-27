@@ -93,8 +93,10 @@
                 color: rgba(255, 255, 255, 0.5);
             }
 
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.1);
+            @media (hover: hover) {
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
             }
         }
     }
