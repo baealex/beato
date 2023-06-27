@@ -59,6 +59,12 @@
             <ul>
                 {#each artist.albums as album}
                     <li
+                        on:keydown={(e) => {
+                            if (e.key === "Enter") {
+                                selectedId = album.id;
+                                isOpenDetail = true;
+                            }
+                        }}
                         on:click={() => {
                             selectedId = album.id;
                             isOpenDetail = true;

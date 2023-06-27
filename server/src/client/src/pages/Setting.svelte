@@ -15,10 +15,11 @@
 
     socket.on("sync-music", (serverMessage: string | "done" | "error") => {
         if (serverMessage === "done" || serverMessage === "error") {
+            message = "Almost done..!";
             syncData(() => {
                 isLoading = false;
                 if (serverMessage === "done") {
-                    toast("Synced music");
+                    toast("Done syncing music");
                 } else if (serverMessage === "error") {
                     toast("Error syncing music");
                 }

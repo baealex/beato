@@ -16,6 +16,12 @@
     {#each $albums as album}
         <div
             class="item"
+            on:keydown={(e) => {
+                if (e.key === "Enter") {
+                    selectedId = album.id;
+                    isOpenDetail = true;
+                }
+            }}
             on:click={() => {
                 selectedId = album.id;
                 isOpenDetail = true;

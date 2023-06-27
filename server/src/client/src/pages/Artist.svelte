@@ -15,6 +15,12 @@
 <ul>
     {#each $artists as artist}
         <li
+            on:keydown={(e) => {
+                if (e.key === "Enter") {
+                    selectedId = artist.id;
+                    isOpenDetail = true;
+                }
+            }}
             on:click={() => {
                 selectedId = artist.id;
                 isOpenDetail = true;
