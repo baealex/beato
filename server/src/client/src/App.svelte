@@ -94,7 +94,14 @@
     };
 
     const handleClickPlayShuffle = () => {
-        const shuffleMusics = [...$musics].sort(() => Math.random() - 0.5);
+        const copyMusics = [...$musics];
+        const shuffleMusics = [];
+        while (copyMusics.length > 0) {
+            const randomIndex = Math.floor(Math.random() * copyMusics.length);
+            shuffleMusics.push(copyMusics[randomIndex]);
+            copyMusics.splice(randomIndex, 1);
+        }
+
         $playlist.selected = 0;
         $playlist.items = shuffleMusics;
         handleClickPlaylistMusic(0);
