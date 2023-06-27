@@ -31,6 +31,7 @@
         bind:this={imageRef}
         class={className}
         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg=="
+        {alt}
         {style}
     />
 {:else}

@@ -63,9 +63,9 @@
             background-color: transparent;
             border: none;
             color: inherit;
-            font-size: inherit;
-            font-weight: inherit;
             cursor: pointer;
+            display: flex;
+            align-items: center;
 
             :global(svg) {
                 width: 1.25rem;

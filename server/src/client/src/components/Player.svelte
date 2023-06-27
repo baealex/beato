@@ -286,7 +286,6 @@
         display: flex;
         flex-direction: column;
         background-color: #111111;
-        gap: 0.5rem;
         transition: transform 0.25s ease-in-out;
 
         .progress {
