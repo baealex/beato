@@ -2,10 +2,7 @@ version: "2.0"
 
 services:
   app:
-    # image: USERNAME/IMAGE:TAG
-    build:
-      context: ./server
-      dockerfile: ./Dockerfile
+    image: baealex/baeto
     volumes:
       - ./server/src/prisma:/data
       - ./server/src/cache:/cache

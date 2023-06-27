@@ -54,7 +54,7 @@ git pull && npm i && npm run build:client && npm run start
 
 you can connect to `http://localhost:4000`
 
-### use Docker (preparing)
+### use Docker
 
 Please place the 'music' folder at the top level of the project.
 
