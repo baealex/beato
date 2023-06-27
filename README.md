@@ -15,19 +15,21 @@
 
 Self host music streaming platform
 
-![_1](https://github.com/baealex/beato/assets/35596687/e04d3616-12cb-4884-af01-421b005ea1d9)
+![_1](https://github.com/baealex/beato/assets/35596687/ce4cd1a3-4e2d-41b3-9ea8-5fcf3122d2f9)
 
-![_2](https://github.com/baealex/beato/assets/35596687/9154d8e3-3604-42c3-ac1b-e26e21347a6b)
+![_2](https://github.com/baealex/beato/assets/35596687/69ab72d6-96a3-433d-a88f-145acd1148af)
 
-![_3](https://github.com/baealex/beato/assets/35596687/ede40321-ada2-4a87-98cb-028e4a3f16d6)
+![_3](https://github.com/baealex/beato/assets/35596687/f658b973-cb68-41ff-a95d-2f20d1a08591)
 
-![_4](https://github.com/baealex/beato/assets/35596687/467eac84-0222-4a37-9b44-6870924fab8f)
+![_4](https://github.com/baealex/beato/assets/35596687/20b3745c-c039-4b5a-a947-6457de3177ef)
+
+![_5](https://github.com/baealex/beato/assets/35596687/1a79091d-b02a-4bf2-8458-b7b3d6e4fdb0)
 
 <br>
 
 ## Features
 
-- [x] Organize information about music (supported mp3, wav, flac)
+- [x] Organize information about music (supported mp3, acc, wav, ogg, flac)
 - [x] Count the number of times music is listened to
 - [ ] Make your own playlist
 - [ ] Audio transcoding
@@ -52,7 +54,7 @@ git pull && npm i && npm run build:client && npm run start
 
 you can connect to `http://localhost:4000`
 
-### use Docker
+### use Docker (preparing)
 
 Please place the 'music' folder at the top level of the project.
 
