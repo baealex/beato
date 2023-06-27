@@ -82,6 +82,49 @@ button {
     text-align: inherit;
 }
 
+.linkable {
+    position: relative;
+
+    &::after {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        width: 10px;
+        height: 10px;
+        content: "";
+        border-top: 2px solid #888;
+        border-right: 2px solid #888;
+        transform: translateY(-50%) rotate(45deg);
+    }
+}
+
+.icon-button {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.25s ease-in-out;
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
 .album-art {
     width: 45px;
     height: 45px;

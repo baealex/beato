@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Artist, Album, Music } from '../models/type';
 
 interface GraphqlResponse<T extends string, K> {
     data: {
@@ -60,10 +61,10 @@ export function getArtist(id: string) {
                 musics {
                     id name filePath duration trackNumber
                     artist {
-                        name
+                        id name
                     }
                     album {
-                        name cover
+                        id name cover
                     }
                 }
             }
@@ -90,15 +91,15 @@ export function getAlbum(id: string) {
             album(id: "${id}") {
                 id name cover
                 artist {
-                    name
+                    id name
                 }
                 musics {
                     id name filePath duration trackNumber
                     artist {
-                        name
+                        id name
                     }
                     album {
-                        name cover
+                        id name cover
                     }
                 }
             }

@@ -12,6 +12,7 @@
     import type { Music } from "../models/type";
 
     import { getImage } from "../modules/image";
+    import BottomPanel from "./BottomPanel.svelte";
 
     export let music: Music;
     export let audioElement: HTMLAudioElement;
@@ -26,6 +27,7 @@
     export let onDeleteNowMusic: (idx: number) => void;
     export let onClickProgress: (e: MouseEvent | TouchEvent) => void;
 
+    let isOpenDetailPanel = false;
     let isOpenDetail = false;
     let isOpenNow = false;
 
@@ -110,20 +112,20 @@
                 </div>
             </div>
             <div class="action">
-                <button class="skip-back" on:click={onClickPrev}>
+                <button class="icon-button skip-back" on:click={onClickPrev}>
                     <Play />
                 </button>
-                <button on:click={onClickPlay}>
+                <button class="icon-button" on:click={onClickPlay}>
                     {#if playing}
                         <Pause />
                     {:else}
                         <Play />
                     {/if}
                 </button>
-                <button class="skip-forward" on:click={onClickNext}>
+                <button class="icon-button skip-forward" on:click={onClickNext}>
                     <Play />
                 </button>
-                <button class="cross" on:click={onClickStop}>
+                <button class="icon-button cross" on:click={onClickStop}>
                     <Cross />
                 </button>
                 <input
@@ -134,7 +136,10 @@
                     max="1"
                     step="0.05"
                 />
-                <button on:click={() => (isOpenNow = !isOpenNow)}>
+                <button
+                    class="icon-button"
+                    on:click={() => (isOpenNow = !isOpenNow)}
+                >
                     <Menu />
                 </button>
             </div>
@@ -168,21 +173,17 @@
                     alt={music.album.name}
                 />
             </div>
-            <div class="title">
-                <div class="name">{music.name}</div>
-                <div class="artist">
-                    <a
-                        href={`/artist/${music.artist.id}`}
-                        on:click={(e) => {
-                            e.preventDefault();
-                            isOpenDetail = false;
-                            navigate(`/artist/${music.artist.id}`);
-                        }}
-                    >
-                        {music.artist.name}
-                    </a>
+            <button
+                class="clickable title"
+                on:click={() => (isOpenDetailPanel = true)}
+            >
+                <div class="name">
+                    {music.name}
                 </div>
-            </div>
+                <div class="artist">
+                    {music.artist.name}
+                </div>
+            </button>
             <div class="time-info">
                 <div class="current-time">
                     {currentTime}
@@ -207,55 +208,64 @@
                 />
             </div>
             <div class="action">
-                <button class="skip-back" on:click={onClickPrev}>
+                <button class="icon-button skip-back" on:click={onClickPrev}>
                     <Play />
                 </button>
-                <button on:click={onClickPlay}>
+                <button class="icon-button" on:click={onClickPlay}>
                     {#if playing}
                         <Pause />
                     {:else}
                         <Play />
                     {/if}
                 </button>
-                <button class="skip-forward" on:click={onClickNext}>
+                <button class="icon-button skip-forward" on:click={onClickNext}>
                     <Play />
                 </button>
             </div>
         </div>
     </SubPage>
+
+    <BottomPanel bind:isOpen={isOpenDetailPanel}>
+        <div class="panel-content">
+            <div class="panel-title">
+                {music.name}
+            </div>
+            <button
+                class="clickable linkable panel-album"
+                on:click={() => {
+                    isOpenDetailPanel = false;
+                    isOpenDetail = false;
+                    navigate(`/album/${music.album.id}`);
+                }}
+            >
+                <img src={getImage(music.album.cover)} alt={music.album.name} />
+                <div>
+                    <div class="panel-sub-title">Album</div>
+                    <div class="panel-sub-content">
+                        {music.album.name}
+                    </div>
+                </div>
+            </button>
+            <button
+                class="clickable linkable panel-artist"
+                on:click={() => {
+                    isOpenDetailPanel = false;
+                    isOpenDetail = false;
+                    navigate(`/artist/${music.artist.id}`);
+                }}
+            >
+                <div class="panel-sub-title">Artist</div>
+                <div class="panel-sub-content">
+                    {music.artist.name}
+                </div>
+            </button>
+        </div>
+    </BottomPanel>
 {/if}
 
 <audio bind:this={audioElement} />
 
 <style lang="scss">
-    button {
-        position: relative;
-        width: 3rem;
-        height: 3rem;
-        border-radius: 0.25rem;
-        background-color: transparent;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 0.8rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        transition: background-color 0.25s ease-in-out;
-
-        :global(svg) {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-    }
-
     .cross {
         :global(svg) {
             width: 1.125rem;
@@ -423,7 +433,6 @@
             margin-top: 2.5rem;
 
             .name {
-                font-size: 1.25rem;
                 margin-bottom: 0.5rem;
                 font-weight: bold;
             }
@@ -477,5 +486,46 @@
                 }
             }
         }
+    }
+
+    .panel-title {
+        font-size: 0.875rem;
+        color: #888;
+    }
+
+    .panel-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .panel-album {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+
+        img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            transition: border-radius 0.25s ease-in-out;
+        }
+    }
+
+    .panel-artist {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .panel-sub-title {
+        font-size: 0.875rem;
+        color: #888;
+    }
+
+    .panel-sub-content {
+        font-weight: bold;
     }
 </style>
