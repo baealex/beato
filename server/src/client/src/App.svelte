@@ -247,43 +247,49 @@
     <Router>
         <SiteHeader />
         <Loading {isLoading} message="Loading..." />
-        <div class="container">
-            <Route
-                path="/"
-                component={Music}
-                onClickMusic={handleClickMusic}
-                onClickPlayAll={handleClickPlayAll}
-                onClickPlayShuffle={handleClickPlayShuffle}
-            />
-            <Route
-                path="/favorite"
-                component={FavoriteMusic}
-                onClickMusic={handleClickMusic}
-                onClickPlayAll={handleClickPlayAll}
-                onClickPlayShuffle={handleClickPlayShuffle}
-            />
-            <Route
-                path="/album"
-                component={Album}
-                onClickMusic={handleClickMusic}
-            />
-            <Route
-                path="/album/:id"
-                component={AlbumDetail}
-                onClickMusic={handleClickMusic}
-            />
-            <Route
-                path="/artist"
-                component={Artist}
-                onClickMusic={handleClickMusic}
-            />
-            <Route
-                path="/artist/:id"
-                component={ArtistDetail}
-                onClickMusic={handleClickMusic}
-            />
-            <Route path="/setting" component={Setting} />
-        </div>
+        <Route path="/" scrollToTop={true} exact={true}>
+            <div class="container">
+                <Music
+                    onClickMusic={handleClickMusic}
+                    onClickPlayAll={handleClickPlayAll}
+                    onClickPlayShuffle={handleClickPlayShuffle}
+                />
+            </div>
+        </Route>
+        <Route path="/favorite">
+            <div class="container">
+                <FavoriteMusic
+                    onClickMusic={handleClickMusic}
+                    onClickPlayAll={handleClickPlayAll}
+                    onClickPlayShuffle={handleClickPlayShuffle}
+                />
+            </div>
+        </Route>
+        <Route path="/album">
+            <div class="container">
+                <Album onClickMusic={handleClickMusic} />
+            </div>
+        </Route>
+        <Route path="/album/:id">
+            <div class="container">
+                <AlbumDetail onClickMusic={handleClickMusic} />
+            </div>
+        </Route>
+        <Route path="/artist">
+            <div class="container">
+                <Artist onClickMusic={handleClickMusic} />
+            </div>
+        </Route>
+        <Route path="/artist/:id">
+            <div class="container">
+                <ArtistDetail onClickMusic={handleClickMusic} />
+            </div>
+        </Route>
+        <Route path="/setting">
+            <div class="container">
+                <Setting />
+            </div>
+        </Route>
 
         <Player
             bind:audioElement
