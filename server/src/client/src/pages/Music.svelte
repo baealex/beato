@@ -25,18 +25,18 @@
         <input
             class="search"
             type="text"
-            placeholder="검색"
+            placeholder="Search"
             bind:value={search}
         />
     </div>
     <div class="buttons">
         <button on:click={onClickPlayAll}>
             <Play />
-            전체 재생
+            Play All
         </button>
         <button on:click={onClickPlayShuffle}>
             <Shuffle />
-            랜덤 재생
+            Shuffle
         </button>
     </div>
 </div>
@@ -63,8 +63,8 @@
                             {music.artist.name}
                         </div>
                         <div>
-                            {Math.floor(music.duration / 60)}분 /
-                            {music.playCount}회 재생
+                            {Math.floor(music.duration / 60)} min /
+                            {music.playCount} plays
                         </div>
                     </div>
                 </div>

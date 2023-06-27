@@ -54,7 +54,7 @@
             {artist.name}
         </div>
 
-        <div class="section-title">앨범 ({artist.albums.length})</div>
+        <div class="section-title">Albums ({artist.albums.length})</div>
         <div class="artist-albums">
             <ul>
                 {#each artist.albums as album}
@@ -78,7 +78,7 @@
             </ul>
         </div>
 
-        <div class="section-title">음악 ({artist.musics.length})</div>
+        <div class="section-title">Songs ({artist.musics.length})</div>
         <div class="artist-musics">
             <ul>
                 {#each artist.musics as music}

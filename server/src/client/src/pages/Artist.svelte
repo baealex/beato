@@ -29,11 +29,11 @@
                     </div>
                     <div class="count">
                         <div class="album">
-                            {artist.albumCount}개의 앨범
+                            {artist.albumCount} albums
                         </div>
                         <span> / </span>
                         <div class="music">
-                            {artist.musicCount}개의 음악
+                            {artist.musicCount} songs
                         </div>
                     </div>
                 </div>

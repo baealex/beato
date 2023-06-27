@@ -112,9 +112,9 @@
     const handleClickMusic = (music: MusicModel) => {
         if (!$playlist.items.map((item) => item.id).includes(music.id)) {
             $playlist.items = [...$playlist.items, music];
-            toast("플레이리스트에 추가되었습니다.");
+            toast("Added to end of playlist");
         } else {
-            toast("이미 플레이리스트에 추가되어 있습니다.");
+            toast("Already added to playlist");
         }
 
         if ($playlist.selected === null) {
@@ -213,7 +213,7 @@
             handleClickStop();
         }
 
-        toast("플레이리스트에서 삭제되었습니다.");
+        toast("Deleted from playlist");
     };
 </script>
 
