@@ -27,7 +27,12 @@
 </script>
 
 {#if loading === "lazy"}
-    <img bind:this={imageRef} class={className} {style} />
+    <img
+        bind:this={imageRef}
+        class={className}
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg=="
+        {style}
+    />
 {:else}
     <img src={getImage(src)} {alt} class={className} {style} />
 {/if}
