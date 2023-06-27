@@ -20,7 +20,9 @@
     import type { Music as MusicModel } from "./models/type";
 
     let audioElement: HTMLAudioElement;
-    let chunks: Buffer[] = [];
+    let savedChunk: {
+        [key: string]: Buffer[];
+    } = {};
     let playing = false;
     let volume = 0.5;
     let progress = 0;
@@ -41,24 +43,45 @@
         }
     }
 
+    const setAndPlayAudio = async (chunks: Buffer[]) => {
+        audioElement.src = URL.createObjectURL(
+            new Blob(chunks, { type: "audio/mpeg" })
+        );
+        playing = true;
+        await audioElement.play();
+        audioElement.onended = playNext;
+    };
+
+    const requestFile = async (id: string) => {
+        if (savedChunk?.[id]) {
+            setAndPlayAudio(savedChunk[id]);
+            return;
+        }
+        socket.emit("file", id);
+    };
+
     onMount(() => {
         isLoading = true;
         syncData(() => {
             isLoading = false;
         });
 
-        socket.on("audio", async (chunk: Buffer | "end") => {
-            if (chunk === "end") {
-                audioElement.src = URL.createObjectURL(
-                    new Blob(chunks, { type: "audio/mpeg" })
-                );
-                await audioElement.play();
-                playing = true;
-                audioElement.onended = playNext;
-                return;
+        socket.on(
+            "audio",
+            async ({ id, chunk }: { id: string; chunk: Buffer | "end" }) => {
+                console.log("audio", id, chunk);
+                if (chunk === "end") {
+                    if ($playlist.items[$playlist.selected].id === id) {
+                        setAndPlayAudio(savedChunk[id]);
+                    }
+                    return;
+                }
+                if (!savedChunk?.[id]) {
+                    savedChunk[id] = [];
+                }
+                savedChunk[id].push(chunk);
             }
-            chunks.push(chunk);
-        });
+        );
 
         audioElement.addEventListener("timeupdate", () => {
             progress = Number(
@@ -95,10 +118,9 @@
         }
 
         if ($playlist.selected === null) {
-            chunks = [];
             countFlag = true;
             $playlist.selected = 0;
-            socket.emit("file", $playlist.items[$playlist.selected].filePath);
+            requestFile($playlist.items[$playlist.selected].id);
         }
     };
 
@@ -127,10 +149,8 @@
         if ($playlist.selected >= $playlist.items.length) {
             $playlist.selected = 0;
         }
-
-        chunks = [];
         countFlag = true;
-        socket.emit("file", $playlist.items[$playlist.selected].filePath);
+        requestFile($playlist.items[$playlist.selected].id);
     };
 
     const playPrev = () => {
@@ -138,10 +158,8 @@
         if ($playlist.selected < 0) {
             $playlist.selected = $playlist.items.length - 1;
         }
-
-        chunks = [];
         countFlag = true;
-        socket.emit("file", $playlist.items[$playlist.selected].filePath);
+        requestFile($playlist.items[$playlist.selected].id);
     };
 
     const handleClickPlay = () => {
@@ -169,9 +187,8 @@
 
     const handleClickPlaylistMusic = (idx: number) => {
         $playlist.selected = idx;
-        chunks = [];
         countFlag = true;
-        socket.emit("file", $playlist.items[$playlist.selected].filePath);
+        requestFile($playlist.items[$playlist.selected].id);
     };
 
     const handleClickProgress = (e: MouseEvent | TouchEvent) => {

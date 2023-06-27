@@ -1,5 +1,5 @@
 export interface Music {
-    id: number;
+    id: string;
     name: string;
     duration: number;
     codec: string;
@@ -16,7 +16,7 @@ export interface Music {
 }
 
 export interface Album {
-    id: number;
+    id: string;
     name: string;
     cover: string;
     artist: {
@@ -26,7 +26,7 @@ export interface Album {
 }
 
 export interface Artist {
-    id: number;
+    id: string;
     name: string;
     latestAlbum: Album;
     albums: Album[];

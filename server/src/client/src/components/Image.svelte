@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { afterUpdate, onDestroy, onMount } from "svelte";
 
     import { getImage } from "../modules/image";
 
@@ -11,9 +11,11 @@
     export { className as class };
     export let loading: "lazy" | "eager" = "lazy";
 
-    onMount(() => {
+    let observer: IntersectionObserver = null;
+
+    const lazyLoading = () => {
         if (loading === "lazy") {
-            const observer = new IntersectionObserver((entries) => {
+            observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         imageRef.src = getImage(src);
@@ -22,6 +24,20 @@
                 });
             });
             observer.observe(imageRef);
+        }
+    };
+
+    onMount(() => {
+        lazyLoading();
+    });
+
+    afterUpdate(() => {
+        lazyLoading();
+    });
+
+    onDestroy(() => {
+        if (observer) {
+            observer.unobserve(imageRef);
         }
     });
 </script>
