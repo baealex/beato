@@ -2,23 +2,22 @@
     import { onMount } from "svelte";
     import { Router, Route } from "svelte-routing";
 
+    import SiteHeader from "./components/SiteHeader.svelte";
+    import Player from "./components/Player.svelte";
+    import Loading from "./components/Loading.svelte";
     import Music from "./pages/Music.svelte";
     import Album from "./pages/Album.svelte";
+    import AlbumDetail from "./pages/AlbumDetail.svelte";
     import Artist from "./pages/Artist.svelte";
+    import ArtistDetail from "./pages/ArtistDetail.svelte";
     import Setting from "./pages/Setting.svelte";
 
-    import SiteHeader from "./components/SiteHeader.svelte";
-
-    import { musics } from "./store/musics";
-    import { playlist } from "./store/playlist";
+    import { musics, playlist, syncData } from "./store";
 
     import { socket } from "./modules/socket";
     import { toast } from "./modules/ui/toast";
 
     import type { Music as MusicModel } from "./models/type";
-    import AlbumDetail from "./pages/AlbumDetail.svelte";
-    import ArtistDetail from "./pages/ArtistDetail.svelte";
-    import Player from "./components/Player.svelte";
 
     let audioElement: HTMLAudioElement;
     let chunks: Buffer[] = [];
@@ -26,6 +25,7 @@
     let volume = 0.5;
     let progress = 0;
     let countFlag = false;
+    let isLoading = false;
 
     $: {
         if ($playlist.items[$playlist.selected]) {
@@ -42,6 +42,11 @@
     }
 
     onMount(() => {
+        isLoading = true;
+        syncData(() => {
+            isLoading = false;
+        });
+
         socket.on("audio", async (chunk: Buffer | "end") => {
             if (chunk === "end") {
                 audioElement.src = URL.createObjectURL(
@@ -66,6 +71,16 @@
 
             if (progress >= 80 && countFlag) {
                 countFlag = false;
+                $musics = $musics
+                    .map((music) => {
+                        if (
+                            music.id === $playlist.items[$playlist.selected].id
+                        ) {
+                            music.playCount += 1;
+                        }
+                        return music;
+                    })
+                    .sort((a, b) => b.playCount - a.playCount);
                 socket.emit("count", $playlist.items[$playlist.selected].id);
             }
         });
@@ -192,6 +207,7 @@
 <main>
     <Router>
         <SiteHeader />
+        <Loading {isLoading} message="데이터 불러오는 중..." />
         <div class="container">
             <Route
                 path="/"

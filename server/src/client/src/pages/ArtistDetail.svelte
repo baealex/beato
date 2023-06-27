@@ -23,28 +23,20 @@
         const { data } = await graphQLRequest<"artist", Artist>(`
             query {
                 artist(id: "${id}") {
-                    id
-                    name
+                    id name
                     latestAlbum {
                         cover
                     }
                     albums {
-                        id
-                        name
-                        cover
+                        id name cover
                     }
                     musics {
-                        id
-                        name
-                        filePath
-                        duration
-                        trackNumber
+                        id name filePath duration trackNumber
                         artist {
                             name
                         }
                         album {
-                            name
-                            cover
+                            name cover
                         }
                     }
                 }

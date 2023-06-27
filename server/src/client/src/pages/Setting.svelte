@@ -1,26 +1,32 @@
 <script lang="ts">
-    import Beato from "../components/Beato.svelte";
+    import Loading from "../components/Loading.svelte";
+
     import { socket } from "../modules/socket";
     import { toast } from "../modules/ui/toast";
+    import { syncData } from "../store";
 
-    let blockScreen = false;
+    let isLoading = false;
     let message = "";
 
     const handleClickSyncMusic = () => {
-        blockScreen = true;
+        isLoading = true;
         socket.emit("sync-music");
     };
 
     socket.on("sync-music", (serverMessage: string | "done" | "error") => {
-        if (serverMessage === "done") {
-            toast("Synced music");
-            blockScreen = false;
-        } else if (serverMessage === "error") {
-            toast("Error syncing music");
-            blockScreen = false;
-        } else {
-            message = serverMessage;
+        if (serverMessage === "done" || serverMessage === "error") {
+            syncData(() => {
+                isLoading = false;
+                if (serverMessage === "done") {
+                    toast("Synced music");
+                } else if (serverMessage === "error") {
+                    toast("Error syncing music");
+                }
+            });
+            return;
         }
+
+        message = serverMessage;
     });
 </script>
 
@@ -31,12 +37,7 @@
         <button on:click={handleClickSyncMusic}>Start</button>
     </section>
 
-    {#if blockScreen}
-        <div class="screen-block">
-            <Beato spin={true} />
-            <div>{message}</div>
-        </div>
-    {/if}
+    <Loading {isLoading} {message} />
 </div>
 
 <style lang="scss">
@@ -58,21 +59,5 @@
         flex-direction: row;
         align-items: center;
         gap: 0.5rem;
-    }
-
-    .screen-block {
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-        backdrop-filter: blur(20px);
-        position: fixed;
-        top: 0;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 3rem;
     }
 </style>

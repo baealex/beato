@@ -5,7 +5,7 @@
     import Play from "../icons/Play.svelte";
 
     import type { Album, Music } from "../models/type";
-    import { graphQLRequest } from "../api";
+    import { getAlbum } from "../api";
 
     export let id = "";
     let album: Album = null;
@@ -16,33 +16,7 @@
             return;
         }
 
-        const { data } = await graphQLRequest<"album", Album>(`
-            query {
-                album(id: "${id}") {
-                    id
-                    name
-                    cover
-                    artist {
-                        name
-                    }
-                    musics {
-                        id
-                        name
-                        filePath
-                        duration
-                        trackNumber
-                        artist {
-                            name
-                        }
-                        album {
-                            name
-                            cover
-                        }
-                    }
-                }
-            }
-        `);
-
+        const { data } = await getAlbum(id);
         album = data.album;
     });
 </script>

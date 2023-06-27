@@ -1,13 +1,9 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-
     import Image from "../components/Image.svelte";
     import Shuffle from "../icons/Shuffle.svelte";
     import Play from "../icons/Play.svelte";
 
     import type { Music } from "../models/type";
-
-    import { graphQLRequest } from "../api";
 
     import { musics } from "../store/musics";
 
@@ -22,32 +18,6 @@
             music.name.toLowerCase().includes(search.toLowerCase()) ||
             music.artist.name.toLowerCase().includes(search.toLowerCase())
     );
-
-    onMount(async () => {
-        const { data } = await graphQLRequest<"allMusics", Music[]>(`
-            query {
-                allMusics {
-                    id
-                    name
-                    filePath
-                    codec
-                    duration
-                    playCount
-                    artist {
-                        id
-                        name
-                    }
-                    album {
-                        id
-                        name
-                        cover
-                    }
-                }
-            }
-        `);
-
-        musics.set(data.allMusics);
-    });
 </script>
 
 <div class="controls">

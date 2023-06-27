@@ -1,37 +1,15 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-
     import SubPage from "../components/SubPage.svelte";
     import Image from "../components/Image.svelte";
     import AlbumDetail from "./AlbumDetail.svelte";
 
-    import type { Album, Music } from "../models/type";
-
-    import { graphQLRequest } from "../api";
+    import type { Music } from "../models/type";
 
     import { albums } from "../store";
 
     let selectedId: number | null = null;
     let isOpenDetail = false;
     export let onClickMusic: (music: Music) => void;
-
-    onMount(async () => {
-        const { data } = await graphQLRequest<"allAlbums", Album[]>(`
-            query {
-                allAlbums {
-                    id
-                    name
-                    cover
-                    artist {
-                        id
-                        name
-                    }
-                }
-            }
-        `);
-
-        $albums = data.allAlbums;
-    });
 </script>
 
 <div class="grid">
