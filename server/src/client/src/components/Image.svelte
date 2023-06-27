@@ -11,6 +11,7 @@
     export { className as class };
     export let loading: "lazy" | "eager" = "lazy";
 
+    let loadded: boolean = false;
     let observer: IntersectionObserver = null;
 
     const lazyLoading = () => {
@@ -20,6 +21,7 @@
                     if (entry.isIntersecting) {
                         imageRef.src = getImage(src);
                         observer.unobserve(imageRef);
+                        loadded = true;
                     }
                 });
             });
@@ -32,7 +34,11 @@
     });
 
     afterUpdate(() => {
-        lazyLoading();
+        const prevSrc = imageRef.src.replace(location.origin, "");
+        if (loading === "lazy" && loadded && prevSrc !== getImage(src)) {
+            loadded = false;
+            lazyLoading();
+        }
     });
 
     onDestroy(() => {
