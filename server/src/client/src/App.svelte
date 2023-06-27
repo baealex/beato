@@ -220,7 +220,7 @@
 <main>
     <Router>
         <SiteHeader />
-        <Loading {isLoading} message="데이터 불러오는 중..." />
+        <Loading {isLoading} message="Loading..." />
         <div class="container">
             <Route
                 path="/"
