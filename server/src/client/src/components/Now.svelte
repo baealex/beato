@@ -1,9 +1,9 @@
 <script lang="ts">
+    import Image from "./Image.svelte";
     import SubPage from "./SubPage.svelte";
     import SwipeCard from "./SwipeCard.svelte";
     import Cross from "../icons/Cross.svelte";
 
-    import { getImage } from "../modules/image";
     import { playlist } from "../store/playlist";
 
     export let isOpen = false;
@@ -25,9 +25,9 @@
                 ]}
             >
                 <div class="item" class:active={$playlist.selected === idx}>
-                    <img
+                    <Image
                         class="album-art"
-                        src={getImage(music.album.cover)}
+                        src={music.album.cover}
                         alt={music.name}
                         loading="lazy"
                     />

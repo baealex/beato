@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
 
+    import Image from "./Image.svelte";
     import SubPage from "./SubPage.svelte";
     import Now from "./Now.svelte";
     import Play from "../icons/Play.svelte";
@@ -10,7 +11,6 @@
     import Menu from "../icons/Menu.svelte";
 
     import type { Music } from "../models/type";
-    import { getImage } from "../modules/image";
 
     export let music: Music;
     export let audioElement: HTMLAudioElement;
@@ -78,10 +78,10 @@
         </div>
         <div class="player">
             <div class="music" on:click={() => (isOpenDetail = true)}>
-                <img
+                <Image
                     class="album-art"
                     alt={music.album.name}
-                    src={getImage(music.album.cover)}
+                    src={music.album.cover}
                 />
                 <div class="info">
                     <div class="title">
@@ -138,16 +138,16 @@
     <SubPage isOpen={isOpenDetail} onClose={() => (isOpenDetail = false)}>
         <div class="detail">
             <div class="album-art">
-                <img
+                <Image
                     class="background"
                     style={`border-radius: ${randomBorderRadius}`}
-                    src={getImage(music.album.cover)}
+                    src={music.album.cover}
                     alt={music.album.name}
                 />
-                <img
+                <Image
                     class="foreground"
                     style={`border-radius: ${randomBorderRadius}`}
-                    src={getImage(music.album.cover)}
+                    src={music.album.cover}
                     alt={music.album.name}
                 />
             </div>
@@ -382,7 +382,7 @@
             width: 300px;
             height: 300px;
 
-            .foreground {
+            :global(.foreground) {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
@@ -391,7 +391,7 @@
                     cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
 
-            .background {
+            :global(.background) {
                 position: absolute;
                 top: 64px;
                 left: 0;

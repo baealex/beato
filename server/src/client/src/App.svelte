@@ -7,14 +7,7 @@
     import Artist from "./pages/Artist.svelte";
     import Setting from "./pages/Setting.svelte";
 
-    import Now from "./components/Now.svelte";
-    import PlayDetail from "./components/Player.svelte";
     import SiteHeader from "./components/SiteHeader.svelte";
-
-    import Cross from "./icons/Cross.svelte";
-    import Pause from "./icons/Pause.svelte";
-    import Play from "./icons/Play.svelte";
-    import Menu from "./icons/Menu.svelte";
 
     import { musics } from "./store/musics";
     import { playlist } from "./store/playlist";

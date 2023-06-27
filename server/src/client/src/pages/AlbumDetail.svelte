@@ -1,10 +1,11 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    import type { Album, Music } from "../models/type";
-    import { getImage } from "../modules/image";
-    import { graphQLRequest } from "../api";
+    import Image from "../components/Image.svelte";
     import Play from "../icons/Play.svelte";
+
+    import type { Album, Music } from "../models/type";
+    import { graphQLRequest } from "../api";
 
     export let id = "";
     let album: Album = null;
@@ -48,12 +49,7 @@
 
 {#if album}
     <div class="album">
-        <img
-            class="album-cover"
-            src={getImage(album.cover)}
-            alt=""
-            loading="lazy"
-        />
+        <Image class="album-cover" src={album.cover} alt={album.name} />
         <div class="album-title">
             {album.name}
         </div>
@@ -108,7 +104,7 @@
         background-color: rgba(255, 255, 255, 0.069);
         border-radius: 0.5rem;
 
-        .album-cover {
+        :global(.album-cover) {
             width: 100%;
             max-width: 300px;
             border-radius: 0.5rem;

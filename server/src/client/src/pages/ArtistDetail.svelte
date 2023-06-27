@@ -1,12 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    import type { Artist, Music } from "../models/type";
-    import { getImage } from "../modules/image";
-
-    import { graphQLRequest } from "../api";
+    import Image from "../components/Image.svelte";
     import SubPage from "../components/SubPage.svelte";
     import AlbumDetail from "./AlbumDetail.svelte";
+
+    import type { Artist, Music } from "../models/type";
+
+    import { graphQLRequest } from "../api";
 
     export let id = "";
     let artist: Artist = null;
@@ -57,7 +58,7 @@
 <section>
     {#if artist}
         <div class="artist-name">
-            <img src={getImage(artist.latestAlbum.cover)} alt="" />
+            <Image src={artist.latestAlbum.cover} alt={artist.name} />
             {artist.name}
         </div>
 
@@ -71,11 +72,7 @@
                             isOpenDetail = true;
                         }}
                     >
-                        <img
-                            loading="lazy"
-                            src={getImage(album.cover)}
-                            alt={album.name}
-                        />
+                        <Image src={album.cover} alt={album.name} />
                         <div class="info">
                             <div class="name">
                                 {album.name}
@@ -98,11 +95,10 @@
                         }}
                         on:click={() => onClickMusic(music)}
                     >
-                        <img
+                        <Image
                             class="album-art"
-                            src={getImage(music.album.cover)}
+                            src={music.album.cover}
                             alt={music.album.name}
-                            loading="lazy"
                         />
                         <div class="info">
                             <div class="title">
@@ -141,7 +137,7 @@
             font-weight: bold;
             margin: 3rem 0;
 
-            img {
+            :global(img) {
                 width: 5rem;
                 height: 5rem;
                 object-fit: cover;
@@ -169,7 +165,7 @@
                 grid-gap: 1rem;
 
                 li {
-                    img {
+                    :global(img) {
                         width: 100%;
                         max-height: 100%;
                         object-fit: cover;

@@ -1,14 +1,15 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
+    import Image from "../components/Image.svelte";
+    import SubPage from "../components/SubPage.svelte";
+    import ArtistDetail from "./ArtistDetail.svelte";
+
     import type { Artist, Music } from "../models/type";
-    import { getImage } from "../modules/image";
 
     import { graphQLRequest } from "../api";
 
     import { artists } from "../store";
-    import SubPage from "../components/SubPage.svelte";
-    import ArtistDetail from "./ArtistDetail.svelte";
 
     let selectedId: number | null = null;
     let isOpenDetail = false;
@@ -41,11 +42,7 @@
                 isOpenDetail = true;
             }}
         >
-            <img
-                loading="lazy"
-                src={getImage(artist.latestAlbum.cover)}
-                alt={artist.name}
-            />
+            <Image src={artist.latestAlbum.cover} alt={artist.name} />
             <div class="info">
                 <div class="name">
                     {artist.name}
@@ -95,7 +92,7 @@
             align-items: center;
             gap: 0.75rem;
 
-            img {
+            :global(img) {
                 width: 4rem;
                 height: 4rem;
                 object-fit: cover;

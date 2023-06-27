@@ -1,14 +1,15 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
+    import SubPage from "../components/SubPage.svelte";
+    import Image from "../components/Image.svelte";
+    import AlbumDetail from "./AlbumDetail.svelte";
+
     import type { Album, Music } from "../models/type";
-    import { getImage } from "../modules/image";
 
     import { graphQLRequest } from "../api";
 
     import { albums } from "../store";
-    import SubPage from "../components/SubPage.svelte";
-    import AlbumDetail from "./AlbumDetail.svelte";
 
     let selectedId: number | null = null;
     let isOpenDetail = false;
@@ -42,12 +43,7 @@
                 isOpenDetail = true;
             }}
         >
-            <img
-                class="album-cover"
-                src={getImage(album.cover)}
-                alt=""
-                loading="lazy"
-            />
+            <Image class="album-cover" src={album.cover} alt={album.name} />
             <div class="album-title">
                 {album.name}
             </div>
@@ -101,7 +97,7 @@
                 background-color: #222222;
             }
 
-            .album-cover {
+            :global(.album-cover) {
                 width: 100%;
                 height: auto;
                 border-radius: 0.5rem;

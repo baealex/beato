@@ -1,11 +1,11 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
+    import Image from "../components/Image.svelte";
     import Shuffle from "../icons/Shuffle.svelte";
     import Play from "../icons/Play.svelte";
 
     import type { Music } from "../models/type";
-    import { getImage } from "../modules/image";
 
     import { graphQLRequest } from "../api";
 
@@ -80,11 +80,10 @@
             }}
             on:click={() => onClickMusic(music)}
         >
-            <img
+            <Image
                 class="album-art"
-                src={getImage(music.album.cover)}
-                alt=""
-                loading="lazy"
+                alt={music.album.name}
+                src={music.album.cover}
             />
             <div class="info">
                 <div class="title">
