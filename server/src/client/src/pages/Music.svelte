@@ -34,9 +34,11 @@
                     duration
                     playCount
                     artist {
+                        id
                         name
                     }
                     album {
+                        id
                         name
                         cover
                     }

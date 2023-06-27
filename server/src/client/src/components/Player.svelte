@@ -1,14 +1,16 @@
 <script lang="ts">
-    import SubPage from "./SubPage.svelte";
+    import { onMount } from "svelte";
+    import { navigate } from "svelte-routing";
 
-    import type { Music } from "../models/type";
-    import { getImage } from "../modules/image";
+    import SubPage from "./SubPage.svelte";
+    import Now from "./Now.svelte";
     import Play from "../icons/Play.svelte";
     import Pause from "../icons/Pause.svelte";
     import Cross from "../icons/Cross.svelte";
     import Menu from "../icons/Menu.svelte";
-    import Now from "./Now.svelte";
-    import { onMount } from "svelte";
+
+    import type { Music } from "../models/type";
+    import { getImage } from "../modules/image";
 
     export let music: Music;
     export let audioElement: HTMLAudioElement;
@@ -42,12 +44,7 @@
         const setRandomBorderRadius = () => {
             if (playing) {
                 const makeRandom = () => {
-                    const random = Math.floor(Math.random() * 100);
-                    if (random < 25) {
-                        return "25%";
-                    } else {
-                        return `${random}%`;
-                    }
+                    return Math.floor(Math.random() * 90 + 10) + "%";
                 };
                 randomBorderRadius = `${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`;
             }
@@ -140,16 +137,35 @@
 {#if music}
     <SubPage isOpen={isOpenDetail} onClose={() => (isOpenDetail = false)}>
         <div class="detail">
+            <div class="album-art">
+                <img
+                    class="background"
+                    style={`border-radius: ${randomBorderRadius}`}
+                    src={getImage(music.album.cover)}
+                    alt={music.album.name}
+                />
+                <img
+                    class="foreground"
+                    style={`border-radius: ${randomBorderRadius}`}
+                    src={getImage(music.album.cover)}
+                    alt={music.album.name}
+                />
+            </div>
             <div class="title">
                 <div class="name">{music.name}</div>
-                <div class="artist">{music.artist.name}</div>
+                <div class="artist">
+                    <a
+                        href={`/artist/${music.artist.id}`}
+                        on:click={(e) => {
+                            e.preventDefault();
+                            isOpenDetail = false;
+                            navigate(`/artist/${music.artist.id}`);
+                        }}
+                    >
+                        {music.artist.name}
+                    </a>
+                </div>
             </div>
-            <img
-                class:playing
-                style={`border-radius: ${randomBorderRadius}`}
-                src={getImage(music.album.cover)}
-                alt={music.album.name}
-            />
             <div class="time-info">
                 <div class="current-time">
                     {currentTime}
@@ -300,6 +316,7 @@
             padding: 0.5rem;
 
             .music {
+                cursor: pointer;
                 flex: 1 1 auto;
                 display: flex;
                 flex-direction: row;
@@ -360,29 +377,49 @@
         align-items: center;
         text-align: center;
 
-        .title {
-            margin-bottom: 1rem;
-        }
-
-        .name {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .artist {
-            color: #888;
-        }
-
-        img {
+        .album-art {
+            position: relative;
             width: 300px;
             height: 300px;
-            object-fit: cover;
-            border-radius: 50%;
 
-            &.playing {
+            .foreground {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
                 transition: border-radius 1s
                     cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+
+            .background {
+                position: absolute;
+                top: 64px;
+                left: 0;
+                width: 90%;
+                height: 90%;
+                transform: translate(5%, 5%);
+                object-fit: cover;
+                border-radius: 50%;
+                opacity: 0.45;
+                z-index: -1;
+                filter: blur(50px);
+                transition: border-radius 1s
+                    cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+        }
+
+        .title {
+            margin-top: 2.5rem;
+
+            .name {
+                font-size: 1.25rem;
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+            }
+
+            .artist {
+                font-size: 0.875rem;
+                color: #888;
             }
         }
 
