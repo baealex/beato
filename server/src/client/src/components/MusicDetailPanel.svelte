@@ -65,6 +65,11 @@
                 </button>
             </li>
         </ul>
+        <div class="detail-info">
+            <span>listen: {music.playCount} times</span>/
+            <span>duration: {Math.floor(music.duration / 60)}min</span>/
+            <span>codec: {music.codec}</span>
+        </div>
     {/if}
 </BottomPanel>
 
@@ -105,6 +110,7 @@
         list-style: none;
         display: flex;
         flex-direction: column;
+        border-bottom: 1px solid #444;
         padding: 1rem 0;
 
         .item {
@@ -132,5 +138,16 @@
                 }
             }
         }
+    }
+
+    .detail-info {
+        padding: 1rem 0 0;
+        font-size: 0.8rem;
+        color: #aaa;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 </style>

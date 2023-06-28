@@ -1,7 +1,7 @@
 <script lang="ts">
     import Image from "./Image.svelte";
-
-    import { useLongPress } from "../hooks/useLongPress";
+    import Heart from "../icons/Heart.svelte";
+    import MoreVerticalFill from "../icons/MoreVerticalFill.svelte";
 
     export let albumName: string = null;
     export let albumCover: string = null;
@@ -9,55 +9,97 @@
     export let trackNumber: number = null;
     export let musicName: string;
     export let musicCodec: string = null;
-    export let musicDuration: number = null;
-    export let musicPlayCount: number = null;
+    export let isLiked: boolean = false;
     export let onClick: () => void;
     export let onLongPress: () => void = null;
-
-    const { handleTouchStart, handleTouchMove, handleTouchEnd } = useLongPress({
-        onClick,
-        onLongPress,
-    });
 </script>
 
 <button
     class="clickable item"
-    on:mousedown={handleTouchStart}
-    on:mouseup={handleTouchEnd}
-    on:touchmove={handleTouchMove}
+    on:click={onClick}
+    on:contextmenu={(e) => {
+        e.preventDefault();
+        onLongPress();
+    }}
 >
     {#if albumCover !== null}
         <Image class="album-art" alt={albumName} src={albumCover} />
     {/if}
-    <div class="info">
-        <div class="title">
-            {#if trackNumber !== null}
-                <span class="track-number">
-                    {trackNumber}.
-                </span>
-            {/if}
-            {musicName}
-            {#if musicCodec && musicCodec.toLowerCase() === "flac"}
-                <span class="codec">
-                    {musicCodec}
-                </span>
-            {/if}
-        </div>
-        <div class="artist">
-            <div>
-                {artistName}
+    <div class="row">
+        <div class="info">
+            <div class="title">
+                {#if trackNumber !== null}
+                    <span class="track-number">
+                        {trackNumber}.
+                    </span>
+                {/if}
+                {musicName}
+                {#if musicCodec && musicCodec.toLowerCase() === "flac"}
+                    <span class="codec">
+                        {musicCodec}
+                    </span>
+                {/if}
             </div>
-            {#if musicDuration !== null && musicPlayCount !== null}
+            <div class="artist">
                 <div>
-                    {Math.floor(musicDuration / 60)} min /
-                    {musicPlayCount} plays
+                    {artistName}
                 </div>
-            {/if}
+            </div>
         </div>
+        <button
+            class="icon-button"
+            class:liked={isLiked}
+            on:click={(e) => {
+                e.stopPropagation();
+                onLongPress();
+            }}
+        >
+            {#if isLiked}
+                <Heart />
+            {:else}
+                <MoreVerticalFill />
+            {/if}
+        </button>
     </div>
 </button>
 
 <style lang="scss">
+    .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .icon-button {
+            color: #eee;
+            width: 2.5rem;
+            height: 2.5rem;
+
+            :global(svg) {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+
+            &.liked {
+                :global(svg) {
+                    fill: #a076f1;
+                    color: #a076f1;
+                }
+            }
+
+            @media (hover: hover) {
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+            }
+
+            @media (max-width: 600px) {
+                display: none;
+            }
+        }
+    }
+
     .item {
         color: #eee;
         font-size: 0.8rem;
