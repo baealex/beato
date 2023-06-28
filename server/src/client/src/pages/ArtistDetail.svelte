@@ -33,7 +33,7 @@
 <section>
     {#if artist}
         <div class="artist-name">
-            <Image src={artist.latestAlbum.cover} alt={artist.name} />
+            <Image src={artist.latestAlbum?.cover || ""} alt={artist.name} />
             {artist.name}
         </div>
 
@@ -66,7 +66,7 @@
                 {#each artist.musics as music}
                     <li>
                         <MusicListItem
-                            artistName={music.artist.name}
+                            artistName={music.album.name}
                             albumCover={music.album.cover}
                             albumName={music.album.name}
                             musicName={music.name}

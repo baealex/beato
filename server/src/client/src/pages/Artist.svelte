@@ -23,7 +23,10 @@
                     isOpenDetail = true;
                 }}
             >
-                <Image src={artist.latestAlbum.cover} alt={artist.name} />
+                <Image
+                    src={artist.latestAlbum?.cover || ""}
+                    alt={artist.name}
+                />
                 <div class="info">
                     <div class="name">
                         {artist.name}

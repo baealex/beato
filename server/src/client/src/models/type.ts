@@ -30,7 +30,7 @@ export interface Album {
 export interface Artist {
     id: string;
     name: string;
-    latestAlbum: Album;
+    latestAlbum?: Album;
     albums: Album[];
     albumCount: number;
     musics: Music[];

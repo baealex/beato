@@ -9,7 +9,7 @@ export const artistType = gql`
     type Artist {
         id: ID!
         name: String!
-        latestAlbum: Album!
+        latestAlbum: Album
         albums: [Album!]!
         albumCount: Int!
         musics: [Music!]!

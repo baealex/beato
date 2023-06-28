@@ -70,6 +70,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        gap: 0.5rem;
 
         .icon-button {
             color: #eee;
@@ -123,6 +124,7 @@
         .title {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             gap: 0.25rem;
 
             .track-number {

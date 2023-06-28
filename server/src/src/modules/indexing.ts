@@ -48,6 +48,7 @@ export async function indexingMusic(socket: Socket) {
             } = format;
             const {
                 title = file.split('/').pop().split('.').shift(),
+                albumartist = null,
                 artist = 'unknown',
                 album = 'unknown',
                 picture,
@@ -70,11 +71,25 @@ export async function indexingMusic(socket: Socket) {
                 });
             }
 
+            let $albumArtist = await models.artist.findFirst({
+                where: {
+                    name: albumartist,
+                },
+            });
+
+            if (!$albumArtist) {
+                $albumArtist = await models.artist.create({
+                    data: {
+                        name: albumartist,
+                    },
+                });
+            }
+
             let $album = await models.album.findFirst({
                 where: {
                     name: album,
                     Artist: {
-                        name: artist,
+                        name: albumartist || artist,
                     },
                 },
             });
@@ -87,7 +102,7 @@ export async function indexingMusic(socket: Socket) {
                         publishedYear: year.toString(),
                         Artist: {
                             connect: {
-                                id: $artist.id,
+                                id: albumartist ? $albumArtist.id : $artist.id,
                             },
                         },
                     },
@@ -194,6 +209,11 @@ export async function indexingMusic(socket: Socket) {
             if (!files.includes(music.filePath)) {
                 console.log(`delete music from db... ${music.name}`);
                 socket.emit('sync-music', `delete music from db... ${music.name}`);
+                await models.musicLike.deleteMany({
+                    where: {
+                        musicId: music.id,
+                    },
+                });
                 await models.music.delete({
                     where: {
                         id: music.id,
@@ -223,15 +243,14 @@ export async function indexingMusic(socket: Socket) {
         const $existArtists = await models.artist.findMany({
             include: {
                 Album: {
-                    include: {
-                        Music: true,
-                    },
+                },
+                Music: {
                 },
             },
         });
 
         for (const artist of $existArtists) {
-            if (artist.Album.length === 0) {
+            if (artist.Album.length === 0 && artist.Music.length === 0) {
                 console.log(`delete artist from db... ${artist.name}`);
                 socket.emit('sync-music', `delete artist from db... ${artist.name}`);
                 await models.artist.delete({

@@ -61,7 +61,7 @@
             <li>
                 <MusicListItem
                     trackNumber={music.trackNumber}
-                    artistName={music.album.name}
+                    artistName={music.artist.name}
                     musicName={music.name}
                     musicCodec={music.codec}
                     onClick={() => onClickMusic(music)}
