@@ -5,7 +5,7 @@
 
     import type { Music } from "../models/type";
 
-    import { musics } from "../store/musics";
+    import { musics, musicDetailPanel } from "../store";
 
     export let onClickMusic: (music: Music) => void;
     export let onClickPlayAll: (musics: Music[]) => void;
@@ -52,6 +52,12 @@
                 musicDuration={music.duration}
                 musicPlayCount={music.playCount}
                 onClick={() => onClickMusic(music)}
+                onLongPress={() => {
+                    musicDetailPanel.update(() => ({
+                        isOpen: true,
+                        music,
+                    }));
+                }}
             />
         </li>
     {/each}

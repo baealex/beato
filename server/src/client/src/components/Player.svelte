@@ -26,7 +26,7 @@
     export let onClickNext: () => void;
     export let onClickPrev: () => void;
     export let onClickStop: () => void;
-    export let onClickLike: () => void;
+    export let onClickLike: (music: Music) => void;
     export let onClickNowMusic: (idx: number) => void;
     export let onDeleteNowMusic: (idx: number) => void;
     export let onClickProgress: (e: MouseEvent | TouchEvent) => void;
@@ -245,7 +245,7 @@
                 <button
                     class="icon-button heart"
                     class:like={music.isLiked}
-                    on:click={onClickLike}
+                    on:click={() => onClickLike(music)}
                 >
                     <Heart />
                 </button>

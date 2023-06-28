@@ -5,6 +5,7 @@
     import SiteHeader from "./components/SiteHeader.svelte";
     import Player from "./components/Player.svelte";
     import Loading from "./components/Loading.svelte";
+    import MusicDetailPanel from "./components/MusicDetailPanel.svelte";
     import Music from "./pages/Music.svelte";
     import FavoriteMusic from "./pages/FavoriteMusic.svelte";
     import Album from "./pages/Album.svelte";
@@ -13,7 +14,7 @@
     import ArtistDetail from "./pages/ArtistDetail.svelte";
     import Setting from "./pages/Setting.svelte";
 
-    import { musics, playlist, syncData } from "./store";
+    import { musics, playlist, musicDetailPanel, syncData } from "./store";
 
     import { socket } from "./modules/socket";
     import { toast } from "./modules/ui/toast";
@@ -55,6 +56,9 @@
     };
 
     const requestFile = async (id: string) => {
+        progress = 0;
+        audioElement.pause();
+
         if (savedChunk?.[id]) {
             setAndPlayAudio(savedChunk[id]);
             return;
@@ -95,6 +99,7 @@
                 };
                 $musics = $musics.map(switchLike);
                 $playlist.items = $playlist.items.map(switchLike);
+                $musicDetailPanel.music.isLiked = isLiked;
 
                 if (isLiked) {
                     toast("Added to favorite");
@@ -237,9 +242,8 @@
         toast("Deleted from playlist");
     };
 
-    const handleClickLike = () => {
-        const selectedMusic = $playlist.items[$playlist.selected];
-        socket.emit("like", selectedMusic.id);
+    const handleClickLike = (music: MusicModel) => {
+        socket.emit("like", music.id);
     };
 </script>
 
@@ -305,6 +309,11 @@
             onClickProgress={handleClickProgress}
             onClickNowMusic={handleClickPlaylistMusic}
             onDeleteNowMusic={handleDeletePlaylistMusic}
+        />
+
+        <MusicDetailPanel
+            onClickLike={handleClickLike}
+            onClickAddToQueue={handleClickMusic}
         />
     </Router>
 </main>

@@ -1,6 +1,8 @@
 <script lang="ts">
     import Image from "./Image.svelte";
 
+    import { useLongPress } from "../hooks/useLongPress";
+
     export let albumName: string = null;
     export let albumCover: string = null;
     export let artistName: string;
@@ -10,9 +12,21 @@
     export let musicDuration: number = null;
     export let musicPlayCount: number = null;
     export let onClick: () => void;
+    export let onLongPress: () => void = null;
+
+    const { handleTouchStart, handleTouchEnd } = useLongPress({
+        onClick,
+        onLongPress,
+    });
 </script>
 
-<button class="clickable" on:click={onClick}>
+<button
+    class="clickable item"
+    on:mousedown={handleTouchStart}
+    on:mouseup={handleTouchEnd}
+    on:touchstart={handleTouchStart}
+    on:touchend={handleTouchEnd}
+>
     {#if albumCover !== null}
         <Image class="album-art" alt={albumName} src={albumCover} />
     {/if}
@@ -45,7 +59,7 @@
 </button>
 
 <style lang="scss">
-    button {
+    .item {
         color: #eee;
         font-size: 0.8rem;
         cursor: pointer;

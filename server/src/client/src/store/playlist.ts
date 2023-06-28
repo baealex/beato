@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { Music } from '../models/type';
+import type { Music } from '../models/type';
 
 interface Playlist {
     selected: number | null;

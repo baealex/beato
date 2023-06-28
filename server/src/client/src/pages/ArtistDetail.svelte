@@ -11,6 +11,8 @@
 
     import { getArtist } from "../api";
 
+    import { musicDetailPanel } from "../store";
+
     export let id = "";
     export let onClickMusic: (music: Music) => void = () => {};
 
@@ -66,11 +68,18 @@
                         <MusicListItem
                             artistName={music.artist.name}
                             albumCover={music.album.cover}
+                            albumName={music.album.name}
                             musicName={music.name}
                             musicCodec={music.codec}
                             musicDuration={music.duration}
                             musicPlayCount={music.playCount}
                             onClick={() => onClickMusic(music)}
+                            onLongPress={() => {
+                                musicDetailPanel.update(() => ({
+                                    isOpen: true,
+                                    music,
+                                }));
+                            }}
                         />
                     </li>
                 {/each}

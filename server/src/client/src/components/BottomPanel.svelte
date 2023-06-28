@@ -1,12 +1,16 @@
 <script lang="ts">
     export let isOpen = false;
+    export let onClose: () => void = null;
 </script>
 
 <div class="wrapper" class:open={isOpen}>
     <button
         class="clickable backdrop"
         class:open={isOpen}
-        on:click={() => (isOpen = false)}
+        on:click={() => {
+            isOpen = false;
+            onClose?.();
+        }}
     />
     <div class="bottom-panel" class:open={isOpen}>
         <slot />
@@ -42,7 +46,7 @@
     .bottom-panel {
         width: 100%;
         height: fit-content;
-        padding: 32px 16px;
+        padding: 32px 16px 16px;
         border-radius: 16px 16px 0 0;
         background-color: #151515;
         z-index: 100;

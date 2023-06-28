@@ -6,7 +6,10 @@
     import Play from "../icons/Play.svelte";
 
     import type { Album, Music } from "../models/type";
+
     import { getAlbum } from "../api";
+
+    import { musicDetailPanel } from "../store";
 
     export let id = "";
     export let onClickMusic: (music: Music) => void;
@@ -64,6 +67,12 @@
                     musicDuration={music.duration}
                     musicPlayCount={music.playCount}
                     onClick={() => onClickMusic(music)}
+                    onLongPress={() => {
+                        musicDetailPanel.update(() => ({
+                            isOpen: true,
+                            music,
+                        }));
+                    }}
                 />
             </li>
         {/each}
