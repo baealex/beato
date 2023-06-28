@@ -1,7 +1,7 @@
 @keyframes toast-slide {
     0% {
         opacity: 0;
-        transform: translate(-50%, 100%);
+        transform: translate(-50%, -100%);
     }
 
     10% {
@@ -16,7 +16,7 @@
 
     100% {
         opacity: 0;
-        transform: translate(-50%, 100%);
+        transform: translate(-50%, -100%);
     }
 }
 
@@ -32,12 +32,13 @@
     width: 400px;
     border-radius: 16px;
     max-width: 100%;
-    bottom: 80px + 4px;
+    top: 16px;
     left: 50%;
     padding: 16px;
     color: #fff;
     text-align: center;
-    background: #222;
+    background: #735af2;
+    box-shadow: 0 16px 16px rgba(115, 90, 242, .3);
     transform: translate(-50%, 100%);
     animation: toast-slide 4s ease 1;
 }

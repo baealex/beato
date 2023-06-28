@@ -100,12 +100,6 @@
                 $musics = $musics.map(switchLike);
                 $playlist.items = $playlist.items.map(switchLike);
                 $musicDetailPanel.music.isLiked = isLiked;
-
-                if (isLiked) {
-                    toast("Added to favorite");
-                } else {
-                    toast("Removed from favorite");
-                }
             }
         );
 
@@ -238,8 +232,6 @@
         if ($playlist.items.length === 0) {
             handleClickStop();
         }
-
-        toast("Deleted from playlist");
     };
 
     const handleClickLike = (music: MusicModel) => {

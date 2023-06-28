@@ -14,7 +14,7 @@
     export let onClick: () => void;
     export let onLongPress: () => void = null;
 
-    const { handleTouchStart, handleTouchEnd } = useLongPress({
+    const { handleTouchStart, handleTouchMove, handleTouchEnd } = useLongPress({
         onClick,
         onLongPress,
     });
@@ -24,8 +24,7 @@
     class="clickable item"
     on:mousedown={handleTouchStart}
     on:mouseup={handleTouchEnd}
-    on:touchstart={handleTouchStart}
-    on:touchend={handleTouchEnd}
+    on:touchmove={handleTouchMove}
 >
     {#if albumCover !== null}
         <Image class="album-art" alt={albumName} src={albumCover} />
