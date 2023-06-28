@@ -2,14 +2,16 @@
     import { onMount } from "svelte";
 
     import Image from "../components/Image.svelte";
+    import MusicListItem from "../components/MusicListItem.svelte";
     import Play from "../icons/Play.svelte";
 
     import type { Album, Music } from "../models/type";
     import { getAlbum } from "../api";
 
     export let id = "";
-    let album: Album = null;
     export let onClickMusic: (music: Music) => void;
+
+    let album: Album = null;
 
     onMount(async () => {
         if (!id) {
@@ -43,24 +45,24 @@
         </div>
     </div>
 {/if}
-<ul>
-    {#if album?.musics}
+
+{#if album?.musics}
+    <ul>
         {#each album.musics as music}
             <li>
-                <button class="clickable" on:click={() => onClickMusic(music)}>
-                    <div class="info">
-                        <div class="title">
-                            {music.trackNumber}. {music.name}
-                        </div>
-                        <div class="artist">
-                            {music.artist.name}
-                        </div>
-                    </div>
-                </button>
+                <MusicListItem
+                    trackNumber={music.trackNumber}
+                    artistName={music.album.name}
+                    musicName={music.name}
+                    musicCodec={music.codec}
+                    musicDuration={music.duration}
+                    musicPlayCount={music.playCount}
+                    onClick={() => onClickMusic(music)}
+                />
             </li>
         {/each}
-    {/if}
-</ul>
+    </ul>
+{/if}
 
 <style lang="scss">
     .album {
@@ -80,7 +82,7 @@
         }
 
         .album-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: bold;
         }
 
@@ -123,24 +125,6 @@
         padding: 0;
         width: 100%;
         list-style: none;
-
-        li {
-            button {
-                color: #eee;
-                font-size: 0.8rem;
-                cursor: pointer;
-                padding: 1rem;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 0.5rem;
-
-                @media (hover: hover) {
-                    &:hover {
-                        background-color: rgba(255, 255, 255, 0.1);
-                    }
-                }
-            }
-        }
+        margin-top: 1.75rem;
     }
 </style>

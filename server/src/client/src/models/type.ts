@@ -20,6 +20,7 @@ export interface Album {
     id: string;
     name: string;
     cover: string;
+    publishedYear: string;
     artist: {
         name: string;
     };

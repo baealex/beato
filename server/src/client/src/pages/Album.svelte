@@ -1,7 +1,7 @@
 <script lang="ts">
-    import SubPage from "../components/SubPage.svelte";
-    import Image from "../components/Image.svelte";
     import AlbumDetail from "./AlbumDetail.svelte";
+    import SubPage from "../components/SubPage.svelte";
+    import AlbumListItem from "../components/AlbumListItem.svelte";
 
     import type { Music } from "../models/type";
 
@@ -14,21 +14,15 @@
 
 <div class="grid">
     {#each $albums as album}
-        <button
-            class="clickable item"
-            on:click={() => {
+        <AlbumListItem
+            onClick={() => {
                 selectedId = album.id;
                 isOpenDetail = true;
             }}
-        >
-            <Image class="album-cover" src={album.cover} alt={album.name} />
-            <div class="album-title">
-                {album.name}
-            </div>
-            <div class="album-artist">
-                {album.artist.name}
-            </div>
-        </button>
+            albumName={album.name}
+            albumCover={album.cover}
+            artistName={album.artist.name}
+        />
     {/each}
 </div>
 
@@ -40,68 +34,20 @@
     }}
 >
     {#if selectedId}
-        <AlbumDetail id={String(selectedId)} {onClickMusic} />
+        <AlbumDetail id={selectedId} {onClickMusic} />
     {/if}
 </SubPage>
 
 <style lang="scss">
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         grid-gap: 1rem;
-        list-style: none;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         padding: 1rem;
+        list-style: none;
 
         @media (max-width: 600px) {
             grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        :global(a) {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            border-radius: 0.5rem;
-            background-color: #111111;
-            transition: background-color 0.2s ease-in-out;
-            overflow: hidden;
-            padding-bottom: 0.5rem;
-
-            @media (hover: hover) {
-                &:hover {
-                    background-color: #222222;
-                }
-            }
-
-            :global(.album-cover) {
-                width: 100%;
-                height: auto;
-                border-radius: 0.5rem;
-                padding-bottom: 0.5rem;
-            }
-
-            .album-title {
-                width: 100%;
-                padding: 0 0.5rem;
-                font-size: 1.2rem;
-                font-weight: bold;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-
-            .album-artist {
-                padding: 0 0.5rem;
-                font-size: 1rem;
-                color: #aaaaaa;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
         }
     }
 </style>

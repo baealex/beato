@@ -1,48 +1,29 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
+    import AlbumDetail from "./AlbumDetail.svelte";
     import Image from "../components/Image.svelte";
     import SubPage from "../components/SubPage.svelte";
-    import AlbumDetail from "./AlbumDetail.svelte";
+    import MusicListItem from "../components/MusicListItem.svelte";
+    import AlbumListItem from "../components/AlbumListItem.svelte";
 
     import type { Artist, Music } from "../models/type";
 
-    import { graphQLRequest } from "../api";
+    import { getArtist } from "../api";
 
     export let id = "";
+    export let onClickMusic: (music: Music) => void = () => {};
+
     let artist: Artist = null;
     let selectedId: string | null = null;
     let isOpenDetail = false;
-    export let onClickMusic: (music: Music) => void = () => {};
 
     onMount(async () => {
         if (!id) {
             return;
         }
 
-        const { data } = await graphQLRequest<"artist", Artist>(`
-            query {
-                artist(id: "${id}") {
-                    id name
-                    latestAlbum {
-                        cover
-                    }
-                    albums {
-                        id name cover
-                    }
-                    musics {
-                        id name filePath duration trackNumber
-                        artist {
-                            name
-                        }
-                        album {
-                            name cover
-                        }
-                    }
-                }
-            }
-        `);
-
+        const { data } = await getArtist(id);
         artist = data.artist;
     });
 </script>
@@ -54,53 +35,42 @@
             {artist.name}
         </div>
 
-        <div class="section-title">Albums ({artist.albums.length})</div>
-        <div class="artist-albums">
+        <div class="section-title">
+            Albums ({artist.albums.length})
+        </div>
+        <div class="albums">
             <ul>
                 {#each artist.albums as album}
                     <li>
-                        <button
-                            class="clickable"
-                            on:click={() => {
+                        <AlbumListItem
+                            albumCover={album.cover}
+                            albumName={album.name}
+                            onClick={() => {
                                 selectedId = album.id;
                                 isOpenDetail = true;
                             }}
-                        >
-                            <Image src={album.cover} alt={album.name} />
-                            <div class="info">
-                                <div class="name">
-                                    {album.name}
-                                </div>
-                            </div>
-                        </button>
+                        />
                     </li>
                 {/each}
             </ul>
         </div>
 
-        <div class="section-title">Songs ({artist.musics.length})</div>
-        <div class="artist-musics">
+        <div class="section-title">
+            Songs ({artist.musics.length})
+        </div>
+        <div class="musics">
             <ul>
                 {#each artist.musics as music}
                     <li>
-                        <button
-                            class="clickable"
-                            on:click={() => onClickMusic(music)}
-                        >
-                            <Image
-                                class="album-art"
-                                src={music.album.cover}
-                                alt={music.album.name}
-                            />
-                            <div class="info">
-                                <div class="title">
-                                    {music.name}
-                                </div>
-                                <div class="artist">
-                                    {music.album.name}
-                                </div>
-                            </div>
-                        </button>
+                        <MusicListItem
+                            artistName={music.artist.name}
+                            albumCover={music.album.cover}
+                            musicName={music.name}
+                            musicCodec={music.codec}
+                            musicDuration={music.duration}
+                            musicPlayCount={music.playCount}
+                            onClick={() => onClickMusic(music)}
+                        />
                     </li>
                 {/each}
             </ul>
@@ -131,8 +101,8 @@
             margin: 3rem 0;
 
             :global(img) {
-                width: 5rem;
-                height: 5rem;
+                width: 150px;
+                height: 150px;
                 object-fit: cover;
                 border-radius: 50%;
                 margin-bottom: 1rem;
@@ -146,50 +116,28 @@
             border-bottom: 1px solid #222;
         }
 
-        .artist-albums {
+        .albums {
             padding: 0 1rem 1rem 1rem;
             margin-bottom: 3rem;
 
             ul {
-                list-style: none;
-                padding: 0;
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
                 grid-gap: 1rem;
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                padding: 0;
+                list-style: none;
 
-                li {
-                    :global(img) {
-                        width: 100%;
-                        max-height: 100%;
-                        object-fit: cover;
-                    }
-
-                    .info {
-                        margin-top: 0.5rem;
-                    }
+                @media (max-width: 600px) {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
             }
         }
 
-        .artist-musics {
+        .musics {
             ul {
                 margin: 0;
                 padding: 0;
                 list-style: none;
-
-                li button {
-                    padding: 1rem;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    gap: 0.5rem;
-
-                    @media (hover: hover) {
-                        &:hover {
-                            background-color: rgba(255, 255, 255, 0.1);
-                        }
-                    }
-                }
             }
         }
     }

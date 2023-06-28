@@ -7,9 +7,10 @@
 
     import { artists } from "../store";
 
+    export let onClickMusic: (music: Music) => void;
+
     let selectedId: string | null = null;
     let isOpenDetail = false;
-    export let onClickMusic: (music: Music) => void;
 </script>
 
 <ul>

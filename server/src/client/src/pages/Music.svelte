@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Image from "../components/Image.svelte";
+    import MusicListItem from "../components/MusicListItem.svelte";
     import Shuffle from "../icons/Shuffle.svelte";
     import Play from "../icons/Play.svelte";
 
@@ -43,32 +43,16 @@
 <ul aria-label="Music List">
     {#each visibleMusics as music}
         <li>
-            <button class="clickable" on:click={() => onClickMusic(music)}>
-                <Image
-                    class="album-art"
-                    alt={music.album.name}
-                    src={music.album.cover}
-                />
-                <div class="info">
-                    <div class="title">
-                        {music.name}
-                        {#if music.codec.toLowerCase() === "flac"}
-                            <span class="codec">
-                                {music.codec}
-                            </span>
-                        {/if}
-                    </div>
-                    <div class="artist">
-                        <div>
-                            {music.artist.name}
-                        </div>
-                        <div>
-                            {Math.floor(music.duration / 60)} min /
-                            {music.playCount} plays
-                        </div>
-                    </div>
-                </div>
-            </button>
+            <MusicListItem
+                albumName={music.album.name}
+                albumCover={music.album.cover}
+                artistName={music.artist.name}
+                musicName={music.name}
+                musicCodec={music.codec}
+                musicDuration={music.duration}
+                musicPlayCount={music.playCount}
+                onClick={() => onClickMusic(music)}
+            />
         </li>
     {/each}
 </ul>
@@ -134,47 +118,5 @@
         padding: 0;
         width: 100%;
         list-style: none;
-
-        li {
-            button {
-                color: #eee;
-                font-size: 0.8rem;
-                cursor: pointer;
-                padding: 1rem;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 0.5rem;
-                width: 100%;
-
-                @media (hover: hover) {
-                    &:hover {
-                        background-color: rgba(255, 255, 255, 0.1);
-                    }
-                }
-            }
-
-            .artist {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                flex-wrap: wrap;
-            }
-
-            .title {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-
-                .codec {
-                    border: 1px solid #333;
-                    color: #eee;
-                    padding: 0.1rem 0.5rem;
-                    border-radius: 0.5rem;
-                    font-size: 0.6rem;
-                    font-weight: 400;
-                }
-            }
-        }
     }
 </style>
