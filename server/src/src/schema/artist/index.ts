@@ -60,12 +60,18 @@ export const artistResolvers: IResolvers = {
         albums: (artist: Artist) => models.album.findMany({
             where: {
                 artistId: artist.id,
-            }
+            },
+            orderBy: {
+                publishedYear: 'desc',
+            },
         }),
         musics: (artist: Artist) => models.music.findMany({
             where: {
                 artistId: artist.id,
-            }
+            },
+            orderBy: {
+                playCount: 'desc',
+            },
         }),
         albumCount: (artist: Artist) => models.album.count({
             where: {

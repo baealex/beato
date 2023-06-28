@@ -34,7 +34,11 @@ export const albumTypeDefs = `
 
 export const albumResolvers: IResolvers = {
     Query: {
-        allAlbums: models.album.findMany,
+        allAlbums: () => models.album.findMany({
+            orderBy: {
+                name: 'asc',
+            },
+        }),
         album: (_, { id }: Album) => models.album.findUnique({
             where: {
                 id: Number(id),
