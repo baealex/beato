@@ -386,8 +386,6 @@
                 width: calc(100% - 45px - 0.5rem);
 
                 .title {
-                    font-size: 0.875rem;
-                    font-weight: 600;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
