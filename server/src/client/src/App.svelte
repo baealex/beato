@@ -132,9 +132,9 @@
     const handleClickMusic = (music: MusicModel) => {
         if (!$playlist.items.map((item) => item.id).includes(music.id)) {
             $playlist.items = [...$playlist.items, music];
-            toast("Added to end of playlist");
+            toast("Added to queue");
         } else {
-            toast("Already added to playlist");
+            toast("Already added to queue");
         }
 
         if ($playlist.selected === null) {

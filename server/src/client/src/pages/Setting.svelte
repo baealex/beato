@@ -34,7 +34,7 @@
 <div class="continer">
     <h1>Setting</h1>
     <section>
-        <p>Indexing music from your server :</p>
+        <p>Sync music from your server :</p>
         <button on:click={handleClickSyncMusic}>Start</button>
     </section>
 

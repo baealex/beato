@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { onDestroy, onMount } from "svelte";
+
     import AlbumDetail from "./AlbumDetail.svelte";
     import SubPage from "../components/SubPage.svelte";
     import AlbumListItem from "../components/AlbumListItem.svelte";
@@ -7,13 +9,38 @@
 
     import { albums } from "../store";
 
+    export let onClickMusic: (music: Music) => void;
+
     let selectedId: string | null = null;
     let isOpenDetail = false;
-    export let onClickMusic: (music: Music) => void;
+
+    let event: NodeJS.Timeout;
+    let page = 1;
+    let perPage = 40;
+    let lastPage = Math.ceil($albums.length / perPage);
+
+    onMount(() => {
+        albums.subscribe((value) => {
+            lastPage = Math.ceil(value.length / perPage);
+            event = setInterval(() => {
+                if (page < lastPage) {
+                    page++;
+                } else {
+                    clearInterval(event);
+                }
+            }, 100);
+        });
+    });
+
+    onDestroy(() => {
+        clearInterval(event);
+    });
+
+    $: visibleAlbums = $albums.slice(0, page * perPage);
 </script>
 
 <div class="grid">
-    {#each $albums as album}
+    {#each visibleAlbums as album}
         <AlbumListItem
             onClick={() => {
                 selectedId = album.id;
