@@ -17,6 +17,8 @@
 
     import { getImage } from "../modules/image";
 
+    import { musicDetailPanel } from "../store";
+
     export let music: Music;
     export let audioElement: HTMLAudioElement;
     export let progress: number;
@@ -33,7 +35,6 @@
 
     let isOpenDetailPanel = false;
     let isOpenDetail = false;
-    let isOpenMenu = false;
     let isOpenNow = false;
 
     $: totalTime = `${Math.floor(music?.duration / 60) | 0}:${(
@@ -217,7 +218,12 @@
             <div class="action">
                 <button
                     class="icon-button fill"
-                    on:click={() => (isOpenMenu = true)}
+                    on:click={() => {
+                        musicDetailPanel.update(() => ({
+                            isOpen: true,
+                            music,
+                        }));
+                    }}
                 >
                     <MoreVerticalFill />
                 </button>
@@ -286,10 +292,6 @@
                 </div>
             </button>
         </div>
-    </BottomPanel>
-
-    <BottomPanel bind:isOpen={isOpenMenu}>
-        <div>Work in Progress</div>
     </BottomPanel>
 {/if}
 

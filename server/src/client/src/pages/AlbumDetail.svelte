@@ -64,8 +64,6 @@
                     artistName={music.album.name}
                     musicName={music.name}
                     musicCodec={music.codec}
-                    musicDuration={music.duration}
-                    musicPlayCount={music.playCount}
                     onClick={() => onClickMusic(music)}
                     onLongPress={() => {
                         musicDetailPanel.update(() => ({
