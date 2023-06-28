@@ -57,6 +57,9 @@ export const albumResolvers: IResolvers = {
                     id: album.id,
                 },
             },
+            orderBy: {
+                trackNumber: 'asc',
+            },
         }),
     },
 };
