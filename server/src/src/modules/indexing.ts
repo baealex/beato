@@ -71,18 +71,22 @@ export async function indexingMusic(socket: Socket) {
                 });
             }
 
-            let $albumArtist = await models.artist.findFirst({
-                where: {
-                    name: albumartist,
-                },
-            });
+            let $albumArtist = null;
 
-            if (!$albumArtist) {
-                $albumArtist = await models.artist.create({
-                    data: {
+            if (albumartist) {
+                $albumArtist = await models.artist.findFirst({
+                    where: {
                         name: albumartist,
                     },
                 });
+
+                if (!$albumArtist) {
+                    $albumArtist = await models.artist.create({
+                        data: {
+                            name: albumartist,
+                        },
+                    });
+                }
             }
 
             let $album = await models.album.findFirst({
@@ -118,7 +122,10 @@ export async function indexingMusic(socket: Socket) {
                 }
                 const fileName = $album.id + '.jpg';
                 const savePath = path.join(cachePath, fileName);
-                if (!fs.existsSync(savePath)) {
+                if (
+                    !fs.existsSync(savePath) ||
+                    fs.readFileSync(savePath).toString() !== picture[0].data.toString()
+                ) {
                     fs.writeFileSync(savePath, picture[0].data);
                 }
                 coverPath = '/cache/' + fileName;
@@ -203,7 +210,7 @@ export async function indexingMusic(socket: Socket) {
             }
         }
 
-        $existMusics = await models.music.findMany({});
+        $existMusics = await models.music.findMany();
 
         for (const music of $existMusics) {
             if (!files.includes(music.filePath)) {
@@ -242,10 +249,8 @@ export async function indexingMusic(socket: Socket) {
 
         const $existArtists = await models.artist.findMany({
             include: {
-                Album: {
-                },
-                Music: {
-                },
+                Album: {},
+                Music: {},
             },
         });
 
