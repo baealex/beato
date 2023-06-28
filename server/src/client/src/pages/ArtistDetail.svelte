@@ -45,6 +45,7 @@
                         <AlbumListItem
                             albumCover={album.cover}
                             albumName={album.name}
+                            artistName={album.publishedYear}
                             onClick={() => {
                                 selectedId = album.id;
                                 isOpenDetail = true;

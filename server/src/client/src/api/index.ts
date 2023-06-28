@@ -56,7 +56,7 @@ export function getArtist(id: string) {
                     cover
                 }
                 albums {
-                    id name cover
+                    id name cover publishedYear
                 }
                 musics {
                     id name filePath codec duration playCount isLiked
@@ -64,7 +64,7 @@ export function getArtist(id: string) {
                         id name
                     }
                     album {
-                        id name cover
+                        id name cover publishedYear
                     }
                 }
             }
@@ -89,7 +89,7 @@ export function getAlbum(id: string) {
     return graphQLRequest<"album", Album>(`
         query {
             album(id: "${id}") {
-                id name cover
+                id name cover publishedYear
                 artist {
                     id name
                 }

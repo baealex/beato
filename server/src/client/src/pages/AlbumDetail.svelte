@@ -29,8 +29,14 @@
         <div class="album-title">
             {album.name}
         </div>
-        <div class="album-artist">
-            {album.artist.name}
+        <div class="row">
+            <div class="album-artist">
+                {album.artist.name}
+            </div>
+            <span>-</span>
+            <div class="album-year">
+                {album.publishedYear}
+            </div>
         </div>
         <div class="play-all">
             <button
@@ -71,7 +77,7 @@
         flex-direction: column;
         align-items: center;
         gap: 1rem;
-        padding: 1rem;
+        padding: 2rem 1rem;
         background-color: rgba(255, 255, 255, 0.069);
         border-radius: 0.5rem;
 
@@ -86,8 +92,24 @@
             font-weight: bold;
         }
 
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            & > span {
+                font-size: 0.875rem;
+                color: #aaa;
+            }
+        }
+
         .album-artist {
-            font-size: 1rem;
+            font-size: 0.875rem;
+            color: #aaa;
+        }
+
+        .album-year {
+            font-size: 0.875rem;
             color: #aaa;
         }
 
