@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import { Router, Route } from "svelte-routing";
 
     import SiteHeader from "./components/SiteHeader.svelte";
@@ -26,7 +26,7 @@
         [key: string]: Buffer[];
     } = {};
     let playing = false;
-    let volume = 0.5;
+    let volume = 1;
     let progress = 0;
     let countFlag = false;
     let isLoading = false;
@@ -74,7 +74,15 @@
 
         socket.on(
             "audio",
-            async ({ id, chunk }: { id: string; chunk: Buffer | "end" }) => {
+            async ({
+                id,
+                part,
+                chunk,
+            }: {
+                id: string;
+                part: number;
+                chunk: Buffer | "end";
+            }) => {
                 if (chunk === "end") {
                     if ($playlist.items[$playlist.selected].id === id) {
                         setAndPlayAudio(savedChunk[id]);
@@ -84,7 +92,7 @@
                 if (!savedChunk?.[id]) {
                     savedChunk[id] = [];
                 }
-                savedChunk[id].push(chunk);
+                savedChunk[id][part] = chunk;
             }
         );
 
@@ -127,6 +135,11 @@
                 socket.emit("count", $playlist.items[$playlist.selected].id);
             }
         });
+    });
+
+    onDestroy(() => {
+        socket.off("audio");
+        socket.off("like");
     });
 
     const handleClickMusic = (music: MusicModel) => {

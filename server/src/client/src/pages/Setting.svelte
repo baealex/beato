@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onDestroy, onMount } from "svelte";
     import Loading from "../components/Loading.svelte";
 
     import { socket } from "../modules/socket";
@@ -13,21 +14,27 @@
         socket.emit("sync-music");
     };
 
-    socket.on("sync-music", (serverMessage: string | "done" | "error") => {
-        if (serverMessage === "done" || serverMessage === "error") {
-            message = "Almost done..!";
-            syncData(() => {
-                isLoading = false;
-                if (serverMessage === "done") {
-                    toast("Done syncing music");
-                } else if (serverMessage === "error") {
-                    toast("Error syncing music");
-                }
-            });
-            return;
-        }
+    onMount(() => {
+        socket.on("sync-music", (serverMessage: string | "done" | "error") => {
+            if (serverMessage === "done" || serverMessage === "error") {
+                message = "Almost done..!";
+                syncData(() => {
+                    isLoading = false;
+                    if (serverMessage === "done") {
+                        toast("Done syncing music");
+                    } else if (serverMessage === "error") {
+                        toast("Error syncing music");
+                    }
+                });
+                return;
+            }
 
-        message = serverMessage;
+            message = serverMessage;
+        });
+    });
+
+    onDestroy(() => {
+        socket.off("sync-music");
     });
 </script>
 

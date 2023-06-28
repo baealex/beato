@@ -37,9 +37,11 @@ export const socketManager = (socket: Socket) => {
         if (fs.existsSync(path.resolve('./music', $music.filePath))) {
             stream = fs.createReadStream(path.resolve('./music', $music.filePath));
             console.log(`${socket.id}: stream start [${$music.name}]`);
+            let count = 0;
             stream.on('data', (chunk) => {
                 socket.emit('audio', {
                     id: $music.id.toString(),
+                    part: count++,
                     chunk,
                 });
             });
