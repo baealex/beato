@@ -8,8 +8,8 @@
     import { musics } from "../store/musics";
 
     export let onClickMusic: (music: Music) => void;
-    export let onClickPlayAll: () => void;
-    export let onClickPlayShuffle: () => void;
+    export let onClickPlayAll: (musics: Music[]) => void;
+    export let onClickPlayShuffle: (musics: Music[]) => void;
 
     let search = "";
 
@@ -30,11 +30,11 @@
         />
     </div>
     <div class="buttons">
-        <button on:click={onClickPlayAll}>
+        <button on:click={() => onClickPlayAll(visibleMusics)}>
             <Play />
             Play All
         </button>
-        <button on:click={onClickPlayShuffle}>
+        <button on:click={() => onClickPlayShuffle(visibleMusics)}>
             <Shuffle />
             Shuffle
         </button>

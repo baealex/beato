@@ -144,14 +144,14 @@
         }
     };
 
-    const handleClickPlayAll = () => {
+    const handleClickPlayAll = (musics: MusicModel[]) => {
         $playlist.selected = 0;
-        $playlist.items = [...$musics];
+        $playlist.items = [...musics];
         handleClickPlaylistMusic(0);
     };
 
-    const handleClickPlayShuffle = () => {
-        const copyMusics = [...$musics];
+    const handleClickPlayShuffle = (musics: MusicModel[]) => {
+        const copyMusics = [...musics];
         const shuffleMusics = [];
         while (copyMusics.length > 0) {
             const randomIndex = Math.floor(Math.random() * copyMusics.length);
