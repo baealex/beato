@@ -19,7 +19,7 @@
     import { socket } from "./modules/socket";
     import { toast } from "./modules/ui/toast";
 
-    import type { Music as MusicModel } from "./models/type";
+    import type { Music as MusicModel, RepeatMode } from "./models/type";
 
     let audioElement: HTMLAudioElement;
     let savedChunk: {
@@ -30,6 +30,7 @@
     let progress = 0;
     let countFlag = false;
     let isLoading = false;
+    let repeatMode: RepeatMode = "no";
 
     $: {
         if ($playlist.items[$playlist.selected]) {
@@ -45,22 +46,18 @@
         }
     }
 
-    const setAndPlayAudio = async (chunks: Buffer[]) => {
+    const setAudio = async (chunks: Buffer[]) => {
         audioElement.src = URL.createObjectURL(
             new Blob(chunks, { type: "audio/mpeg" })
         );
-        playing = true;
-        countFlag = true;
-        await audioElement.play();
-        audioElement.onended = playNext;
     };
 
     const requestFile = async (id: string) => {
-        progress = 0;
+        audioElement.currentTime = 0;
         audioElement.pause();
 
         if (savedChunk?.[id]) {
-            setAndPlayAudio(savedChunk[id]);
+            setAudio(savedChunk[id]);
             return;
         }
         socket.emit("file", id);
@@ -85,7 +82,7 @@
             }) => {
                 if (chunk === "end") {
                     if ($playlist.items[$playlist.selected].id === id) {
-                        setAndPlayAudio(savedChunk[id]);
+                        setAudio(savedChunk[id]);
                     }
                     return;
                 }
@@ -135,6 +132,41 @@
                 socket.emit("count", $playlist.items[$playlist.selected].id);
             }
         });
+
+        audioElement.addEventListener("ended", () => {
+            if (repeatMode === "one") {
+                playAgain();
+                return;
+            }
+            if (repeatMode === "all") {
+                playNext();
+                return;
+            }
+            if (repeatMode === "no") {
+                if ($playlist.selected === $playlist.items.length - 1) {
+                    audioElement.currentTime = 0;
+                    return;
+                }
+                playNext();
+                return;
+            }
+        });
+
+        audioElement.addEventListener("error", () => {
+            toast("Failed to load audio");
+        });
+
+        audioElement.addEventListener("loadeddata", () => {
+            audioElement.play();
+        });
+
+        audioElement.addEventListener("play", () => {
+            playing = true;
+        });
+
+        audioElement.addEventListener("pause", () => {
+            playing = false;
+        });
     });
 
     onDestroy(() => {
@@ -176,6 +208,10 @@
         handleClickPlaylistMusic(0);
     };
 
+    const playAgain = () => {
+        requestFile($playlist.items[$playlist.selected].id);
+    };
+
     const playNext = () => {
         $playlist.selected = $playlist.selected + 1;
         if ($playlist.selected >= $playlist.items.length) {
@@ -185,6 +221,10 @@
     };
 
     const playPrev = () => {
+        if (audioElement.currentTime > 10) {
+            audioElement.currentTime = 0;
+            return;
+        }
         $playlist.selected = $playlist.selected - 1;
         if ($playlist.selected < 0) {
             $playlist.selected = $playlist.items.length - 1;
@@ -305,6 +345,7 @@
             bind:playing
             bind:volume
             bind:progress
+            bind:repeatMode
             music={$playlist.items[$playlist.selected]}
             onClickPlay={handleClickPlay}
             onClickStop={handleClickStop}

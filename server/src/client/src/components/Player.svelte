@@ -11,19 +11,22 @@
     import Cross from "../icons/Cross.svelte";
     import Menu from "../icons/Menu.svelte";
     import Heart from "../icons/Heart.svelte";
-    import MoreVerticalFill from "../icons/MoreVerticalFill.svelte";
 
-    import type { Music } from "../models/type";
+    import type { Music, RepeatMode } from "../models/type";
 
     import { getImage } from "../modules/image";
 
-    import { musicDetailPanel } from "../store";
+    import ArrowRepaet from "../icons/ArrowRepaet.svelte";
+    import Infinite from "../icons/Infinite.svelte";
+    import Shuffle from "../icons/Shuffle.svelte";
+    import RightLeft from "../icons/RightLeft.svelte";
 
     export let music: Music;
     export let audioElement: HTMLAudioElement;
     export let progress: number;
     export let playing: boolean;
     export let volume: number;
+    export let repeatMode: RepeatMode;
     export let onClickPlay: () => void;
     export let onClickNext: () => void;
     export let onClickPrev: () => void;
@@ -219,13 +222,26 @@
                 <button
                     class="icon-button fill"
                     on:click={() => {
-                        musicDetailPanel.update(() => ({
-                            isOpen: true,
-                            music,
-                        }));
+                        switch (repeatMode) {
+                            case "no":
+                                repeatMode = "all";
+                                break;
+                            case "all":
+                                repeatMode = "one";
+                                break;
+                            case "one":
+                                repeatMode = "no";
+                                break;
+                        }
                     }}
                 >
-                    <MoreVerticalFill />
+                    {#if repeatMode === "no"}
+                        <RightLeft />
+                    {:else if repeatMode === "all"}
+                        <ArrowRepaet />
+                    {:else if repeatMode === "one"}
+                        <Infinite />
+                    {/if}
                 </button>
                 <div>
                     <button

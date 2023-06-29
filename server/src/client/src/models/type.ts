@@ -36,3 +36,5 @@ export interface Artist {
     musics: Music[];
     musicCount: number;
 }
+
+export type RepeatMode = "no" | "one" | "all";
