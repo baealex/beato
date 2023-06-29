@@ -56,7 +56,6 @@
             class="search"
             type="text"
             placeholder="Search"
-            disabled={page < lastPage}
             bind:value={search}
         />
     </div>
