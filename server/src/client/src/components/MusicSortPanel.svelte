@@ -126,7 +126,7 @@
                 Artist (Z-A)
             </button>
         </li>
-        <li class:active={latestSort === "albumAsc"}>
+        <li class:active={latestSort === "createdAtAsc"}>
             <button
                 class="clickable item"
                 on:click={() => {
@@ -144,7 +144,7 @@
                 Date Added (Old-New)
             </button>
         </li>
-        <li class:active={latestSort === "albumDesc"}>
+        <li class:active={latestSort === "createdAtDesc"}>
             <button
                 class="clickable item"
                 on:click={() => {
