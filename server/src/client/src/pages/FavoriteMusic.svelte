@@ -7,7 +7,8 @@
 
     import type { Music } from "../models/type";
 
-    import { musics, musicDetailPanel } from "../store";
+    import { musics, musicDetailPanel, musicSortPanel } from "../store";
+    import Sort from "../icons/Sort.svelte";
 
     export let onClickMusic: (music: Music) => void;
     export let onClickPlayAll: (musics: Music[]) => void;
@@ -67,6 +68,9 @@
         <button on:click={() => onClickPlayShuffle(visibleMusics)}>
             <Shuffle />
             Shuffle
+        </button>
+        <button on:click={() => ($musicSortPanel.isOpen = true)}>
+            <Sort />
         </button>
     </div>
 </div>

@@ -17,6 +17,7 @@ export const musicType = gql`
         trackNumber: Int!
         filePath: String!
         isLiked: Boolean!
+        createdAt: String!
         artist: Artist!
         album: Album!
         genres: [Genre!]!

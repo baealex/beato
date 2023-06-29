@@ -22,7 +22,7 @@ export function getMusics() {
     return graphQLRequest<"allMusics", Music[]>(`
         query {
             allMusics {
-                id name filePath codec duration playCount isLiked
+                id name filePath codec duration playCount isLiked createdAt
                 artist {
                     id name
                 }

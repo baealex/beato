@@ -20,6 +20,7 @@
     import { toast } from "./modules/ui/toast";
 
     import type { Music as MusicModel, RepeatMode } from "./models/type";
+    import MusicSortPanel from "./components/MusicSortPanel.svelte";
 
     let audioElement: HTMLAudioElement;
     let savedChunk: Map<string, Buffer[]> = new Map();
@@ -359,5 +360,7 @@
             onClickLike={handleClickLike}
             onClickAddToQueue={handleClickMusic}
         />
+
+        <MusicSortPanel />
     </Router>
 </main>
