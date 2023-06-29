@@ -28,8 +28,8 @@
     let playing = false;
     let volume = 1;
     let progress = 0;
-    let countFlag = false;
     let isLoading = false;
+    let shouldCount = false;
     let repeatMode: RepeatMode = "no";
 
     $: {
@@ -55,6 +55,7 @@
     const requestFile = async (id: string) => {
         audioElement.currentTime = 0;
         audioElement.pause();
+        shouldCount = true;
 
         if (savedChunk?.[id]) {
             setAudio(savedChunk[id]);
@@ -117,8 +118,8 @@
                 ).toFixed(2)
             );
 
-            if (progress >= 80 && countFlag) {
-                countFlag = false;
+            if (progress >= 80 && shouldCount) {
+                shouldCount = false;
                 $musics = $musics
                     .map((music) => {
                         if (
@@ -250,7 +251,6 @@
 
     const handleClickStop = () => {
         playing = false;
-        countFlag = false;
         audioElement.pause();
         audioElement.currentTime = 0;
     };
