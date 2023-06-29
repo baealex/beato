@@ -15,16 +15,13 @@
 
 Self host music streaming platform
 
-![_1](https://github.com/baealex/beato/assets/35596687/e23594e3-5d0d-41f8-9f4a-6b503136e418)
+![_1](https://github.com/baealex/beato/assets/35596687/c3a87af0-7d18-4dbc-93b1-364836c334fc)
 
-![_2](https://github.com/baealex/beato/assets/35596687/13bdd8e1-bbab-4a6e-88a8-9a13151d8ed7)
+![_2](https://github.com/baealex/beato/assets/35596687/141232fd-f81d-4d2c-8bce-8c94c40bbd30)
 
-![_3](https://github.com/baealex/beato/assets/35596687/5588ee54-e140-48b9-9a03-c19d4cbd8e75)
+![_3](https://github.com/baealex/beato/assets/35596687/204d6a24-d0a5-45a3-91fd-3adebf887a10)
 
-![_4](https://github.com/baealex/beato/assets/35596687/6c5e9a04-86ff-4761-bd22-ef27a4e02034)
-
-![_5](https://github.com/baealex/beato/assets/35596687/63d3462e-dc9e-4397-a7f6-6c130165f8c5)
-
+![_4](https://github.com/baealex/beato/assets/35596687/71c3c687-d003-48be-a632-8d6561b3e118)
 
 <br>
 
