@@ -22,9 +22,7 @@
     import type { Music as MusicModel, RepeatMode } from "./models/type";
 
     let audioElement: HTMLAudioElement;
-    let savedChunk: {
-        [key: string]: Buffer[];
-    } = {};
+    let savedChunk: Map<string, Buffer[]> = new Map();
     let playing = false;
     let volume = 1;
     let progress = 0;
@@ -297,7 +295,7 @@
         <SiteHeader />
         <Loading {isLoading} message="Loading..." />
         <Route path="/" scrollToTop={true} exact={true}>
-            <div class="container">
+            <div class="container fade-in">
                 <Music
                     onClickMusic={handleClickMusic}
                     onClickPlayAll={handleClickPlayAll}
@@ -306,7 +304,7 @@
             </div>
         </Route>
         <Route path="/favorite">
-            <div class="container">
+            <div class="container fade-in">
                 <FavoriteMusic
                     onClickMusic={handleClickMusic}
                     onClickPlayAll={handleClickPlayAll}
@@ -315,27 +313,27 @@
             </div>
         </Route>
         <Route path="/album">
-            <div class="container">
+            <div class="container fade-in">
                 <Album onClickMusic={handleClickMusic} />
             </div>
         </Route>
         <Route path="/album/:id" let:params>
-            <div class="container">
+            <div class="container fade-in">
                 <AlbumDetail id={params.id} onClickMusic={handleClickMusic} />
             </div>
         </Route>
         <Route path="/artist">
-            <div class="container">
+            <div class="container fade-in">
                 <Artist onClickMusic={handleClickMusic} />
             </div>
         </Route>
         <Route path="/artist/:id" let:params>
-            <div class="container">
+            <div class="container fade-in">
                 <ArtistDetail id={params.id} onClickMusic={handleClickMusic} />
             </div>
         </Route>
         <Route path="/setting">
-            <div class="container">
+            <div class="container fade-in">
                 <Setting />
             </div>
         </Route>

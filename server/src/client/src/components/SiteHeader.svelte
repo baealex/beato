@@ -83,13 +83,38 @@
     }
 
     nav :global(a) {
-        color: #888;
+        position: relative;
+        color: #fff;
         padding: 1rem 0;
+        opacity: 0.5;
         text-decoration: none;
+        transition: opacity 0.3s ease;
+
+        &::after {
+            content: "";
+            position: absolute;
+            transform: scaleX(0);
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+            transition: transform 0.3s ease;
+        }
     }
 
     nav :global([aria-current="page"]) {
-        color: #fff;
-        border-bottom: 2px solid #fff;
+        opacity: 1;
+
+        &::after {
+            content: "";
+            position: absolute;
+            transform: scaleX(1);
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+        }
     }
 </style>
