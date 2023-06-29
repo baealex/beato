@@ -101,8 +101,10 @@
                 border-left: 0.25rem solid #a076f1;
             }
 
-            &:active {
-                background-color: rgba(255, 255, 255, 0.1);
+            @media (hover: hover) {
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
             }
         }
     }

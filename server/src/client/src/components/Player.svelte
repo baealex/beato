@@ -442,8 +442,10 @@
                         cursor: pointer;
                     }
 
-                    &:active {
-                        background-color: rgba(255, 255, 255, 0.2);
+                    @media (hover: hover) {
+                        &:hover {
+                            background-color: rgba(255, 255, 255, 0.2);
+                        }
                     }
                 }
             }
@@ -565,8 +567,10 @@
                 cursor: pointer;
                 transition: background-color 0.25s ease-in-out;
 
-                &:active {
-                    background-color: rgba(255, 255, 255, 0.2);
+                @media (hover: hover) {
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.2);
+                    }
                 }
             }
         }
