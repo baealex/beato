@@ -14,7 +14,13 @@
     import ArtistDetail from "./pages/ArtistDetail.svelte";
     import Setting from "./pages/Setting.svelte";
 
-    import { musics, playlist, musicDetailPanel, syncData } from "./store";
+    import {
+        musics,
+        playlist,
+        musicDetailPanel,
+        syncData,
+        musicSortPanel,
+    } from "./store";
 
     import { socket } from "./modules/socket";
     import { toast } from "./modules/ui/toast";
@@ -119,16 +125,21 @@
 
             if (progress >= 80 && shouldCount) {
                 shouldCount = false;
-                $musics = $musics
-                    .map((music) => {
-                        if (
-                            music.id === $playlist.items[$playlist.selected].id
-                        ) {
-                            music.playCount += 1;
-                        }
-                        return music;
-                    })
-                    .sort((a, b) => b.playCount - a.playCount);
+                if ($musicSortPanel.latestSort === "playCountAsc") {
+                    musics.update((prevMusics) => {
+                        return prevMusics
+                            .map((music) => {
+                                if (
+                                    music.id ===
+                                    $playlist.items[$playlist.selected].id
+                                ) {
+                                    music.playCount += 1;
+                                }
+                                return music;
+                            })
+                            .sort((a, b) => b.playCount - a.playCount);
+                    });
+                }
                 socket.emit("count", $playlist.items[$playlist.selected].id);
             }
         });
