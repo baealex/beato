@@ -29,7 +29,7 @@
         transition: background-color 0.2s ease-in-out;
         padding-bottom: 0.5rem;
 
-        @media (hover: hover) {
+        @media (min-width: 1024px) {
             &:hover {
                 background-color: #222222;
             }

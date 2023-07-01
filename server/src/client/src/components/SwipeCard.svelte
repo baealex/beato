@@ -141,7 +141,7 @@
                     cursor: pointer;
                     transition: background 0.1s linear;
 
-                    @media (hover: hover) {
+                    @media (min-width: 1024px) {
                         &:hover {
                             background: #333;
                         }

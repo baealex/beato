@@ -149,7 +149,7 @@
                     height: 1rem;
                 }
 
-                @media (hover: hover) {
+                @media (min-width: 1024px) {
                     &:hover {
                         background-color: rgba(255, 255, 255, 0.1);
                     }

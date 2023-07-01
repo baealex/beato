@@ -364,7 +364,7 @@
             background-color: rgba(255, 255, 255, 0.1);
             transition: height 0.25s ease-in-out;
 
-            @media (hover: hover) {
+            @media (min-width: 1024px) {
                 &:hover {
                     cursor: pointer;
                     height: 0.5rem;
@@ -442,7 +442,7 @@
                         cursor: pointer;
                     }
 
-                    @media (hover: hover) {
+                    @media (min-width: 1024px) {
                         &:hover {
                             background-color: rgba(255, 255, 255, 0.2);
                         }
@@ -567,7 +567,7 @@
                 cursor: pointer;
                 transition: background-color 0.25s ease-in-out;
 
-                @media (hover: hover) {
+                @media (min-width: 1024px) {
                     &:hover {
                         background-color: rgba(255, 255, 255, 0.2);
                     }

@@ -120,7 +120,7 @@
             padding: 1rem 0;
             border-radius: 0.5rem;
 
-            @media (hover: hover) {
+            @media (min-width: 1024px) {
                 &:hover {
                     background-color: #333;
                 }
