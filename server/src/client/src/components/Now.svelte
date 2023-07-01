@@ -44,7 +44,12 @@
         {/each}
     </div>
     <div class="action">
-        <button on:click={onClose}>
+        <button
+            on:click={() => {
+                history.back();
+                onClose();
+            }}
+        >
             <Cross />
         </button>
     </div>

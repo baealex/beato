@@ -1,5 +1,7 @@
 <script lang="ts">
-    export let id = Math.random();
+    import { createUUID } from "../modules/uuid";
+
+    export let id = createUUID();
     export let isOpen = false;
     export let onClose: () => void = null;
 
