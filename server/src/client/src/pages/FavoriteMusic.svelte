@@ -63,7 +63,7 @@
     <div class="buttons">
         <button on:click={() => onClickPlayAll(visibleMusics)}>
             <Play />
-            Play All
+            Play
         </button>
         <button on:click={() => onClickPlayShuffle(visibleMusics)}>
             <Shuffle />

@@ -1,15 +1,36 @@
 <script lang="ts">
     import Left from "../icons/Left.svelte";
 
+    let id = Math.random();
     export let isOpen = false;
     export let hasHeader = true;
     export let onClose: () => void = null;
+
+    const handleClose = (e?: PopStateEvent) => {
+        if (e?.state === id) {
+            return;
+        }
+        if (!e) {
+            history.back();
+        }
+        isOpen = false;
+        onClose?.();
+    };
+
+    $: {
+        if (isOpen) {
+            history.pushState(id, null, `#${id}`);
+            window.addEventListener("popstate", handleClose);
+        } else {
+            window.removeEventListener("popstate", handleClose);
+        }
+    }
 </script>
 
 <div class="sub-page" class:open={isOpen}>
     {#if hasHeader}
         <div class="header">
-            <button on:click={onClose}>
+            <button on:click={() => handleClose()}>
                 <Left />
             </button>
         </div>

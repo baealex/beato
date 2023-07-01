@@ -1,16 +1,34 @@
 <script lang="ts">
+    export let id = Math.random();
     export let isOpen = false;
     export let onClose: () => void = null;
+
+    const handleClose = (e?: PopStateEvent) => {
+        if (e?.state === id) {
+            return;
+        }
+        if (!e) {
+            history.back();
+        }
+        isOpen = false;
+        onClose?.();
+    };
+
+    $: {
+        if (isOpen) {
+            history.pushState(id, null, `#${id}`);
+            window.addEventListener("popstate", handleClose);
+        } else {
+            window.removeEventListener("popstate", handleClose);
+        }
+    }
 </script>
 
 <div class="wrapper" class:open={isOpen}>
     <button
         class="clickable backdrop"
         class:open={isOpen}
-        on:click={() => {
-            isOpen = false;
-            onClose?.();
-        }}
+        on:click={() => handleClose()}
     />
     <div class="bottom-panel" class:open={isOpen}>
         <slot />
