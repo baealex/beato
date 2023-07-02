@@ -1,13 +1,12 @@
 <script lang="ts">
     export let onClick: () => void;
-    export let onSwipeFull: () => void = null;
     export let menus: { label: string; onClick: () => void }[] = [];
 
     let clientWidth = 0;
-    let lastX = 0;
     let accX = 0;
-    let lastY = 0;
     let accY = 0;
+    let lastX = 0;
+    let lastY = 0;
     let isDown = false;
     let el: HTMLDivElement;
     let menu: HTMLDivElement;
@@ -35,17 +34,13 @@
         clientWidth = (e.target as HTMLDivElement).clientWidth;
     };
 
-    const handleFocusOut = (e: MouseEvent | TouchEvent) => {
+    const handleFocusOut = () => {
         if (isDown) {
             if (Math.abs(accX) < 10 && Math.abs(accY) < 10) {
                 onClick();
             }
 
-            if (onSwipeFull && accX <= -(clientWidth * (2 / 3))) {
-                el.style.transform = `translate(-${clientWidth}px)`;
-                menu.style.transform = `translate(-${clientWidth}px)`;
-                setTimeout(onSwipeFull, 200);
-            } else if (accX <= -menus.length * 80) {
+            if (accX <= -menus.length * 80) {
                 el.style.transform = `translate(-${menus.length * 80}px)`;
                 menu.style.transform = `translate(-${menus.length * 80}px)`;
             } else {
@@ -60,7 +55,7 @@
         lastX = 0;
     };
 
-    const handleMove = (e) => {
+    const handleMove = (e: MouseEvent | TouchEvent) => {
         if (isDown) {
             const clientX = getClientX(e);
             const clientY = getClientY(e);
@@ -70,12 +65,18 @@
             lastX = clientX;
             lastY = clientY;
 
-            if (accX < 0) {
+            if (accX < 0 && accX > -menus.length * 80) {
                 e.preventDefault();
                 el.style.transform = `translate(${accX}px)`;
                 menu.style.transform = `translate(${accX}px)`;
             }
         }
+    };
+
+    const handleClickMenu = (onClick: () => void) => {
+        onClick();
+        el.style.transform = "translate(0px)";
+        menu.style.transform = "translate(0px)";
     };
 </script>
 
@@ -102,7 +103,9 @@
         {#if menus.length > 0}
             <div class="menus">
                 {#each menus as menu}
-                    <button on:click={menu.onClick}>{menu.label}</button>
+                    <button on:click={() => handleClickMenu(menu.onClick)}>
+                        {menu.label}
+                    </button>
                 {/each}
             </div>
         {/if}
@@ -143,7 +146,7 @@
             .menus {
                 display: flex;
                 gap: 0.5rem;
-                background: #111;
+                background: #420505;
                 height: 100%;
 
                 button {
@@ -154,13 +157,6 @@
                     height: 100%;
                     width: 5rem;
                     cursor: pointer;
-                    transition: background 0.1s linear;
-
-                    @media (min-width: 1024px) {
-                        &:hover {
-                            background: #333;
-                        }
-                    }
                 }
             }
         }
