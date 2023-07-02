@@ -11,7 +11,7 @@
 
     import { getArtist } from "../api";
 
-    import { musicDetailPanel } from "../store";
+    import { musicDetailPanel, musics } from "../store";
 
     export let id = "";
     export let onClickMusic: (music: Music) => void = () => {};
@@ -27,6 +27,13 @@
 
         const { data } = await getArtist(id);
         artist = data.artist;
+
+        musics.subscribe((value) => {
+            artist.musics = artist.musics.map((music) => {
+                music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
+                return music;
+            });
+        });
     });
 </script>
 

@@ -9,7 +9,7 @@
 
     import { getAlbum } from "../api";
 
-    import { musicDetailPanel } from "../store";
+    import { musicDetailPanel, musics } from "../store";
 
     export let id = "";
     export let onClickMusic: (music: Music) => void;
@@ -23,6 +23,13 @@
 
         const { data } = await getAlbum(id);
         album = data.album;
+
+        musics.subscribe((value) => {
+            album.musics = album.musics.map((music) => {
+                music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
+                return music;
+            });
+        });
     });
 </script>
 
@@ -64,6 +71,7 @@
                     artistName={music.artist.name}
                     musicName={music.name}
                     musicCodec={music.codec}
+                    isLiked={music.isLiked}
                     onClick={() => onClickMusic(music)}
                     onLongPress={() => {
                         musicDetailPanel.update(() => ({
