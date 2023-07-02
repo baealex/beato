@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
+    import { onMount } from "svelte";
 
     import MusicListItem from "../components/MusicListItem.svelte";
     import Shuffle from "../icons/Shuffle.svelte";
@@ -16,7 +16,6 @@
 
     let search = "";
 
-    let event: NodeJS.Timeout;
     let page = 1;
     let perPage = 100;
     let lastPage = Math.ceil($musics.length / perPage);
@@ -24,18 +23,15 @@
     onMount(() => {
         musics.subscribe((musics) => {
             lastPage = Math.ceil(musics.length / perPage);
-            event = setInterval(() => {
-                if (page < lastPage) {
-                    page++;
-                } else {
-                    clearInterval(event);
-                }
-            }, 100);
+            const gradualRender = () =>
+                requestAnimationFrame(() => {
+                    if (page < lastPage) {
+                        page++;
+                        gradualRender();
+                    }
+                });
+            gradualRender();
         });
-    });
-
-    onDestroy(() => {
-        clearInterval(event);
     });
 
     $: visibleMusics = $musics

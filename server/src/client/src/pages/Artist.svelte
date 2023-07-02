@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
+    import { onMount } from "svelte";
 
     import Image from "../components/Image.svelte";
     import SubPage from "../components/SubPage.svelte";
@@ -14,7 +14,6 @@
     let selectedId: string | null = null;
     let isOpenDetail = false;
 
-    let event: NodeJS.Timeout;
     let page = 1;
     let perPage = 100;
     let lastPage = Math.ceil($artists.length / perPage);
@@ -22,18 +21,15 @@
     onMount(() => {
         artists.subscribe((value) => {
             lastPage = Math.ceil(value.length / perPage);
-            event = setInterval(() => {
-                if (page < lastPage) {
-                    page++;
-                } else {
-                    clearInterval(event);
-                }
-            }, 100);
+            const gradualRender = () =>
+                requestAnimationFrame(() => {
+                    if (page < lastPage) {
+                        page++;
+                        gradualRender();
+                    }
+                });
+            gradualRender();
         });
-    });
-
-    onDestroy(() => {
-        clearInterval(event);
     });
 
     $: visibleArtists = $artists.slice(0, page * perPage);
