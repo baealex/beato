@@ -6,6 +6,8 @@
     let clientWidth = 0;
     let lastX = 0;
     let accX = 0;
+    let lastY = 0;
+    let accY = 0;
     let isDown = false;
     let el: HTMLDivElement;
     let menu: HTMLDivElement;
@@ -18,15 +20,24 @@
         }
     };
 
+    const getClientY = (e: MouseEvent | TouchEvent) => {
+        if (e instanceof MouseEvent) {
+            return e.clientY;
+        } else {
+            return e.changedTouches[0].clientY;
+        }
+    };
+
     const handleFocusIn = (e: MouseEvent | TouchEvent) => {
         isDown = true;
         lastX = getClientX(e);
+        lastY = getClientY(e);
         clientWidth = (e.target as HTMLDivElement).clientWidth;
     };
 
-    const handleFocusOut = () => {
+    const handleFocusOut = (e: MouseEvent | TouchEvent) => {
         if (isDown) {
-            if (Math.abs(accX) < 10) {
+            if (Math.abs(accX) < 10 && Math.abs(accY) < 10) {
                 onClick();
             }
 
@@ -45,15 +56,19 @@
 
         isDown = false;
         accX = 0;
+        accY = 0;
         lastX = 0;
     };
 
     const handleMove = (e) => {
         if (isDown) {
             const clientX = getClientX(e);
+            const clientY = getClientY(e);
 
             accX += clientX - lastX;
+            accY += clientY - lastY;
             lastX = clientX;
+            lastY = clientY;
 
             if (accX < 0) {
                 e.preventDefault();
