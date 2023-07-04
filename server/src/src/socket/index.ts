@@ -27,40 +27,6 @@ export const socketManager = (socket: Socket) => {
         isSyuncing = false;
     });
 
-    socket.on('file', async (id: string) => {
-        const $music = await models.music.findUnique({
-            where: {
-                id: Number(id),
-            },
-        });
-
-        if (fs.existsSync(path.resolve('./music', $music.filePath))) {
-            stream = fs.createReadStream(path.resolve('./music', $music.filePath));
-            console.log(`${socket.id}: stream start [${$music.name}]`);
-            let count = 0;
-            stream.on('data', (chunk) => {
-                socket.emit('audio', {
-                    id: $music.id.toString(),
-                    part: count++,
-                    chunk,
-                });
-            });
-            stream.on('end', () => {
-                console.log(`${socket.id}: stream end [${$music.name}]`);
-                socket.emit('audio', {
-                    id: $music.id.toString(),
-                    chunk: 'end',
-                });
-            });
-        } else {
-            console.log(`${socket.id}: cannot find file [${$music.name}]`);
-            socket.emit('audio', {
-                id: $music.id,
-                chunk: 'cannot find file',
-            });
-        }
-    });
-
     socket.on('count', async (id: string) => {
         const $music = await models.music.findUnique({
             where: {

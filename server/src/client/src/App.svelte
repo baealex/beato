@@ -27,9 +27,9 @@
 
     import type { Music as MusicModel, RepeatMode } from "./models/type";
     import MusicSortPanel from "./components/MusicSortPanel.svelte";
+    import axios from "axios";
 
     let audioElement: HTMLAudioElement;
-    let savedChunk: Map<string, Buffer[]> = new Map();
     let playing = false;
     let volume = 1;
     let progress = 0;
@@ -51,22 +51,25 @@
         }
     }
 
-    const setAudio = async (chunks: Buffer[]) => {
-        audioElement.src = URL.createObjectURL(
-            new Blob(chunks, { type: "audio/mpeg" })
-        );
-    };
-
     const requestFile = async (id: string) => {
         audioElement.currentTime = 0;
         audioElement.pause();
         shouldCount = true;
 
-        if (savedChunk?.[id]) {
-            setAudio(savedChunk[id]);
-            return;
-        }
-        socket.emit("file", id);
+        const audioResouce = "/api/audio/" + id;
+        audioElement.src = audioResouce;
+        audioElement.load();
+        await audioElement.play();
+        new Promise(async () => {
+            const { data } = await axios.get(audioResouce, {
+                responseType: "blob",
+            });
+            const currentTime = audioElement.currentTime;
+            audioElement.src = URL.createObjectURL(data);
+            audioElement.load();
+            audioElement.currentTime = currentTime;
+            await audioElement.play();
+        });
     };
 
     onMount(() => {
@@ -74,30 +77,6 @@
         syncData(() => {
             isLoading = false;
         });
-
-        socket.on(
-            "audio",
-            async ({
-                id,
-                part,
-                chunk,
-            }: {
-                id: string;
-                part: number;
-                chunk: Buffer | "end";
-            }) => {
-                if (chunk === "end") {
-                    if ($playlist.items[$playlist.selected].id === id) {
-                        setAudio(savedChunk[id]);
-                    }
-                    return;
-                }
-                if (!savedChunk?.[id]) {
-                    savedChunk[id] = [];
-                }
-                savedChunk[id][part] = chunk;
-            }
-        );
 
         socket.on(
             "like",
@@ -167,16 +146,20 @@
             toast("Failed to load audio");
         });
 
-        audioElement.addEventListener("loadeddata", () => {
-            audioElement.play();
-        });
-
         audioElement.addEventListener("play", () => {
             playing = true;
         });
 
         audioElement.addEventListener("pause", () => {
             playing = false;
+        });
+
+        audioElement.addEventListener("volumechange", () => {
+            volume = audioElement.volume;
+        });
+
+        audioElement.addEventListener("loadeddata", () => {
+            isLoading = false;
         });
     });
 

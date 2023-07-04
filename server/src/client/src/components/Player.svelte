@@ -18,7 +18,6 @@
 
     import ArrowRepaet from "../icons/ArrowRepaet.svelte";
     import Infinite from "../icons/Infinite.svelte";
-    import Shuffle from "../icons/Shuffle.svelte";
     import RightLeft from "../icons/RightLeft.svelte";
 
     export let music: Music;
@@ -40,15 +39,15 @@
     let isOpenDetail = false;
     let isOpenNow = false;
 
-    $: totalTime = `${Math.floor(music?.duration / 60) | 0}:${(
-        "0" +
-        (Math.round(music?.duration) % 60)
-    ).slice(-2)}`;
-    $: currentTime = `${
-        (Math.floor(music?.duration * (progress / 100)) / 60) | 0
-    }:${("0" + (Math.floor(music?.duration * (progress / 100)) % 60)).slice(
-        -2
-    )}`;
+    const makePlayTime = (time: number) => {
+        return `${Math.floor(time / 60) | 0}:${(
+            "0" +
+            (Math.round(time) % 60)
+        ).slice(-2)}`;
+    };
+
+    $: totalTime = makePlayTime(music?.duration);
+    $: currentTime = makePlayTime(music?.duration * (progress / 100));
 
     let randomBorderRadius = "50% 50% 50% 50%";
 
