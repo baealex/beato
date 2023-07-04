@@ -106,3 +106,11 @@ export function getAlbum(id: string) {
         }
     `);
 }
+
+export function getAudio(id: string) {
+    return axios.request({
+        method: 'GET',
+        url: `/api/audio/${id}`,
+        responseType: 'blob',
+    });
+}

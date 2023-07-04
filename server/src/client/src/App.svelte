@@ -5,7 +5,9 @@
     import SiteHeader from "./components/SiteHeader.svelte";
     import Player from "./components/Player.svelte";
     import Loading from "./components/Loading.svelte";
+    import MusicSortPanel from "./components/MusicSortPanel.svelte";
     import MusicDetailPanel from "./components/MusicDetailPanel.svelte";
+
     import Music from "./pages/Music.svelte";
     import FavoriteMusic from "./pages/FavoriteMusic.svelte";
     import Album from "./pages/Album.svelte";
@@ -14,20 +16,21 @@
     import ArtistDetail from "./pages/ArtistDetail.svelte";
     import Setting from "./pages/Setting.svelte";
 
+    import { downloadFile } from "./modules/download";
+    import { getAudio } from "./api";
+
     import {
+        syncData,
         musics,
         playlist,
-        musicDetailPanel,
-        syncData,
         musicSortPanel,
+        musicDetailPanel,
     } from "./store";
 
     import { socket } from "./modules/socket";
     import { toast } from "./modules/ui/toast";
 
     import type { Music as MusicModel, RepeatMode } from "./models/type";
-    import MusicSortPanel from "./components/MusicSortPanel.svelte";
-    import axios from "axios";
 
     let audioElement: HTMLAudioElement;
     let playing = false;
@@ -56,20 +59,9 @@
         audioElement.pause();
         shouldCount = true;
 
-        const audioResouce = "/api/audio/" + id;
-        audioElement.src = audioResouce;
+        audioElement.src = URL.createObjectURL((await getAudio(id)).data);
         audioElement.load();
         await audioElement.play();
-        new Promise(async () => {
-            const { data } = await axios.get(audioResouce, {
-                responseType: "blob",
-            });
-            const currentTime = audioElement.currentTime;
-            audioElement.src = URL.createObjectURL(data);
-            audioElement.load();
-            audioElement.currentTime = currentTime;
-            await audioElement.play();
-        });
     };
 
     onMount(() => {
@@ -283,6 +275,15 @@
     const handleClickLike = (music: MusicModel) => {
         socket.emit("like", music.id);
     };
+
+    const handleClickDownload = (music: MusicModel) => {
+        getAudio(music.id).then((res) => {
+            if (res.data) {
+                const fileName = music.filePath.split("/").pop();
+                downloadFile(fileName, URL.createObjectURL(res.data));
+            }
+        });
+    };
 </script>
 
 <main>
@@ -352,6 +353,7 @@
 
         <MusicDetailPanel
             onClickLike={handleClickLike}
+            onClickDownload={handleClickDownload}
             onClickAddToQueue={handleClickMusic}
         />
 

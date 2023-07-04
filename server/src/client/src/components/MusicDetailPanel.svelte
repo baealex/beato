@@ -8,11 +8,13 @@
 
     import Play from "../icons/Play.svelte";
     import Heart from "../icons/Heart.svelte";
+    import Download from "../icons/Download.svelte";
 
     import { musicDetailPanel } from "../store";
 
     export let onClickLike: (music: Music) => void;
     export let onClickAddToQueue: (music: Music) => void;
+    export let onClickDownload: (music: Music) => void;
 
     $: isOpen = $musicDetailPanel.isOpen;
     $: music = $musicDetailPanel.music;
@@ -62,6 +64,14 @@
                     on:click={() => onClickAddToQueue(music)}
                 >
                     <Play /> Add to Queue
+                </button>
+            </li>
+            <li>
+                <button
+                    class="clickable item"
+                    on:click={() => onClickDownload(music)}
+                >
+                    <Download /> Download
                 </button>
             </li>
         </ul>
