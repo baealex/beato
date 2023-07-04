@@ -76,11 +76,11 @@
         align-items: center;
         padding: 0 1rem;
         height: 60px;
-        background-color: #111111;
-        color: #ffffff;
+        background-color: #111;
+        color: #fff;
         font-size: 1.2rem;
         font-weight: bold;
-        border-bottom: 1px solid #333333;
+        border-bottom: 1px solid #333;
 
         button {
             background-color: transparent;

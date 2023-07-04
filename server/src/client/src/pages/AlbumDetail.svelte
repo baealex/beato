@@ -9,7 +9,12 @@
 
     import { getAlbum } from "../api";
 
-    import { resetQueue, insertToQueue, musicActionPanel, musics } from "../store";
+    import {
+        resetQueue,
+        insertToQueue,
+        musicActionPanel,
+        musics,
+    } from "../store";
 
     export let id = "";
 
@@ -90,7 +95,7 @@
         align-items: center;
         gap: 1rem;
         padding: 2rem 1rem;
-        background-color: rgba(255, 255, 255, 0.069);
+        background-color: #111;
         border-radius: 0.5rem;
 
         :global(.album-cover) {
@@ -128,16 +133,19 @@
         .play-all {
             position: absolute;
             bottom: 0;
-            right: 1rem;
+            right: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transform: translateY(50%);
 
             button {
                 border-radius: 100%;
-                width: 3.5rem;
-                height: 3.5rem;
-                background-color: #474787;
-                border: none;
-                color: #fff;
+                width: 4rem;
+                height: 4rem;
+                background-color: #1c1c1c;
+                border: 4px solid #000;
+                color: #ccc;
                 transition: background-color 0.2s;
 
                 :global(svg) {
@@ -147,7 +155,7 @@
 
                 @media (min-width: 1024px) {
                     &:hover {
-                        background-color: #515199;
+                        background-color: #2a2a2a;
                     }
                 }
             }

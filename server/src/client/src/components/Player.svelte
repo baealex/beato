@@ -340,7 +340,7 @@
     .audio {
         display: flex;
         flex-direction: column;
-        background-color: #111111;
+        background-color: #111;
         transition: transform 0.25s ease-in-out;
 
         .progress {
