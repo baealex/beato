@@ -8,7 +8,8 @@ type LatestSort =
     | "createdAtAsc"
     | "createdAtDesc"
     | "publishedYearAsc"
-    | "publishedYearDesc";
+    | "publishedYearDesc"
+    | "random";
 
 export const albumSortPanel = writable<{
     isOpen: boolean;

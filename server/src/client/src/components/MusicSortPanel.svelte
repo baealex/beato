@@ -4,6 +4,8 @@
 
     import { musics, musicSortPanel } from "../store";
 
+    import { shuffle } from "../modules/shuffle";
+
     $: isOpen = $musicSortPanel.isOpen;
     $: latestSort = $musicSortPanel.latestSort;
 
@@ -114,6 +116,13 @@
                     );
                     return musics;
                 });
+            },
+        },
+        {
+            name: "Random (Discover)",
+            sort: "random",
+            onClick: () => {
+                musics.update(shuffle);
             },
         },
     ] as const;

@@ -8,7 +8,8 @@ type LatestSort =
     | "albumCountAsc"
     | "albumCountDesc"
     | "songCountAsc"
-    | "songCountDesc";
+    | "songCountDesc"
+    | "random";
 
 export const artistSortPanel = writable<{
     isOpen: boolean;

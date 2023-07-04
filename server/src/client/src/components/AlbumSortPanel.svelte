@@ -4,6 +4,8 @@
 
     import { albums, albumSortPanel } from "../store";
 
+    import { shuffle } from "../modules/shuffle";
+
     $: isOpen = $albumSortPanel.isOpen;
     $: latestSort = $albumSortPanel.latestSort;
 
@@ -98,6 +100,13 @@
                     );
                     return albums;
                 });
+            },
+        },
+        {
+            name: "Random (Discover)",
+            sort: "random",
+            onClick: () => {
+                albums.update(shuffle);
             },
         },
     ] as const;

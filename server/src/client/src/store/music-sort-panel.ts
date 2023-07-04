@@ -12,7 +12,8 @@ type LatestSort =
     | "playCountAsc"
     | "playCountDesc"
     | "durationAsc"
-    | "durationDesc";
+    | "durationDesc"
+    | "random";
 
 export const musicSortPanel = writable<{
     isOpen: boolean;

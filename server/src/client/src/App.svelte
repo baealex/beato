@@ -19,6 +19,7 @@
     import Setting from "./pages/Setting.svelte";
 
     import { downloadFile } from "./modules/download";
+    import { shuffle } from "./modules/shuffle";
     import { getAudio } from "./api";
 
     import {
@@ -188,16 +189,8 @@
     };
 
     const handleClickPlayShuffle = (musics: MusicModel[]) => {
-        const copyMusics = [...musics];
-        const shuffleMusics = [];
-        while (copyMusics.length > 0) {
-            const randomIndex = Math.floor(Math.random() * copyMusics.length);
-            shuffleMusics.push(copyMusics[randomIndex]);
-            copyMusics.splice(randomIndex, 1);
-        }
-
         $queue.selected = 0;
-        $queue.items = shuffleMusics;
+        $queue.items = shuffle(musics);
         handleClickqueueMusic(0);
     };
 
