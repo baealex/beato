@@ -153,15 +153,11 @@
         audioElement.addEventListener("volumechange", () => {
             volume = audioElement.volume;
         });
-
-        audioElement.addEventListener("loadeddata", () => {
-            isLoading = false;
-        });
     });
 
     onDestroy(() => {
-        socket.off("audio");
         socket.off("like");
+        socket.off("count");
     });
 
     const handleClickMusic = (music: MusicModel) => {
