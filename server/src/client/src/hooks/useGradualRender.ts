@@ -8,7 +8,7 @@ export const useGradualRender = <T>(items: T[], perPage: number = 100) => {
 
     const gradualRender = () =>
         requestAnimationFrame(() => {
-            if (page < lastPage) {
+            if (page <= lastPage) {
                 page++;
                 state.set(items.slice(0, page * perPage));
                 gradualRender();
