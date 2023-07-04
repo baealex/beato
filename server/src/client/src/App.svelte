@@ -146,10 +146,6 @@
             playing = false;
         });
 
-        audioElement.addEventListener("volumechange", () => {
-            volume = audioElement.volume;
-        });
-
         queue.subscribe((value) => {
             if (value.items.length === 0 || value.selected === null) {
                 nowPlayMusic = null;

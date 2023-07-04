@@ -22,7 +22,22 @@ const INITIAL_STATE: Queue = {
     insertMode: 'last',
 };
 
-export const queue = writable<Queue>(INITIAL_STATE);
+const LOCAL_STORAGE_KEY = 'queue';
+
+const loadQueue = () => {
+    const queue = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return queue ? JSON.parse(queue) : INITIAL_STATE;
+};
+
+export const queue = writable<Queue>(loadQueue());
+
+queue.subscribe((value) => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({
+        ...value,
+        items: [],
+        selected: null,
+    }));
+});
 
 export const switchRepeatMode = () => queue.update((state) => {
     let newState = { ...state };
