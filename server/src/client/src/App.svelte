@@ -175,7 +175,6 @@
     });
 
     const requestFile = async (id: string) => {
-        audioElement.currentTime = 0;
         audioElement.pause();
         shouldCount = true;
 
@@ -190,11 +189,13 @@
     };
 
     const playNext = () => {
-        $queue.selected = $queue.selected + 1;
-        if ($queue.selected >= $queue.items.length) {
-            $queue.selected = 0;
-        }
-        requestFile($queue.items[$queue.selected].id);
+        queue.update((state) => {
+            state.selected = state.selected + 1;
+            if (state.selected >= state.items.length) {
+                state.selected = 0;
+            }
+            return state;
+        });
     };
 
     const playPrev = () => {
@@ -202,11 +203,13 @@
             audioElement.currentTime = 0;
             return;
         }
-        $queue.selected = $queue.selected - 1;
-        if ($queue.selected < 0) {
-            $queue.selected = $queue.items.length - 1;
-        }
-        requestFile($queue.items[$queue.selected].id);
+        queue.update((state) => {
+            state.selected = state.selected - 1;
+            if (state.selected < 0) {
+                state.selected = state.items.length - 1;
+            }
+            return state;
+        });
     };
 
     const handleClickPlay = () => {
