@@ -50,9 +50,11 @@ export const resetQueue = (musics: Music[] = []) => queue.update((state) => {
 export const insertToQueue = (music: Music) => queue.update((state) => {
     let newState = { ...state };
 
-    // 추가할 때 선택된 것이 없을 때
-    if (state.items.length === 0 && state.selected === null) {
+    // 아무것도 없을 때
+    if (state.items.length === 0) {
         newState.selected = 0;
+        newState.items = [music];
+        return newState;
     }
 
     // 이미 있을 때
@@ -78,12 +80,16 @@ export const insertToQueue = (music: Music) => queue.update((state) => {
     }
 
     // 중간에 추가할 때
-    const index = state.items.findIndex((item) => item.id === state.selected.toString());
     if (state.insertMode === 'after') {
-        newState.items = [...state.items.slice(0, index + 1), music, ...state.items.slice(index + 1)];
+        const before = state.items.slice(0, state.selected + 1);
+        const after = state.items.slice(state.selected + 1);
+        newState.items = [...before, music, ...after];
     }
     if (state.insertMode === 'before') {
-        newState.items = [...state.items.slice(0, index), music, ...state.items.slice(index)];
+        const before = state.items.slice(0, state.selected);
+        const after = state.items.slice(state.selected);
+        newState.selected = state.selected + 1;
+        newState.items = [...before, music, ...after];
     }
     if (state.playMode === 'immediate') {
         newState.selected = newState.items.findIndex((item) => item.id === music.id);

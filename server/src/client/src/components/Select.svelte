@@ -84,7 +84,7 @@
         height: 100%;
         padding: 1rem;
         opacity: 0;
-        z-index: 0;
+        z-index: 1;
         pointer-events: none;
         background-color: rgba(0, 0, 0, 0.88);
         transition: opacity 0.2s ease-in-out;
@@ -118,7 +118,6 @@
         background-color: #000;
         border: 1px solid #333;
         border-radius: 0.5rem;
-        z-index: 1;
         opacity: 0;
         transform: translateY(1rem);
         pointer-events: none;
