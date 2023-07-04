@@ -7,7 +7,7 @@
     import MusicListItem from "../components/MusicListItem.svelte";
     import AlbumListItem from "../components/AlbumListItem.svelte";
 
-    import type { Artist, Music } from "../models/type";
+    import type { Artist } from "../models/type";
 
     import { getArtist } from "../api";
 
@@ -16,8 +16,8 @@
     export let id = "";
 
     let artist: Artist = null;
-    let selectedId: string | null = null;
-    let isOpenDetail = false;
+    let selectedAlbumId: string | null = null;
+    let isOpenAlbumDetail = false;
 
     onMount(async () => {
         if (!id) {
@@ -55,8 +55,8 @@
                             albumName={album.name}
                             artistName={album.publishedYear}
                             onClick={() => {
-                                selectedId = album.id;
-                                isOpenDetail = true;
+                                selectedAlbumId = album.id;
+                                isOpenAlbumDetail = true;
                             }}
                         />
                     </li>
@@ -94,14 +94,14 @@
 </section>
 
 <SubPage
-    isOpen={isOpenDetail}
+    isOpen={isOpenAlbumDetail}
     onClose={() => {
-        selectedId = null;
-        isOpenDetail = false;
+        selectedAlbumId = null;
+        isOpenAlbumDetail = false;
     }}
 >
-    {#if selectedId}
-        <AlbumDetail id={String(selectedId)} />
+    {#if selectedAlbumId}
+        <AlbumDetail id={String(selectedAlbumId)} />
     {/if}
 </SubPage>
 

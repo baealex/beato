@@ -1,55 +1,64 @@
 <script lang="ts">
-    import Image from "./Image.svelte";
     import SubPage from "./SubPage.svelte";
-    import SwipeCard from "./SwipeCard.svelte";
+    import MusicListItem from "./MusicListItem.svelte";
     import Cross from "../icons/Cross.svelte";
 
-    import { queue } from "../store";
+    import { musicActionPanel, queue, resetQueue } from "../store";
 
     export let isOpen = false;
-    export let onClose: () => void;
-    export let onClickMusic: (idx: number) => void;
-    export let onDeleteMusic: (idx: number) => void;
+
+    let listRef: HTMLUListElement;
+
+    $: {
+        if (isOpen) {
+            const clientHeight = listRef.children?.[0].clientHeight;
+            listRef.scrollTo({
+                top: $queue.selected * clientHeight,
+                behavior: "smooth",
+            });
+        }
+    }
+
+    const handleClose = () => {
+        history.back();
+        isOpen = false;
+    };
 </script>
 
 <SubPage {isOpen} hasHeader={false}>
-    <div class="list">
+    <ul class="list" bind:this={listRef}>
         {#each $queue.items as music, idx}
-            <SwipeCard
-                onClick={() => onClickMusic(idx)}
-                menus={[
-                    {
-                        label: "Delete",
-                        onClick: () => onDeleteMusic(idx),
-                    },
-                ]}
-            >
-                <div class="item" class:active={$queue.selected === idx}>
-                    <Image
-                        class="album-art"
-                        src={music.album.cover}
-                        alt={music.name}
-                        loading="lazy"
-                    />
-                    <div class="info">
-                        <div class="title">
-                            {music.name}
-                        </div>
-                        <div class="artist">
-                            {music.artist.name}
-                        </div>
-                    </div>
-                </div>
-            </SwipeCard>
+            <li class:active={$queue.selected === idx}>
+                <MusicListItem
+                    musicName={music.name}
+                    artistName={music.artist.name}
+                    albumName={music.album.name}
+                    albumCover={music.album.cover}
+                    musicCodec={music.codec}
+                    isLiked={music.isLiked}
+                    onClick={() => {
+                        queue.update((value) => {
+                            value.selected = idx;
+                            return value;
+                        });
+                    }}
+                    onLongPress={() => {
+                        musicActionPanel.update(() => ({
+                            isOpen: true,
+                            music,
+                        }));
+                    }}
+                />
+            </li>
         {/each}
-    </div>
+    </ul>
     <div class="action">
-        <button
-            on:click={() => {
-                history.back();
-                onClose();
-            }}
-        >
+        <div class="buttons">
+            <button class="button" on:click={() => resetQueue()}>
+                Clear Queue
+            </button>
+        </div>
+        <button class="icon-button" on:click={handleClose}>
             <Cross />
         </button>
     </div>
@@ -63,52 +72,60 @@
 
     .action {
         display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
+        align-items: center;
+        justify-content: space-between;
         padding: 0.5rem;
 
-        button {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 0.25rem;
-            background-color: transparent;
-            color: white;
+        .buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .button {
             border: none;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: background-color 0.25s ease-in-out;
-
-            :global(svg) {
-                width: 1.5rem;
-                height: 1.5rem;
-            }
-
-            @media (min-width: 1024px) {
-                &:hover {
-                    background-color: rgba(255, 255, 255, 0.2);
-                }
-            }
+            background: none;
+            color: #a076f1;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
         }
     }
 
-    .list {
-        .item {
-            cursor: pointer;
-            padding: 1rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 0.5rem;
+    ul {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        list-style: none;
 
-            &.active {
-                border-left: 0.25rem solid #a076f1;
+        li {
+            position: relative;
+
+            @keyframes breathing {
+                0% {
+                    opacity: 0.15;
+                }
+                50% {
+                    opacity: 0.25;
+                }
+                100% {
+                    opacity: 0.15;
+                }
             }
 
-            @media (min-width: 1024px) {
-                &:hover {
-                    background-color: rgba(255, 255, 255, 0.1);
+            &.active {
+                &::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: #735af2;
+                    animation: breathing 3s ease infinite;
+                    z-index: -1;
+                    pointer-events: none;
                 }
             }
         }

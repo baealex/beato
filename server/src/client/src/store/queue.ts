@@ -5,22 +5,25 @@ import { toast } from '../modules/ui/toast';
 type QueueInsertMode = 'after' | 'before' | 'last';
 
 interface Queue {
-    selected: number | null;
     items: Music[];
+    selected: number | null;
     insertMode: QueueInsertMode;
 }
 
 const INITIAL_STATE: Queue = {
-    selected: null,
     items: [],
+    selected: null,
     insertMode: 'last',
 };
 
 export const queue = writable<Queue>(INITIAL_STATE);
 
 export const resetQueue = (musics: Music[] = []) => queue.update((state) => {
-    toast("Create new queue");
-    return { ...state, selected: 0, items: musics };
+    toast("Created new queue");
+    const newState = { ...state };
+    newState.items = musics;
+    newState.selected = musics.length > 0 ? 0 : null;
+    return newState;
 });
 
 export const insertToQueue = (music: Music) => queue.update((state) => {

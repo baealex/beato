@@ -31,8 +31,6 @@
     export let onClickPrev: () => void;
     export let onClickStop: () => void;
     export let onClickLike: (music: Music) => void;
-    export let onClickQueueMusic: (idx: number) => void;
-    export let onDeleteQueueMusic: (idx: number) => void;
     export let onClickProgress: (e: MouseEvent | TouchEvent) => void;
 
     let isOpenDetailPanel = false;
@@ -153,18 +151,6 @@
             </div>
         </div>
     </div>
-{/if}
-
-<Queue
-    isOpen={isOpenQueue}
-    onClose={() => {
-        isOpenQueue = false;
-    }}
-    onClickMusic={onClickQueueMusic}
-    onDeleteMusic={onDeleteQueueMusic}
-/>
-
-{#if music}
     <SubPage isOpen={isOpenDetail} onClose={() => (isOpenDetail = false)}>
         <div class="detail">
             <div class="album-art">
@@ -273,7 +259,6 @@
             </div>
         </div>
     </SubPage>
-
     <BottomPanel title="Related to this music" bind:isOpen={isOpenDetailPanel}>
         <div class="panel-content">
             <button
@@ -308,6 +293,8 @@
         </div>
     </BottomPanel>
 {/if}
+
+<Queue bind:isOpen={isOpenQueue} />
 
 <audio bind:this={audioElement} />
 

@@ -105,14 +105,14 @@
             progress = Number(
                 (
                     (audioElement.currentTime /
-                        $queue.items[$queue.selected].duration) *
+                        $queue.items[$queue.selected]?.duration) *
                     100
                 ).toFixed(2)
             );
 
             if (progress >= 80 && shouldCount) {
                 shouldCount = false;
-                socket.emit("count", $queue.items[$queue.selected].id);
+                socket.emit("count", $queue.items[$queue.selected]?.id);
             }
         });
 
@@ -152,7 +152,9 @@
         });
 
         queue.subscribe((value) => {
-            if (value.items.length === 0) {
+            if (value.items.length === 0 || value.selected === null) {
+                nowPlayMusic = null;
+                handleClickStop();
                 return;
             }
             if (
@@ -169,6 +171,7 @@
     onDestroy(() => {
         socket.off("like");
         socket.off("count");
+        socket.off("resync");
     });
 
     const requestFile = async (id: string) => {
@@ -207,29 +210,17 @@
     };
 
     const handleClickPlay = () => {
-        playing = !playing;
-
-        if (playing) {
-            if (!audioElement.src) {
-                handleClickQueueMusic($queue.selected);
-                return;
-            }
-
+        if (!playing) {
             audioElement.play();
-            return;
+        } else {
+            audioElement.pause();
         }
-
-        audioElement.pause();
     };
 
     const handleClickStop = () => {
         playing = false;
         audioElement.pause();
         audioElement.currentTime = 0;
-    };
-
-    const handleClickQueueMusic = (idx: number) => {
-        $queue.selected = idx;
     };
 
     const handleClickProgress = (e: MouseEvent | TouchEvent) => {
@@ -241,31 +232,6 @@
         const percent = (x - rect.left) / width;
         const duration = $queue.items[$queue.selected].duration;
         audioElement.currentTime = duration * percent;
-    };
-
-    const handleDeletequeueMusic = (idx: number) => {
-        queue.update((value) => {
-            value.items = value.items.filter((_, i) => i !== idx);
-            if (idx === value.selected) {
-                if (value.selected >= value.items.length) {
-                    value.selected = value.items.length - 1;
-                }
-            }
-
-            if (idx < value.selected) {
-                value.selected = value.selected - 1;
-            }
-
-            if (value.items.length === 0) {
-                handleClickStop();
-            }
-
-            if (value.items.length === 1) {
-                value.selected = 0;
-            }
-
-            return value;
-        });
     };
 
     const handleClickLike = (music: MusicModel) => {
@@ -335,8 +301,6 @@
             onClickPrev={playPrev}
             onClickLike={handleClickLike}
             onClickProgress={handleClickProgress}
-            onClickQueueMusic={handleClickQueueMusic}
-            onDeleteQueueMusic={handleDeletequeueMusic}
         />
 
         <MusicActionPanel

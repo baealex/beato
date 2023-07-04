@@ -2,7 +2,6 @@
     export let onClick: () => void;
     export let menus: { label: string; onClick: () => void }[] = [];
 
-    let clientWidth = 0;
     let accX = 0;
     let accY = 0;
     let lastX = 0;
@@ -31,7 +30,6 @@
         isDown = true;
         lastX = getClientX(e);
         lastY = getClientY(e);
-        clientWidth = (e.target as HTMLDivElement).clientWidth;
     };
 
     const handleFocusOut = () => {
