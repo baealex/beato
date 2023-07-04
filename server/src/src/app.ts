@@ -11,7 +11,10 @@ export default express()
     .use(express.static(path.resolve('client/dist'), {
         extensions: ['html']
     }))
-    .use('/cache', express.static(path.resolve('cache')))
+    .use('/cache', express.static(path.resolve('cache'), {
+        cacheControl: true,
+        maxAge: 31536000,
+    }))
     .use(express.json())
     .use('/graphql', createHandler({
         schema,
