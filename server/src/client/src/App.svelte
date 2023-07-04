@@ -40,7 +40,6 @@
     let progress = 0;
     let isLoading = false;
     let shouldCount = false;
-    let repeatMode: RepeatMode = "no";
     let nowPlayMusic: MusicModel = null;
 
     $: {
@@ -117,15 +116,15 @@
         });
 
         audioElement.addEventListener("ended", () => {
-            if (repeatMode === "one") {
+            if ($queue.repeatMode === "one") {
                 playAgain();
                 return;
             }
-            if (repeatMode === "all") {
+            if ($queue.repeatMode === "all") {
                 playNext();
                 return;
             }
-            if (repeatMode === "no") {
+            if ($queue.repeatMode === "off") {
                 if ($queue.selected === $queue.items.length - 1) {
                     audioElement.currentTime = 0;
                     return;
@@ -296,7 +295,6 @@
             bind:playing
             bind:volume
             bind:progress
-            bind:repeatMode
             music={$queue.items[$queue.selected]}
             onClickPlay={handleClickPlay}
             onClickStop={handleClickStop}

@@ -11,21 +11,21 @@
     import Cross from "../icons/Cross.svelte";
     import Menu from "../icons/Menu.svelte";
     import Heart from "../icons/Heart.svelte";
-
-    import type { Music, RepeatMode } from "../models/type";
-
-    import { getImage } from "../modules/image";
-
     import ArrowRepaet from "../icons/ArrowRepaet.svelte";
     import Infinite from "../icons/Infinite.svelte";
     import RightLeft from "../icons/RightLeft.svelte";
+
+    import type { Music } from "../models/type";
+
+    import { getImage } from "../modules/image";
+
+    import { queue, switchRepeatMode } from "../store";
 
     export let music: Music;
     export let audioElement: HTMLAudioElement;
     export let progress: number;
     export let playing: boolean;
     export let volume: number;
-    export let repeatMode: RepeatMode;
     export let onClickPlay: () => void;
     export let onClickNext: () => void;
     export let onClickPrev: () => void;
@@ -206,25 +206,13 @@
             <div class="action">
                 <button
                     class="icon-button fill"
-                    on:click={() => {
-                        switch (repeatMode) {
-                            case "no":
-                                repeatMode = "all";
-                                break;
-                            case "all":
-                                repeatMode = "one";
-                                break;
-                            case "one":
-                                repeatMode = "no";
-                                break;
-                        }
-                    }}
+                    on:click={() => switchRepeatMode()}
                 >
-                    {#if repeatMode === "no"}
+                    {#if $queue.repeatMode === "off"}
                         <RightLeft />
-                    {:else if repeatMode === "all"}
+                    {:else if $queue.repeatMode === "all"}
                         <ArrowRepaet />
-                    {:else if repeatMode === "one"}
+                    {:else if $queue.repeatMode === "one"}
                         <Infinite />
                     {/if}
                 </button>
