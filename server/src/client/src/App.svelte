@@ -20,9 +20,9 @@
     import { getAudio } from "./api";
 
     import {
-        syncData,
         musics,
-        playlist,
+        queue,
+        syncAll,
         musicSortPanel,
         musicDetailPanel,
     } from "./store";
@@ -41,9 +41,9 @@
     let repeatMode: RepeatMode = "no";
 
     $: {
-        if ($playlist.items[$playlist.selected]) {
-            document.title = `${$playlist.items[$playlist.selected].name} - ${
-                $playlist.items[$playlist.selected].artist.name
+        if ($queue.items[$queue.selected]) {
+            document.title = `${$queue.items[$queue.selected].name} - ${
+                $queue.items[$queue.selected].artist.name
             }`;
         }
     }
@@ -67,9 +67,7 @@
 
     onMount(() => {
         isLoading = true;
-        syncData(() => {
-            isLoading = false;
-        });
+        syncAll(() => (isLoading = false));
 
         socket.on(
             "like",
@@ -81,7 +79,7 @@
                     return music;
                 };
                 $musics = $musics.map(switchLike);
-                $playlist.items = $playlist.items.map(switchLike);
+                $queue.items = $queue.items.map(switchLike);
                 $musicDetailPanel.music.isLiked = isLiked;
             }
         );
@@ -104,18 +102,25 @@
             }
         );
 
+        socket.on("resync", () => {
+            isLoading = true;
+            syncAll(() => {
+                isLoading = false;
+            });
+        });
+
         audioElement.addEventListener("timeupdate", () => {
             progress = Number(
                 (
                     (audioElement.currentTime /
-                        $playlist.items[$playlist.selected].duration) *
+                        $queue.items[$queue.selected].duration) *
                     100
                 ).toFixed(2)
             );
 
             if (progress >= 80 && shouldCount) {
                 shouldCount = false;
-                socket.emit("count", $playlist.items[$playlist.selected].id);
+                socket.emit("count", $queue.items[$queue.selected].id);
             }
         });
 
@@ -129,7 +134,7 @@
                 return;
             }
             if (repeatMode === "no") {
-                if ($playlist.selected === $playlist.items.length - 1) {
+                if ($queue.selected === $queue.items.length - 1) {
                     audioElement.currentTime = 0;
                     return;
                 }
@@ -161,23 +166,23 @@
     });
 
     const handleClickMusic = (music: MusicModel) => {
-        if (!$playlist.items.map((item) => item.id).includes(music.id)) {
-            $playlist.items = [...$playlist.items, music];
+        if (!$queue.items.map((item) => item.id).includes(music.id)) {
+            $queue.items = [...$queue.items, music];
             toast("Added to queue");
         } else {
             toast("Already added to queue");
         }
 
-        if ($playlist.selected === null) {
-            $playlist.selected = 0;
-            requestFile($playlist.items[$playlist.selected].id);
+        if ($queue.selected === null) {
+            $queue.selected = 0;
+            requestFile($queue.items[$queue.selected].id);
         }
     };
 
     const handleClickPlayAll = (musics: MusicModel[]) => {
-        $playlist.selected = 0;
-        $playlist.items = [...musics];
-        handleClickPlaylistMusic(0);
+        $queue.selected = 0;
+        $queue.items = [...musics];
+        handleClickqueueMusic(0);
     };
 
     const handleClickPlayShuffle = (musics: MusicModel[]) => {
@@ -189,21 +194,21 @@
             copyMusics.splice(randomIndex, 1);
         }
 
-        $playlist.selected = 0;
-        $playlist.items = shuffleMusics;
-        handleClickPlaylistMusic(0);
+        $queue.selected = 0;
+        $queue.items = shuffleMusics;
+        handleClickqueueMusic(0);
     };
 
     const playAgain = () => {
-        requestFile($playlist.items[$playlist.selected].id);
+        requestFile($queue.items[$queue.selected].id);
     };
 
     const playNext = () => {
-        $playlist.selected = $playlist.selected + 1;
-        if ($playlist.selected >= $playlist.items.length) {
-            $playlist.selected = 0;
+        $queue.selected = $queue.selected + 1;
+        if ($queue.selected >= $queue.items.length) {
+            $queue.selected = 0;
         }
-        requestFile($playlist.items[$playlist.selected].id);
+        requestFile($queue.items[$queue.selected].id);
     };
 
     const playPrev = () => {
@@ -211,11 +216,11 @@
             audioElement.currentTime = 0;
             return;
         }
-        $playlist.selected = $playlist.selected - 1;
-        if ($playlist.selected < 0) {
-            $playlist.selected = $playlist.items.length - 1;
+        $queue.selected = $queue.selected - 1;
+        if ($queue.selected < 0) {
+            $queue.selected = $queue.items.length - 1;
         }
-        requestFile($playlist.items[$playlist.selected].id);
+        requestFile($queue.items[$queue.selected].id);
     };
 
     const handleClickPlay = () => {
@@ -223,7 +228,7 @@
 
         if (playing) {
             if (!audioElement.src) {
-                handleClickPlaylistMusic($playlist.selected);
+                handleClickqueueMusic($queue.selected);
                 return;
             }
 
@@ -240,9 +245,9 @@
         audioElement.currentTime = 0;
     };
 
-    const handleClickPlaylistMusic = (idx: number) => {
-        $playlist.selected = idx;
-        requestFile($playlist.items[$playlist.selected].id);
+    const handleClickqueueMusic = (idx: number) => {
+        $queue.selected = idx;
+        requestFile($queue.items[$queue.selected].id);
     };
 
     const handleClickProgress = (e: MouseEvent | TouchEvent) => {
@@ -252,22 +257,22 @@
         const x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
         const width = rect.width;
         const percent = (x - rect.left) / width;
-        const duration = $playlist.items[$playlist.selected].duration;
+        const duration = $queue.items[$queue.selected].duration;
         audioElement.currentTime = duration * percent;
     };
 
-    const handleDeletePlaylistMusic = (idx: number) => {
-        $playlist.items = $playlist.items.filter((_, i) => i !== idx);
+    const handleDeletequeueMusic = (idx: number) => {
+        $queue.items = $queue.items.filter((_, i) => i !== idx);
 
-        if ($playlist.selected === idx) {
-            handleClickPlaylistMusic(0);
+        if ($queue.selected === idx) {
+            handleClickqueueMusic(0);
         }
 
-        if ($playlist.selected > idx) {
+        if ($queue.selected > idx) {
             playPrev();
         }
 
-        if ($playlist.items.length === 0) {
+        if ($queue.items.length === 0) {
             handleClickStop();
         }
     };
@@ -340,15 +345,15 @@
             bind:volume
             bind:progress
             bind:repeatMode
-            music={$playlist.items[$playlist.selected]}
+            music={$queue.items[$queue.selected]}
             onClickPlay={handleClickPlay}
             onClickStop={handleClickStop}
             onClickNext={playNext}
             onClickPrev={playPrev}
             onClickLike={handleClickLike}
             onClickProgress={handleClickProgress}
-            onClickNowMusic={handleClickPlaylistMusic}
-            onDeleteNowMusic={handleDeletePlaylistMusic}
+            onClickQueueMusic={handleClickqueueMusic}
+            onDeleteQueueMusic={handleDeletequeueMusic}
         />
 
         <MusicDetailPanel

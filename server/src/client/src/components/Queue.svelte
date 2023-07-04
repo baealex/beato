@@ -4,7 +4,7 @@
     import SwipeCard from "./SwipeCard.svelte";
     import Cross from "../icons/Cross.svelte";
 
-    import { playlist } from "../store/playlist";
+    import { queue } from "../store";
 
     export let isOpen = false;
     export let onClose: () => void;
@@ -14,7 +14,7 @@
 
 <SubPage {isOpen} hasHeader={false}>
     <div class="list">
-        {#each $playlist.items as music, idx}
+        {#each $queue.items as music, idx}
             <SwipeCard
                 onClick={() => onClickMusic(idx)}
                 menus={[
@@ -24,7 +24,7 @@
                     },
                 ]}
             >
-                <div class="item" class:active={$playlist.selected === idx}>
+                <div class="item" class:active={$queue.selected === idx}>
                     <Image
                         class="album-art"
                         src={music.album.cover}

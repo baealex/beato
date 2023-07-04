@@ -1,13 +1,13 @@
-import { artists, albums, musics, playlist } from "./index";
-import { getAlbums, getArtists, getMusics } from "../api";
+import {
+    syncAlbums,
+    syncArtists,
+    syncMusics,
+} from "./index";
 
-export function syncData(callback: () => void) {
-    Promise.all([getMusics(), getAlbums(), getArtists()]).then(
-        ([_musics, _albums, _artists]) => {
-            musics.update(() => _musics.data.allMusics);
-            albums.update(() => _albums.data.allAlbums);
-            artists.update(() => _artists.data.allArtists);
-            callback();
-        }
-    );
+export function syncAll(callback: () => void) {
+    Promise.all([
+        syncAlbums(),
+        syncArtists(),
+        syncMusics(),
+    ]).then(callback);
 }

@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
 
-    import Now from "./Now.svelte";
+    import Queue from "./Queue.svelte";
     import SubPage from "./SubPage.svelte";
     import BottomPanel from "./BottomPanel.svelte";
 
@@ -31,13 +31,13 @@
     export let onClickPrev: () => void;
     export let onClickStop: () => void;
     export let onClickLike: (music: Music) => void;
-    export let onClickNowMusic: (idx: number) => void;
-    export let onDeleteNowMusic: (idx: number) => void;
+    export let onClickQueueMusic: (idx: number) => void;
+    export let onDeleteQueueMusic: (idx: number) => void;
     export let onClickProgress: (e: MouseEvent | TouchEvent) => void;
 
     let isOpenDetailPanel = false;
     let isOpenDetail = false;
-    let isOpenNow = false;
+    let isOpenQueue = false;
 
     const makePlayTime = (time: number) => {
         return `${Math.floor(time / 60) | 0}:${(
@@ -146,7 +146,7 @@
                 />
                 <button
                     class="icon-button"
-                    on:click={() => (isOpenNow = !isOpenNow)}
+                    on:click={() => (isOpenQueue = !isOpenQueue)}
                 >
                     <Menu />
                 </button>
@@ -155,13 +155,13 @@
     </div>
 {/if}
 
-<Now
-    isOpen={isOpenNow}
+<Queue
+    isOpen={isOpenQueue}
     onClose={() => {
-        isOpenNow = false;
+        isOpenQueue = false;
     }}
-    onClickMusic={onClickNowMusic}
-    onDeleteMusic={onDeleteNowMusic}
+    onClickMusic={onClickQueueMusic}
+    onDeleteMusic={onDeleteQueueMusic}
 />
 
 {#if music}

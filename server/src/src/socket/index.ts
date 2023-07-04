@@ -43,6 +43,7 @@ export const socketManager = (socket: Socket) => {
 
         alreadySyncing = true;
         await indexingMusic(socket);
+        users.broadcast('resync', '');
         alreadySyncing = false;
     });
 
