@@ -37,12 +37,10 @@
 </script>
 
 <div class="continer">
-    <h1>Setting</h1>
     <section>
         <p>Sync music from server</p>
         <button on:click={handleClickSyncMusic}>Start</button>
     </section>
-
     <section>
         <p>Something wrong? Try refresh</p>
         <button on:click={handleClickRefreshApp}>Ok</button>
@@ -53,7 +51,7 @@
 
 <style lang="scss">
     .continer {
-        padding: 0.5rem;
+        padding: 1rem 0.5rem;
     }
 
     button {
