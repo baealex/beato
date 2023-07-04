@@ -14,18 +14,27 @@ export const audio: Controller = async (req, res) => {
         },
     });
 
-    const stream = fs.createReadStream(path.resolve('./music', $music.filePath));
+    if (!fs.existsSync(path.resolve('./music', $music.filePath))) {
+        res.status(404).send('Not Found').end();
+    }
 
-    stream.on('data', (chunk) => {
-        res.write(chunk);
-    });
+    if ($music.filePath.split('.').pop() === 'mp3') {
+        res.setHeader('Content-Type', 'audio/mpeg');
+    } else if ($music.filePath.split('.').pop() === 'flac') {
+        res.setHeader('Content-Type', 'audio/flac');
+    } else if ($music.filePath.split('.').pop() === 'aac') {
+        res.setHeader('Content-Type', 'audio/aac');
+    } else if ($music.filePath.split('.').pop() === 'ogg') {
+        res.setHeader('Content-Type', 'audio/ogg');
+    } else if ($music.filePath.split('.').pop() === 'wav') {
+        res.setHeader('Content-Type', 'audio/wav');
+    }
 
-    stream.on('error', (err) => {
-        console.error(err);
-        res.status(500).end();
-    });
+    const { size } = fs.statSync(path.resolve('./music', $music.filePath));
 
-    stream.on('end', () => {
-        res.end();
-    });
+    res.setHeader('Content-Length', size);
+    res.setHeader('Accept-Ranges', 'bytes');
+    res.setHeader('Cache-Control', 'max-age=604800');
+
+    fs.createReadStream(path.resolve('./music', $music.filePath)).pipe(res);
 };

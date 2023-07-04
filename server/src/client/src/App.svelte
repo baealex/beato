@@ -59,7 +59,8 @@
         audioElement.pause();
         shouldCount = true;
 
-        audioElement.src = URL.createObjectURL((await getAudio(id)).data);
+        const audioResouce = "/api/audio/" + id;
+        audioElement.src = audioResouce;
         audioElement.load();
         await audioElement.play();
     };
