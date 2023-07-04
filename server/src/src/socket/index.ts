@@ -1,29 +1,49 @@
-import fs from 'fs';
-
 import type { Socket } from 'socket.io';
 
 import models from '~/models';
 import { indexingMusic } from '~/modules/indexing';
 
+const users = (() => {
+    let users: Socket[] = [];
+
+    return {
+        get: () => users,
+        set: (newUsers: Socket[]) => {
+            users = newUsers;
+        },
+        remove: (user: Socket) => {
+            users = users.filter((u) => u.id !== user.id);
+        },
+        append: (user: Socket) => {
+            users = [...users, user];
+        },
+        broadcast: <T>(event: string, data: T) => {
+            users.forEach((user) => {
+                user.emit(event, data);
+            });
+        }
+    };
+})();
+
 export const socketManager = (socket: Socket) => {
     console.log(`${socket.id} : a user connected`);
+    users.append(socket);
 
-    let stream: fs.ReadStream;
-    let isSyuncing = false;
+    let alreadySyncing = false;
 
     socket.on('sync-music', async () => {
         console.log('sync-music');
         socket.emit('sync-music', 'syncing...');
 
-        if (isSyuncing) {
+        if (alreadySyncing) {
             console.error('already syncing');
             socket.emit('sync-music', 'error');
             return;
         }
 
-        isSyuncing = true;
+        alreadySyncing = true;
         await indexingMusic(socket);
-        isSyuncing = false;
+        alreadySyncing = false;
     });
 
     socket.on('count', async (id: string) => {
@@ -42,6 +62,10 @@ export const socketManager = (socket: Socket) => {
                 data: {
                     playCount: $music.playCount + 1,
                 },
+            });
+            users.broadcast('count', {
+                id: $music.id.toString(),
+                playCount: $music.playCount + 1,
             });
         }
     });
@@ -78,7 +102,7 @@ export const socketManager = (socket: Socket) => {
             }
 
             console.log('like update', $music.name, isLiked);
-            socket.emit('like', {
+            users.broadcast('like', {
                 id: $music.id.toString(),
                 isLiked,
             });
@@ -87,8 +111,6 @@ export const socketManager = (socket: Socket) => {
 
     socket.on('disconnect', () => {
         console.log(`${socket.id} : user disconnected`);
-        if (stream) {
-            stream.destroy();
-        }
+        users.remove(socket);
     });
 };

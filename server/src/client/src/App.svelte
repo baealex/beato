@@ -86,6 +86,24 @@
             }
         );
 
+        socket.on(
+            "count",
+            ({ id, playCount }: { id: string; playCount: number }) => {
+                if ($musicSortPanel.latestSort === "playCountAsc") {
+                    musics.update((prevMusics) =>
+                        prevMusics
+                            .map((music) => {
+                                if (music.id === id) {
+                                    music.playCount = playCount;
+                                }
+                                return music;
+                            })
+                            .sort((a, b) => b.playCount - a.playCount)
+                    );
+                }
+            }
+        );
+
         audioElement.addEventListener("timeupdate", () => {
             progress = Number(
                 (
@@ -97,21 +115,6 @@
 
             if (progress >= 80 && shouldCount) {
                 shouldCount = false;
-                if ($musicSortPanel.latestSort === "playCountAsc") {
-                    musics.update((prevMusics) => {
-                        return prevMusics
-                            .map((music) => {
-                                if (
-                                    music.id ===
-                                    $playlist.items[$playlist.selected].id
-                                ) {
-                                    music.playCount += 1;
-                                }
-                                return music;
-                            })
-                            .sort((a, b) => b.playCount - a.playCount);
-                    });
-                }
                 socket.emit("count", $playlist.items[$playlist.selected].id);
             }
         });
