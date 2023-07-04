@@ -10,10 +10,9 @@
     import Heart from "../icons/Heart.svelte";
     import Download from "../icons/Download.svelte";
 
-    import { musicActionPanel } from "../store";
+    import { insertToQueue, musicActionPanel } from "../store";
 
     export let onClickLike: (music: Music) => void;
-    export let onClickAddToQueue: (music: Music) => void;
     export let onClickDownload: (music: Music) => void;
 
     $: music = $musicActionPanel.music;
@@ -61,7 +60,7 @@
             <li>
                 <button
                     class="clickable item"
-                    on:click={() => onClickAddToQueue(music)}
+                    on:click={() => insertToQueue(music)}
                 >
                     <Play /> Add to Queue
                 </button>

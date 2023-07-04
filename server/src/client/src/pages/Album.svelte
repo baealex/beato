@@ -10,8 +10,6 @@
 
     import { albums, albumSortPanel } from "../store";
 
-    export let onClickMusic: (music: Music) => void;
-
     let selectedId: string | null = null;
     let isOpenDetail = false;
 
@@ -81,7 +79,7 @@
     }}
 >
     {#if selectedId}
-        <AlbumDetail id={selectedId} {onClickMusic} />
+        <AlbumDetail id={selectedId} />
     {/if}
 </SubPage>
 

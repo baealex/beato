@@ -19,7 +19,6 @@
     import Setting from "./pages/Setting.svelte";
 
     import { downloadFile } from "./modules/download";
-    import { shuffle } from "./modules/shuffle";
     import { getAudio } from "./api";
 
     import {
@@ -42,6 +41,7 @@
     let isLoading = false;
     let shouldCount = false;
     let repeatMode: RepeatMode = "no";
+    let nowPlayMusic: MusicModel = null;
 
     $: {
         if ($queue.items[$queue.selected]) {
@@ -56,17 +56,6 @@
             audioElement.volume = volume;
         }
     }
-
-    const requestFile = async (id: string) => {
-        audioElement.currentTime = 0;
-        audioElement.pause();
-        shouldCount = true;
-
-        const audioResouce = "/api/audio/" + id;
-        audioElement.src = audioResouce;
-        audioElement.load();
-        await audioElement.play();
-    };
 
     onMount(() => {
         isLoading = true;
@@ -161,6 +150,20 @@
         audioElement.addEventListener("volumechange", () => {
             volume = audioElement.volume;
         });
+
+        queue.subscribe((value) => {
+            if (value.items.length === 0) {
+                return;
+            }
+            if (
+                nowPlayMusic &&
+                nowPlayMusic.id === value.items[value.selected].id
+            ) {
+                return;
+            }
+            nowPlayMusic = value.items[value.selected];
+            requestFile(value.items[value.selected].id);
+        });
     });
 
     onDestroy(() => {
@@ -168,30 +171,15 @@
         socket.off("count");
     });
 
-    const handleClickMusic = (music: MusicModel) => {
-        if (!$queue.items.map((item) => item.id).includes(music.id)) {
-            $queue.items = [...$queue.items, music];
-            toast("Added to queue");
-        } else {
-            toast("Already added to queue");
-        }
+    const requestFile = async (id: string) => {
+        audioElement.currentTime = 0;
+        audioElement.pause();
+        shouldCount = true;
 
-        if ($queue.selected === null) {
-            $queue.selected = 0;
-            requestFile($queue.items[$queue.selected].id);
-        }
-    };
-
-    const handleClickPlayAll = (musics: MusicModel[]) => {
-        $queue.selected = 0;
-        $queue.items = [...musics];
-        handleClickqueueMusic(0);
-    };
-
-    const handleClickPlayShuffle = (musics: MusicModel[]) => {
-        $queue.selected = 0;
-        $queue.items = shuffle(musics);
-        handleClickqueueMusic(0);
+        const audioResouce = "/api/audio/" + id;
+        audioElement.src = audioResouce;
+        audioElement.load();
+        await audioElement.play();
     };
 
     const playAgain = () => {
@@ -223,7 +211,7 @@
 
         if (playing) {
             if (!audioElement.src) {
-                handleClickqueueMusic($queue.selected);
+                handleClickQueueMusic($queue.selected);
                 return;
             }
 
@@ -240,9 +228,8 @@
         audioElement.currentTime = 0;
     };
 
-    const handleClickqueueMusic = (idx: number) => {
+    const handleClickQueueMusic = (idx: number) => {
         $queue.selected = idx;
-        requestFile($queue.items[$queue.selected].id);
     };
 
     const handleClickProgress = (e: MouseEvent | TouchEvent) => {
@@ -257,19 +244,28 @@
     };
 
     const handleDeletequeueMusic = (idx: number) => {
-        $queue.items = $queue.items.filter((_, i) => i !== idx);
+        queue.update((value) => {
+            value.items = value.items.filter((_, i) => i !== idx);
+            if (idx === value.selected) {
+                if (value.selected >= value.items.length) {
+                    value.selected = value.items.length - 1;
+                }
+            }
 
-        if ($queue.selected === idx) {
-            handleClickqueueMusic(0);
-        }
+            if (idx < value.selected) {
+                value.selected = value.selected - 1;
+            }
 
-        if ($queue.selected > idx) {
-            playPrev();
-        }
+            if (value.items.length === 0) {
+                handleClickStop();
+            }
 
-        if ($queue.items.length === 0) {
-            handleClickStop();
-        }
+            if (value.items.length === 1) {
+                value.selected = 0;
+            }
+
+            return value;
+        });
     };
 
     const handleClickLike = (music: MusicModel) => {
@@ -292,40 +288,32 @@
         <Loading {isLoading} message="Loading..." />
         <Route path="/" scrollToTop={true} exact={true}>
             <div class="container fade-in">
-                <Music
-                    onClickMusic={handleClickMusic}
-                    onClickPlayAll={handleClickPlayAll}
-                    onClickPlayShuffle={handleClickPlayShuffle}
-                />
+                <Music />
             </div>
         </Route>
         <Route path="/favorite">
             <div class="container fade-in">
-                <FavoriteMusic
-                    onClickMusic={handleClickMusic}
-                    onClickPlayAll={handleClickPlayAll}
-                    onClickPlayShuffle={handleClickPlayShuffle}
-                />
+                <FavoriteMusic />
             </div>
         </Route>
         <Route path="/album">
             <div class="container fade-in">
-                <Album onClickMusic={handleClickMusic} />
+                <Album />
             </div>
         </Route>
         <Route path="/album/:id" let:params>
             <div class="container fade-in">
-                <AlbumDetail id={params.id} onClickMusic={handleClickMusic} />
+                <AlbumDetail id={params.id} />
             </div>
         </Route>
         <Route path="/artist">
             <div class="container fade-in">
-                <Artist onClickMusic={handleClickMusic} />
+                <Artist />
             </div>
         </Route>
         <Route path="/artist/:id" let:params>
             <div class="container fade-in">
-                <ArtistDetail id={params.id} onClickMusic={handleClickMusic} />
+                <ArtistDetail id={params.id} />
             </div>
         </Route>
         <Route path="/setting">
@@ -347,14 +335,13 @@
             onClickPrev={playPrev}
             onClickLike={handleClickLike}
             onClickProgress={handleClickProgress}
-            onClickQueueMusic={handleClickqueueMusic}
+            onClickQueueMusic={handleClickQueueMusic}
             onDeleteQueueMusic={handleDeletequeueMusic}
         />
 
         <MusicActionPanel
             onClickLike={handleClickLike}
             onClickDownload={handleClickDownload}
-            onClickAddToQueue={handleClickMusic}
         />
 
         <MusicSortPanel />

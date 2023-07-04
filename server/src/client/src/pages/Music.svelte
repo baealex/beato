@@ -6,13 +6,15 @@
     import Play from "../icons/Play.svelte";
     import Sort from "../icons/Sort.svelte";
 
-    import type { Music } from "../models/type";
+    import { shuffle } from "../modules/shuffle";
 
-    import { musics, musicActionPanel, musicSortPanel } from "../store";
-
-    export let onClickMusic: (music: Music) => void;
-    export let onClickPlayAll: (musics: Music[]) => void;
-    export let onClickPlayShuffle: (musics: Music[]) => void;
+    import {
+        resetQueue,
+        insertToQueue,
+        musics,
+        musicActionPanel,
+        musicSortPanel,
+    } from "../store";
 
     let search = "";
 
@@ -54,11 +56,11 @@
         />
     </div>
     <div class="buttons">
-        <button on:click={() => onClickPlayAll(visibleMusics)}>
+        <button on:click={() => resetQueue(visibleMusics)}>
             <Play />
             Play
         </button>
-        <button on:click={() => onClickPlayShuffle(visibleMusics)}>
+        <button on:click={() => resetQueue(shuffle(visibleMusics))}>
             <Shuffle />
             Shuffle
         </button>
@@ -77,7 +79,7 @@
                 musicName={music.name}
                 musicCodec={music.codec}
                 isLiked={music.isLiked}
-                onClick={() => onClickMusic(music)}
+                onClick={() => insertToQueue(music)}
                 onLongPress={() => {
                     musicActionPanel.update(() => ({
                         isOpen: true,

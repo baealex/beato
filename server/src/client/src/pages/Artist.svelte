@@ -6,11 +6,7 @@
     import Image from "../components/Image.svelte";
     import Sort from "../icons/Sort.svelte";
 
-    import type { Music } from "../models/type";
-
     import { artists, artistSortPanel } from "../store";
-
-    export let onClickMusic: (music: Music) => void;
 
     let selectedId: string | null = null;
     let isOpenDetail = false;
@@ -100,7 +96,7 @@
     }}
 >
     {#if selectedId}
-        <ArtistDetail id={String(selectedId)} {onClickMusic} />
+        <ArtistDetail id={String(selectedId)} />
     {/if}
 </SubPage>
 

@@ -11,10 +11,9 @@
 
     import { getArtist } from "../api";
 
-    import { musicActionPanel, musics } from "../store";
+    import { insertToQueue, musicActionPanel, musics } from "../store";
 
     export let id = "";
-    export let onClickMusic: (music: Music) => void = () => {};
 
     let artist: Artist = null;
     let selectedId: string | null = null;
@@ -79,7 +78,7 @@
                             musicName={music.name}
                             musicCodec={music.codec}
                             isLiked={music.isLiked}
-                            onClick={() => onClickMusic(music)}
+                            onClick={() => insertToQueue(music)}
                             onLongPress={() => {
                                 musicActionPanel.update(() => ({
                                     isOpen: true,
@@ -102,7 +101,7 @@
     }}
 >
     {#if selectedId}
-        <AlbumDetail id={String(selectedId)} {onClickMusic} />
+        <AlbumDetail id={String(selectedId)} />
     {/if}
 </SubPage>
 

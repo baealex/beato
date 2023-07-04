@@ -5,14 +5,13 @@
     import MusicListItem from "../components/MusicListItem.svelte";
     import Play from "../icons/Play.svelte";
 
-    import type { Album, Music } from "../models/type";
+    import type { Album } from "../models/type";
 
     import { getAlbum } from "../api";
 
-    import { musicActionPanel, musics } from "../store";
+    import { resetQueue, insertToQueue, musicActionPanel, musics } from "../store";
 
     export let id = "";
-    export let onClickMusic: (music: Music) => void;
 
     let album: Album = null;
 
@@ -51,9 +50,7 @@
         <div class="play-all">
             <button
                 on:click={() => {
-                    for (const music of album.musics) {
-                        onClickMusic(music);
-                    }
+                    resetQueue(album.musics);
                 }}
             >
                 <Play />
@@ -72,7 +69,7 @@
                     musicName={music.name}
                     musicCodec={music.codec}
                     isLiked={music.isLiked}
-                    onClick={() => onClickMusic(music)}
+                    onClick={() => insertToQueue(music)}
                     onLongPress={() => {
                         musicActionPanel.update(() => ({
                             isOpen: true,
