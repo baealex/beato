@@ -274,9 +274,8 @@
         </div>
     </SubPage>
 
-    <BottomPanel bind:isOpen={isOpenDetailPanel}>
+    <BottomPanel title="Related to this music" bind:isOpen={isOpenDetailPanel}>
         <div class="panel-content">
-            <div class="panel-title">Related to this music</div>
             <button
                 class="clickable linkable panel-album"
                 on:click={() => {
@@ -575,15 +574,11 @@
         }
     }
 
-    .panel-title {
-        font-size: 0.875rem;
-        color: #888;
-    }
-
     .panel-content {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+        margin-top: 1.5rem;
     }
 
     .panel-album {

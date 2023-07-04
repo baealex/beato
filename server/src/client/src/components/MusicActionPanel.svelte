@@ -10,17 +10,17 @@
     import Heart from "../icons/Heart.svelte";
     import Download from "../icons/Download.svelte";
 
-    import { musicDetailPanel } from "../store";
+    import { musicActionPanel } from "../store";
 
     export let onClickLike: (music: Music) => void;
     export let onClickAddToQueue: (music: Music) => void;
     export let onClickDownload: (music: Music) => void;
 
-    $: isOpen = $musicDetailPanel.isOpen;
-    $: music = $musicDetailPanel.music;
+    $: music = $musicActionPanel.music;
+    $: isOpen = $musicActionPanel.isOpen;
 
     const close = () => {
-        musicDetailPanel.update((state) => ({
+        musicActionPanel.update((state) => ({
             ...state,
             isOpen: false,
         }));

@@ -12,6 +12,7 @@ export const albumType = gql`
         cover: String!
         artist: Artist!
         publishedYear: String!
+        createdAt: String!
         musics: [Music!]!
     }
     

@@ -1,20 +1,20 @@
 <script lang="ts">
-    import BottomPanel from "../components/BottomPanel.svelte";
+    import BottomPanel from "./BottomPanel.svelte";
     import List from "../icons/List.svelte";
 
-    import { musics, musicSortPanel } from "../store";
+    import { artists, artistSortPanel } from "../store";
 
-    $: isOpen = $musicSortPanel.isOpen;
-    $: latestSort = $musicSortPanel.latestSort;
+    $: isOpen = $artistSortPanel.isOpen;
+    $: latestSort = $artistSortPanel.latestSort;
 
     let sortItems = [
         {
             name: "Name (A-Z)",
             sort: "nameAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => a.name.localeCompare(b.name));
-                    return musics;
+                artists.update((artists) => {
+                    artists.sort((a, b) => a.name.localeCompare(b.name));
+                    return artists;
                 });
             },
         },
@@ -22,73 +22,49 @@
             name: "Name (Z-A)",
             sort: "nameDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => b.name.localeCompare(a.name));
-                    return musics;
+                artists.update((artists) => {
+                    artists.sort((a, b) => b.name.localeCompare(a.name));
+                    return artists;
                 });
             },
         },
         {
-            name: "Artist Name (A-Z)",
-            sort: "artistAsc",
+            name: "Song Count (Low-High)",
+            sort: "songCountAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
-                        a.artist.name.localeCompare(b.artist.name)
-                    );
-                    return musics;
+                artists.update((artists) => {
+                    artists.sort((a, b) => a.musicCount - b.musicCount);
+                    return artists;
                 });
             },
         },
         {
-            name: "Artist Name (Z-A)",
-            sort: "artistDesc",
+            name: "Song Count (High-Low)",
+            sort: "songCountDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
-                        b.artist.name.localeCompare(a.artist.name)
-                    );
-                    return musics;
+                artists.update((artists) => {
+                    artists.sort((a, b) => b.musicCount - a.musicCount);
+                    return artists;
                 });
             },
         },
         {
-            name: "Play Count (Low-High)",
-            sort: "playCountAsc",
+            name: "Album Count (Low-High)",
+            sort: "albumCountAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => a.playCount - b.playCount);
-                    return musics;
+                artists.update((artists) => {
+                    artists.sort((a, b) => a.albumCount - b.albumCount);
+                    return artists;
                 });
             },
         },
         {
-            name: "Play Count (High-Low)",
-            sort: "playCountDesc",
+            name: "Album Count (High-Low)",
+            sort: "albumCountDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => b.playCount - a.playCount);
-                    return musics;
-                });
-            },
-        },
-        {
-            name: "Duration (Short-Long)",
-            sort: "durationAsc",
-            onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => a.duration - b.duration);
-                    return musics;
-                });
-            },
-        },
-        {
-            name: "Duration (Long-Short)",
-            sort: "durationDesc",
-            onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => b.duration - a.duration);
-                    return musics;
+                artists.update((artists) => {
+                    artists.sort((a, b) => b.albumCount - a.albumCount);
+                    return artists;
                 });
             },
         },
@@ -96,11 +72,11 @@
             name: "Date Added (Old-New)",
             sort: "createdAtAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
+                artists.update((artists) => {
+                    artists.sort((a, b) =>
                         a.createdAt.localeCompare(b.createdAt)
                     );
-                    return musics;
+                    return artists;
                 });
             },
         },
@@ -108,11 +84,11 @@
             name: "Date Added (New-Old)",
             sort: "createdAtDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
+                artists.update((artists) => {
+                    artists.sort((a, b) =>
                         b.createdAt.localeCompare(a.createdAt)
                     );
-                    return musics;
+                    return artists;
                 });
             },
         },
@@ -123,7 +99,7 @@
     title="Sort By"
     {isOpen}
     onClose={() =>
-        musicSortPanel.update((state) => ({ ...state, isOpen: false }))}
+        artistSortPanel.update((state) => ({ ...state, isOpen: false }))}
 >
     <ul class="items">
         {#each sortItems as sortItem}
@@ -132,7 +108,7 @@
                     class="clickable item"
                     on:click={() => {
                         sortItem.onClick();
-                        musicSortPanel.update(() => ({
+                        artistSortPanel.update(() => ({
                             isOpen: false,
                             latestSort: sortItem.sort,
                         }));

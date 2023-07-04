@@ -38,7 +38,7 @@ export function getArtists() {
     return graphQLRequest<"allArtists", Artist[]>(`
         query {
             allArtists {
-                id name albumCount musicCount
+                id name albumCount musicCount createdAt
                 latestAlbum {
                     cover
                 }
@@ -76,7 +76,7 @@ export function getAlbums() {
     return graphQLRequest<"allAlbums", Album[]>(`
         query {
             allAlbums {
-                id name cover
+                id name cover publishedYear createdAt
                 artist {
                     id name
                 }

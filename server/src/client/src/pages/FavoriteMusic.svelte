@@ -7,7 +7,7 @@
 
     import type { Music } from "../models/type";
 
-    import { musics, musicDetailPanel, musicSortPanel } from "../store";
+    import { musics, musicActionPanel, musicSortPanel } from "../store";
     import Sort from "../icons/Sort.svelte";
 
     export let onClickMusic: (music: Music) => void;
@@ -82,7 +82,7 @@
                 isLiked={music.isLiked}
                 onClick={() => onClickMusic(music)}
                 onLongPress={() => {
-                    musicDetailPanel.update(() => ({
+                    musicActionPanel.update(() => ({
                         isOpen: true,
                         music,
                     }));

@@ -26,6 +26,7 @@ export interface Album {
         name: string;
     };
     musics: Music[];
+    createdAt: string;
 }
 
 export interface Artist {
@@ -36,6 +37,7 @@ export interface Artist {
     albumCount: number;
     musics: Music[];
     musicCount: number;
+    createdAt: string;
 }
 
 export type RepeatMode = "no" | "one" | "all";

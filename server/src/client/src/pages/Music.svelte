@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
+    import { onMount } from "svelte";
 
     import MusicListItem from "../components/MusicListItem.svelte";
     import Shuffle from "../icons/Shuffle.svelte";
@@ -8,7 +8,7 @@
 
     import type { Music } from "../models/type";
 
-    import { musics, musicDetailPanel, musicSortPanel } from "../store";
+    import { musics, musicActionPanel, musicSortPanel } from "../store";
 
     export let onClickMusic: (music: Music) => void;
     export let onClickPlayAll: (musics: Music[]) => void;
@@ -79,7 +79,7 @@
                 isLiked={music.isLiked}
                 onClick={() => onClickMusic(music)}
                 onLongPress={() => {
-                    musicDetailPanel.update(() => ({
+                    musicActionPanel.update(() => ({
                         isOpen: true,
                         music,
                     }));

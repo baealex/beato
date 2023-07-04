@@ -6,7 +6,9 @@
     import Player from "./components/Player.svelte";
     import Loading from "./components/Loading.svelte";
     import MusicSortPanel from "./components/MusicSortPanel.svelte";
-    import MusicDetailPanel from "./components/MusicDetailPanel.svelte";
+    import AlbumSortPanel from "./components/AlbumSortPanel.svelte";
+    import ArtistSortPanel from "./components/ArtistSortPanel.svelte";
+    import MusicActionPanel from "./components/MusicActionPanel.svelte";
 
     import Music from "./pages/Music.svelte";
     import FavoriteMusic from "./pages/FavoriteMusic.svelte";
@@ -24,7 +26,7 @@
         queue,
         syncAll,
         musicSortPanel,
-        musicDetailPanel,
+        musicActionPanel,
     } from "./store";
 
     import { socket } from "./modules/socket";
@@ -80,7 +82,7 @@
                 };
                 $musics = $musics.map(switchLike);
                 $queue.items = $queue.items.map(switchLike);
-                $musicDetailPanel.music.isLiked = isLiked;
+                $musicActionPanel.music.isLiked = isLiked;
             }
         );
 
@@ -356,12 +358,14 @@
             onDeleteQueueMusic={handleDeletequeueMusic}
         />
 
-        <MusicDetailPanel
+        <MusicActionPanel
             onClickLike={handleClickLike}
             onClickDownload={handleClickDownload}
             onClickAddToQueue={handleClickMusic}
         />
 
         <MusicSortPanel />
+        <AlbumSortPanel />
+        <ArtistSortPanel />
     </Router>
 </main>

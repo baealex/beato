@@ -5,19 +5,15 @@ type LatestSort =
     | "nameDesc"
     | "artistAsc"
     | "artistDesc"
-    | "albumAsc"
-    | "albumDesc"
     | "createdAtAsc"
     | "createdAtDesc"
-    | "playCountAsc"
-    | "playCountDesc"
-    | "durationAsc"
-    | "durationDesc";
+    | "publishedYearAsc"
+    | "publishedYearDesc";
 
-export const musicSortPanel = writable<{
+export const albumSortPanel = writable<{
     isOpen: boolean;
     latestSort: LatestSort;
 }>({
     isOpen: false,
-    latestSort: 'playCountDesc'
+    latestSort: 'nameAsc'
 });

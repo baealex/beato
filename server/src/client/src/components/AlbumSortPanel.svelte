@@ -1,20 +1,20 @@
 <script lang="ts">
-    import BottomPanel from "../components/BottomPanel.svelte";
+    import BottomPanel from "./BottomPanel.svelte";
     import List from "../icons/List.svelte";
 
-    import { musics, musicSortPanel } from "../store";
+    import { albums, albumSortPanel } from "../store";
 
-    $: isOpen = $musicSortPanel.isOpen;
-    $: latestSort = $musicSortPanel.latestSort;
+    $: isOpen = $albumSortPanel.isOpen;
+    $: latestSort = $albumSortPanel.latestSort;
 
     let sortItems = [
         {
             name: "Name (A-Z)",
             sort: "nameAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => a.name.localeCompare(b.name));
-                    return musics;
+                albums.update((albums) => {
+                    albums.sort((a, b) => a.name.localeCompare(b.name));
+                    return albums;
                 });
             },
         },
@@ -22,9 +22,9 @@
             name: "Name (Z-A)",
             sort: "nameDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => b.name.localeCompare(a.name));
-                    return musics;
+                albums.update((albums) => {
+                    albums.sort((a, b) => b.name.localeCompare(a.name));
+                    return albums;
                 });
             },
         },
@@ -32,11 +32,11 @@
             name: "Artist Name (A-Z)",
             sort: "artistAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
+                albums.update((albums) => {
+                    albums.sort((a, b) =>
                         a.artist.name.localeCompare(b.artist.name)
                     );
-                    return musics;
+                    return albums;
                 });
             },
         },
@@ -44,51 +44,35 @@
             name: "Artist Name (Z-A)",
             sort: "artistDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
+                albums.update((albums) => {
+                    albums.sort((a, b) =>
                         b.artist.name.localeCompare(a.artist.name)
                     );
-                    return musics;
+                    return albums;
                 });
             },
         },
         {
-            name: "Play Count (Low-High)",
-            sort: "playCountAsc",
+            name: "Published Year (Old-New)",
+            sort: "publishedYearAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => a.playCount - b.playCount);
-                    return musics;
+                albums.update((albums) => {
+                    albums.sort((a, b) =>
+                        a.publishedYear.localeCompare(b.publishedYear)
+                    );
+                    return albums;
                 });
             },
         },
         {
-            name: "Play Count (High-Low)",
-            sort: "playCountDesc",
+            name: "Published Year (New-Old)",
+            sort: "publishedYearDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => b.playCount - a.playCount);
-                    return musics;
-                });
-            },
-        },
-        {
-            name: "Duration (Short-Long)",
-            sort: "durationAsc",
-            onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => a.duration - b.duration);
-                    return musics;
-                });
-            },
-        },
-        {
-            name: "Duration (Long-Short)",
-            sort: "durationDesc",
-            onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => b.duration - a.duration);
-                    return musics;
+                albums.update((albums) => {
+                    albums.sort((a, b) =>
+                        b.publishedYear.localeCompare(a.publishedYear)
+                    );
+                    return albums;
                 });
             },
         },
@@ -96,11 +80,11 @@
             name: "Date Added (Old-New)",
             sort: "createdAtAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
+                albums.update((albums) => {
+                    albums.sort((a, b) =>
                         a.createdAt.localeCompare(b.createdAt)
                     );
-                    return musics;
+                    return albums;
                 });
             },
         },
@@ -108,11 +92,11 @@
             name: "Date Added (New-Old)",
             sort: "createdAtDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
+                albums.update((albums) => {
+                    albums.sort((a, b) =>
                         b.createdAt.localeCompare(a.createdAt)
                     );
-                    return musics;
+                    return albums;
                 });
             },
         },
@@ -123,7 +107,7 @@
     title="Sort By"
     {isOpen}
     onClose={() =>
-        musicSortPanel.update((state) => ({ ...state, isOpen: false }))}
+        albumSortPanel.update((state) => ({ ...state, isOpen: false }))}
 >
     <ul class="items">
         {#each sortItems as sortItem}
@@ -132,7 +116,7 @@
                     class="clickable item"
                     on:click={() => {
                         sortItem.onClick();
-                        musicSortPanel.update(() => ({
+                        albumSortPanel.update(() => ({
                             isOpen: false,
                             latestSort: sortItem.sort,
                         }));

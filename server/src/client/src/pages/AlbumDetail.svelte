@@ -9,7 +9,7 @@
 
     import { getAlbum } from "../api";
 
-    import { musicDetailPanel, musics } from "../store";
+    import { musicActionPanel, musics } from "../store";
 
     export let id = "";
     export let onClickMusic: (music: Music) => void;
@@ -74,7 +74,7 @@
                     isLiked={music.isLiked}
                     onClick={() => onClickMusic(music)}
                     onLongPress={() => {
-                        musicDetailPanel.update(() => ({
+                        musicActionPanel.update(() => ({
                             isOpen: true,
                             music,
                         }));

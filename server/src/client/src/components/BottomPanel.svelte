@@ -2,6 +2,7 @@
     import { createUUID } from "../modules/uuid";
 
     export let id = createUUID();
+    export let title = "";
     export let isOpen = false;
     export let onClose: () => void = null;
 
@@ -33,6 +34,9 @@
         on:click={() => handleClose()}
     />
     <div class="bottom-panel" class:open={isOpen}>
+        {#if title}
+            <div class="panel-title">{title}</div>
+        {/if}
         <slot />
     </div>
 </div>
@@ -78,5 +82,10 @@
         &.open {
             transform: translateY(0);
         }
+    }
+
+    .panel-title {
+        font-size: 0.875rem;
+        color: #888;
     }
 </style>
