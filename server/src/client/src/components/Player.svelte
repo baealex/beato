@@ -18,6 +18,7 @@
     import type { Music } from "../models/type";
 
     import { getImage } from "../modules/image";
+    import { makePlayTime } from "../modules/time";
 
     import { queue, switchRepeatMode } from "../store";
 
@@ -36,13 +37,6 @@
     let isOpenDetailPanel = false;
     let isOpenDetail = false;
     let isOpenQueue = false;
-
-    const makePlayTime = (time: number) => {
-        return `${Math.floor(time / 60) | 0}:${(
-            "0" +
-            (Math.round(time) % 60)
-        ).slice(-2)}`;
-    };
 
     $: totalTime = makePlayTime(music?.duration);
     $: currentTime = makePlayTime(music?.duration * (progress / 100));

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import Loading from "../components/Loading.svelte";
+    import Select from "../components/Select.svelte";
 
     import { socket } from "../modules/socket";
     import { toast } from "../modules/ui/toast";
@@ -38,46 +39,56 @@
         location.reload();
     };
 
-    const handleChangePlayMode = (e: Event) => {
+    const handleChangePlayMode = (value: QueuePlayMode) => {
         queue.update((state) => ({
             ...state,
-            playMode: (e.target as HTMLSelectElement).value as QueuePlayMode,
+            playMode: value,
         }));
     };
 
-    const handleChangeQueueMode = (e: Event) => {
+    const handleChangeQueueMode = (value: QueueInsertMode) => {
         queue.update((state) => ({
             ...state,
-            insertMode: (e.target as HTMLSelectElement)
-                .value as QueueInsertMode,
+            insertMode: value,
         }));
     };
 </script>
 
 <div class="continer">
-    <section>
+    <section style="justify-content: space-between;">
         <p>Sync music from server</p>
         <button on:click={handleClickSyncMusic}>Start</button>
     </section>
     <section>
-        <p>When you click on a music</p>
-        <div class="flex-row">
-            <select value={$queue.playMode} on:change={handleChangePlayMode}>
-                <option value="later">Play later</option>
-                <option value="immediate">Play immediately</option>
-            </select>
-            <select value={$queue.insertMode} on:change={handleChangeQueueMode}>
-                <option value="after">
-                    Add to queue after current music
-                </option>
-                <option value="before">
-                    Add to queue before current music
-                </option>
-                <option value="last">Add to queue at the end</option>
-            </select>
-        </div>
+        <p>When you press the music, the music will</p>
+        <Select
+            title="The music will..."
+            value={$queue.playMode}
+            onChange={handleChangePlayMode}
+            options={[
+                { value: "later", label: "Play later" },
+                { value: "immediate", label: "Play immediately" },
+            ]}
+        />
+        and
+        <Select
+            title="The music will..."
+            value={$queue.insertMode}
+            onChange={handleChangeQueueMode}
+            options={[
+                {
+                    value: "after",
+                    label: "Add to queue after current music",
+                },
+                {
+                    value: "before",
+                    label: "Add to queue before current music",
+                },
+                { value: "last", label: "Add to queue at the end" },
+            ]}
+        />
     </section>
-    <section>
+    <section style="justify-content: space-between;">
         <p>Something wrong? Try refresh</p>
         <button on:click={handleClickRefreshApp}>Ok</button>
     </section>
@@ -102,33 +113,9 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
         gap: 0.5rem;
         border-bottom: 1px solid #212121;
-        padding: 0.5rem 1rem;
-        margin-bottom: 1rem;
+        padding: 1rem;
         flex-wrap: wrap;
-    }
-
-    .flex-row {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        max-width: 100%;
-        gap: 0.5rem;
-    }
-
-    select {
-        padding: 0.5rem 1rem;
-        max-width: 100%;
-        border-radius: 0.5rem;
-        border: 1px solid #333;
-        background-color: #000;
-        color: #eee;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
     }
 </style>
