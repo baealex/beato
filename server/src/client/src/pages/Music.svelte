@@ -8,6 +8,8 @@
 
     import { shuffle } from "../modules/shuffle";
 
+    import { useGradualRender } from "../hooks/useGradualRender";
+
     import {
         resetQueue,
         insertToQueue,
@@ -17,33 +19,20 @@
     } from "../store";
 
     let search = "";
-
-    let page = 1;
-    let perPage = 100;
-    let lastPage = Math.ceil($musics.length / perPage);
+    let innerMusics = useGradualRender($musics);
 
     onMount(() => {
         musics.subscribe((musics) => {
-            lastPage = Math.ceil(musics.length / perPage);
-            const gradualRender = () =>
-                requestAnimationFrame(() => {
-                    if (page < lastPage) {
-                        page++;
-                        gradualRender();
-                    }
-                });
-            gradualRender();
+            innerMusics = useGradualRender(musics);
         });
     });
 
-    $: visibleMusics = $musics
-        .slice(0, page * perPage)
-        .filter(
-            (music) =>
-                search === "" ||
-                music.name.toLowerCase().includes(search.toLowerCase()) ||
-                music.artist.name.toLowerCase().includes(search.toLowerCase())
-        );
+    $: visibleMusics = $innerMusics.filter(
+        (music) =>
+            search === "" ||
+            music.name.toLowerCase().includes(search.toLowerCase()) ||
+            music.artist.name.toLowerCase().includes(search.toLowerCase())
+    );
 </script>
 
 <div class="controls">

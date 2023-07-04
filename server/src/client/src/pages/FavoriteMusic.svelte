@@ -4,8 +4,11 @@
     import MusicListItem from "../components/MusicListItem.svelte";
     import Shuffle from "../icons/Shuffle.svelte";
     import Play from "../icons/Play.svelte";
+    import Sort from "../icons/Sort.svelte";
 
     import { shuffle } from "../modules/shuffle";
+
+    import { useGradualRender } from "../hooks/useGradualRender";
 
     import {
         resetQueue,
@@ -14,39 +17,23 @@
         musicActionPanel,
         musicSortPanel,
     } from "../store";
-    import Sort from "../icons/Sort.svelte";
 
     let search = "";
-
-    let page = 1;
-    let perPage = 100;
-    let lastPage = Math.ceil($musics.length / perPage);
+    let innerMusics = useGradualRender($musics);
 
     onMount(() => {
         musics.subscribe((musics) => {
-            lastPage = Math.ceil(musics.length / perPage);
-            const gradualRender = () =>
-                requestAnimationFrame(() => {
-                    if (page < lastPage) {
-                        page++;
-                        gradualRender();
-                    }
-                });
-            gradualRender();
+            innerMusics = useGradualRender(musics);
         });
     });
 
-    $: visibleMusics = $musics
-        .slice(0, page * perPage)
-        .filter(
-            (music) =>
-                music.isLiked &&
-                (search === "" ||
-                    music.name.toLowerCase().includes(search.toLowerCase()) ||
-                    music.artist.name
-                        .toLowerCase()
-                        .includes(search.toLowerCase()))
-        );
+    $: visibleMusics = $innerMusics.filter(
+        (music) =>
+            music.isLiked &&
+            (search === "" ||
+                music.name.toLowerCase().includes(search.toLowerCase()) ||
+                music.artist.name.toLowerCase().includes(search.toLowerCase()))
+    );
 </script>
 
 <div class="controls">
@@ -63,7 +50,7 @@
             <Play />
             Play
         </button>
-        <button on:click={() => resetQueue(visibleMusics)}>
+        <button on:click={() => resetQueue(shuffle(visibleMusics))}>
             <Shuffle />
             Shuffle
         </button>

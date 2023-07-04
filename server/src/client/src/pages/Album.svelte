@@ -6,7 +6,7 @@
     import AlbumListItem from "../components/AlbumListItem.svelte";
     import Sort from "../icons/Sort.svelte";
 
-    import type { Music } from "../models/type";
+    import { useGradualRender } from "../hooks/useGradualRender";
 
     import { albums, albumSortPanel } from "../store";
 
@@ -14,31 +14,20 @@
     let isOpenDetail = false;
 
     let search = "";
-
-    let page = 1;
-    let perPage = 40;
-    let lastPage = Math.ceil($albums.length / perPage);
+    let innerAlbums = useGradualRender($albums, 40);
 
     onMount(() => {
-        albums.subscribe((value) => {
-            lastPage = Math.ceil(value.length / perPage);
-            const gradualRender = () =>
-                requestAnimationFrame(() => {
-                    if (page < lastPage) {
-                        page++;
-                        gradualRender();
-                    }
-                });
-            gradualRender();
+        albums.subscribe((albums) => {
+            innerAlbums = useGradualRender(albums, 40);
         });
     });
 
-    $: visibleAlbums = $albums
-        .slice(0, page * perPage)
+    $: visibleAlbums = $innerAlbums
         .filter(
             (album) =>
                 search === "" ||
-                album.name.toLowerCase().includes(search.toLowerCase())
+                album.name.toLowerCase().includes(search.toLowerCase()) ||
+                album.artist.name.toLowerCase().includes(search.toLowerCase())
         );
 </script>
 

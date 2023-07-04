@@ -6,38 +6,27 @@
     import Image from "../components/Image.svelte";
     import Sort from "../icons/Sort.svelte";
 
+    import { useGradualRender } from "../hooks/useGradualRender";
+
     import { artists, artistSortPanel } from "../store";
 
     let selectedId: string | null = null;
     let isOpenDetail = false;
 
     let search = "";
-
-    let page = 1;
-    let perPage = 100;
-    let lastPage = Math.ceil($artists.length / perPage);
+    let innerArtists = useGradualRender($artists);
 
     onMount(() => {
-        artists.subscribe((value) => {
-            lastPage = Math.ceil(value.length / perPage);
-            const gradualRender = () =>
-                requestAnimationFrame(() => {
-                    if (page < lastPage) {
-                        page++;
-                        gradualRender();
-                    }
-                });
-            gradualRender();
+        artists.subscribe((artists) => {
+            innerArtists = useGradualRender(artists);
         });
     });
 
-    $: visibleArtists = $artists
-        .slice(0, page * perPage)
+    $: visibleArtists = $innerArtists
         .filter(
-            (album) =>
+            (artist) =>
                 search === "" ||
-                album.name.toLowerCase().includes(search.toLowerCase())
-        );
+                artist.name.toLowerCase().includes(search.toLowerCase()))
 </script>
 
 <div class="controls">
