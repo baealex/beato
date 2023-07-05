@@ -55,7 +55,7 @@
         <div class="play-all">
             <button
                 on:click={() => {
-                    resetQueue(album.musics);
+                    resetQueue(album.name, album.musics);
                 }}
             >
                 <Play />

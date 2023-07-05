@@ -4,6 +4,7 @@ export * from './artists';
 export * from './artist-sort-panel';
 export * from './musics';
 export * from './queue';
+export * from './queue-history';
 export * from './music-action-panel';
 export * from './music-sort-panel';
 export * from './sync'

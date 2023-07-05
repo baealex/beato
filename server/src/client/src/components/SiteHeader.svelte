@@ -18,6 +18,9 @@
                 <Link to="/artist">Artist</Link>
             </li>
             <li>
+                <Link to="/queue-history">Queue</Link>
+            </li>
+            <li>
                 <Link to="/setting">Setting</Link>
             </li>
         </ul>

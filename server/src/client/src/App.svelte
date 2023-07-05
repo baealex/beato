@@ -10,12 +10,13 @@
     import ArtistSortPanel from "./components/ArtistSortPanel.svelte";
     import MusicActionPanel from "./components/MusicActionPanel.svelte";
 
-    import Music from "./pages/Music.svelte";
+    import MusicList from "./pages/MusicList.svelte";
     import FavoriteMusic from "./pages/FavoriteMusic.svelte";
-    import Album from "./pages/Album.svelte";
+    import AlbumList from "./pages/AlbumList.svelte";
     import AlbumDetail from "./pages/AlbumDetail.svelte";
-    import Artist from "./pages/Artist.svelte";
+    import ArtistList from "./pages/ArtistList.svelte";
     import ArtistDetail from "./pages/ArtistDetail.svelte";
+    import QueueHistory from "./pages/QueueHistory.svelte";
     import Setting from "./pages/Setting.svelte";
 
     import { downloadFile } from "./modules/download";
@@ -32,7 +33,7 @@
     import { socket } from "./modules/socket";
     import { toast } from "./modules/ui/toast";
 
-    import type { Music as MusicModel, RepeatMode } from "./models/type";
+    import type { Music, RepeatMode } from "./models/type";
 
     let audioElement: HTMLAudioElement;
     let playing = false;
@@ -40,7 +41,7 @@
     let progress = 0;
     let isLoading = false;
     let shouldCount = false;
-    let nowPlayMusic: MusicModel = null;
+    let nowPlayMusic: Music = null;
 
     $: {
         if ($queue.items[$queue.selected]) {
@@ -63,7 +64,7 @@
         socket.on(
             "like",
             ({ id, isLiked }: { id: string; isLiked: boolean }) => {
-                const switchLike = (music: MusicModel) => {
+                const switchLike = (music: Music) => {
                     if (music.id === id) {
                         music.isLiked = isLiked;
                     }
@@ -232,11 +233,11 @@
         audioElement.currentTime = duration * percent;
     };
 
-    const handleClickLike = (music: MusicModel) => {
+    const handleClickLike = (music: Music) => {
         socket.emit("like", music.id);
     };
 
-    const handleClickDownload = (music: MusicModel) => {
+    const handleClickDownload = (music: Music) => {
         getAudio(music.id).then((res) => {
             if (res.data) {
                 const fileName = music.filePath.split("/").pop();
@@ -252,7 +253,7 @@
         <Loading {isLoading} message="Loading..." />
         <Route path="/" scrollToTop={true} exact={true}>
             <div class="container fade-in">
-                <Music />
+                <MusicList />
             </div>
         </Route>
         <Route path="/favorite">
@@ -262,7 +263,7 @@
         </Route>
         <Route path="/album">
             <div class="container fade-in">
-                <Album />
+                <AlbumList />
             </div>
         </Route>
         <Route path="/album/:id" let:params>
@@ -272,12 +273,17 @@
         </Route>
         <Route path="/artist">
             <div class="container fade-in">
-                <Artist />
+                <ArtistList />
             </div>
         </Route>
         <Route path="/artist/:id" let:params>
             <div class="container fade-in">
                 <ArtistDetail id={params.id} />
+            </div>
+        </Route>
+        <Route path="/queue-history" let:params>
+            <div class="container fade-in">
+                <QueueHistory />
             </div>
         </Route>
         <Route path="/setting">

@@ -1,12 +1,16 @@
 import { writable } from 'svelte/store';
 import type { Music } from '../models/type';
+import { getFormattedDate } from '../modules/time';
 import { toast } from '../modules/ui/toast';
+
+import { queueHistory } from './queue-history';
 
 export type QueuePlayMode = 'immediate' | 'later';
 export type QueueRepeatMode = 'all' | 'one' | 'off';
 export type QueueInsertMode = 'after' | 'before' | 'last';
 
 interface Queue {
+    title: string;
     items: Music[];
     selected: number | null;
     playMode: QueuePlayMode;
@@ -15,6 +19,7 @@ interface Queue {
 }
 
 const INITIAL_STATE: Queue = {
+    title: '',
     items: [],
     selected: null,
     playMode: 'later',
@@ -34,6 +39,7 @@ export const queue = writable<Queue>(loadQueue());
 queue.subscribe((value) => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({
         ...value,
+        title: '',
         items: [],
         selected: null,
     }));
@@ -43,20 +49,35 @@ export const switchRepeatMode = () => queue.update((state) => {
     let newState = { ...state };
     if (state.repeatMode === 'all') {
         newState.repeatMode = 'one';
-        toast("Repeat one");
     } else if (state.repeatMode === 'one') {
         newState.repeatMode = 'off';
-        toast("Repeat off");
     } else {
         newState.repeatMode = 'all';
-        toast("Repeat all");
     }
     return newState;
 });
 
-export const resetQueue = (musics: Music[] = []) => queue.update((state) => {
+export const resetQueue = (title: string = '', musics: Music[] = []) => queue.update((state) => {
     toast("Created new queue");
+    queueHistory.update((history) => {
+        if (state.items.length === 0) {
+            return history;
+        }
+        if (history.find((item) =>
+            item.title === state.title &&
+            item.items.every((music, index) => music.id === state.items[index].id))
+        ) {
+            return history;
+        }
+        const newHistory = [...history];
+        newHistory.unshift({
+            title: state.title || getFormattedDate(new Date()),
+            items: state.items,
+        });
+        return newHistory.slice(0, 20);
+    });
     const newState = { ...state };
+    newState.title = title;
     newState.items = musics;
     newState.selected = musics.length > 0 ? 0 : null;
     return newState;
