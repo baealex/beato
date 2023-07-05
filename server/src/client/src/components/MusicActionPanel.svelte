@@ -1,16 +1,23 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
 
-    import type { Music } from "../models/type";
+    import type { Music, Playlist } from "../models/type";
 
     import Image from "./Image.svelte";
     import BottomPanel from "./BottomPanel.svelte";
+    import PlaylistItem from "./PlaylistItem.svelte";
 
     import Play from "../icons/Play.svelte";
+    import Data from "../icons/Data.svelte";
     import Heart from "../icons/Heart.svelte";
     import Download from "../icons/Download.svelte";
 
-    import { insertToQueue, musicActionPanel } from "../store";
+    import {
+        playlists,
+        insertToPlaylist,
+        insertToQueue,
+        musicActionPanel,
+    } from "../store";
 
     export let onClickLike: (music: Music) => void;
     export let onClickDownload: (music: Music) => void;
@@ -18,11 +25,27 @@
     $: music = $musicActionPanel.music;
     $: isOpen = $musicActionPanel.isOpen;
 
+    let isOpenPlaylistSelector = false;
+
     const close = () => {
         musicActionPanel.update((state) => ({
             ...state,
             isOpen: false,
         }));
+    };
+
+    const handleClickAddToQueue = () => {
+        close();
+        insertToQueue(music);
+    };
+
+    const handleClickAddToPlaylist = () => {
+        isOpenPlaylistSelector = true;
+    };
+
+    const handleClickAdd = (playlist: Playlist) => {
+        insertToPlaylist(playlist, music);
+        isOpenPlaylistSelector = false;
     };
 </script>
 
@@ -58,11 +81,16 @@
                 </button>
             </li>
             <li>
+                <button class="clickable item" on:click={handleClickAddToQueue}>
+                    <Play /> Add to Queue
+                </button>
+            </li>
+            <li>
                 <button
                     class="clickable item"
-                    on:click={() => insertToQueue(music)}
+                    on:click={handleClickAddToPlaylist}
                 >
-                    <Play /> Add to Queue
+                    <Data /> Add to Playlist
                 </button>
             </li>
             <li>
@@ -80,6 +108,17 @@
             <span>codec: {music.codec}</span>
         </div>
     {/if}
+</BottomPanel>
+
+<BottomPanel title="Select Playlist" bind:isOpen={isOpenPlaylistSelector}>
+    {#each $playlists as playlist}
+        <PlaylistItem
+            name={playlist.name}
+            items={playlist.headerMusics}
+            itemCount={playlist.musicCount}
+            onClick={() => handleClickAdd(playlist)}
+        />
+    {/each}
 </BottomPanel>
 
 <style lang="scss">

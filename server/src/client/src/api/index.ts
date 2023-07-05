@@ -165,7 +165,7 @@ export function deletePlaylist(id: string) {
 }
 
 export function addMusicToPlaylist(playlistId: string, musicId: string) {
-    return graphQLRequest<"addMusicToPlaylist", Playlist>(`
+    return graphQLRequest<"addMusicToPlaylist", Boolean>(`
         mutation {
             addMusicToPlaylist(playlistId: "${playlistId}", musicId: "${musicId}")
         }

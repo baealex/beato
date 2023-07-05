@@ -30,7 +30,7 @@ export const playlistMutation = gql`
         createPlaylist(name: String!): Playlist!
         updatePlaylist(id: ID!, name: String!): Playlist!
         deletePlaylist(id: ID!): Boolean!
-        addMusicToPlaylist(playlistId: ID!, musicId: ID!): Playlist!
+        addMusicToPlaylist(playlistId: ID!, musicId: ID!): Boolean!
     }
 `;
 
@@ -68,19 +68,33 @@ export const playlistResolvers: IResolvers = {
             },
         }),
         deletePlaylist: async (_, { id }: Playlist) => {
-            await models.playlistMusic.deleteMany({
-                where: {
-                    playlistId: Number(id),
-                },
-            });
-            await models.playlist.delete({
-                where: {
-                    id: Number(id),
-                },
-            });
-            return true;
+            try {
+                await models.playlistMusic.deleteMany({
+                    where: {
+                        playlistId: Number(id),
+                    },
+                });
+                await models.playlist.delete({
+                    where: {
+                        id: Number(id),
+                    },
+                });
+                return true;
+            } catch (e) {
+                console.error(e);
+                return false;
+            }
         },
-        addMusicToPlaylist: (_, { playlistId, musicId }: { playlistId: string, musicId: string }) => async () => {
+        addMusicToPlaylist: async (_, { playlistId, musicId }: { playlistId: string, musicId: string }) => {
+            if (await models.playlistMusic.findFirst({
+                where: {
+                    playlistId: Number(playlistId),
+                    musicId: Number(musicId),
+                },
+            })) {
+                return false;
+            }
+
             const lastOrder = await models.playlistMusic.findFirst({
                 where: {
                     playlistId: Number(playlistId),
@@ -89,14 +103,14 @@ export const playlistResolvers: IResolvers = {
                     order: 'desc',
                 },
             });
-
-            return await models.playlistMusic.create({
+            await models.playlistMusic.create({
                 data: {
                     order: lastOrder ? lastOrder.order + 1 : 0,
                     playlistId: Number(playlistId),
                     musicId: Number(musicId),
                 },
             });
+            return true;
         },
     },
     Playlist: {
