@@ -11,9 +11,9 @@
 
     $: {
         if (isOpen) {
-            const clientHeight = listRef.children?.[0].clientHeight;
+            const top = (listRef.children.item($queue.selected) as HTMLLIElement).offsetTop;
             listRef.scrollTo({
-                top: $queue.selected * clientHeight,
+                top,
                 behavior: "smooth",
             });
         }
