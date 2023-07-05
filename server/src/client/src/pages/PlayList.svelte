@@ -8,6 +8,7 @@
     import { createPlaylist } from "../api";
 
     import { playlists, playlistActionPanel } from "../store";
+    import { navigate } from "svelte-routing";
 
     let name = "";
     let isSubmitting = false;
@@ -66,7 +67,7 @@
         name={item.name}
         items={item.headerMusics}
         itemCount={item.musicCount}
-        onClick={() => {}}
+        onClick={() => navigate(`/playlist/${item.id}`)}
         onLongPress={() =>
             playlistActionPanel.update((state) => ({
                 ...state,

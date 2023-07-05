@@ -37,6 +37,7 @@
     import { toast } from "./modules/ui/toast";
 
     import type { Music } from "./models/type";
+    import PlaylistDetail from "./pages/PlaylistDetail.svelte";
 
     let audioElement: HTMLAudioElement;
     let playing = false;
@@ -292,6 +293,11 @@
         <Route path="/playlist">
             <div class="container fade-in">
                 <Playlist />
+            </div>
+        </Route>
+        <Route path="/playlist/:id" let:params>
+            <div class="container fade-in">
+                <PlaylistDetail id={params.id} />
             </div>
         </Route>
         <Route path="/setting">
