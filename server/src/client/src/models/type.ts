@@ -40,4 +40,12 @@ export interface Artist {
     createdAt: string;
 }
 
-export type RepeatMode = "no" | "one" | "all";
+export interface Playlist {
+    id: string;
+    name: string;
+    musics: Music[];
+    musicCount: number;
+    headerMusics: Music[];
+    createdAt: string;
+    updatedAt: string;
+}

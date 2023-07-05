@@ -71,7 +71,7 @@ export const resetQueue = (title: string = '', musics: Music[] = []) => queue.up
         }
         const newHistory = [...history];
         newHistory.unshift({
-            title: state.title || getFormattedDate(new Date()),
+            title: state.title,
             items: state.items,
         });
         return newHistory.slice(0, 20);
@@ -88,6 +88,7 @@ export const insertToQueue = (music: Music) => queue.update((state) => {
 
     // 아무것도 없을 때
     if (state.items.length === 0) {
+        newState.title = getFormattedDate(new Date())
         newState.selected = 0;
         newState.items = [music];
         return newState;

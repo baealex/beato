@@ -23,7 +23,7 @@
         }
     }
 
-    const handleClose = async () => {
+    const handleClose = () => {
         history.back();
         isOpen = false;
     };

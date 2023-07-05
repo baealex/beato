@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Artist, Album, Music } from '../models/type';
+import type { Artist, Album, Music, Playlist } from '../models/type';
 
 interface GraphqlResponse<T extends string, K> {
     data: {
@@ -107,10 +107,75 @@ export function getAlbum(id: string) {
     `);
 }
 
+export function getAllPlaylist() {
+    return graphQLRequest<"allPlaylist", Playlist[]>(`
+        query {
+            allPlaylist {
+                id name musicCount createdAt updatedAt
+                headerMusics {
+                    album {
+                        cover
+                    }
+                }
+            }
+        }
+    `);
+}
+
+export function getPlaylist(id: string) {
+    return graphQLRequest<"playlist", Playlist>(`
+        query {
+            playlist(id: "${id}") {
+                id name musicCount createdAt updatedAt
+                musics {
+                    id name filePath codec duration playCount isLiked
+                    artist {
+                        id name
+                    }
+                    album {
+                        id name cover
+                    }
+                }
+            }
+        }
+    `);
+}
+
+export function createPlaylist(name: string) {
+    return graphQLRequest<"createPlaylist", Playlist>(`
+        mutation {
+            createPlaylist(name: "${name}") {
+                id name musicCount createdAt updatedAt
+                headerMusics {
+                    album {
+                        cover
+                    }
+                }
+            }
+        }
+    `);
+}
+
+export function deletePlaylist(id: string) {
+    return graphQLRequest<"deletePlaylist", Boolean>(`
+        mutation {
+            deletePlaylist(id: "${id}")
+        }
+    `);
+}
+
+export function addMusicToPlaylist(playlistId: string, musicId: string) {
+    return graphQLRequest<"addMusicToPlaylist", Playlist>(`
+        mutation {
+            addMusicToPlaylist(playlistId: "${playlistId}", musicId: "${musicId}")
+        }
+    `);
+}
+
 export function getAudio(id: string) {
     return axios.request({
         method: 'GET',
-        url: `/api/audio/${id}`,
+        url: `/ api / audio / ${id}`,
         responseType: 'blob',
     });
 }

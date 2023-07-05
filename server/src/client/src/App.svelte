@@ -17,7 +17,7 @@
     import ArtistList from "./pages/ArtistList.svelte";
     import ArtistDetail from "./pages/ArtistDetail.svelte";
     import QueueHistory from "./pages/QueueHistory.svelte";
-    import PlayList from "./pages/PlayList.svelte";
+    import Playlist from "./pages/Playlist.svelte";
     import Setting from "./pages/Setting.svelte";
 
     import { downloadFile } from "./modules/download";
@@ -34,7 +34,7 @@
     import { socket } from "./modules/socket";
     import { toast } from "./modules/ui/toast";
 
-    import type { Music, RepeatMode } from "./models/type";
+    import type { Music } from "./models/type";
 
     let audioElement: HTMLAudioElement;
     let playing = false;
@@ -289,7 +289,7 @@
         </Route>
         <Route path="/playlist">
             <div class="container fade-in">
-                <PlayList />
+                <Playlist />
             </div>
         </Route>
         <Route path="/setting">

@@ -3,6 +3,7 @@ export * from './album-sort-panel';
 export * from './artists';
 export * from './artist-sort-panel';
 export * from './musics';
+export * from './playlist';
 export * from './queue';
 export * from './queue-history';
 export * from './music-action-panel';

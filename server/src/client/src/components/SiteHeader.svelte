@@ -32,7 +32,7 @@
             path: "/artist",
         },
         {
-            name: "PlayList",
+            name: "Playlist",
             path: "/playlist",
         },
         {

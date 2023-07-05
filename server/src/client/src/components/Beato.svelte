@@ -45,7 +45,6 @@
     div {
         margin: 0;
         font-size: 1rem;
-        transform: translateX(-50%);
 
         &.speech-bubble:hover {
             &::after {
@@ -77,6 +76,14 @@
             }
         }
 
+        &.animate-dance--paused {
+            animation-play-state: paused;
+        }
+
+        &.animate-spin--paused {
+            animation-play-state: paused;
+        }
+
         &.animate-dance {
             animation: dance 1s infinite;
             &:hover {
@@ -86,16 +93,8 @@
             }
         }
 
-        &.animate-dance--paused {
-            animation-play-state: paused;
-        }
-
         &.animate-spin {
             animation: spin 1s ease-in-out infinite;
-        }
-
-        &.animate-spin--paused {
-            animation-play-state: paused;
         }
     }
 </style>

@@ -39,7 +39,7 @@
 <div class="controls">
     <div>
         <input
-            class="search"
+            class="gray-input"
             type="text"
             placeholder="Search"
             bind:value={search}
@@ -47,19 +47,24 @@
     </div>
     <div class="buttons">
         <button
+            class="gray-button"
             on:click={() => resetQueue("Play Favorite Music", visibleMusics)}
         >
             <Play />
             Play
         </button>
         <button
+            class="gray-button"
             on:click={() =>
                 resetQueue("Shuffle Favorite Music", shuffle(visibleMusics))}
         >
             <Shuffle />
             Shuffle
         </button>
-        <button on:click={() => ($musicSortPanel.isOpen = true)}>
+        <button
+            class="gray-button"
+            on:click={() => ($musicSortPanel.isOpen = true)}
+        >
             <Sort />
         </button>
     </div>
@@ -87,70 +92,6 @@
 </ul>
 
 <style lang="scss">
-    .controls {
-        padding: 1rem;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        position: sticky;
-        top: 0;
-        left: 0;
-        background: linear-gradient(
-            180deg,
-            rgba(0, 0, 0, 1) 75%,
-            rgba(0, 0, 0, 0) 100%
-        );
-        z-index: 1;
-
-        .search {
-            padding: 0.5rem;
-            border: none;
-            background-color: #222;
-            border-radius: 0.5rem;
-            color: #eee;
-            font-size: 0.8rem;
-            font-weight: 600;
-            width: 10rem;
-
-            &:focus {
-                outline: none;
-            }
-        }
-
-        .buttons {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 0.5rem;
-
-            button {
-                padding: 0.5rem;
-                border: none;
-                background-color: #222;
-                border-radius: 0.5rem;
-                color: #eee;
-                font-size: 0.8rem;
-                font-weight: 600;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 0.5rem;
-
-                :global(svg) {
-                    width: 1rem;
-                    height: 1rem;
-                }
-
-                @media (min-width: 1024px) {
-                    &:hover {
-                        background-color: rgba(255, 255, 255, 0.1);
-                    }
-                }
-            }
-        }
-    }
-
     ul {
         margin: 0;
         padding: 0;
