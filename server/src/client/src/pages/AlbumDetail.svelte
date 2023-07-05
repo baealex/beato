@@ -7,6 +7,8 @@
 
     import type { Album } from "../models/type";
 
+    import { confirm } from "../modules/ui/confirm";
+
     import { getAlbum } from "../api";
 
     import {
@@ -55,7 +57,11 @@
         <div class="play-all">
             <button
                 on:click={() => {
-                    resetQueue(album.name, album.musics);
+                    confirm("The playlist will be replaced with this.", {
+                        onConfirm: () => {
+                            resetQueue(album.name, album.musics);
+                        },
+                    });
                 }}
             >
                 <Play />

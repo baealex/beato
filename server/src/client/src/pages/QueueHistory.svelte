@@ -1,6 +1,8 @@
 <script lang="ts">
     import PlaylistItem from "../components/PlaylistItem.svelte";
 
+    import { confirm } from "../modules/ui/confirm";
+
     import { resetQueue, queueHistory } from "../store";
 </script>
 
@@ -12,7 +14,13 @@
                 name={queue.title}
                 items={queue.items}
                 itemCount={queue.items.length}
-                onClick={() => resetQueue(queue.title, queue.items)}
+                onClick={() => {
+                    confirm("The playlist will be replaced with this.", {
+                        onConfirm: () => {
+                            resetQueue(queue.title, queue.items);
+                        },
+                    });
+                }}
             />
         </li>
     {/each}

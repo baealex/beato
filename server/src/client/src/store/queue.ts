@@ -58,7 +58,7 @@ export const switchRepeatMode = () => queue.update((state) => {
 });
 
 export const resetQueue = (title: string = '', musics: Music[] = []) => queue.update((state) => {
-    toast("Created new queue");
+    toast("Resetted queue");
     queueHistory.update((history) => {
         if (state.items.length === 0) {
             return history;

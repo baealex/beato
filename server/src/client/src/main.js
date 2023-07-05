@@ -1,5 +1,6 @@
 import './app.scss';
 import './toast.scss';
+import './window-modal.scss';
 import App from './App.svelte';
 
 const app = new App({

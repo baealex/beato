@@ -1,4 +1,7 @@
 <script lang="ts">
+    import PlaylistDetail from "./PlaylistDetail.svelte";
+
+    import SubPage from "../components/SubPage.svelte";
     import BottomPanel from "../components/BottomPanel.svelte";
     import PlaylistItem from "../components/PlaylistItem.svelte";
     import Beato from "../components/Beato.svelte";
@@ -8,11 +11,12 @@
     import { createPlaylist } from "../api";
 
     import { playlists, playlistActionPanel } from "../store";
-    import { navigate } from "svelte-routing";
 
     let name = "";
     let isSubmitting = false;
     let isOpenCreatePlaylist = false;
+    let isOpenDetail = false;
+    let selectedId = null;
 
     const resetCreate = () => {
         name = "";
@@ -67,7 +71,10 @@
         name={item.name}
         items={item.headerMusics}
         itemCount={item.musicCount}
-        onClick={() => navigate(`/playlist/${item.id}`)}
+        onClick={() => {
+            selectedId = item.id;
+            isOpenDetail = true;
+        }}
         onLongPress={() =>
             playlistActionPanel.update((state) => ({
                 ...state,
@@ -88,6 +95,18 @@
         <button class="gray-button">Create</button>
     </form>
 </BottomPanel>
+
+<SubPage
+    isOpen={isOpenDetail}
+    onClose={() => {
+        selectedId = null;
+        isOpenDetail = false;
+    }}
+>
+    {#if selectedId}
+        <PlaylistDetail id={String(selectedId)} />
+    {/if}
+</SubPage>
 
 <style lang="scss">
     .help {

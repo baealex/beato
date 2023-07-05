@@ -1,0 +1,73 @@
+.window-modal-container {
+    position: fixed;
+    z-index: 1002;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all .3s ease-in-out;
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+    }
+}
+
+.window-modal {
+    box-sizing: border-box;
+    width: 400px;
+    max-width: 100%;
+    border-radius: 16px;
+    padding: 32px 16px 16px;
+    color: #eee;
+    text-align: center;
+    background: #000;
+    border: 1px solid #555;
+
+    .window-content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .window-text {
+        font-size: 1rem;
+        line-height: 1.5;
+        font-weight: 400;
+    }
+
+    .window-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-top: 16px;
+        gap: 8px;
+
+        button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #555;
+            background: #000;
+            color: #eee;
+            cursor: pointer;
+            transition: all .3s ease-in-out;
+
+            &:hover {
+                background: #555;
+            }
+        }
+
+        .window-confirm {
+            background: #a076f1;
+        }
+    }
+}
