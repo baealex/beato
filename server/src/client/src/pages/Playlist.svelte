@@ -48,7 +48,7 @@
 </script>
 
 <div class="controls">
-    <div class="help">Create a playlist to add your favorite musics.</div>
+    <div />
     <div class="buttons">
         <button
             class="gray-button"
@@ -109,12 +109,6 @@
 </SubPage>
 
 <style lang="scss">
-    .help {
-        color: #aaa;
-        font-size: 0.8rem;
-        padding: 1rem;
-    }
-
     .empty {
         height: 400px;
         display: flex;
