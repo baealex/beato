@@ -89,8 +89,8 @@
         />
     </section>
     <section style="justify-content: space-between;">
-        <p>Something wrong? Try refresh</p>
-        <button on:click={handleClickRefreshApp}>Ok</button>
+        <p>Something wrong?</p>
+        <button on:click={handleClickRefreshApp}>Try Refresh</button>
     </section>
 
     <Loading {isLoading} {message} />
