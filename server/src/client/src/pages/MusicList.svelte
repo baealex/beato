@@ -45,11 +45,13 @@
         />
     </div>
     <div class="buttons">
-        <button on:click={() => resetQueue('Music Play All', visibleMusics)}>
+        <button on:click={() => resetQueue("Play All Music", visibleMusics)}>
             <Play />
             Play
         </button>
-        <button on:click={() => resetQueue('Music Shuffle', shuffle(visibleMusics))}>
+        <button
+            on:click={() => resetQueue("Shuffle All Music", shuffle(visibleMusics))}
+        >
             <Shuffle />
             Shuffle
         </button>
