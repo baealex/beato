@@ -7,11 +7,16 @@
 
     import { createPlaylist } from "../api";
 
-    import { playlist } from "../store";
+    import { playlists, playlistActionPanel } from "../store";
 
     let name = "";
     let isSubmitting = false;
     let isOpenCreatePlaylist = false;
+
+    const resetCreate = () => {
+        name = "";
+        isOpenCreatePlaylist = false;
+    };
 
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
@@ -23,18 +28,22 @@
         }
 
         isSubmitting = true;
-        const { data } = await createPlaylist(name);
-        playlist.update((prev) => [data.createPlaylist, ...prev]);
-        isOpenCreatePlaylist = false;
-        name = "";
-        isSubmitting = false;
+        try {
+            const { data } = await createPlaylist(name);
+            playlists.update((prev) => [data.createPlaylist, ...prev]);
+            resetCreate();
+            toast("Created playlist");
+        } catch (error) {
+            console.error(error);
+            toast("Failed to create playlist");
+        } finally {
+            isSubmitting = false;
+        }
     };
 </script>
 
 <div class="controls">
-    <div class="help">
-        Create a playlist to add your favorite musics.
-    </div>
+    <div class="help">Create a playlist to add your favorite musics.</div>
     <div class="buttons">
         <button
             class="gray-button"
@@ -45,23 +54,29 @@
     </div>
 </div>
 
-{#if $playlist.length === 0}
+{#if $playlists.length === 0}
     <div class="empty">
         <Beato dance={true} />
         <div>You don't have any playlist yet!</div>
     </div>
 {/if}
 
-{#each $playlist as item}
+{#each $playlists as item}
     <PlaylistItem
         name={item.name}
         items={item.headerMusics}
         itemCount={item.musicCount}
         onClick={() => {}}
+        onLongPress={() =>
+            playlistActionPanel.update((state) => ({
+                ...state,
+                isOpen: true,
+                playlist: item,
+            }))}
     />
 {/each}
 
-<BottomPanel title="Create Playlist" isOpen={isOpenCreatePlaylist}>
+<BottomPanel title="Create Playlist" bind:isOpen={isOpenCreatePlaylist}>
     <form class="panel-content" on:submit={handleSubmit}>
         <input
             class="gray-input"
@@ -69,7 +84,7 @@
             placeholder="Playlist Name"
             bind:value={name}
         />
-        <button class="gray-button" on:click={() => {}}> Create </button>
+        <button class="gray-button">Create</button>
     </form>
 </BottomPanel>
 

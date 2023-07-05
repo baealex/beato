@@ -19,7 +19,7 @@
     on:click={onClick}
     on:contextmenu={(e) => {
         e.preventDefault();
-        onLongPress();
+        onLongPress?.();
     }}
 >
     {#if albumCover !== null}

@@ -7,9 +7,17 @@
     export let items: Music[];
     export let itemCount: number;
     export let onClick: () => void;
+    export let onLongPress: () => void = null;
 </script>
 
-<button class="clickable item" on:click={onClick}>
+<button
+    class="clickable item"
+    on:click={onClick}
+    on:contextmenu={(e) => {
+        e.preventDefault();
+        onLongPress?.();
+    }}
+>
     {#if items.length >= 4}
         <div class="album-cover-grid">
             {#each items.slice(0, 4) as music}

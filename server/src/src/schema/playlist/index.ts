@@ -29,7 +29,7 @@ export const playlistMutation = gql`
     type Mutation {
         createPlaylist(name: String!): Playlist!
         updatePlaylist(id: ID!, name: String!): Playlist!
-        deletePlaylist(id: ID!): Playlist!
+        deletePlaylist(id: ID!): Boolean!
         addMusicToPlaylist(playlistId: ID!, musicId: ID!): Playlist!
     }
 `;
@@ -67,11 +67,19 @@ export const playlistResolvers: IResolvers = {
                 name,
             },
         }),
-        deletePlaylist: (_, { id }: Playlist) => models.playlist.delete({
-            where: {
-                id: Number(id),
-            },
-        }),
+        deletePlaylist: async (_, { id }: Playlist) => {
+            await models.playlistMusic.deleteMany({
+                where: {
+                    playlistId: Number(id),
+                },
+            });
+            await models.playlist.delete({
+                where: {
+                    id: Number(id),
+                },
+            });
+            return true;
+        },
         addMusicToPlaylist: (_, { playlistId, musicId }: { playlistId: string, musicId: string }) => async () => {
             const lastOrder = await models.playlistMusic.findFirst({
                 where: {

@@ -107,7 +107,7 @@ export function getAlbum(id: string) {
     `);
 }
 
-export function getAllPlaylist() {
+export function getPlaylists() {
     return graphQLRequest<"allPlaylist", Playlist[]>(`
         query {
             allPlaylist {

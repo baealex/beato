@@ -2,7 +2,7 @@ import {
     syncAlbums,
     syncArtists,
     syncMusics,
-    syncPlaylist,
+    syncPlaylists,
 } from "./index";
 
 export function syncAll(callback: () => void) {
@@ -10,6 +10,6 @@ export function syncAll(callback: () => void) {
         syncAlbums(),
         syncArtists(),
         syncMusics(),
-        syncPlaylist(),
+        syncPlaylists(),
     ]).then(callback);
 }

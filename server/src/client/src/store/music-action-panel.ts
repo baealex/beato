@@ -3,7 +3,7 @@ import type { Music } from '../models/type';
 
 export const musicActionPanel = writable<{
     isOpen: boolean;
-    music: Music;
+    music: Music | null;
 }>({
     isOpen: false,
     music: null

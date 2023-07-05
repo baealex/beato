@@ -9,6 +9,7 @@
     import AlbumSortPanel from "./components/AlbumSortPanel.svelte";
     import ArtistSortPanel from "./components/ArtistSortPanel.svelte";
     import MusicActionPanel from "./components/MusicActionPanel.svelte";
+    import PlaylistActionPanel from "./components/PlaylistActionPanel.svelte";
 
     import MusicList from "./pages/MusicList.svelte";
     import FavoriteMusic from "./pages/FavoriteMusic.svelte";
@@ -29,6 +30,7 @@
         syncAll,
         musicSortPanel,
         musicActionPanel,
+        playlistActionPanel,
     } from "./store";
 
     import { socket } from "./modules/socket";
@@ -316,6 +318,7 @@
             onClickLike={handleClickLike}
             onClickDownload={handleClickDownload}
         />
+        <PlaylistActionPanel />
 
         <MusicSortPanel />
         <AlbumSortPanel />
