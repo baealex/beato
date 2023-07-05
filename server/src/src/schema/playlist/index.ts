@@ -114,15 +114,20 @@ export const playlistResolvers: IResolvers = {
         },
     },
     Playlist: {
-        musics: (playlist: Playlist) => models.music.findMany({
-            where: {
-                PlaylistMusic: {
-                    some: {
-                        playlistId: playlist.id,
-                    },
-                }
-            }
-        }),
+        musics: async (playlist: Playlist) => {
+            const musics = await models.playlistMusic.findMany({
+                where: {
+                    playlistId: playlist.id,
+                },
+                orderBy: {
+                    order: 'asc',
+                },
+                include: {
+                    Music: true,
+                },
+            });
+            return musics.map((playlistMusic) => playlistMusic.Music);
+        },
         headerMusics: (playlist: Playlist) => models.music.findMany({
             where: {
                 PlaylistMusic: {
