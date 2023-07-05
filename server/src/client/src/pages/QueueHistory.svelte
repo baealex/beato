@@ -8,7 +8,10 @@
 <ul>
     {#each $queueHistory as queue}
         <li>
-            <button class="clickable item" on:click={() => resetQueue(queue.title, queue.items)}>
+            <button
+                class="clickable item"
+                on:click={() => resetQueue(queue.title, queue.items)}
+            >
                 {#if queue.items.length >= 4}
                     <div class="album-cover-grid">
                         {#each queue.items.slice(0, 4) as music}
@@ -103,9 +106,5 @@
             height: 100%;
             object-fit: cover;
         }
-    }
-
-    .title {
-        font-weight: bold;
     }
 </style>

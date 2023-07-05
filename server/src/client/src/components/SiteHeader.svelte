@@ -1,28 +1,61 @@
-<script>
+<script lang="ts">
     import { Link } from "svelte-routing";
+
+    let navRef: HTMLElement;
+
+    const handleClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        const { left, width } = target.getBoundingClientRect();
+        const { width: navWidth } = navRef.getBoundingClientRect();
+        const center = left + width / 2 - navWidth / 2;
+        navRef.scrollBy({
+            left: center,
+            behavior: "smooth",
+        });
+    };
+
+    const navItems = [
+        {
+            name: "Music",
+            path: "/",
+        },
+        {
+            name: "Favorite",
+            path: "/favorite",
+        },
+        {
+            name: "Album",
+            path: "/album",
+        },
+        {
+            name: "Artist",
+            path: "/artist",
+        },
+        {
+            name: "PlayList",
+            path: "/playlist",
+        },
+        {
+            name: "Queue",
+            path: "/queue-history",
+        },
+        {
+            name: "Setting",
+            path: "/setting",
+        },
+    ];
 </script>
 
 <header>
-    <nav>
+    <nav bind:this={navRef}>
         <ul>
-            <li>
-                <Link to="/">Music</Link>
-            </li>
-            <li>
-                <Link to="/favorite">Favorite</Link>
-            </li>
-            <li>
-                <Link to="/album">Album</Link>
-            </li>
-            <li>
-                <Link to="/artist">Artist</Link>
-            </li>
-            <li>
-                <Link to="/queue-history">Queue</Link>
-            </li>
-            <li>
-                <Link to="/setting">Setting</Link>
-            </li>
+            {#each navItems as item}
+                <li>
+                    <button class="clickable" on:click={handleClick}>
+                        <Link to={item.path}>{item.name}</Link>
+                    </button>
+                </li>
+            {/each}
         </ul>
     </nav>
 </header>
@@ -61,13 +94,14 @@
             position: fixed;
             top: 0;
             right: 0;
-            width: 50%;
+            width: 50px;
             height: 59px;
             background: linear-gradient(
                 to left,
-                rgba(0, 0, 0, 0.05) 0%,
+                rgba(0, 0, 0, 0.5) 0%,
                 rgba(0, 0, 0, 0) 100%
             );
+            z-index: 1;
             pointer-events: none;
         }
     }

@@ -17,6 +17,7 @@
     import ArtistList from "./pages/ArtistList.svelte";
     import ArtistDetail from "./pages/ArtistDetail.svelte";
     import QueueHistory from "./pages/QueueHistory.svelte";
+    import PlayList from "./pages/PlayList.svelte";
     import Setting from "./pages/Setting.svelte";
 
     import { downloadFile } from "./modules/download";
@@ -281,9 +282,14 @@
                 <ArtistDetail id={params.id} />
             </div>
         </Route>
-        <Route path="/queue-history" let:params>
+        <Route path="/queue-history">
             <div class="container fade-in">
                 <QueueHistory />
+            </div>
+        </Route>
+        <Route path="/playlist">
+            <div class="container fade-in">
+                <PlayList />
             </div>
         </Route>
         <Route path="/setting">
