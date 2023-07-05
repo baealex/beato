@@ -56,7 +56,7 @@
                 class="clickable linkable"
                 on:click={() => {
                     close();
-                    navigate(`/album/${music.album.id}`);
+                    navigate(`/album/${music.album.id}`, { replace: true });
                 }}
             >
                 <Image alt={music.album.name} src={music.album.cover} />

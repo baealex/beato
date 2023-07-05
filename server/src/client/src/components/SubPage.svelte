@@ -2,17 +2,25 @@
     import Left from "../icons/Left.svelte";
 
     import { createUUID } from "../modules/uuid";
+    import { layerPopState } from "../store";
 
-    export let id = createUUID();
+    let id = createUUID();
     export let isOpen = false;
     export let hasHeader = true;
     export let onClose: () => void = null;
 
-    const handleClose = (e?: PopStateEvent) => {
-        if (e?.state === id) {
+    const handlePopState = (e: PopStateEvent) => {
+        if (layerPopState.at(-1) !== id || e.state === id) {
             return;
         }
-        if (!e) {
+        layerPopState.pop();
+        isOpen = false;
+        onClose?.();
+    };
+
+    const handleClose = () => {
+        if (layerPopState.at(-1) === id) {
+            layerPopState.pop();
             history.back();
         }
         isOpen = false;
@@ -21,10 +29,11 @@
 
     $: {
         if (isOpen) {
-            history.pushState(id, null, `#${id}`);
-            window.addEventListener("popstate", handleClose);
+            layerPopState.push(id);
+            history.pushState(id, "", `#${id}`);
+            window.addEventListener("popstate", handlePopState);
         } else {
-            window.removeEventListener("popstate", handleClose);
+            window.removeEventListener("popstate", handlePopState);
         }
     }
 </script>
@@ -32,7 +41,7 @@
 <div class="sub-page" class:open={isOpen}>
     {#if hasHeader}
         <div class="header">
-            <button on:click={() => handleClose()}>
+            <button on:click={handleClose}>
                 <Left />
             </button>
         </div>

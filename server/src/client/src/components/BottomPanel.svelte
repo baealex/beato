@@ -1,16 +1,24 @@
 <script lang="ts">
     import { createUUID } from "../modules/uuid";
+    import { layerPopState } from "../store";
 
-    export let id = createUUID();
+    let id = createUUID();
     export let title = "";
     export let isOpen = false;
     export let onClose: () => void = null;
 
-    const handleClose = (e?: PopStateEvent) => {
-        if (e?.state === id) {
+    const handlePopState = (e: PopStateEvent) => {
+        if (layerPopState.at(-1) !== id || e.state === id) {
             return;
         }
-        if (!e) {
+        layerPopState.pop();
+        isOpen = false;
+        onClose?.();
+    };
+
+    const handleClose = () => {
+        if (layerPopState.at(-1) === id) {
+            layerPopState.pop();
             history.back();
         }
         isOpen = false;
@@ -19,10 +27,11 @@
 
     $: {
         if (isOpen) {
-            history.pushState(id, null, `#${id}`);
-            window.addEventListener("popstate", handleClose);
+            layerPopState.push(id);
+            history.pushState(id, "", `#${id}`);
+            window.addEventListener("popstate", handlePopState);
         } else {
-            window.removeEventListener("popstate", handleClose);
+            window.removeEventListener("popstate", handlePopState);
         }
     }
 </script>
@@ -31,7 +40,7 @@
     <button
         class="clickable backdrop"
         class:open={isOpen}
-        on:click={() => handleClose()}
+        on:click={handleClose}
     />
     <div class="bottom-panel" class:open={isOpen}>
         {#if title}

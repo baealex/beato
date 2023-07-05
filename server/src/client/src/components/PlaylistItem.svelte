@@ -35,7 +35,7 @@
             {name}
         </div>
         <div class="song-count">
-            {itemCount} Songs
+            {itemCount} songs
         </div>
     </div>
 </button>
