@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { navigate } from "svelte-routing";
+
     import SubPage from "./SubPage.svelte";
     import MusicListItem from "./MusicListItem.svelte";
     import Cross from "../icons/Cross.svelte";
@@ -11,21 +13,38 @@
 
     $: {
         if (isOpen) {
-            const top = (listRef.children.item($queue.selected) as HTMLLIElement).offsetTop;
+            const top = (
+                listRef.children.item($queue.selected) as HTMLLIElement
+            ).offsetTop;
             listRef.scrollTo({
-                top,
+                top: top - 60,
                 behavior: "smooth",
             });
         }
     }
 
-    const handleClose = () => {
+    const handleClose = async () => {
         history.back();
         isOpen = false;
     };
 </script>
 
 <SubPage {isOpen} hasHeader={false}>
+    <div class="header">
+        <div class="count">
+            {$queue.items.length}
+            {#if $queue.items.length === 1}song{:else}songs{/if}
+        </div>
+        <button
+            class="clickable title"
+            on:click={async () => {
+                isOpen = false;
+                navigate("/queue-history", { replace: true });
+            }}
+        >
+            {$queue.title} <span class="link" />
+        </button>
+    </div>
     <ul class="list" bind:this={listRef}>
         {#each $queue.items as music, idx}
             <li class:active={$queue.selected === idx}>
@@ -68,6 +87,39 @@
     .list {
         flex: 1;
         overflow-y: auto;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+        padding: 0 0.5rem;
+        border-bottom: 1px solid #333;
+
+        .count {
+            color: #ccc;
+            font-size: 0.8rem;
+        }
+
+        button {
+            width: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #eee;
+            font-size: 0.8rem;
+
+            .link {
+                width: 0;
+                height: 0;
+                border-top: 0.3rem solid transparent;
+                border-bottom: 0.3rem solid transparent;
+                border-left: 0.3rem solid currentColor;
+                transform: rotate(90deg);
+            }
+        }
     }
 
     .action {
