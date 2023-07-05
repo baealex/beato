@@ -57,7 +57,7 @@
         <div class="play-all">
             <button
                 on:click={() => {
-                    confirm("The playlist will be replaced with this.", {
+                    confirm("The queue will be replaced with this.", {
                         onConfirm: () => {
                             resetQueue(album.name, album.musics);
                         },

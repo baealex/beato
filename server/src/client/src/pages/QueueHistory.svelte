@@ -15,7 +15,7 @@
                 items={queue.items}
                 itemCount={queue.items.length}
                 onClick={() => {
-                    confirm("The playlist will be replaced with this.", {
+                    confirm("The queue will be replaced with this.", {
                         onConfirm: () => {
                             resetQueue(queue.title, queue.items);
                         },
