@@ -122,12 +122,9 @@
         }
 
         .title {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.25rem;
-
             .track-number {
+                margin-right: 0.25rem;
+                color: #666;
                 font-size: 0.8rem;
                 font-weight: 400;
             }
@@ -135,6 +132,7 @@
             .codec {
                 border: 1px solid #333;
                 color: #eee;
+                margin-left: 0.25rem;
                 padding: 0.1rem 0.5rem;
                 border-radius: 0.5rem;
                 font-size: 0.6rem;

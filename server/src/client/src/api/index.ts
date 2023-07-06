@@ -37,6 +37,7 @@ const musicQuery = (itemName: string) => createQuery<Music>(itemName, [
     'codec',
     'duration',
     'playCount',
+    'trackNumber',
     'isLiked',
     'createdAt',
     createQuery<Artist>('artist', [
