@@ -20,8 +20,10 @@
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         imageRef.src = getImage(src);
+                        imageRef.onload = () => {
+                            loadded = true;
+                        };
                         observer.unobserve(imageRef);
-                        loadded = true;
                     }
                 });
             });
@@ -52,6 +54,8 @@
     <img
         bind:this={imageRef}
         class={className}
+        class:lazy={true}
+        class:load={loadded}
         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg=="
         {alt}
         {style}
@@ -59,3 +63,14 @@
 {:else}
     <img src={getImage(src)} {alt} class={className} {style} />
 {/if}
+
+<style lang="scss">
+    img.lazy {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    img.load {
+        opacity: 1;
+    }
+</style>
