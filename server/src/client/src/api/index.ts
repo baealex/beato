@@ -155,38 +155,6 @@ export function getPlaylist(id: string) {
     );
 }
 
-// should be change into socket connection
-export function createPlaylist(name: string) {
-    return graphQLRequest<"createPlaylist", Playlist>(`
-        mutation {
-            createPlaylist(name: "${name}") {
-                id name musicCount createdAt updatedAt
-                headerMusics {
-                    album {
-                        cover
-                    }
-                }
-            }
-        }
-    `);
-}
-
-export function deletePlaylist(id: string) {
-    return graphQLRequest<"deletePlaylist", Boolean>(`
-        mutation {
-            deletePlaylist(id: "${id}")
-        }
-    `);
-}
-
-export function addMusicToPlaylist(playlistId: string, musicId: string) {
-    return graphQLRequest<"addMusicToPlaylist", Boolean>(`
-        mutation {
-            addMusicToPlaylist(playlistId: "${playlistId}", musicId: "${musicId}")
-        }
-    `);
-}
-
 export function getAudio(id: string) {
     return axios.request({
         method: 'GET',

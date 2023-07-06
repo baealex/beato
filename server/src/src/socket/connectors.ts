@@ -15,9 +15,12 @@ export const connectors = (() => {
             connectors = [...connectors, connector];
         },
         broadcast: <T>(event: string, data: T) => {
-            connectors.forEach((connector) => {
-                connector.emit(event, data);
+            const promises = connectors.map((connector) => {
+                return new Promise((resolve) => {
+                    connector.emit(event, data, resolve);
+                });
             });
+            return Promise.all(promises);
         }
     };
 })();

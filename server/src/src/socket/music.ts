@@ -12,7 +12,11 @@ export const musicListener = (socket: Socket) => {
     socket.on(MUSIC_COUNT, count);
 };
 
-export const like = async (id: string) => {
+export const like = async ({ id = '' }) => {
+    if (!id) {
+        return;
+    }
+
     let isLiked = false;
     const $music = await models.music.findUnique({
         where: {
@@ -51,7 +55,11 @@ export const like = async (id: string) => {
     }
 };
 
-export const count = async (id: string) => {
+export const count = async ({ id = '' }) => {
+    if (!id) {
+        return;
+    }
+
     const $music = await models.music.findUnique({
         where: {
             id: parseInt(id),

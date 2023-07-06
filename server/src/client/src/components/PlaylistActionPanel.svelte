@@ -9,7 +9,7 @@
 
     import { toast } from "../modules/ui/toast";
 
-    import { deletePlaylist } from "../api";
+    import * as socketManager from "../socket";
 
     import { playlists, playlistActionPanel } from "../store";
 
@@ -26,22 +26,16 @@
     };
 
     const handleDelete = async () => {
-        try {
-            await deletePlaylist(playlist.id);
-            playlists.update((state) =>
-                state.filter((p) => p.id !== playlist.id)
-            );
-            playlistActionPanel.update((state) => ({
-                ...state,
-                isOpen: false,
-                playlist: null,
-            }));
-            handleClose();
-            toast("Deleted playlist");
-        } catch (error) {
-            console.error(error);
-            toast("Failed to delete playlist");
-        }
+        socketManager.socket.emit(socketManager.PLAYLIST_DELETE, {
+            id: playlist.id,
+        });
+        playlistActionPanel.update((state) => ({
+            ...state,
+            isOpen: false,
+            playlist: null,
+        }));
+        handleClose();
+        toast("Deleted playlist");
     };
 
     const moveToPlaylist = () => {

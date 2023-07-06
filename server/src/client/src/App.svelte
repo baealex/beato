@@ -58,13 +58,12 @@
         isLoading = true;
         syncAll(() => (isLoading = false));
 
-        socketManager.musicListener();
         socketManager.socket.on("resync", () => {
             isLoading = true;
-            syncAll(() => {
-                isLoading = false;
-            });
+            syncAll(() => (isLoading = false));
         });
+        socketManager.musicListener();
+        socketManager.playlistListener();
 
         audioElement.addEventListener("timeupdate", () => {
             progress = Number(
@@ -77,10 +76,9 @@
 
             if (progress >= 80 && shouldCount) {
                 shouldCount = false;
-                socketManager.socket.emit(
-                    "music-count",
-                    $queue.items[$queue.selected]?.id
-                );
+                socketManager.socket.emit(socketManager.MUSIC_COUNT, {
+                    id: $queue.items[$queue.selected]?.id,
+                });
             }
         });
 
@@ -133,8 +131,9 @@
     });
 
     onDestroy(() => {
-        socketManager.musicDisconnection();
         socketManager.socket.off("resync");
+        socketManager.musicDisconnection();
+        socketManager.playlistDisconnection();
     });
 
     const requestFile = async (id: string) => {
@@ -201,7 +200,7 @@
     };
 
     const handleClickLike = (music: Music) => {
-        socketManager.socket.emit("music-like", music.id);
+        socketManager.socket.emit(socketManager.MUSIC_LIKE, { id: music.id });
     };
 
     const handleClickDownload = (music: Music) => {

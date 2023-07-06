@@ -25,19 +25,9 @@ export const playlistQuery = gql`
     }
 `;
 
-export const playlistMutation = gql`
-    type Mutation {
-        createPlaylist(name: String!): Playlist!
-        updatePlaylist(id: ID!, name: String!): Playlist!
-        deletePlaylist(id: ID!): Boolean!
-        addMusicToPlaylist(playlistId: ID!, musicId: ID!): Boolean!
-    }
-`;
-
 export const playlistTypeDefs = `
     ${playlistType}
     ${playlistQuery}
-    ${playlistMutation}
 `;
 
 export const playlistResolvers: IResolvers = {
@@ -52,66 +42,6 @@ export const playlistResolvers: IResolvers = {
                 id: Number(id),
             },
         }),
-    },
-    Mutation: {
-        createPlaylist: (_, { name }: Playlist) => models.playlist.create({
-            data: {
-                name,
-            },
-        }),
-        updatePlaylist: (_, { id, name }: Playlist) => models.playlist.update({
-            where: {
-                id: Number(id),
-            },
-            data: {
-                name,
-            },
-        }),
-        deletePlaylist: async (_, { id }: Playlist) => {
-            try {
-                await models.playlistMusic.deleteMany({
-                    where: {
-                        playlistId: Number(id),
-                    },
-                });
-                await models.playlist.delete({
-                    where: {
-                        id: Number(id),
-                    },
-                });
-                return true;
-            } catch (e) {
-                console.error(e);
-                return false;
-            }
-        },
-        addMusicToPlaylist: async (_, { playlistId, musicId }: { playlistId: string, musicId: string }) => {
-            if (await models.playlistMusic.findFirst({
-                where: {
-                    playlistId: Number(playlistId),
-                    musicId: Number(musicId),
-                },
-            })) {
-                return false;
-            }
-
-            const lastOrder = await models.playlistMusic.findFirst({
-                where: {
-                    playlistId: Number(playlistId),
-                },
-                orderBy: {
-                    order: 'desc',
-                },
-            });
-            await models.playlistMusic.create({
-                data: {
-                    order: lastOrder ? lastOrder.order + 1 : 0,
-                    playlistId: Number(playlistId),
-                    musicId: Number(musicId),
-                },
-            });
-            return true;
-        },
     },
     Playlist: {
         musics: async (playlist: Playlist) => {

@@ -8,15 +8,14 @@
 
     import { toast } from "../modules/ui/toast";
 
-    import { createPlaylist } from "../api";
+    import * as socketManager from "../socket";
 
     import { playlists, playlistActionPanel } from "../store";
 
     let name = "";
-    let isSubmitting = false;
-    let isOpenCreatePlaylist = false;
-    let isOpenDetail = false;
     let selectedId = null;
+    let isOpenDetail = false;
+    let isOpenCreatePlaylist = false;
 
     const resetCreate = () => {
         name = "";
@@ -25,25 +24,14 @@
 
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
-        if (isSubmitting) return;
 
         if (name === "") {
             toast("Please enter a name.");
             return;
         }
 
-        isSubmitting = true;
-        try {
-            const { data } = await createPlaylist(name);
-            playlists.update((prev) => [data.createPlaylist, ...prev]);
-            resetCreate();
-            toast("Created playlist");
-        } catch (error) {
-            console.error(error);
-            toast("Failed to create playlist");
-        } finally {
-            isSubmitting = false;
-        }
+        socketManager.socket.emit(socketManager.PLAYLIST_CREATE, { name });
+        resetCreate();
     };
 </script>
 
