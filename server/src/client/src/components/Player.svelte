@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { afterUpdate, onMount } from "svelte";
     import { navigate } from "svelte-routing";
 
     import Queue from "./Queue.svelte";
@@ -34,27 +34,15 @@
     export let onClickLike: (music: Music) => void;
     export let onClickProgress: (e: MouseEvent | TouchEvent) => void;
 
-    let isOpenDetailPanel = false;
-    let isOpenDetail = false;
+    let isOpenMusicRelatePanel = false;
+    let isOpenPlayer = false;
     let isOpenQueue = false;
+    let moveAlbumTarget: string = null;
+    let moveArtistTarget: string = null;
+    let randomBorderRadius = "50% 50% 50% 50%";
 
     $: totalTime = makePlayTime(music?.duration);
     $: currentTime = makePlayTime(music?.duration * (progress / 100));
-
-    let randomBorderRadius = "50% 50% 50% 50%";
-
-    onMount(() => {
-        const setRandomBorderRadius = () => {
-            if (playing) {
-                const makeRandom = () => {
-                    return Math.floor(Math.random() * 90 + 10) + "%";
-                };
-                randomBorderRadius = `${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`;
-            }
-            setTimeout(setRandomBorderRadius, 1000);
-        };
-        setRandomBorderRadius();
-    });
 
     const handleMoveProgress = (e: MouseEvent | TouchEvent) => {
         if (e instanceof MouseEvent && e.buttons === 1) {
@@ -70,88 +58,123 @@
             onClickProgress(e);
         }
     };
+
+    onMount(() => {
+        const setRandomBorderRadius = () => {
+            if (playing && isOpenPlayer) {
+                const makeRandom = () => {
+                    return Math.floor(Math.random() * 90 + 10) + "%";
+                };
+                randomBorderRadius = `${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`;
+            }
+            setTimeout(setRandomBorderRadius, 1000);
+        };
+        setRandomBorderRadius();
+    });
+
+    afterUpdate(() => {
+        if (!isOpenPlayer && !isOpenMusicRelatePanel && moveAlbumTarget) {
+            navigate(`/album/${moveAlbumTarget}`);
+            moveAlbumTarget = null;
+        }
+
+        if (!isOpenPlayer && !isOpenMusicRelatePanel && moveArtistTarget) {
+            navigate(`/artist/${moveArtistTarget}`);
+            moveArtistTarget = null;
+        }
+    });
 </script>
+
+<audio bind:this={audioElement} />
 
 {#if music}
     <div class="audio" class:open={music}>
-        <div
-            class="progress"
-            role="slider"
-            tabindex="0"
-            aria-valuenow={progress}
-            on:click={onClickProgress}
-            on:keydown={() => {}}
-            on:mousemove={handleMoveProgress}
-            on:touchmove={handleMoveProgress}
-        >
+        {#if !isOpenPlayer}
             <div
-                class="bar"
-                style={`transform: translate(-${100 - progress}%, 0)`}
-            />
-        </div>
-        <div class="player">
-            <div
-                class="music"
-                role="button"
+                class="progress"
+                role="slider"
                 tabindex="0"
-                on:click={() => (isOpenDetail = true)}
-                on:keydown={() => (isOpenDetail = true)}
+                aria-valuenow={progress}
+                on:click={onClickProgress}
+                on:keydown={() => {}}
+                on:mousemove={handleMoveProgress}
+                on:touchmove={handleMoveProgress}
             >
-                <img
-                    class="album-art"
-                    alt={music.album.name}
-                    src={getImage(music.album.cover)}
+                <div
+                    class="bar"
+                    style={`transform: translate(-${100 - progress}%, 0)`}
                 />
-                <div class="info">
-                    <div class="title">
-                        {music.name}
-                    </div>
-                    <div class="artist">
-                        {music.artist.name}
+            </div>
+            <div class="player">
+                <div
+                    class="music"
+                    role="button"
+                    tabindex="0"
+                    on:click={() => (isOpenPlayer = true)}
+                    on:keydown={() => (isOpenPlayer = true)}
+                >
+                    <img
+                        class="album-art"
+                        alt={music.album.name}
+                        src={getImage(music.album.cover)}
+                    />
+                    <div class="info">
+                        <div class="title">
+                            {music.name}
+                        </div>
+                        <div class="artist">
+                            {music.artist.name}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="action">
-                <button class="icon-button skip-back" on:click={onClickPrev}>
-                    <Play />
-                </button>
-                <button class="icon-button" on:click={onClickPlay}>
-                    {#if playing}
-                        <Pause />
-                    {:else}
+                <div class="action">
+                    <button
+                        class="icon-button skip-back"
+                        on:click={onClickPrev}
+                    >
                         <Play />
-                    {/if}
-                </button>
-                <button class="icon-button skip-forward" on:click={onClickNext}>
-                    <Play />
-                </button>
-                <button class="icon-button cross" on:click={onClickStop}>
-                    <Cross />
-                </button>
-                <input
-                    bind:value={volume}
-                    class="volume"
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.05"
-                />
-                <button
-                    class="icon-button"
-                    on:click={() => (isOpenQueue = !isOpenQueue)}
-                >
-                    <Menu />
-                </button>
+                    </button>
+                    <button class="icon-button" on:click={onClickPlay}>
+                        {#if playing}
+                            <Pause />
+                        {:else}
+                            <Play />
+                        {/if}
+                    </button>
+                    <button
+                        class="icon-button skip-forward"
+                        on:click={onClickNext}
+                    >
+                        <Play />
+                    </button>
+                    <button class="icon-button cross" on:click={onClickStop}>
+                        <Cross />
+                    </button>
+                    <input
+                        bind:value={volume}
+                        class="volume"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                    />
+                    <button
+                        class="icon-button"
+                        on:click={() => (isOpenQueue = !isOpenQueue)}
+                    >
+                        <Menu />
+                    </button>
+                </div>
             </div>
-        </div>
+        {/if}
     </div>
-    <SubPage isOpen={isOpenDetail} onClose={() => (isOpenDetail = false)}>
+    <SubPage isOpen={isOpenPlayer} onClose={() => (isOpenPlayer = false)}>
         <div class="detail">
             <div class="album-art">
                 <img
                     class="background"
                     style={`border-radius: ${randomBorderRadius}`}
-                    src={getImage(music.album.cover)}
+                    src={getImage(music.album.cover.replace("/resized", ""))}
                     alt={music.album.name}
                 />
                 <img
@@ -164,7 +187,7 @@
             <div class="title-info">
                 <button
                     class="clickable title"
-                    on:click={() => (isOpenDetailPanel = true)}
+                    on:click={() => (isOpenMusicRelatePanel = true)}
                 >
                     <div class="name">
                         {music.name}
@@ -182,21 +205,23 @@
                     {totalTime}
                 </div>
             </div>
-            <div
-                class="progress"
-                role="slider"
-                tabindex="0"
-                aria-valuenow={progress}
-                on:click={onClickProgress}
-                on:keydown={() => {}}
-                on:mousemove={handleMoveProgress}
-                on:touchmove={handleMoveProgress}
-            >
+            {#if isOpenPlayer}
                 <div
-                    class="bar"
-                    style="transform: translate(-{100 - progress}%);"
-                />
-            </div>
+                    class="progress"
+                    role="slider"
+                    tabindex="0"
+                    aria-valuenow={progress}
+                    on:click={onClickProgress}
+                    on:keydown={() => {}}
+                    on:mousemove={handleMoveProgress}
+                    on:touchmove={handleMoveProgress}
+                >
+                    <div
+                        class="bar"
+                        style="transform: translate(-{100 - progress}%);"
+                    />
+                </div>
+            {/if}
             <div class="action">
                 <button
                     class="icon-button fill"
@@ -241,16 +266,17 @@
             </div>
         </div>
     </SubPage>
-    <BottomPanel title="Related to this music" bind:isOpen={isOpenDetailPanel}>
+    <BottomPanel
+        title="Related to this music"
+        bind:isOpen={isOpenMusicRelatePanel}
+    >
         <div class="panel-content">
             <button
                 class="clickable linkable panel-album"
                 on:click={() => {
-                    isOpenDetailPanel = false;
-                    isOpenDetail = false;
-                    setTimeout(() => {
-                        navigate(`/album/${music.album.id}`);
-                    }, 50);
+                    isOpenMusicRelatePanel = false;
+                    isOpenPlayer = false;
+                    moveAlbumTarget = music.album.id;
                 }}
             >
                 <img src={getImage(music.album.cover)} alt={music.album.name} />
@@ -264,11 +290,9 @@
             <button
                 class="clickable linkable panel-artist"
                 on:click={() => {
-                    isOpenDetailPanel = false;
-                    isOpenDetail = false;
-                    setTimeout(() => {
-                        navigate(`/artist/${music.artist.id}`);
-                    }, 50);
+                    isOpenMusicRelatePanel = false;
+                    isOpenPlayer = false;
+                    moveArtistTarget = music.artist.id;
                 }}
             >
                 <div class="panel-sub-title">Artist</div>
@@ -281,8 +305,6 @@
 {/if}
 
 <Queue bind:isOpen={isOpenQueue} />
-
-<audio bind:this={audioElement} />
 
 <style lang="scss">
     .cross {

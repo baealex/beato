@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { afterUpdate } from "svelte";
     import { navigate } from "svelte-routing";
 
     import SubPage from "./SubPage.svelte";
@@ -10,14 +11,15 @@
     export let isOpen = false;
 
     let listRef: HTMLUListElement;
+    let shouldMoveQueue = false;
 
     $: {
         if (isOpen) {
-            const top = (
-                listRef.children.item($queue.selected) as HTMLLIElement
-            ).offsetTop;
+            const targetElement = listRef.children.item(
+                $queue.selected
+            ) as HTMLLIElement;
             listRef.scrollTo({
-                top: top - 60,
+                top: targetElement.offsetTop - 60,
                 behavior: "smooth",
             });
         }
@@ -26,6 +28,13 @@
     const handleClose = () => {
         isOpen = false;
     };
+
+    afterUpdate(() => {
+        if (!isOpen && shouldMoveQueue) {
+            navigate("/queue-history");
+            shouldMoveQueue = false;
+        }
+    });
 </script>
 
 <SubPage {isOpen} hasHeader={false}>
@@ -38,9 +47,7 @@
             class="clickable title"
             on:click={async () => {
                 isOpen = false;
-                setTimeout(() => {
-                    navigate("/queue-history");
-                }, 50);
+                shouldMoveQueue = true;
             }}
         >
             {$queue.title} <span class="link" />

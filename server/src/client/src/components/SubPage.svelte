@@ -26,7 +26,6 @@
     $: {
         if (isOpen) {
             layerPopState.push(id);
-            history.pushState(id, "", `#${id}`);
             window.addEventListener("popstate", handlePopState);
         } else {
             layerPopState.back(id);

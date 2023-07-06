@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { navigate, useHistory } from "svelte-routing";
+    import { afterUpdate } from "svelte";
+    import { navigate } from "svelte-routing";
 
     import Image from "./Image.svelte";
     import BottomPanel from "./BottomPanel.svelte";
@@ -11,8 +12,10 @@
     import { playlists, playlistActionPanel } from "../store";
     import { toast } from "../modules/ui/toast";
 
-    $: playlist = $playlistActionPanel.playlist;
+    let movePlaylistTarget: string = null;
+
     $: isOpen = $playlistActionPanel.isOpen;
+    $: playlist = $playlistActionPanel.playlist;
 
     const handleClose = () => {
         playlistActionPanel.update((state) => ({
@@ -39,6 +42,13 @@
             toast("Failed to delete playlist");
         }
     };
+
+    afterUpdate(() => {
+        if (!isOpen && movePlaylistTarget) {
+            navigate(`/playlist/${movePlaylistTarget}`);
+            movePlaylistTarget = null;
+        }
+    });
 </script>
 
 <BottomPanel {isOpen} onClose={handleClose}>
@@ -48,9 +58,7 @@
                 class="clickable linkable"
                 on:click={() => {
                     handleClose();
-                    setTimeout(() => {
-                        navigate(`/playlist/${playlist.id}`);
-                    }, 50);
+                    movePlaylistTarget = playlist.id;
                 }}
             >
                 {#if playlist.headerMusics.length >= 4}
