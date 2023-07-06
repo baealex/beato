@@ -17,6 +17,7 @@
         insertToPlaylist,
         insertToQueue,
         musicActionPanel,
+        layerPopState,
     } from "../store";
 
     export let onClickLike: (music: Music) => void;
@@ -27,7 +28,7 @@
 
     let isOpenPlaylistSelector = false;
 
-    const close = () => {
+    const handleClose = () => {
         musicActionPanel.update((state) => ({
             ...state,
             isOpen: false,
@@ -35,7 +36,7 @@
     };
 
     const handleClickAddToQueue = () => {
-        close();
+        handleClose();
         insertToQueue(music);
     };
 
@@ -49,7 +50,7 @@
     };
 </script>
 
-<BottomPanel {isOpen} onClose={close}>
+<BottomPanel {isOpen} onClose={handleClose}>
     {#if music}
         <div class="album-info">
             <button

@@ -24,7 +24,6 @@
     }
 
     const handleClose = () => {
-        history.back();
         isOpen = false;
     };
 </script>

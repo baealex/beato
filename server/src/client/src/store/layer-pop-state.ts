@@ -8,6 +8,12 @@ export const layerPopState = (() => {
         push: (value: string) => {
             state.push(value);
         },
+        back: (value: string) => {
+            if (state[state.length - 1] === value) {
+                state.pop();
+                history.back();
+            }
+        },
         at: (index: number) => {
             if (index < 0 || index >= state.length) {
                 if (index < 0) {

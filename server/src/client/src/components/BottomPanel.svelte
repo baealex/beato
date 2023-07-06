@@ -17,10 +17,6 @@
     };
 
     const handleClose = () => {
-        if (layerPopState.at(-1) === id) {
-            layerPopState.pop();
-            history.back();
-        }
         isOpen = false;
         onClose?.();
     };
@@ -31,6 +27,7 @@
             history.pushState(id, "", `#${id}`);
             window.addEventListener("popstate", handlePopState);
         } else {
+            layerPopState.back(id);
             window.removeEventListener("popstate", handlePopState);
         }
     }
