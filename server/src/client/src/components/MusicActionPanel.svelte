@@ -50,6 +50,11 @@
         isOpenPlaylistSelector = false;
     };
 
+    const moveToAlbum = () => {
+        handleClose();
+        moveAlbumTarget = music.album.id;
+    };
+
     afterUpdate(() => {
         if (!isOpenPlaylistSelector && moveAlbumTarget) {
             navigate(`/album/${moveAlbumTarget}`);
@@ -61,13 +66,7 @@
 <BottomPanel {isOpen} onClose={handleClose}>
     {#if music}
         <div class="album-info">
-            <button
-                class="clickable linkable"
-                on:click={() => {
-                    handleClose();
-                    moveAlbumTarget = music.album.id;
-                }}
-            >
+            <button class="clickable linkable" on:click={moveToAlbum}>
                 <Image alt={music.album.name} src={music.album.cover} />
                 <div class="col">
                     <div class="album-name">

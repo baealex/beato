@@ -24,16 +24,9 @@
     import { downloadFile } from "./modules/download";
     import { getAudio } from "./api";
 
-    import {
-        musics,
-        queue,
-        syncAll,
-        musicSortPanel,
-        musicActionPanel,
-        playlistActionPanel,
-    } from "./store";
+    import { queue, syncAll } from "./store";
 
-    import { socket } from "./modules/socket";
+    import * as socketManager from "./socket";
     import { toast } from "./modules/ui/toast";
 
     import type { Music } from "./models/type";
@@ -65,40 +58,8 @@
         isLoading = true;
         syncAll(() => (isLoading = false));
 
-        socket.on(
-            "like",
-            ({ id, isLiked }: { id: string; isLiked: boolean }) => {
-                const switchLike = (music: Music) => {
-                    if (music.id === id) {
-                        music.isLiked = isLiked;
-                    }
-                    return music;
-                };
-                $musics = $musics.map(switchLike);
-                $queue.items = $queue.items.map(switchLike);
-                $musicActionPanel.music.isLiked = isLiked;
-            }
-        );
-
-        socket.on(
-            "count",
-            ({ id, playCount }: { id: string; playCount: number }) => {
-                if ($musicSortPanel.latestSort === "playCountAsc") {
-                    musics.update((prevMusics) =>
-                        prevMusics
-                            .map((music) => {
-                                if (music.id === id) {
-                                    music.playCount = playCount;
-                                }
-                                return music;
-                            })
-                            .sort((a, b) => b.playCount - a.playCount)
-                    );
-                }
-            }
-        );
-
-        socket.on("resync", () => {
+        socketManager.musicListener();
+        socketManager.socket.on("resync", () => {
             isLoading = true;
             syncAll(() => {
                 isLoading = false;
@@ -116,7 +77,10 @@
 
             if (progress >= 80 && shouldCount) {
                 shouldCount = false;
-                socket.emit("count", $queue.items[$queue.selected]?.id);
+                socketManager.socket.emit(
+                    "music-count",
+                    $queue.items[$queue.selected]?.id
+                );
             }
         });
 
@@ -169,9 +133,8 @@
     });
 
     onDestroy(() => {
-        socket.off("like");
-        socket.off("count");
-        socket.off("resync");
+        socketManager.musicDisconnection();
+        socketManager.socket.off("resync");
     });
 
     const requestFile = async (id: string) => {
@@ -238,7 +201,7 @@
     };
 
     const handleClickLike = (music: Music) => {
-        socket.emit("like", music.id);
+        socketManager.socket.emit("music-like", music.id);
     };
 
     const handleClickDownload = (music: Music) => {

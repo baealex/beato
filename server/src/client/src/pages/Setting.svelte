@@ -3,7 +3,7 @@
     import Loading from "../components/Loading.svelte";
     import Select from "../components/Select.svelte";
 
-    import { socket } from "../modules/socket";
+    import { socket } from "../socket";
     import { toast } from "../modules/ui/toast";
     import { confirm } from "../modules/ui/confirm";
 
@@ -68,9 +68,9 @@
         <p>Sync music from server</p>
         <div>
             <button on:click={() => handleClickSyncMusic(false)}>Start</button>
-            <button on:click={() => handleClickSyncMusic(true)}
-                >Force Start</button
-            >
+            <button on:click={() => handleClickSyncMusic(true)}>
+                Force Start
+            </button>
             <div />
         </div>
     </section>

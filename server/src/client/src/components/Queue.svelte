@@ -29,6 +29,11 @@
         isOpen = false;
     };
 
+    const moveToQueue = () => {
+        handleClose();
+        shouldMoveQueue = true;
+    };
+
     afterUpdate(() => {
         if (!isOpen && shouldMoveQueue) {
             navigate("/queue-history");
@@ -43,13 +48,7 @@
             {$queue.items.length}
             {#if $queue.items.length === 1}song{:else}songs{/if}
         </div>
-        <button
-            class="clickable title"
-            on:click={async () => {
-                isOpen = false;
-                shouldMoveQueue = true;
-            }}
-        >
+        <button class="clickable title" on:click={moveToQueue}>
             {$queue.title} <span class="link" />
         </button>
     </div>

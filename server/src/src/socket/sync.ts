@@ -4,10 +4,33 @@ import { Socket } from 'socket.io';
 import { parseBuffer } from 'music-metadata';
 import sharp from 'sharp';
 
-import { walk } from './file';
+import { connectors } from './connectors';
+
+import { walk } from '../modules/file';
+
 import models from '~/models';
 
-export async function indexingMusic(socket: Socket, force = false) {
+export const syncListener = (socket: Socket) => {
+    let alreadySyncing = false;
+
+    socket.on('sync-music', async ({ force = false }) => {
+        console.log('sync-music');
+        socket.emit('sync-music', 'syncing...');
+
+        if (alreadySyncing) {
+            console.error('already syncing');
+            socket.emit('sync-music', 'error');
+            return;
+        }
+
+        alreadySyncing = true;
+        await syncMusic(socket, force);
+        connectors.broadcast('resync', '');
+        alreadySyncing = false;
+    });
+};
+
+export const syncMusic = async (socket: Socket, force = false) => {
     try {
         const files = (await walk(path.resolve('./music')))
             .filter((file) =>
@@ -286,4 +309,4 @@ export async function indexingMusic(socket: Socket, force = false) {
 
     console.log('sync-music done');
     socket.emit('sync-music', 'done');
-}
+};

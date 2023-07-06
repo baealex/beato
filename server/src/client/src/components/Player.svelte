@@ -59,6 +59,18 @@
         }
     };
 
+    const moveToAlbum = () => {
+        isOpenMusicRelatePanel = false;
+        isOpenPlayer = false;
+        moveAlbumTarget = music.album.id;
+    };
+
+    const moveToArtist = () => {
+        isOpenMusicRelatePanel = false;
+        isOpenPlayer = false;
+        moveArtistTarget = music.artist.id;
+    };
+
     onMount(() => {
         const setRandomBorderRadius = () => {
             if (playing && isOpenPlayer) {
@@ -273,11 +285,7 @@
         <div class="panel-content">
             <button
                 class="clickable linkable panel-album"
-                on:click={() => {
-                    isOpenMusicRelatePanel = false;
-                    isOpenPlayer = false;
-                    moveAlbumTarget = music.album.id;
-                }}
+                on:click={moveToAlbum}
             >
                 <img src={getImage(music.album.cover)} alt={music.album.name} />
                 <div>
@@ -289,11 +297,7 @@
             </button>
             <button
                 class="clickable linkable panel-artist"
-                on:click={() => {
-                    isOpenMusicRelatePanel = false;
-                    isOpenPlayer = false;
-                    moveArtistTarget = music.artist.id;
-                }}
+                on:click={moveToArtist}
             >
                 <div class="panel-sub-title">Artist</div>
                 <div class="panel-sub-content">

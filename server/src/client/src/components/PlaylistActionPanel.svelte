@@ -7,10 +7,11 @@
 
     import Cross from "../icons/Cross.svelte";
 
+    import { toast } from "../modules/ui/toast";
+
     import { deletePlaylist } from "../api";
 
     import { playlists, playlistActionPanel } from "../store";
-    import { toast } from "../modules/ui/toast";
 
     let movePlaylistTarget: string = null;
 
@@ -43,6 +44,11 @@
         }
     };
 
+    const moveToPlaylist = () => {
+        handleClose();
+        movePlaylistTarget = playlist.id;
+    };
+
     afterUpdate(() => {
         if (!isOpen && movePlaylistTarget) {
             navigate(`/playlist/${movePlaylistTarget}`);
@@ -54,13 +60,7 @@
 <BottomPanel {isOpen} onClose={handleClose}>
     {#if playlist}
         <div class="album-info">
-            <button
-                class="clickable linkable"
-                on:click={() => {
-                    handleClose();
-                    movePlaylistTarget = playlist.id;
-                }}
-            >
+            <button class="clickable linkable" on:click={moveToPlaylist}>
                 {#if playlist.headerMusics.length >= 4}
                     <div class="album-cover-grid">
                         {#each playlist.headerMusics.slice(0, 4) as music}
