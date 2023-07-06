@@ -31,7 +31,7 @@ export const socketManager = (socket: Socket) => {
 
     let alreadySyncing = false;
 
-    socket.on('sync-music', async () => {
+    socket.on('sync-music', async ({ force = false }) => {
         console.log('sync-music');
         socket.emit('sync-music', 'syncing...');
 
@@ -42,7 +42,7 @@ export const socketManager = (socket: Socket) => {
         }
 
         alreadySyncing = true;
-        await indexingMusic(socket);
+        await indexingMusic(socket, force);
         users.broadcast('resync', '');
         alreadySyncing = false;
     });

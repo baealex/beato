@@ -31,6 +31,7 @@
     "graphql-http": "^1.19.0",
     "music-metadata": "^7.13.4",
     "prisma": "^4.15.0",
+    "sharp": "^0.32.1",
     "socket.io": "^4.7.0",
     "sqlite3": "^5.1.6",
     "ts-node": "^10.9.1",

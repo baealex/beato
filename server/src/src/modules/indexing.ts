@@ -2,11 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import { Socket } from 'socket.io';
 import { parseBuffer } from 'music-metadata';
+import sharp from 'sharp';
 
 import { walk } from './file';
 import models from '~/models';
 
-export async function indexingMusic(socket: Socket) {
+export async function indexingMusic(socket: Socket, force = false) {
     try {
         const files = (await walk(path.resolve('./music')))
             .filter((file) =>
@@ -20,7 +21,7 @@ export async function indexingMusic(socket: Socket) {
 
         let $existMusics = await models.music.findMany();
 
-        const filteredFiles = files.filter((file) => {
+        const filteredFiles = force ? files : files.filter((file) => {
             for (const existMusic of $existMusics) {
                 if (existMusic.filePath === file) {
                     return false;
@@ -31,6 +32,15 @@ export async function indexingMusic(socket: Socket) {
 
         console.log(`indexing ${filteredFiles.length} files`);
         socket.emit('sync-music', `indexing ${filteredFiles.length} files`);
+
+        const cachePath = path.resolve('./cache');
+        if (!fs.existsSync(cachePath)) {
+            fs.mkdirSync(cachePath);
+        }
+        const resizedPath = path.join(cachePath, 'resized');
+        if (!fs.existsSync(resizedPath)) {
+            fs.mkdirSync(resizedPath);
+        }
 
         for (const file of filteredFiles) {
             console.log(`sync... ${file}`);
@@ -115,20 +125,23 @@ export async function indexingMusic(socket: Socket) {
 
             let coverPath = '';
             if (picture?.[0]?.data) {
-                const cachePath = path.resolve('./cache');
-
-                if (!fs.existsSync(cachePath)) {
-                    fs.mkdirSync(cachePath);
-                }
                 const fileName = $album.id + '.jpg';
                 const savePath = path.join(cachePath, fileName);
-                if (
-                    !fs.existsSync(savePath) ||
+                const shouldUpdate = (
                     fs.readFileSync(savePath).toString() !== picture[0].data.toString()
-                ) {
+                );
+                if (!fs.existsSync(savePath) || shouldUpdate) {
                     fs.writeFileSync(savePath, picture[0].data);
                 }
-                coverPath = '/cache/' + fileName;
+
+                const resizedFileName = $album.id + '.jpg';
+                const resizedSavePath = path.join(resizedPath, resizedFileName);
+                if (!fs.existsSync(resizedSavePath) || shouldUpdate) {
+                    await sharp(savePath)
+                        .resize(300, 300)
+                        .toFile(resizedSavePath);
+                }
+                coverPath = '/cache/resized/' + fileName;
             }
 
             if (coverPath && $album.cover !== coverPath) {

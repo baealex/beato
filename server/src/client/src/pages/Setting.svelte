@@ -5,6 +5,7 @@
 
     import { socket } from "../modules/socket";
     import { toast } from "../modules/ui/toast";
+    import { confirm } from "../modules/ui/confirm";
 
     import { queue } from "../store";
     import type { QueueInsertMode, QueuePlayMode } from "../store";
@@ -30,9 +31,17 @@
         socket.off("sync-music");
     });
 
-    const handleClickSyncMusic = () => {
+    const handleClickSyncMusic = async (force: boolean) => {
+        if (
+            force &&
+            !(await confirm(
+                "Please only proceed with the update if it is recommended by the developer. Are you sure you want to proceed?"
+            ))
+        ) {
+            return;
+        }
         isLoading = true;
-        socket.emit("sync-music");
+        socket.emit("sync-music", { force });
     };
 
     const handleClickRefreshApp = () => {
@@ -57,7 +66,13 @@
 <div class="continer">
     <section style="justify-content: space-between;">
         <p>Sync music from server</p>
-        <button on:click={handleClickSyncMusic}>Start</button>
+        <div>
+            <button on:click={() => handleClickSyncMusic(false)}>Start</button>
+            <button on:click={() => handleClickSyncMusic(true)}
+                >Force Start</button
+            >
+            <div />
+        </div>
     </section>
     <section>
         <p>When you press the music, the music will</p>
