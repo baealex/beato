@@ -160,22 +160,6 @@ button {
     }
 }
 
-@keyframes fade-in {
-    from {
-        transform: translate(2rem, 0);
-        opacity: 0;
-    }
-
-    to {
-        transform: translate(0, 0);
-        opacity: 1;
-    }
-}
-
-.fade-in {
-    animation: fade-in 0.25s ease-in-out;
-}
-
 .controls {
     padding: 1rem;
     display: flex;
