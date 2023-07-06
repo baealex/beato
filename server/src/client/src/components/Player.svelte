@@ -23,10 +23,9 @@
     import { queue, switchRepeatMode } from "../store";
 
     export let music: Music;
-    export let audioElement: HTMLAudioElement;
-    export let progress: number;
-    export let playing: boolean;
     export let volume: number;
+    export let playing: boolean;
+    export let progress: number;
     export let onClickPlay: () => void;
     export let onClickNext: () => void;
     export let onClickPrev: () => void;
@@ -96,8 +95,6 @@
         }
     });
 </script>
-
-<audio bind:this={audioElement} />
 
 {#if music}
     <div class="audio" class:open={music}>

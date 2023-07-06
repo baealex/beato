@@ -270,7 +270,6 @@
         </Route>
 
         <Player
-            bind:audioElement
             bind:playing
             bind:volume
             bind:progress
@@ -294,3 +293,5 @@
         <ArtistSortPanel />
     </Router>
 </main>
+
+<audio bind:this={audioElement} />
