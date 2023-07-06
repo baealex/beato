@@ -18,7 +18,6 @@
         insertToQueue,
         musicActionPanel,
     } from "../store";
-    import { afterUpdate } from "svelte";
 
     export let onClickLike: (music: Music) => void;
     export let onClickDownload: (music: Music) => void;
@@ -49,24 +48,20 @@
         insertToPlaylist(playlist, music);
         isOpenPlaylistSelector = false;
     };
-
-    const moveToAlbum = () => {
-        handleClose();
-        moveAlbumTarget = music.album.id;
-    };
-
-    afterUpdate(() => {
-        if (!isOpenPlaylistSelector && moveAlbumTarget) {
-            navigate(`/album/${moveAlbumTarget}`);
-            moveAlbumTarget = null;
-        }
-    });
 </script>
 
 <BottomPanel {isOpen} onClose={handleClose}>
     {#if music}
         <div class="album-info">
-            <button class="clickable linkable" on:click={moveToAlbum}>
+            <button
+                class="clickable linkable"
+                on:click={() => {
+                    handleClose();
+                    setTimeout(() => {
+                        navigate(`/artist/${music.artist.id}`);
+                    }, 100);
+                }}
+            >
                 <Image alt={music.album.name} src={music.album.cover} />
                 <div class="col">
                     <div class="album-name">

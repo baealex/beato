@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { afterUpdate } from "svelte";
     import { navigate } from "svelte-routing";
 
     import SubPage from "./SubPage.svelte";
@@ -28,18 +27,6 @@
     const handleClose = () => {
         isOpen = false;
     };
-
-    const moveToQueue = () => {
-        handleClose();
-        shouldMoveQueue = true;
-    };
-
-    afterUpdate(() => {
-        if (!isOpen && shouldMoveQueue) {
-            navigate("/queue-history");
-            shouldMoveQueue = false;
-        }
-    });
 </script>
 
 <SubPage {isOpen} hasHeader={false}>
@@ -48,7 +35,15 @@
             {$queue.items.length}
             {#if $queue.items.length === 1}song{:else}songs{/if}
         </div>
-        <button class="clickable title" on:click={moveToQueue}>
+        <button
+            class="clickable title"
+            on:click={() => {
+                handleClose();
+                setTimeout(() => {
+                    navigate("/queue-history");
+                }, 100);
+            }}
+        >
             {$queue.title} <span class="link" />
         </button>
     </div>

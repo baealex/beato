@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { afterUpdate, onMount } from "svelte";
+    import { onMount } from "svelte";
     import { navigate } from "svelte-routing";
 
     import Queue from "./Queue.svelte";
@@ -36,8 +36,6 @@
     let isOpenMusicRelatePanel = false;
     let isOpenPlayer = false;
     let isOpenQueue = false;
-    let moveAlbumTarget: string = null;
-    let moveArtistTarget: string = null;
     let randomBorderRadius = "50% 50% 50% 50%";
 
     $: totalTime = makePlayTime(music?.duration);
@@ -58,18 +56,6 @@
         }
     };
 
-    const moveToAlbum = () => {
-        isOpenMusicRelatePanel = false;
-        isOpenPlayer = false;
-        moveAlbumTarget = music.album.id;
-    };
-
-    const moveToArtist = () => {
-        isOpenMusicRelatePanel = false;
-        isOpenPlayer = false;
-        moveArtistTarget = music.artist.id;
-    };
-
     onMount(() => {
         const setRandomBorderRadius = () => {
             if (playing && isOpenPlayer) {
@@ -81,18 +67,6 @@
             setTimeout(setRandomBorderRadius, 1000);
         };
         setRandomBorderRadius();
-    });
-
-    afterUpdate(() => {
-        if (!isOpenPlayer && !isOpenMusicRelatePanel && moveAlbumTarget) {
-            navigate(`/album/${moveAlbumTarget}`);
-            moveAlbumTarget = null;
-        }
-
-        if (!isOpenPlayer && !isOpenMusicRelatePanel && moveArtistTarget) {
-            navigate(`/artist/${moveArtistTarget}`);
-            moveArtistTarget = null;
-        }
     });
 </script>
 
@@ -282,7 +256,13 @@
         <div class="panel-content">
             <button
                 class="clickable linkable panel-album"
-                on:click={moveToAlbum}
+                on:click={() => {
+                    isOpenMusicRelatePanel = false;
+                    isOpenPlayer = false;
+                    setTimeout(() => {
+                        navigate(`/album/${music.album.id}`);
+                    }, 100);
+                }}
             >
                 <img src={getImage(music.album.cover)} alt={music.album.name} />
                 <div>
@@ -294,7 +274,13 @@
             </button>
             <button
                 class="clickable linkable panel-artist"
-                on:click={moveToArtist}
+                on:click={() => {
+                    isOpenMusicRelatePanel = false;
+                    isOpenPlayer = false;
+                    setTimeout(() => {
+                        navigate(`/artist/${music.artist.id}`);
+                    }, 100);
+                }}
             >
                 <div class="panel-sub-title">Artist</div>
                 <div class="panel-sub-content">

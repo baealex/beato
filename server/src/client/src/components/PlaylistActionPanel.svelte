@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { afterUpdate } from "svelte";
     import { navigate } from "svelte-routing";
 
     import Image from "./Image.svelte";
@@ -11,9 +10,7 @@
 
     import * as socketManager from "../socket";
 
-    import { playlists, playlistActionPanel } from "../store";
-
-    let movePlaylistTarget: string = null;
+    import { playlistActionPanel } from "../store";
 
     $: isOpen = $playlistActionPanel.isOpen;
     $: playlist = $playlistActionPanel.playlist;
@@ -37,24 +34,20 @@
         handleClose();
         toast("Deleted playlist");
     };
-
-    const moveToPlaylist = () => {
-        handleClose();
-        movePlaylistTarget = playlist.id;
-    };
-
-    afterUpdate(() => {
-        if (!isOpen && movePlaylistTarget) {
-            navigate(`/playlist/${movePlaylistTarget}`);
-            movePlaylistTarget = null;
-        }
-    });
 </script>
 
 <BottomPanel {isOpen} onClose={handleClose}>
     {#if playlist}
         <div class="album-info">
-            <button class="clickable linkable" on:click={moveToPlaylist}>
+            <button
+                class="clickable linkable"
+                on:click={() => {
+                    handleClose();
+                    setTimeout(() => {
+                        navigate(`/playlist/${playlist.id}`);
+                    }, 100);
+                }}
+            >
                 {#if playlist.headerMusics.length >= 4}
                     <div class="album-cover-grid">
                         {#each playlist.headerMusics.slice(0, 4) as music}
