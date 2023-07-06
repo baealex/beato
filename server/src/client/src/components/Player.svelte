@@ -183,13 +183,13 @@
                 <img
                     class="background"
                     style={`border-radius: ${randomBorderRadius}`}
-                    src={getImage(music.album.cover.replace("/resized", ""))}
+                    src={getImage(music.album.cover)}
                     alt={music.album.name}
                 />
                 <img
                     class="foreground"
                     style={`border-radius: ${randomBorderRadius}`}
-                    src={getImage(music.album.cover)}
+                    src={getImage(music.album.cover.replace("/resized", ""))}
                     alt={music.album.name}
                 />
             </div>
