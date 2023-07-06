@@ -1,7 +1,3 @@
-interface ConfirmOptions {
-    onConfirm: (e: MouseEvent) => void;
-}
-
 const container = (function () {
     if (typeof window !== 'undefined') {
         const containerName = 'window-modal-container';
@@ -16,59 +12,48 @@ const container = (function () {
     }
 }()) as HTMLElement;
 
-export function confirm(text: string, options: ConfirmOptions) {
-    container.childNodes.forEach(($node) => {
-        $node.remove();
-    });
+export function confirm(text: string): Promise<boolean> {
+    return new Promise((resolve) => {
+        container.childNodes.forEach(($node) => {
+            $node.remove();
+        });
 
-    const windowModal = document.createElement('div');
-    windowModal.classList.add('window-modal');
+        const html = [
+            "<div class=\"window-modal\">",
+            "<div class=\"window\">",
+            "<div class=\"window-content\">",
+            "<div class=\"window-text\">" + text + "</div>",
+            "<div class=\"window-buttons\">",
+            "<button class=\"window-cancel\">Cancel</button>",
+            "<button class=\"window-confirm\">OK</button>",
+            "</div>",
+            "</div>",
+            "</div>",
+            "</div>"
+        ].join('');
 
-    const window = document.createElement('div');
-    window.classList.add('window');
+        container.innerHTML = html;
 
-    const windowContent = document.createElement('div');
-    windowContent.classList.add('window-content');
-
-    const windowText = document.createElement('div');
-    windowText.classList.add('window-text');
-
-    const windowButtons = document.createElement('div');
-    windowButtons.classList.add('window-buttons');
-
-    const windowConfirm = document.createElement('button');
-    windowConfirm.classList.add('window-confirm');
-
-    const windowCancel = document.createElement('button');
-    windowCancel.classList.add('window-cancel');
-
-    windowText.textContent = text;
-
-    windowConfirm.textContent = 'OK';
-    windowConfirm.addEventListener('click', (e) => {
-        container.classList.remove('show');
-        options.onConfirm(e);
-    });
-
-    windowCancel.textContent = 'Cancel';
-    windowCancel.addEventListener('click', () => {
-        container.classList.remove('show');
-        windowModal.remove();
-    });
-
-    container.addEventListener('click', (e) => {
-        if (e.target === container) {
+        container.querySelector('.window-cancel').addEventListener('click', () => {
             container.classList.remove('show');
-            windowModal.remove();
-        }
-    });
+            container.innerHTML = '';
+            return resolve(false);
+        });
 
-    windowButtons.appendChild(windowCancel);
-    windowButtons.appendChild(windowConfirm);
-    windowContent.appendChild(windowText);
-    windowContent.appendChild(windowButtons);
-    window.appendChild(windowContent);
-    windowModal.appendChild(window);
-    container.appendChild(windowModal);
-    container.classList.add('show');
+        container.querySelector('.window-confirm').addEventListener('click', (e) => {
+            container.classList.remove('show');
+            container.innerHTML = '';
+            return resolve(true);
+        });
+
+        container.addEventListener('click', (e) => {
+            if (e.target === container) {
+                container.classList.remove('show');
+                container.innerHTML = '';
+                return resolve(false);
+            }
+        });
+
+        container.classList.add('show');
+    });
 }

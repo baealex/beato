@@ -3,7 +3,7 @@
 
     import { confirm } from "../modules/ui/confirm";
 
-    import { resetQueue, queueHistory } from "../store";
+    import { existQueue, resetQueue, queueHistory } from "../store";
 </script>
 
 <div class="help">Last 20 queues are saved on this device.</div>
@@ -14,12 +14,17 @@
                 name={queue.title}
                 items={queue.items}
                 itemCount={queue.items.length}
-                onClick={() => {
-                    confirm("The queue will be replaced with this.", {
-                        onConfirm: () => {
-                            resetQueue(queue.title, queue.items);
-                        },
-                    });
+                onClick={async () => {
+                    if (
+                        existQueue() &&
+                        !(await confirm(
+                            "The queue will be replaced with this."
+                        ))
+                    ) {
+                        return;
+                    }
+
+                    resetQueue(queue.title, queue.items);
                 }}
             />
         </li>

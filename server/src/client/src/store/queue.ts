@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import type { Music } from '../models/type';
 import { getFormattedDate } from '../modules/time';
 import { toast } from '../modules/ui/toast';
@@ -56,6 +56,8 @@ export const switchRepeatMode = () => queue.update((state) => {
     }
     return newState;
 });
+
+export const existQueue = () => get(queue).items.length > 0;
 
 export const resetQueue = (title: string = '', musics: Music[] = []) => queue.update((state) => {
     toast("Resetted queue");

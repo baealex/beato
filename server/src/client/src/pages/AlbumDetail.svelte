@@ -12,6 +12,7 @@
     import { getAlbum } from "../api";
 
     import {
+        existQueue,
         resetQueue,
         insertToQueue,
         musicActionPanel,
@@ -56,12 +57,16 @@
         </div>
         <div class="play-all">
             <button
-                on:click={() => {
-                    confirm("The queue will be replaced with this.", {
-                        onConfirm: () => {
-                            resetQueue(album.name, album.musics);
-                        },
-                    });
+                on:click={async () => {
+                    if (
+                        existQueue() &&
+                        !(await confirm(
+                            "The queue will be replaced with this."
+                        ))
+                    ) {
+                        return;
+                    }
+                    resetQueue(album.name, album.musics);
                 }}
             >
                 <Play />
