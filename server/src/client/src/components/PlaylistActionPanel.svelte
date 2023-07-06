@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { navigate } from "svelte-routing";
+    import { navigate, useHistory } from "svelte-routing";
 
     import Image from "./Image.svelte";
     import BottomPanel from "./BottomPanel.svelte";
@@ -14,7 +14,7 @@
     $: playlist = $playlistActionPanel.playlist;
     $: isOpen = $playlistActionPanel.isOpen;
 
-    const close = () => {
+    const handleClose = () => {
         playlistActionPanel.update((state) => ({
             ...state,
             isOpen: false,
@@ -32,7 +32,7 @@
                 isOpen: false,
                 playlist: null,
             }));
-            close();
+            handleClose();
             toast("Deleted playlist");
         } catch (error) {
             console.error(error);
@@ -41,14 +41,16 @@
     };
 </script>
 
-<BottomPanel {isOpen} onClose={close}>
+<BottomPanel {isOpen} onClose={handleClose}>
     {#if playlist}
         <div class="album-info">
             <button
                 class="clickable linkable"
                 on:click={() => {
-                    close();
-                    navigate(`/playlist/${playlist.id}`);
+                    handleClose();
+                    setTimeout(() => {
+                        navigate(`/playlist/${playlist.id}`);
+                    }, 50);
                 }}
             >
                 {#if playlist.headerMusics.length >= 4}

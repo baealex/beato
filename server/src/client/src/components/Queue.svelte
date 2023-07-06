@@ -38,7 +38,9 @@
             class="clickable title"
             on:click={async () => {
                 isOpen = false;
-                navigate("/queue-history", { replace: true });
+                setTimeout(() => {
+                    navigate("/queue-history");
+                }, 50);
             }}
         >
             {$queue.title} <span class="link" />
@@ -93,7 +95,7 @@
         align-items: center;
         justify-content: space-between;
         height: 60px;
-        padding: 0 0.5rem;
+        padding: 0 1rem;
         border-bottom: 1px solid #333;
 
         .count {

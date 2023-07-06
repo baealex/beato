@@ -248,7 +248,9 @@
                 on:click={() => {
                     isOpenDetailPanel = false;
                     isOpenDetail = false;
-                    navigate(`/album/${music.album.id}`, { replace: true });
+                    setTimeout(() => {
+                        navigate(`/album/${music.album.id}`);
+                    }, 50);
                 }}
             >
                 <img src={getImage(music.album.cover)} alt={music.album.name} />
@@ -264,7 +266,9 @@
                 on:click={() => {
                     isOpenDetailPanel = false;
                     isOpenDetail = false;
-                    navigate(`/artist/${music.artist.id}`, { replace: true });
+                    setTimeout(() => {
+                        navigate(`/artist/${music.artist.id}`);
+                    }, 50);
                 }}
             >
                 <div class="panel-sub-title">Artist</div>

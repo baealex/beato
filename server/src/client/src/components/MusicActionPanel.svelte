@@ -17,7 +17,6 @@
         insertToPlaylist,
         insertToQueue,
         musicActionPanel,
-        layerPopState,
     } from "../store";
 
     export let onClickLike: (music: Music) => void;
@@ -56,8 +55,10 @@
             <button
                 class="clickable linkable"
                 on:click={() => {
-                    close();
-                    navigate(`/album/${music.album.id}`, { replace: true });
+                    handleClose();
+                    setTimeout(() => {
+                        navigate(`/album/${music.album.id}`);
+                    }, 50);
                 }}
             >
                 <Image alt={music.album.name} src={music.album.cover} />
