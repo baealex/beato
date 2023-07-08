@@ -7,8 +7,7 @@
     import Cross from "../icons/Cross.svelte";
     import Pencil from "../icons/Pencil.svelte";
 
-    import { toast } from "../modules/ui/toast";
-    import { prompt } from "../modules/ui/modal";
+    import { confirm, prompt } from "../modules/ui/modal";
 
     import * as socketManager from "../socket";
 
@@ -33,20 +32,20 @@
             name: name,
         });
         handleClose();
-        toast("Renamed playlist");
     };
 
     const handleDelete = async () => {
-        socketManager.socket.emit(socketManager.PLAYLIST_DELETE, {
-            id: playlist.id,
-        });
-        playlistActionPanel.update((state) => ({
-            ...state,
-            isOpen: false,
-            playlist: null,
-        }));
-        handleClose();
-        toast("Deleted playlist");
+        if (await confirm("Are you sure you want to delete this playlist?")) {
+            socketManager.socket.emit(socketManager.PLAYLIST_DELETE, {
+                id: playlist.id,
+            });
+            playlistActionPanel.update((state) => ({
+                ...state,
+                isOpen: false,
+                playlist: null,
+            }));
+            handleClose();
+        }
     };
 </script>
 
