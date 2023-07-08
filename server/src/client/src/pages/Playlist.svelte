@@ -21,6 +21,7 @@
 
     const resetCreate = () => {
         name = "";
+        nameInputRef.blur();
         isOpenCreatePlaylist = false;
     };
 
