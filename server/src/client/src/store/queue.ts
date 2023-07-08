@@ -1,7 +1,9 @@
 import { writable, get } from 'svelte/store';
+
 import type { Music } from '../models/type';
-import { getFormattedDate } from '../modules/time';
+
 import { toast } from '../modules/ui/toast';
+import { getFormattedDate } from '../modules/time';
 
 import { queueHistory } from './queue-history';
 
@@ -60,7 +62,6 @@ export const switchRepeatMode = () => queue.update((state) => {
 export const existQueue = () => get(queue).items.length > 0;
 
 export const resetQueue = (title: string = '', musics: Music[] = []) => queue.update((state) => {
-    toast("Resetted queue");
     queueHistory.update((history) => {
         if (state.items.length === 0) {
             return history;

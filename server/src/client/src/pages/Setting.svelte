@@ -18,7 +18,7 @@
             if (serverMessage === "done" || serverMessage === "error") {
                 isLoading = false;
                 if (serverMessage === "done") {
-                    toast("Music sync completed");
+                    toast("Completed syncing music");
                 } else if (serverMessage === "error") {
                     toast("Error while syncing music");
                 }
