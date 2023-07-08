@@ -7,7 +7,7 @@
 
     import type { Album } from "../models/type";
 
-    import { confirm } from "../modules/ui/confirm";
+    import { confirm } from "../modules/ui/modal";
 
     import { getAlbum } from "../api";
 

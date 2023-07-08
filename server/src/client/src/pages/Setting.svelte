@@ -5,7 +5,7 @@
 
     import { socket } from "../socket";
     import { toast } from "../modules/ui/toast";
-    import { confirm } from "../modules/ui/confirm";
+    import { confirm } from "../modules/ui/modal";
 
     import { queue } from "../store";
     import type { QueueInsertMode, QueuePlayMode } from "../store";

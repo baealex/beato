@@ -1,7 +1,7 @@
 <script lang="ts">
     import PlaylistItem from "../components/PlaylistItem.svelte";
 
-    import { confirm } from "../modules/ui/confirm";
+    import { confirm } from "../modules/ui/modal";
 
     import { existQueue, resetQueue, queueHistory } from "../store";
 </script>

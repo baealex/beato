@@ -34,26 +34,32 @@ export function confirm(text: string): Promise<boolean> {
 
         container.innerHTML = html;
 
-        container.querySelector('.window-cancel').addEventListener('click', () => {
-            container.classList.remove('show');
-            container.innerHTML = '';
-            return resolve(false);
-        });
-
-        container.querySelector('.window-confirm').addEventListener('click', (e) => {
-            container.classList.remove('show');
-            container.innerHTML = '';
-            return resolve(true);
-        });
-
-        container.addEventListener('click', (e) => {
+        const handleClickContainer = (e: MouseEvent) => {
             if (e.target === container) {
+                container.removeEventListener('click', handleClickContainer);
                 container.classList.remove('show');
                 container.innerHTML = '';
                 return resolve(false);
             }
-        });
+        };
 
+        container.querySelector('.window-cancel')
+            .addEventListener('click', () => {
+                container.removeEventListener('click', handleClickContainer);
+                container.classList.remove('show');
+                container.innerHTML = '';
+                return resolve(false);
+            });
+
+        container.querySelector('.window-confirm')
+            .addEventListener('click', (e) => {
+                container.removeEventListener('click', handleClickContainer);
+                container.classList.remove('show');
+                container.innerHTML = '';
+                return resolve(true);
+            });
+
+        container.addEventListener('click', handleClickContainer);
         container.classList.add('show');
     });
 }
