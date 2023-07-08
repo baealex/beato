@@ -5,8 +5,10 @@
     import BottomPanel from "./BottomPanel.svelte";
 
     import Cross from "../icons/Cross.svelte";
+    import Pencil from "../icons/Pencil.svelte";
 
     import { toast } from "../modules/ui/toast";
+    import { prompt } from "../modules/ui/modal";
 
     import * as socketManager from "../socket";
 
@@ -20,6 +22,18 @@
             ...state,
             isOpen: false,
         }));
+    };
+
+    const handleRename = async () => {
+        const name = await prompt("Enter new name", playlist.name);
+        if (!name) return;
+
+        socketManager.socket.emit(socketManager.PLAYLIST_UPDATE, {
+            id: playlist.id,
+            name: name,
+        });
+        handleClose();
+        toast("Renamed playlist");
     };
 
     const handleDelete = async () => {
@@ -74,6 +88,11 @@
             </button>
         </div>
         <ul class="items">
+            <li>
+                <button class="clickable item" on:click={handleRename}>
+                    <Pencil /> Rename
+                </button>
+            </li>
             <li>
                 <button class="clickable item" on:click={handleDelete}>
                     <Cross /> Delete

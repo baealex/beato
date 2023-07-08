@@ -51,8 +51,12 @@ export const deletePlaylist = async (id: string) => {
 export const updatePlaylist = async (playlist: Playlist) => {
     playlists.update((state) => {
         return state.map((item) => {
-            if (item.id === playlist.id) {
-                return playlist;
+            if (item.id === playlist.id.toString()) {
+                return {
+                    ...item,
+                    name: playlist.name,
+                    updatedAt: playlist.updatedAt,
+                };
             }
             return item;
         });

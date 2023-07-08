@@ -1,5 +1,6 @@
 <script lang="ts">
     import Image from "../components/Image.svelte";
+    import MoreVerticalFill from "../icons/MoreVerticalFill.svelte";
 
     import type { Music } from "../models/type";
 
@@ -38,6 +39,15 @@
             {itemCount} songs
         </div>
     </div>
+    <button
+        class="icon-button"
+        on:click={(e) => {
+            e.stopPropagation();
+            onLongPress();
+        }}
+    >
+        <MoreVerticalFill />
+    </button>
 </button>
 
 <style lang="scss">
@@ -54,6 +64,23 @@
         @media (min-width: 1024px) {
             &:hover {
                 background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .icon-button {
+            color: #eee;
+            width: 2.5rem;
+            height: 2.5rem;
+
+            :global(svg) {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+
+            @media (min-width: 1024px) {
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
             }
         }
 

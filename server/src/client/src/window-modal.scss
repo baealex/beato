@@ -39,6 +39,31 @@
         gap: 16px;
     }
 
+    .window-input {
+        width: 100%;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: #222;
+        color: #eee;
+        font-size: 1rem;
+        line-height: 1.5;
+        font-weight: 400;
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #eee;
+            font-size: 1rem;
+            line-height: 1.5;
+            font-weight: 400;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
     .window-text {
         font-size: 1rem;
         line-height: 1.5;
@@ -76,4 +101,8 @@
             box-shadow: 0 16px 16px rgba(115, 90, 242, .3);
         }
     }
+}
+
+.window-modal.prompt {
+    text-align: left;
 }
