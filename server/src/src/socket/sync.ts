@@ -150,10 +150,12 @@ export const syncMusic = async (socket: Socket, force = false) => {
             if (picture?.[0]?.data) {
                 const fileName = $album.id + '.jpg';
                 const savePath = path.join(cachePath, fileName);
-                const shouldUpdate = (
+
+                const hasCache = fs.existsSync(savePath);
+                const shouldUpdate = hasCache && (
                     fs.readFileSync(savePath).toString() !== picture[0].data.toString()
                 );
-                if (!fs.existsSync(savePath) || shouldUpdate) {
+                if (!hasCache || shouldUpdate) {
                     fs.writeFileSync(savePath, picture[0].data);
                 }
 
