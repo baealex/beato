@@ -160,5 +160,13 @@ export function prompt(text: string, value: string): Promise<string> {
 
         container.addEventListener('click', handleClickContainer);
         container.classList.add('show');
+        setTimeout(() => {
+            const input = container.querySelector('input');
+            input.focus();
+            input.setSelectionRange(
+                input.value.length,
+                input.value.length
+            );
+        }, 100);
     });
 }

@@ -12,20 +12,19 @@
 
     import { playlists, playlistActionPanel } from "../store";
 
-    let name = "";
+    let inputRef: HTMLInputElement;
     let selectedId = null;
     let isOpenDetail = false;
     let isOpenCreatePlaylist = false;
 
     const resetCreate = () => {
-        name = "";
+        inputRef.value = "";
         isOpenCreatePlaylist = false;
     };
 
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
-
-        if (name === "") {
+        if (inputRef.value) {
             toast("Please enter a name.");
             return;
         }
@@ -33,6 +32,12 @@
         socketManager.socket.emit(socketManager.PLAYLIST_CREATE, { name });
         resetCreate();
     };
+
+    $: {
+        if (isOpenCreatePlaylist) {
+            inputRef.focus();
+        }
+    }
 </script>
 
 <div class="controls">
@@ -75,10 +80,10 @@
 <BottomPanel title="Create Playlist" bind:isOpen={isOpenCreatePlaylist}>
     <form class="panel-content" on:submit={handleSubmit}>
         <input
+            bind:this={inputRef}
             class="gray-input"
             type="text"
             placeholder="Playlist Name"
-            bind:value={name}
         />
         <button class="gray-button">Create</button>
     </form>
