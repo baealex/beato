@@ -2,9 +2,15 @@
     import { onMount } from "svelte";
 
     import MusicListItem from "../components/MusicListItem.svelte";
+    import Checkbox from "../components/Checkbox.svelte";
+
     import Play from "../icons/Play.svelte";
+    import TrashBin from "../icons/TrashBin.svelte";
+    import CheckBox from "../icons/CheckBox.svelte";
 
     import type { Playlist } from "../models/type";
+
+    import { confirm } from "../modules/ui/modal";
 
     import { getPlaylist } from "../api";
 
@@ -14,10 +20,7 @@
         musicActionPanel,
         musics,
     } from "../store";
-    import TrashBin from "../icons/TrashBin.svelte";
-    import CheckBox from "../icons/CheckBox.svelte";
     import * as socketManager from "../socket";
-    import Checkbox from "../components/Checkbox.svelte";
 
     export let id = "";
 
@@ -33,15 +36,21 @@
         }
     };
 
-    const handleDeleteMusics = () => {
-        socketManager.socket.emit(socketManager.PLAYLIST_REMOVE_MUSIC, {
-            id: playlist.id,
-            musicIds: selectedMusics.map((m) => m.id),
-        });
-        playlist.musics = playlist.musics.filter(
-            (m) => !selectedMusics.find((sm) => sm.id === m.id)
-        );
-        selectedMusics = [];
+    const handleDeleteMusics = async () => {
+        if (
+            await confirm(
+                `Delete ${selectedMusics.length} musics from ${playlist.name}?`
+            )
+        ) {
+            socketManager.socket.emit(socketManager.PLAYLIST_REMOVE_MUSIC, {
+                id: playlist.id,
+                musicIds: selectedMusics.map((m) => m.id),
+            });
+            playlist.musics = playlist.musics.filter(
+                (m) => !selectedMusics.find((sm) => sm.id === m.id)
+            );
+            selectedMusics = [];
+        }
     };
 
     onMount(async () => {
