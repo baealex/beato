@@ -116,6 +116,7 @@ const addMusicToPlaylist = async ({
     connectors.broadcast(PLAYLIST_ADD_MUSIC, {
         id,
         music: {
+            id: musicId.toString(),
             album: {
                 cover: album?.cover,
             }
@@ -125,25 +126,21 @@ const addMusicToPlaylist = async ({
 
 const removeMusicFromPlaylist = async ({
     id = '',
-    musicId = '',
+    musicIds = [],
 }) => {
-    const playlistMusic = await models.playlistMusic.findFirst({
+    if (!id || !musicIds.length) {
+        return;
+    }
+    await models.playlistMusic.deleteMany({
         where: {
             playlistId: Number(id),
-            musicId: Number(musicId),
-        },
-    });
-    if (!playlistMusic) {
-        return false;
-    }
-
-    await models.playlistMusic.delete({
-        where: {
-            id: playlistMusic.id,
+            musicId: {
+                in: musicIds.map((musicId) => Number(musicId)),
+            },
         },
     });
     connectors.broadcast(PLAYLIST_REMOVE_MUSIC, {
         id,
-        musicId,
+        musicIds,
     });
 };

@@ -27,7 +27,6 @@ export const playlistDisconnection = () => {
 }
 
 export const createPlaylist = async (playlist: Playlist) => {
-    console.log(playlist)
     playlists.update((state) => {
         return [playlist, ...state];
     });
@@ -85,16 +84,18 @@ export const addMusicToPlaylist = async ({ id, music }: AddMusicToPlaylist) => {
 
 interface RemoveMusicFromPlaylist {
     id: string;
-    musicId: string;
+    musicIds: string[];
 }
 
-export const removeMusicFromPlaylist = async ({ id, musicId }: RemoveMusicFromPlaylist) => {
+export const removeMusicFromPlaylist = async ({ id, musicIds }: RemoveMusicFromPlaylist) => {
     playlists.update((state) => {
+        console.log(state);
         return state.map((item) => {
             if (item.id === id) {
                 return {
                     ...item,
-                    headerMusics: item.musics.filter((music) => music.id !== musicId),
+                    musicCount: item.musicCount - musicIds.length,
+                    headerMusics: item.headerMusics.filter((music) => !musicIds.includes(music.id)),
                 };
             }
             return item;

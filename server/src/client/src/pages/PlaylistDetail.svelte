@@ -14,10 +14,35 @@
         musicActionPanel,
         musics,
     } from "../store";
+    import TrashBin from "../icons/TrashBin.svelte";
+    import CheckBox from "../icons/CheckBox.svelte";
+    import * as socketManager from "../socket";
+    import Checkbox from "../components/Checkbox.svelte";
 
     export let id = "";
 
     let playlist: Playlist = null;
+    let enableSelect = false;
+    let selectedMusics: Playlist["musics"] = [];
+
+    const handleChangeCheckbox = (music: Playlist["musics"][0]) => {
+        if (selectedMusics.find((m) => m.id === music.id)) {
+            selectedMusics = selectedMusics.filter((m) => m.id !== music.id);
+        } else {
+            selectedMusics = [...selectedMusics, music];
+        }
+    };
+
+    const handleDeleteMusics = () => {
+        socketManager.socket.emit(socketManager.PLAYLIST_REMOVE_MUSIC, {
+            id: playlist.id,
+            musicIds: selectedMusics.map((m) => m.id),
+        });
+        playlist.musics = playlist.musics.filter(
+            (m) => !selectedMusics.find((sm) => sm.id === m.id)
+        );
+        selectedMusics = [];
+    };
 
     onMount(async () => {
         if (!id) {
@@ -54,29 +79,76 @@
 {/if}
 
 {#if playlist?.musics}
-    <ul>
-        {#each playlist.musics as music}
-            <li>
-                <MusicListItem
-                    albumCover={music.album.cover}
-                    artistName={music.artist.name}
-                    musicName={music.name}
-                    musicCodec={music.codec}
-                    isLiked={music.isLiked}
-                    onClick={() => insertToQueue(music)}
-                    onLongPress={() => {
-                        musicActionPanel.update(() => ({
-                            isOpen: true,
-                            music,
-                        }));
+    <div class="playlist-items">
+        <div class="actions">
+            <button
+                class="clickable"
+                class:active={enableSelect}
+                on:click={() => (enableSelect = !enableSelect)}
+            >
+                <CheckBox />
+                Select
+            </button>
+        </div>
+        <ul>
+            {#each playlist.musics as music}
+                <li>
+                    {#if enableSelect}
+                        <div class="checkbox">
+                            <Checkbox
+                                checked={selectedMusics.some(
+                                    (m) => m.id === music.id
+                                )}
+                                onChange={() => handleChangeCheckbox(music)}
+                            />
+                        </div>
+                    {/if}
+                    <MusicListItem
+                        albumCover={music.album.cover}
+                        artistName={music.artist.name}
+                        musicName={music.name}
+                        musicCodec={music.codec}
+                        isLiked={music.isLiked}
+                        onClick={() => {
+                            if (enableSelect) {
+                                handleChangeCheckbox(music);
+                                return;
+                            }
+                            insertToQueue(music);
+                        }}
+                        onLongPress={() => {
+                            musicActionPanel.update(() => ({
+                                isOpen: true,
+                                music,
+                            }));
+                        }}
+                    />
+                </li>
+            {/each}
+        </ul>
+        {#if enableSelect}
+            <div class="select-actions">
+                <button
+                    class="clickable"
+                    on:click={() => {
+                        resetQueue(playlist.name, selectedMusics);
                     }}
-                />
-            </li>
-        {/each}
-    </ul>
+                >
+                    <Play />
+                    Play
+                </button>
+                <button class="clickable" on:click={handleDeleteMusics}>
+                    <TrashBin />
+                    Delete
+                </button>
+            </div>
+        {/if}
+    </div>
 {/if}
 
 <style lang="scss">
+    @import "../styles/var.scss";
+
     .playlist {
         position: relative;
         display: flex;
@@ -130,11 +202,65 @@
         }
     }
 
-    ul {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        list-style: none;
+    .playlist-items {
         margin-top: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        flex: 1;
+
+        .checkbox {
+            margin-left: 1rem;
+        }
+
+        .actions {
+            padding: 0 1rem;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+
+            &.active {
+                color: $PRIMARY_COLOR;
+            }
+
+            :global(svg) {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+
+        ul {
+            flex: 1;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            list-style: none;
+
+            li {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .select-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding: 0.5rem 0;
+            background-color: $PRIMARY_COLOR;
+
+            button {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+                font-size: 0.75rem;
+                font-weight: bold;
+            }
+        }
     }
 </style>

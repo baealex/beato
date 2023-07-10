@@ -1,6 +1,7 @@
-import './app.scss';
-import './toast.scss';
-import './window-modal.scss';
+import './styles/app.scss';
+import './styles/toast.scss';
+import './styles/window-modal.scss';
+
 import App from './App.svelte';
 
 const app = new App({

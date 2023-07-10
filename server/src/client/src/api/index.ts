@@ -136,6 +136,7 @@ export function getPlaylists() {
             'createdAt',
             'updatedAt',
             createQuery<Music>('headerMusics', [
+                'id',
                 createQuery<Album>('album', [
                     'cover'
                 ])
