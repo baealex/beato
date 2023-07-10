@@ -29,7 +29,7 @@ Self host music streaming platform
 
 - [x] Organize information about music (supported mp3, acc, wav, ogg, flac)
 - [x] Count the number of times music is listened to
-- [ ] Make your own playlist
+- [x] Make your own playlist
 - [ ] Audio transcoding
 - [ ] Mobile-friendly (Preparing app for background playback)
 
