@@ -135,7 +135,7 @@
                 </li>
             {/each}
         </ul>
-        {#if enableSelect}
+        {#if enableSelect && selectedMusics.length > 0}
             <div class="select-actions">
                 <button
                     class="clickable"
@@ -255,6 +255,9 @@
         }
 
         .select-actions {
+            position: sticky;
+            bottom: 0;
+            left: 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
