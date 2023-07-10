@@ -63,9 +63,9 @@ export function getArtists() {
         wrapper("query", createQuery<Artist>('allArtists', [
             'id',
             'name',
+            'createdAt',
             'albumCount',
             'musicCount',
-            'createdAt',
             createQuery<Album>('latestAlbum', [
                 'cover'
             ])
@@ -102,6 +102,7 @@ export function getAlbums() {
             'name',
             'cover',
             'publishedYear',
+            'createdAt',
             createQuery<Artist>('artist', [
                 'id',
                 'name'
