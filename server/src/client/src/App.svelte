@@ -221,12 +221,12 @@
             <SiteHeader />
             <Route path="/" scrollToTop={true} exact={true}>
                 <div class="container">
-                    <MusicList />
+                    <FavoriteMusic />
                 </div>
             </Route>
-            <Route path="/favorite">
+            <Route path="/music">
                 <div class="container">
-                    <FavoriteMusic />
+                    <MusicList />
                 </div>
             </Route>
             <Route path="/album">

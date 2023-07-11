@@ -19,7 +19,7 @@
     } from "../store";
 
     let search = "";
-    let innerMusics = useGradualRender($musics);
+    let innerMusics = useGradualRender($musics, 50);
 
     $: visibleMusics = $innerMusics.filter(
         (music) =>

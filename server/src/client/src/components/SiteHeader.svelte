@@ -16,12 +16,12 @@
 
     const navItems = [
         {
-            name: "Music",
+            name: "Favorite",
             path: "/",
         },
         {
-            name: "Favorite",
-            path: "/favorite",
+            name: "Music",
+            path: "/music",
         },
         {
             name: "Album",

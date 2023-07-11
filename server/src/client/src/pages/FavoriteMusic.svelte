@@ -20,7 +20,8 @@
 
     let search = "";
     let innerMusics = useGradualRender(
-        $musics.filter((music) => music.isLiked)
+        $musics.filter((music) => music.isLiked),
+        50
     );
 
     $: visibleMusics = $innerMusics.filter(
