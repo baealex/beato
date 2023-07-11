@@ -2,6 +2,9 @@ export const layerPopState = (() => {
     let state: string[] = [];
 
     return {
+        get: () => {
+            return state;
+        },
         pop: () => {
             return state.pop();
         },
@@ -10,9 +13,9 @@ export const layerPopState = (() => {
             state.push(value);
         },
         back: (value: string) => {
-            if (state[state.length - 1] === value) {
-                state.pop();
+            if (state.includes(value)) {
                 history.back();
+                state = state.filter((v) => v !== value);
             }
         },
         at: (index: number) => {
