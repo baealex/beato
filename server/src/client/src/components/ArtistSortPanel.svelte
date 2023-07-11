@@ -5,93 +5,114 @@
     import { artists, artistSortPanel } from "../store";
 
     import { shuffle } from "../modules/shuffle";
+    import { sort } from "../modules/sort";
 
     $: isOpen = $artistSortPanel.isOpen;
     $: latestSort = $artistSortPanel.latestSort;
 
-    let sortItems = [
+    const sortItems = [
         {
             name: "Name (A-Z)",
             sort: "nameAsc",
             onClick: () => {
-                artists.update((artists) => {
-                    artists.sort((a, b) => a.name.localeCompare(b.name));
-                    return artists;
-                });
+                artists.update(
+                    sort({
+                        key: "name",
+                        type: "text",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Name (Z-A)",
             sort: "nameDesc",
             onClick: () => {
-                artists.update((artists) => {
-                    artists.sort((a, b) => b.name.localeCompare(a.name));
-                    return artists;
-                });
+                artists.update(
+                    sort({
+                        key: "name",
+                        type: "text",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Song Count (Low-High)",
             sort: "songCountAsc",
             onClick: () => {
-                artists.update((artists) => {
-                    artists.sort((a, b) => a.musicCount - b.musicCount);
-                    return artists;
-                });
+                artists.update(
+                    sort({
+                        key: "musicCount",
+                        type: "number",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Song Count (High-Low)",
             sort: "songCountDesc",
             onClick: () => {
-                artists.update((artists) => {
-                    artists.sort((a, b) => b.musicCount - a.musicCount);
-                    return artists;
-                });
+                artists.update(
+                    sort({
+                        key: "musicCount",
+                        type: "number",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Album Count (Low-High)",
             sort: "albumCountAsc",
             onClick: () => {
-                artists.update((artists) => {
-                    artists.sort((a, b) => a.albumCount - b.albumCount);
-                    return artists;
-                });
+                artists.update(
+                    sort({
+                        key: "albumCount",
+                        type: "number",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Album Count (High-Low)",
             sort: "albumCountDesc",
             onClick: () => {
-                artists.update((artists) => {
-                    artists.sort((a, b) => b.albumCount - a.albumCount);
-                    return artists;
-                });
+                artists.update(
+                    sort({
+                        key: "albumCount",
+                        type: "number",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Date Added (Old-New)",
             sort: "createdAtAsc",
             onClick: () => {
-                artists.update((artists) => {
-                    artists.sort((a, b) =>
-                        a.createdAt.localeCompare(b.createdAt)
-                    );
-                    return artists;
-                });
+                artists.update(
+                    sort({
+                        key: "createdAt",
+                        type: "text",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Date Added (New-Old)",
             sort: "createdAtDesc",
             onClick: () => {
-                artists.update((artists) => {
-                    artists.sort((a, b) =>
-                        b.createdAt.localeCompare(a.createdAt)
-                    );
-                    return artists;
-                });
+                artists.update(
+                    sort({
+                        key: "createdAt",
+                        type: "text",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {

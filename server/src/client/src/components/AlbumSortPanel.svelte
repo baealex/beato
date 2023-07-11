@@ -2,104 +2,117 @@
     import BottomPanel from "./BottomPanel.svelte";
     import List from "../icons/List.svelte";
 
-    import { albums, albumSortPanel } from "../store";
-
     import { shuffle } from "../modules/shuffle";
+    import { sort } from "../modules/sort";
+
+    import { albums, albumSortPanel } from "../store";
 
     $: isOpen = $albumSortPanel.isOpen;
     $: latestSort = $albumSortPanel.latestSort;
 
-    let sortItems = [
+    const sortItems = [
         {
             name: "Name (A-Z)",
             sort: "nameAsc",
             onClick: () => {
-                albums.update((albums) => {
-                    albums.sort((a, b) => a.name.localeCompare(b.name));
-                    return albums;
-                });
+                albums.update(
+                    sort({
+                        key: "name",
+                        type: "text",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Name (Z-A)",
             sort: "nameDesc",
             onClick: () => {
-                albums.update((albums) => {
-                    albums.sort((a, b) => b.name.localeCompare(a.name));
-                    return albums;
-                });
+                albums.update(
+                    sort({
+                        key: "name",
+                        type: "text",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Artist Name (A-Z)",
             sort: "artistAsc",
             onClick: () => {
-                albums.update((albums) => {
-                    albums.sort((a, b) =>
-                        a.artist.name.localeCompare(b.artist.name)
-                    );
-                    return albums;
-                });
+                albums.update(
+                    sort({
+                        key: "artist.name" as any,
+                        type: "text",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Artist Name (Z-A)",
             sort: "artistDesc",
             onClick: () => {
-                albums.update((albums) => {
-                    albums.sort((a, b) =>
-                        b.artist.name.localeCompare(a.artist.name)
-                    );
-                    return albums;
-                });
+                albums.update(
+                    sort({
+                        key: "artist.name" as any,
+                        type: "text",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Published Year (Old-New)",
             sort: "publishedYearAsc",
             onClick: () => {
-                albums.update((albums) => {
-                    albums.sort((a, b) =>
-                        a.publishedYear.localeCompare(b.publishedYear)
-                    );
-                    return albums;
-                });
+                albums.update(
+                    sort({
+                        key: "publishedYear",
+                        type: "text",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Published Year (New-Old)",
             sort: "publishedYearDesc",
             onClick: () => {
-                albums.update((albums) => {
-                    albums.sort((a, b) =>
-                        b.publishedYear.localeCompare(a.publishedYear)
-                    );
-                    return albums;
-                });
+                albums.update(
+                    sort({
+                        key: "publishedYear",
+                        type: "text",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Date Added (Old-New)",
             sort: "createdAtAsc",
             onClick: () => {
-                albums.update((albums) => {
-                    albums.sort((a, b) =>
-                        a.createdAt.localeCompare(b.createdAt)
-                    );
-                    return albums;
-                });
+                albums.update(
+                    sort({
+                        key: "createdAt",
+                        type: "text",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Date Added (New-Old)",
             sort: "createdAtDesc",
             onClick: () => {
-                albums.update((albums) => {
-                    albums.sort((a, b) =>
-                        b.createdAt.localeCompare(a.createdAt)
-                    );
-                    return albums;
-                });
+                albums.update(
+                    sort({
+                        key: "createdAt",
+                        type: "text",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {

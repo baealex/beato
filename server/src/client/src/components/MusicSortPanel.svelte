@@ -5,117 +5,140 @@
     import { musics, musicSortPanel } from "../store";
 
     import { shuffle } from "../modules/shuffle";
+    import { sort } from "../modules/sort";
 
     $: isOpen = $musicSortPanel.isOpen;
     $: latestSort = $musicSortPanel.latestSort;
 
-    let sortItems = [
+    const sortItems = [
         {
             name: "Name (A-Z)",
             sort: "nameAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => a.name.localeCompare(b.name));
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "name",
+                        type: "text",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Name (Z-A)",
             sort: "nameDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => b.name.localeCompare(a.name));
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "name",
+                        type: "text",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Artist Name (A-Z)",
             sort: "artistAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
-                        a.artist.name.localeCompare(b.artist.name)
-                    );
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "artist.name" as any,
+                        type: "text",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Artist Name (Z-A)",
             sort: "artistDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
-                        b.artist.name.localeCompare(a.artist.name)
-                    );
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "artist.name" as any,
+                        type: "text",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Play Count (Low-High)",
             sort: "playCountAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => a.playCount - b.playCount);
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "playCount",
+                        type: "number",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Play Count (High-Low)",
             sort: "playCountDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => b.playCount - a.playCount);
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "playCount",
+                        type: "number",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Duration (Short-Long)",
             sort: "durationAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => a.duration - b.duration);
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "duration",
+                        type: "number",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Duration (Long-Short)",
             sort: "durationDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) => b.duration - a.duration);
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "duration",
+                        type: "number",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
             name: "Date Added (Old-New)",
             sort: "createdAtAsc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
-                        a.createdAt.localeCompare(b.createdAt)
-                    );
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "createdAt",
+                        type: "text",
+                        direction: "asc",
+                    })
+                );
             },
         },
         {
             name: "Date Added (New-Old)",
             sort: "createdAtDesc",
             onClick: () => {
-                musics.update((musics) => {
-                    musics.sort((a, b) =>
-                        b.createdAt.localeCompare(a.createdAt)
-                    );
-                    return musics;
-                });
+                musics.update(
+                    sort({
+                        key: "createdAt",
+                        type: "text",
+                        direction: "desc",
+                    })
+                );
             },
         },
         {
