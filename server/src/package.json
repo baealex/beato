@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "PORT=4000 ts-node script/_dev.ts",
+    "dev": "cross-env PORT=4000 ts-node script/_dev.ts",
     "dev:client": "npm run dev --prefix client",
     "dev:with": "concurrently \"npm run dev\" \"npm run dev:client\"",
-    "start": "PORT=4000 ts-node script/_start.ts",
+    "start": "cross-env PORT=4000 ts-node script/_start.ts",
     "build": "tsc",
     "build:client": "npm run build --prefix client",
     "lint": "eslint src",
