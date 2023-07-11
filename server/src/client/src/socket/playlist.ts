@@ -89,7 +89,6 @@ interface RemoveMusicFromPlaylist {
 
 export const removeMusicFromPlaylist = async ({ id, musicIds }: RemoveMusicFromPlaylist) => {
     playlists.update((state) => {
-        console.log(state);
         return state.map((item) => {
             if (item.id === id) {
                 return {

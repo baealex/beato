@@ -6,6 +6,7 @@ import { toast } from '../modules/ui/toast';
 import { getFormattedDate } from '../modules/time';
 
 import { queueHistory } from './queue-history';
+import { shuffle } from '../modules/shuffle';
 
 export type QueuePlayMode = 'immediate' | 'later';
 export type QueueRepeatMode = 'all' | 'one' | 'off';
@@ -14,7 +15,9 @@ export type QueueInsertMode = 'after' | 'before' | 'last';
 interface Queue {
     title: string;
     items: Music[];
+    sourceItems: Music[];
     selected: number | null;
+    shuffle: boolean;
     playMode: QueuePlayMode;
     repeatMode: QueueRepeatMode;
     insertMode: QueueInsertMode;
@@ -23,7 +26,9 @@ interface Queue {
 const INITIAL_STATE: Queue = {
     title: '',
     items: [],
+    sourceItems: [],
     selected: null,
+    shuffle: false,
     playMode: 'later',
     repeatMode: 'off',
     insertMode: 'last',
@@ -43,7 +48,9 @@ queue.subscribe((value) => {
         ...value,
         title: '',
         items: [],
+        sourceItems: [],
         selected: null,
+        shuffle: false,
     }));
 });
 
@@ -60,6 +67,28 @@ export const switchRepeatMode = () => queue.update((state) => {
 });
 
 export const existQueue = () => get(queue).items.length > 0;
+
+export const shuffleQueue = () => queue.update((state) => {
+    let newState = { ...state };
+
+    newState.shuffle = !state.shuffle;
+
+    if (newState.shuffle) {
+        newState.sourceItems = [...state.items];
+        newState.items = shuffle([...state.items].filter((item) =>
+            item.id !== state.items[state.selected].id),
+        );
+        newState.items.unshift(state.items[state.selected]);
+        newState.selected = 0;
+    } else {
+        newState.selected = state.sourceItems.findIndex((item) =>
+            item.id === state.items[state.selected].id
+        );
+        newState.items = [...state.sourceItems];
+        newState.sourceItems = [];
+    }
+    return newState;
+});
 
 export const resetQueue = (title: string = '', musics: Music[] = []) => queue.update((state) => {
     queueHistory.update((history) => {
@@ -82,6 +111,8 @@ export const resetQueue = (title: string = '', musics: Music[] = []) => queue.up
     const newState = { ...state };
     newState.title = title;
     newState.items = musics;
+    newState.sourceItems = [];
+    newState.shuffle = false;
     newState.selected = musics.length > 0 ? 0 : null;
     return newState;
 });

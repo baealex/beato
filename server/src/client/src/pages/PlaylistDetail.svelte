@@ -7,6 +7,7 @@
     import Play from "../icons/Play.svelte";
     import TrashBin from "../icons/TrashBin.svelte";
     import CheckBox from "../icons/CheckBox.svelte";
+    import DoubleCheck from "../icons/DoubleCheck.svelte";
 
     import type { Playlist } from "../models/type";
 
@@ -21,9 +22,6 @@
         musics,
     } from "../store";
     import * as socketManager from "../socket";
-    import DoubleCheck from "../icons/DoubleCheck.svelte";
-    import Shuffle from "../icons/Shuffle.svelte";
-    import { shuffle } from "../modules/shuffle";
 
     export let id = "";
 
@@ -86,20 +84,9 @@
         </div>
         <div class="play-all">
             <button
-                class="shuffle"
                 on:click={() => {
                     resetQueue(
                         `Play playlist - ${playlist.name}`,
-                        shuffle(playlist.musics)
-                    );
-                }}
-            >
-                <Shuffle />
-            </button>
-            <button
-                on:click={() => {
-                    resetQueue(
-                        `Shuffle playlist - ${playlist.name}`,
                         playlist.musics
                     );
                 }}
@@ -164,7 +151,8 @@
                             insertToQueue(music);
                         }}
                         onLongPress={() => {
-                            musicActionPanel.update(() => ({
+                            musicActionPanel.update((state) => ({
+                                ...state,
                                 isOpen: true,
                                 music,
                             }));
@@ -241,17 +229,6 @@
                 :global(svg) {
                     width: 1.5rem;
                     height: 1.5rem;
-                }
-
-                &.shuffle {
-                    margin-right: 0.25rem;
-                    width: 3rem;
-                    height: 3rem;
-
-                    :global(svg) {
-                        width: 1rem;
-                        height: 1rem;
-                    }
                 }
 
                 @media (min-width: 1024px) {

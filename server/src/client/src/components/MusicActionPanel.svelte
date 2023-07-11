@@ -26,12 +26,12 @@
     $: isOpen = $musicActionPanel.isOpen;
 
     let isOpenPlaylistSelector = false;
-    let moveAlbumTarget: string = null;
 
     const handleClose = () => {
         musicActionPanel.update((state) => ({
             ...state,
             isOpen: false,
+            onClose: null,
         }));
     };
 
@@ -50,26 +50,40 @@
     };
 </script>
 
-<BottomPanel {isOpen} onClose={handleClose}>
+<BottomPanel title="Related to this music" {isOpen} onClose={handleClose}>
     {#if music}
-        <div class="album-info">
+        <div class="panel-content">
             <button
-                class="clickable linkable"
+                class="clickable linkable panel-album"
                 on:click={() => {
+                    $musicActionPanel.onClose?.();
+                    handleClose();
+                    setTimeout(() => {
+                        navigate(`/album/${music.album.id}`);
+                    }, 100);
+                }}
+            >
+                <Image alt={music.album.name} src={music.album.cover} />
+                <div>
+                    <div class="panel-sub-title">Album</div>
+                    <div class="panel-sub-content">
+                        {music.album.name}
+                    </div>
+                </div>
+            </button>
+            <button
+                class="clickable linkable panel-artist"
+                on:click={() => {
+                    $musicActionPanel.onClose?.();
                     handleClose();
                     setTimeout(() => {
                         navigate(`/artist/${music.artist.id}`);
                     }, 100);
                 }}
             >
-                <Image alt={music.album.name} src={music.album.cover} />
-                <div class="col">
-                    <div class="album-name">
-                        {music.album.name}
-                    </div>
-                    <div class="artist-name">
-                        {music.artist.name}
-                    </div>
+                <div class="panel-sub-title">Artist</div>
+                <div class="panel-sub-content">
+                    {music.artist.name}
                 </div>
             </button>
         </div>
@@ -125,34 +139,42 @@
 </BottomPanel>
 
 <style lang="scss">
-    .album-info {
-        padding-bottom: 1rem;
-        border-bottom: 1px solid #444;
-        font-size: 1rem;
-        font-weight: 500;
+    .panel-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
 
-        button {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .col {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-
-            .artist-name {
-                font-size: 0.8rem;
-                color: #aaa;
-            }
-        }
+    .panel-album {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
 
         :global(img) {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 0.5rem;
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            transition: border-radius 0.25s ease-in-out;
         }
+    }
+
+    .panel-artist {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .panel-sub-title {
+        font-size: 0.875rem;
+        color: #888;
+        margin-bottom: 0.25rem;
+    }
+
+    .panel-sub-content {
+        font-size: 0.875rem;
+        font-weight: bold;
     }
 
     .items {

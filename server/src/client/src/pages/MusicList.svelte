@@ -2,11 +2,8 @@
     import { onMount } from "svelte";
 
     import MusicListItem from "../components/MusicListItem.svelte";
-    import Shuffle from "../icons/Shuffle.svelte";
     import Play from "../icons/Play.svelte";
     import Sort from "../icons/Sort.svelte";
-
-    import { shuffle } from "../modules/shuffle";
 
     import { useGradualRender } from "../hooks/useGradualRender";
 
@@ -52,14 +49,6 @@
     <div class="buttons">
         <button
             class="gray-button"
-            on:click={() =>
-                resetQueue("Shuffle all music", shuffle(visibleMusics))}
-        >
-            <Shuffle />
-            Shuffle
-        </button>
-        <button
-            class="gray-button"
             on:click={() => resetQueue("Play all music", visibleMusics)}
         >
             <Play />
@@ -85,7 +74,8 @@
                 isLiked={music.isLiked}
                 onClick={() => insertToQueue(music)}
                 onLongPress={() => {
-                    musicActionPanel.update(() => ({
+                    musicActionPanel.update((state) => ({
+                        ...state,
                         isOpen: true,
                         music,
                     }));

@@ -6,12 +6,10 @@
     import SubPage from "../components/SubPage.svelte";
     import MusicListItem from "../components/MusicListItem.svelte";
     import AlbumListItem from "../components/AlbumListItem.svelte";
-    import Shuffle from "../icons/Shuffle.svelte";
     import Play from "../icons/Play.svelte";
 
     import type { Artist } from "../models/type";
 
-    import { shuffle } from "../modules/shuffle";
     import { confirm } from "../modules/ui/modal";
 
     import { getArtist } from "../api";
@@ -78,26 +76,6 @@
         <div class="section-title">
             Songs ({artist.musics.length})
             <div class="play-all">
-                <button
-                    class="gray-button"
-                    on:click={async () => {
-                        if (
-                            existQueue() &&
-                            !(await confirm(
-                                "The queue will be replaced with this."
-                            ))
-                        ) {
-                            return;
-                        }
-                        resetQueue(
-                            `Shuffle songs by ${artist.name}`,
-                            shuffle(artist.musics)
-                        );
-                    }}
-                >
-                    <Shuffle />
-                    Shuffle
-                </button>
                 <button
                     class="gray-button"
                     on:click={async () => {

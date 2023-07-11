@@ -1,26 +1,28 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { navigate } from "svelte-routing";
 
     import Queue from "./Queue.svelte";
     import SubPage from "./SubPage.svelte";
-    import BottomPanel from "./BottomPanel.svelte";
 
     import Play from "../icons/Play.svelte";
     import Pause from "../icons/Pause.svelte";
-    import Cross from "../icons/Cross.svelte";
     import Menu from "../icons/Menu.svelte";
-    import Heart from "../icons/Heart.svelte";
     import ArrowRepaet from "../icons/ArrowRepaet.svelte";
     import Infinite from "../icons/Infinite.svelte";
     import RightLeft from "../icons/RightLeft.svelte";
+    import Shuffle from "../icons/Shuffle.svelte";
 
     import type { Music } from "../models/type";
 
     import { getImage } from "../modules/image";
     import { makePlayTime } from "../modules/time";
 
-    import { queue, switchRepeatMode } from "../store";
+    import {
+        queue,
+        switchRepeatMode,
+        shuffleQueue,
+        musicActionPanel,
+    } from "../store";
 
     export let music: Music;
     export let volume: number;
@@ -29,11 +31,8 @@
     export let onClickPlay: () => void;
     export let onClickNext: () => void;
     export let onClickPrev: () => void;
-    export let onClickStop: () => void;
-    export let onClickLike: (music: Music) => void;
     export let onClickProgress: (e: MouseEvent | TouchEvent) => void;
 
-    let isOpenMusicRelatePanel = false;
     let isOpenPlayer = false;
     let isOpenQueue = false;
     let randomBorderRadius = "50% 50% 50% 50%";
@@ -112,6 +111,18 @@
                 </div>
                 <div class="action">
                     <button
+                        class="icon-button mode"
+                        on:click={() => switchRepeatMode()}
+                    >
+                        {#if $queue.repeatMode === "off"}
+                            <RightLeft />
+                        {:else if $queue.repeatMode === "all"}
+                            <ArrowRepaet />
+                        {:else if $queue.repeatMode === "one"}
+                            <Infinite />
+                        {/if}
+                    </button>
+                    <button
                         class="icon-button skip-back"
                         on:click={onClickPrev}
                     >
@@ -130,8 +141,12 @@
                     >
                         <Play />
                     </button>
-                    <button class="icon-button cross" on:click={onClickStop}>
-                        <Cross />
+                    <button
+                        class="icon-button shuffle"
+                        class:active={$queue.shuffle}
+                        on:click={shuffleQueue}
+                    >
+                        <Shuffle />
                     </button>
                     <input
                         bind:value={volume}
@@ -170,7 +185,12 @@
             <div class="title-info">
                 <button
                     class="clickable title"
-                    on:click={() => (isOpenMusicRelatePanel = true)}
+                    on:click={() =>
+                        musicActionPanel.update(() => ({
+                            music,
+                            isOpen: true,
+                            onClose: () => (isOpenPlayer = false),
+                        }))}
                 >
                     <div class="name">
                         {music.name}
@@ -207,7 +227,7 @@
             {/if}
             <div class="action">
                 <button
-                    class="icon-button fill"
+                    class="icon-button mode"
                     on:click={() => switchRepeatMode()}
                 >
                     {#if $queue.repeatMode === "off"}
@@ -240,55 +260,15 @@
                     </button>
                 </div>
                 <button
-                    class="icon-button heart"
-                    class:like={music.isLiked}
-                    on:click={() => onClickLike(music)}
+                    class="icon-button shuffle"
+                    class:active={$queue.shuffle}
+                    on:click={shuffleQueue}
                 >
-                    <Heart />
+                    <Shuffle />
                 </button>
             </div>
         </div>
     </SubPage>
-    <BottomPanel
-        title="Related to this music"
-        bind:isOpen={isOpenMusicRelatePanel}
-    >
-        <div class="panel-content">
-            <button
-                class="clickable linkable panel-album"
-                on:click={() => {
-                    isOpenMusicRelatePanel = false;
-                    isOpenPlayer = false;
-                    setTimeout(() => {
-                        navigate(`/album/${music.album.id}`);
-                    }, 100);
-                }}
-            >
-                <img src={getImage(music.album.cover)} alt={music.album.name} />
-                <div>
-                    <div class="panel-sub-title">Album</div>
-                    <div class="panel-sub-content">
-                        {music.album.name}
-                    </div>
-                </div>
-            </button>
-            <button
-                class="clickable linkable panel-artist"
-                on:click={() => {
-                    isOpenMusicRelatePanel = false;
-                    isOpenPlayer = false;
-                    setTimeout(() => {
-                        navigate(`/artist/${music.artist.id}`);
-                    }, 100);
-                }}
-            >
-                <div class="panel-sub-title">Artist</div>
-                <div class="panel-sub-content">
-                    {music.artist.name}
-                </div>
-            </button>
-        </div>
-    </BottomPanel>
 {/if}
 
 <Queue bind:isOpen={isOpenQueue} />
@@ -301,6 +281,8 @@
         }
     }
 
+    .mode,
+    .shuffle,
     .skip-back,
     .skip-forward {
         :global(svg) {
@@ -394,12 +376,18 @@
                 align-items: center;
                 gap: 0.25rem;
 
+                .mode,
+                .shuffle,
                 .cross,
                 .volume,
                 .skip-back {
                     @media (max-width: 768px) {
                         display: none;
                     }
+                }
+
+                .shuffle.active {
+                    color: #a076f1;
                 }
 
                 .volume {
@@ -523,15 +511,15 @@
             flex-direction: row;
             justify-content: space-between;
 
-            .fill,
-            .heart {
+            .mode,
+            .shuffle {
                 :global(svg) {
                     width: 1.25rem;
                     height: 1.25rem;
                 }
             }
 
-            .heart.like {
+            .shuffle.active {
                 :global(svg) {
                     fill: #a076f1;
                     color: #a076f1;
@@ -554,42 +542,5 @@
                 }
             }
         }
-    }
-
-    .panel-content {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        margin-top: 1.5rem;
-    }
-
-    .panel-album {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.5rem;
-
-        img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 5px;
-            transition: border-radius 0.25s ease-in-out;
-        }
-    }
-
-    .panel-artist {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .panel-sub-title {
-        font-size: 0.875rem;
-        color: #888;
-    }
-
-    .panel-sub-content {
-        font-weight: bold;
     }
 </style>
