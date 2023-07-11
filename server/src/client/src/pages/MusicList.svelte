@@ -21,18 +21,18 @@
     let search = "";
     let innerMusics = useGradualRender($musics);
 
-    onMount(() => {
-        musics.subscribe((musics) => {
-            innerMusics = useGradualRender(musics);
-        });
-    });
-
     $: visibleMusics = $innerMusics.filter(
         (music) =>
             search === "" ||
             music.name.toLowerCase().includes(search.toLowerCase()) ||
             music.artist.name.toLowerCase().includes(search.toLowerCase())
     );
+
+    onMount(() => {
+        musics.subscribe((musics) => {
+            $innerMusics = musics;
+        });
+    });
 </script>
 
 <div class="controls">

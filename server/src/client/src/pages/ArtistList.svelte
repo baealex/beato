@@ -16,17 +16,17 @@
     let search = "";
     let innerArtists = useGradualRender($artists);
 
+    $: visibleArtists = $innerArtists.filter(
+        (artist) =>
+            search === "" ||
+            artist.name.toLowerCase().includes(search.toLowerCase())
+    );
+
     onMount(() => {
         artists.subscribe((artists) => {
-            innerArtists = useGradualRender(artists);
+            $innerArtists = artists;
         });
     });
-
-    $: visibleArtists = $innerArtists
-        .filter(
-            (artist) =>
-                search === "" ||
-                artist.name.toLowerCase().includes(search.toLowerCase()))
 </script>
 
 <div class="controls">
@@ -39,7 +39,10 @@
         />
     </div>
     <div class="buttons">
-        <button class="gray-button" on:click={() => ($artistSortPanel.isOpen = true)}>
+        <button
+            class="gray-button"
+            on:click={() => ($artistSortPanel.isOpen = true)}
+        >
             <Sort />
         </button>
     </div>

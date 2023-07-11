@@ -18,7 +18,7 @@
 
     onMount(() => {
         albums.subscribe((albums) => {
-            innerAlbums = useGradualRender(albums, 40);
+            $innerAlbums = albums;
         });
     });
 

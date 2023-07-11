@@ -19,21 +19,22 @@
     } from "../store";
 
     let search = "";
-    let innerMusics = useGradualRender($musics);
-
-    onMount(() => {
-        musics.subscribe((musics) => {
-            innerMusics = useGradualRender(musics);
-        });
-    });
+    let innerMusics = useGradualRender(
+        $musics.filter((music) => music.isLiked)
+    );
 
     $: visibleMusics = $innerMusics.filter(
         (music) =>
-            music.isLiked &&
-            (search === "" ||
-                music.name.toLowerCase().includes(search.toLowerCase()) ||
-                music.artist.name.toLowerCase().includes(search.toLowerCase()))
+            search === "" ||
+            music.name.toLowerCase().includes(search.toLowerCase()) ||
+            music.artist.name.toLowerCase().includes(search.toLowerCase())
     );
+
+    onMount(() => {
+        musics.subscribe((musics) => {
+            $innerMusics = musics.filter((music) => music.isLiked);
+        });
+    });
 </script>
 
 <div class="controls">

@@ -214,83 +214,86 @@
 </script>
 
 <main>
-    <Router>
-        <SiteHeader />
-        <Loading {isLoading} message="Loading..." />
-        <Route path="/" scrollToTop={true} exact={true}>
-            <div class="container">
-                <MusicList />
-            </div>
-        </Route>
-        <Route path="/favorite">
-            <div class="container">
-                <FavoriteMusic />
-            </div>
-        </Route>
-        <Route path="/album">
-            <div class="container">
-                <AlbumList />
-            </div>
-        </Route>
-        <Route path="/album/:id" let:params>
-            <div class="container">
-                <AlbumDetail id={params.id} />
-            </div>
-        </Route>
-        <Route path="/artist">
-            <div class="container">
-                <ArtistList />
-            </div>
-        </Route>
-        <Route path="/artist/:id" let:params>
-            <div class="container">
-                <ArtistDetail id={params.id} />
-            </div>
-        </Route>
-        <Route path="/queue-history">
-            <div class="container">
-                <QueueHistory />
-            </div>
-        </Route>
-        <Route path="/playlist">
-            <div class="container">
-                <Playlist />
-            </div>
-        </Route>
-        <Route path="/playlist/:id" let:params>
-            <div class="container">
-                <PlaylistDetail id={params.id} />
-            </div>
-        </Route>
-        <Route path="/setting">
-            <div class="container">
-                <Setting />
-            </div>
-        </Route>
+    <Loading {isLoading} message="Loading..." />
 
-        <Player
-            bind:playing
-            bind:volume
-            bind:progress
-            music={$queue.items[$queue.selected]}
-            onClickPlay={handleClickPlay}
-            onClickStop={handleClickStop}
-            onClickNext={playNext}
-            onClickPrev={playPrev}
-            onClickLike={handleClickLike}
-            onClickProgress={handleClickProgress}
-        />
+    {#if !isLoading}
+        <Router>
+            <SiteHeader />
+            <Route path="/" scrollToTop={true} exact={true}>
+                <div class="container">
+                    <MusicList />
+                </div>
+            </Route>
+            <Route path="/favorite">
+                <div class="container">
+                    <FavoriteMusic />
+                </div>
+            </Route>
+            <Route path="/album">
+                <div class="container">
+                    <AlbumList />
+                </div>
+            </Route>
+            <Route path="/album/:id" let:params>
+                <div class="container">
+                    <AlbumDetail id={params.id} />
+                </div>
+            </Route>
+            <Route path="/artist">
+                <div class="container">
+                    <ArtistList />
+                </div>
+            </Route>
+            <Route path="/artist/:id" let:params>
+                <div class="container">
+                    <ArtistDetail id={params.id} />
+                </div>
+            </Route>
+            <Route path="/queue-history">
+                <div class="container">
+                    <QueueHistory />
+                </div>
+            </Route>
+            <Route path="/playlist">
+                <div class="container">
+                    <Playlist />
+                </div>
+            </Route>
+            <Route path="/playlist/:id" let:params>
+                <div class="container">
+                    <PlaylistDetail id={params.id} />
+                </div>
+            </Route>
+            <Route path="/setting">
+                <div class="container">
+                    <Setting />
+                </div>
+            </Route>
 
-        <MusicActionPanel
-            onClickLike={handleClickLike}
-            onClickDownload={handleClickDownload}
-        />
-        <PlaylistActionPanel />
+            <Player
+                bind:playing
+                bind:volume
+                bind:progress
+                music={$queue.items[$queue.selected]}
+                onClickPlay={handleClickPlay}
+                onClickStop={handleClickStop}
+                onClickNext={playNext}
+                onClickPrev={playPrev}
+                onClickLike={handleClickLike}
+                onClickProgress={handleClickProgress}
+            />
 
-        <MusicSortPanel />
-        <AlbumSortPanel />
-        <ArtistSortPanel />
-    </Router>
+            <MusicActionPanel
+                onClickLike={handleClickLike}
+                onClickDownload={handleClickDownload}
+            />
+            <PlaylistActionPanel />
+
+            <MusicSortPanel />
+            <AlbumSortPanel />
+            <ArtistSortPanel />
+        </Router>
+    {/if}
 </main>
 
 <audio bind:this={audioElement} />
