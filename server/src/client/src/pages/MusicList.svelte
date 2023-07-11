@@ -30,7 +30,25 @@
 
     onMount(() => {
         musics.subscribe((musics) => {
-            $innerMusics = musics;
+            innerMusics.update((state) => {
+                const diff = musics.filter((music) => !state.includes(music));
+                const diffIndex = diff.map((music) => musics.indexOf(music));
+                const diffState = state.filter(
+                    (music) => !musics.includes(music)
+                );
+                const diffStateIndex = diffState.map((music) =>
+                    state.indexOf(music)
+                );
+
+                diff.forEach((music, index) => {
+                    state[diffStateIndex[index]] = music;
+                });
+                diffState.forEach((music, index) => {
+                    state[diffIndex[index]] = music;
+                });
+
+                return state;
+            });
         });
     });
 </script>
