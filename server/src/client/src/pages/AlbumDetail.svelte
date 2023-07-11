@@ -24,20 +24,21 @@
     let album: Album = null;
 
     onMount(async () => {
-        if (!id) {
-            return;
-        }
-
-        const { data } = await getAlbum(id);
-        album = data.album;
-
         musics.subscribe((value) => {
-            album.musics = album.musics.map((music) => {
-                music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
-                return music;
-            });
+            if (album) {
+                album.musics = album.musics.map((music) => {
+                    music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
+                    return music;
+                });
+            }
         });
     });
+
+    $: if (id) {
+        getAlbum(id).then(({ data }) => {
+            album = data.album;
+        });
+    }
 </script>
 
 {#if album}
@@ -87,7 +88,8 @@
                     isLiked={music.isLiked}
                     onClick={() => insertToQueue(music)}
                     onLongPress={() => {
-                        musicActionPanel.update(() => ({
+                        musicActionPanel.update((state) => ({
+                            ...state,
                             isOpen: true,
                             music,
                         }));

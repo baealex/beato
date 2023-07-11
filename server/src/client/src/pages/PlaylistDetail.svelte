@@ -61,20 +61,21 @@
     };
 
     onMount(async () => {
-        if (!id) {
-            return;
-        }
-
-        const { data } = await getPlaylist(id);
-        playlist = data.playlist;
-
         musics.subscribe((value) => {
-            playlist.musics = playlist.musics.map((music) => {
-                music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
-                return music;
-            });
+            if (playlist) {
+                playlist.musics = playlist.musics.map((music) => {
+                    music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
+                    return music;
+                });
+            }
         });
     });
+
+    $: if(id) {
+        getPlaylist(id).then(({ data }) => {
+            playlist = data.playlist;
+        });
+    }
 </script>
 
 {#if playlist}

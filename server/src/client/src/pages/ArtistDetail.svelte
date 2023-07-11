@@ -29,20 +29,21 @@
     let isOpenAlbumDetail = false;
 
     onMount(async () => {
-        if (!id) {
-            return;
-        }
-
-        const { data } = await getArtist(id);
-        artist = data.artist;
-
         musics.subscribe((value) => {
-            artist.musics = artist.musics.map((music) => {
-                music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
-                return music;
-            });
+            if (artist) {
+                artist.musics = artist.musics.map((music) => {
+                    music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
+                    return music;
+                });
+            }
         });
     });
+
+    $: if (id) {
+        getArtist(id).then(({ data }) => {
+            artist = data.artist;
+        });
+    }
 </script>
 
 <section>
@@ -111,7 +112,8 @@
                             isLiked={music.isLiked}
                             onClick={() => insertToQueue(music)}
                             onLongPress={() => {
-                                musicActionPanel.update(() => ({
+                                musicActionPanel.update((state) => ({
+                                    ...state,
                                     isOpen: true,
                                     music,
                                 }));
