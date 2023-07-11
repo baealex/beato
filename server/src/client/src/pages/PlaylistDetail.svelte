@@ -22,6 +22,8 @@
     } from "../store";
     import * as socketManager from "../socket";
     import DoubleCheck from "../icons/DoubleCheck.svelte";
+    import Shuffle from "../icons/Shuffle.svelte";
+    import { shuffle } from "../modules/shuffle";
 
     export let id = "";
 
@@ -84,8 +86,22 @@
         </div>
         <div class="play-all">
             <button
+                class="shuffle"
                 on:click={() => {
-                    resetQueue(playlist.name, playlist.musics);
+                    resetQueue(
+                        `Play playlist - ${playlist.name}`,
+                        shuffle(playlist.musics)
+                    );
+                }}
+            >
+                <Shuffle />
+            </button>
+            <button
+                on:click={() => {
+                    resetQueue(
+                        `Shuffle playlist - ${playlist.name}`,
+                        playlist.musics
+                    );
                 }}
             >
                 <Play />
@@ -162,7 +178,10 @@
                 <button
                     class="clickable"
                     on:click={() => {
-                        resetQueue(playlist.name, selectedMusics);
+                        resetQueue(
+                            `Play ${selectedMusics.length} songs from ${playlist.name}`,
+                            selectedMusics
+                        );
                     }}
                 >
                     <Play />
@@ -222,6 +241,17 @@
                 :global(svg) {
                     width: 1.5rem;
                     height: 1.5rem;
+                }
+
+                &.shuffle {
+                    margin-right: 0.25rem;
+                    width: 3.5rem;
+                    height: 3.5rem;
+
+                    :global(svg) {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
                 }
 
                 @media (min-width: 1024px) {

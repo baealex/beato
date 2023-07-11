@@ -39,15 +39,17 @@
             {itemCount} songs
         </div>
     </div>
-    <button
-        class="icon-button"
-        on:click={(e) => {
-            e.stopPropagation();
-            onLongPress();
-        }}
-    >
-        <MoreVerticalFill />
-    </button>
+    {#if onLongPress}
+        <button
+            class="icon-button"
+            on:click={(e) => {
+                e.stopPropagation();
+                onLongPress();
+            }}
+        >
+            <MoreVerticalFill />
+        </button>
+    {/if}
 </button>
 
 <style lang="scss">

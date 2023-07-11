@@ -46,20 +46,22 @@
                 </div>
             </div>
         </div>
-        <button
-            class="icon-button"
-            class:liked={isLiked}
-            on:click={(e) => {
-                e.stopPropagation();
-                onLongPress();
-            }}
-        >
-            {#if isLiked}
-                <Heart />
-            {:else}
-                <MoreVerticalFill />
-            {/if}
-        </button>
+        {#if onLongPress}
+            <button
+                class="icon-button"
+                class:liked={isLiked}
+                on:click={(e) => {
+                    e.stopPropagation();
+                    onLongPress();
+                }}
+            >
+                {#if isLiked}
+                    <Heart />
+                {:else}
+                    <MoreVerticalFill />
+                {/if}
+            </button>
+        {/if}
     </div>
 </button>
 

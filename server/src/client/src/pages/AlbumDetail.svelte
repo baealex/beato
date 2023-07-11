@@ -4,9 +4,11 @@
     import Image from "../components/Image.svelte";
     import MusicListItem from "../components/MusicListItem.svelte";
     import Play from "../icons/Play.svelte";
+    import Shuffle from "../icons/Shuffle.svelte";
 
     import type { Album } from "../models/type";
 
+    import { shuffle } from "../modules/shuffle";
     import { confirm } from "../modules/ui/modal";
 
     import { getAlbum } from "../api";
@@ -57,6 +59,7 @@
         </div>
         <div class="play-all">
             <button
+                class="shuffle"
                 on:click={async () => {
                     if (
                         existQueue() &&
@@ -66,7 +69,25 @@
                     ) {
                         return;
                     }
-                    resetQueue(album.name, album.musics);
+                    resetQueue(
+                        `Shuffle album - ${album.name}`,
+                        shuffle(album.musics)
+                    );
+                }}
+            >
+                <Shuffle />
+            </button>
+            <button
+                on:click={async () => {
+                    if (
+                        existQueue() &&
+                        !(await confirm(
+                            "The queue will be replaced with this."
+                        ))
+                    ) {
+                        return;
+                    }
+                    resetQueue(`Play album - ${album.name}`, album.musics);
                 }}
             >
                 <Play />
@@ -162,6 +183,17 @@
                 :global(svg) {
                     width: 1.5rem;
                     height: 1.5rem;
+                }
+
+                &.shuffle {
+                    margin-right: 0.25rem;
+                    width: 3.5rem;
+                    height: 3.5rem;
+
+                    :global(svg) {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
                 }
 
                 @media (min-width: 1024px) {
