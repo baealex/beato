@@ -144,6 +144,8 @@
         flex-direction: column;
         gap: 1.5rem;
         margin-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #333;
     }
 
     .panel-album {
@@ -183,7 +185,7 @@
         list-style: none;
         display: flex;
         flex-direction: column;
-        border-bottom: 1px solid #444;
+        border-bottom: 1px solid #333;
         padding: 1rem 0;
 
         .item {
