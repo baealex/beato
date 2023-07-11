@@ -88,6 +88,10 @@
                 return;
             }
             if ($queue.repeatMode === "all") {
+                if ($queue.items.length === 1) {
+                    playAgain();
+                    return;
+                }
                 playNext();
                 return;
             }
