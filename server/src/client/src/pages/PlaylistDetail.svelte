@@ -21,12 +21,19 @@
         musics,
     } from "../store";
     import * as socketManager from "../socket";
+    import DoubleCheck from "../icons/DoubleCheck.svelte";
 
     export let id = "";
 
     let playlist: Playlist = null;
     let enableSelect = false;
     let selectedMusics: Playlist["musics"] = [];
+
+    $: {
+        if (!enableSelect) {
+            selectedMusics = [];
+        }
+    }
 
     const handleChangeCheckbox = (music: Playlist["musics"][0]) => {
         if (selectedMusics.find((m) => m.id === music.id)) {
@@ -96,8 +103,23 @@
                 on:click={() => (enableSelect = !enableSelect)}
             >
                 <CheckBox />
-                Select
+                {playlist.musics.length} musics
             </button>
+            {#if enableSelect}
+                <button
+                    class="clickable"
+                    on:click={() => {
+                        if (selectedMusics.length === playlist.musics.length) {
+                            selectedMusics = [];
+                            return;
+                        }
+                        selectedMusics = playlist.musics;
+                    }}
+                >
+                    <DoubleCheck />
+                    Select all
+                </button>
+            {/if}
         </div>
         <ul>
             {#each playlist.musics as music}
@@ -224,20 +246,28 @@
 
         .actions {
             padding: 0 1rem;
-        }
-
-        button {
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            justify-content: flex-start;
+            gap: 1rem;
 
-            &.active {
-                color: $PRIMARY_COLOR;
-            }
+            button {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+                font-size: 0.875rem;
+                color: #ccc;
+                width: auto;
+                transition: color 0.2s;
 
-            :global(svg) {
-                width: 1.25rem;
-                height: 1.25rem;
+                &.active {
+                    color: $PRIMARY_COLOR;
+                }
+
+                :global(svg) {
+                    width: 1rem;
+                    height: 1rem;
+                }
             }
         }
 
@@ -272,6 +302,12 @@
                 justify-content: center;
                 font-size: 0.75rem;
                 font-weight: bold;
+                gap: 0.25rem;
+
+                :global(svg) {
+                    width: 1.25rem;
+                    height: 1.25rem;
+                }
             }
         }
     }
