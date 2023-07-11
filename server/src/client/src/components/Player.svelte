@@ -274,13 +274,6 @@
 <Queue bind:isOpen={isOpenQueue} />
 
 <style lang="scss">
-    .cross {
-        :global(svg) {
-            width: 1.125rem;
-            height: 1.125rem;
-        }
-    }
-
     .mode,
     .shuffle,
     .skip-back,
@@ -378,7 +371,6 @@
 
                 .mode,
                 .shuffle,
-                .cross,
                 .volume,
                 .skip-back {
                     @media (max-width: 768px) {
