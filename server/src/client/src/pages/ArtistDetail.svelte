@@ -6,12 +6,23 @@
     import SubPage from "../components/SubPage.svelte";
     import MusicListItem from "../components/MusicListItem.svelte";
     import AlbumListItem from "../components/AlbumListItem.svelte";
+    import Shuffle from "../icons/Shuffle.svelte";
+    import Play from "../icons/Play.svelte";
 
     import type { Artist } from "../models/type";
 
+    import { shuffle } from "../modules/shuffle";
+    import { confirm } from "../modules/ui/modal";
+
     import { getArtist } from "../api";
 
-    import { insertToQueue, musicActionPanel, musics } from "../store";
+    import {
+        existQueue,
+        insertToQueue,
+        musicActionPanel,
+        musics,
+        resetQueue,
+    } from "../store";
 
     export let id = "";
 
@@ -66,6 +77,48 @@
 
         <div class="section-title">
             Songs ({artist.musics.length})
+            <div class="play-all">
+                <button
+                    class="gray-button"
+                    on:click={async () => {
+                        if (
+                            existQueue() &&
+                            !(await confirm(
+                                "The queue will be replaced with this."
+                            ))
+                        ) {
+                            return;
+                        }
+                        resetQueue(
+                            `Shuffle songs by ${artist.name}`,
+                            shuffle(artist.musics)
+                        );
+                    }}
+                >
+                    <Shuffle />
+                    Shuffle
+                </button>
+                <button
+                    class="gray-button"
+                    on:click={async () => {
+                        if (
+                            existQueue() &&
+                            !(await confirm(
+                                "The queue will be replaced with this."
+                            ))
+                        ) {
+                            return;
+                        }
+                        resetQueue(
+                            `Play songs by ${artist.name}`,
+                            artist.musics
+                        );
+                    }}
+                >
+                    <Play />
+                    Play
+                </button>
+            </div>
         </div>
         <div class="musics">
             <ul>
@@ -129,6 +182,9 @@
             font-size: 1.25rem;
             font-weight: bold;
             border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .albums {
@@ -154,6 +210,13 @@
                 padding: 0;
                 list-style: none;
             }
+        }
+
+        .play-all {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
         }
     }
 </style>

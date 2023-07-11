@@ -187,12 +187,12 @@
 
                 &.shuffle {
                     margin-right: 0.25rem;
-                    width: 3.5rem;
-                    height: 3.5rem;
+                    width: 3rem;
+                    height: 3rem;
 
                     :global(svg) {
-                        width: 1.25rem;
-                        height: 1.25rem;
+                        width: 1rem;
+                        height: 1rem;
                     }
                 }
 

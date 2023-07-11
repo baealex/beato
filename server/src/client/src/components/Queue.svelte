@@ -10,17 +10,18 @@
     export let isOpen = false;
 
     let listRef: HTMLUListElement;
-    let shouldMoveQueue = false;
 
     $: {
         if (isOpen) {
-            const targetElement = listRef.children.item(
-                $queue.selected
-            ) as HTMLLIElement;
-            listRef.scrollTo({
-                top: targetElement.offsetTop - 60,
-                behavior: "smooth",
-            });
+            setTimeout(() => {
+                const targetElement = listRef.children.item(
+                    $queue.selected
+                ) as HTMLLIElement;
+                listRef.scrollTo({
+                    top: targetElement.offsetTop - 60,
+                    behavior: "smooth",
+                });
+            }, 100);
         }
     }
 

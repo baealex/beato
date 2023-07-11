@@ -65,18 +65,18 @@
     <div class="buttons">
         <button
             class="gray-button"
-            on:click={() => resetQueue("Play all music", visibleMusics)}
-        >
-            <Play />
-            Play
-        </button>
-        <button
-            class="gray-button"
             on:click={() =>
                 resetQueue("Shuffle all music", shuffle(visibleMusics))}
         >
             <Shuffle />
             Shuffle
+        </button>
+        <button
+            class="gray-button"
+            on:click={() => resetQueue("Play all music", visibleMusics)}
+        >
+            <Play />
+            Play
         </button>
         <button
             class="gray-button"
