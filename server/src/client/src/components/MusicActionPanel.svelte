@@ -31,7 +31,7 @@
         musicActionPanel.update((state) => ({
             ...state,
             isOpen: false,
-            onClose: null,
+            onPageMove: null,
         }));
     };
 
@@ -56,7 +56,7 @@
             <button
                 class="clickable linkable panel-album"
                 on:click={() => {
-                    $musicActionPanel.onClose?.();
+                    $musicActionPanel.onPageMove?.();
                     handleClose();
                     setTimeout(() => {
                         navigate(`/album/${music.album.id}`);
@@ -74,7 +74,7 @@
             <button
                 class="clickable linkable panel-artist"
                 on:click={() => {
-                    $musicActionPanel.onClose?.();
+                    $musicActionPanel.onPageMove?.();
                     handleClose();
                     setTimeout(() => {
                         navigate(`/artist/${music.artist.id}`);

@@ -189,7 +189,7 @@
                         musicActionPanel.update(() => ({
                             music,
                             isOpen: true,
-                            onClose: () => (isOpenPlayer = false),
+                            onPageMove: () => (isOpenPlayer = false),
                         }))}
                 >
                     <div class="name">

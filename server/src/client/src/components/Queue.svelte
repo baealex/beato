@@ -67,6 +67,7 @@
                     onLongPress={() => {
                         musicActionPanel.update((state) => ({
                             ...state,
+                            onPageMove: () => (isOpen = false),
                             isOpen: true,
                             music,
                         }));

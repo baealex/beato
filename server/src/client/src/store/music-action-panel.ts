@@ -4,9 +4,9 @@ import type { Music } from '../models/type';
 export const musicActionPanel = writable<{
     isOpen: boolean;
     music: Music | null;
-    onClose: () => void | null;
+    onPageMove: (() => void) | null;
 }>({
     isOpen: false,
     music: null,
-    onClose: null,
+    onPageMove: null,
 });
