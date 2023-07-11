@@ -66,7 +66,7 @@
                     ) {
                         return;
                     }
-                    resetQueue(`Play album - ${album.name}`, album.musics);
+                    resetQueue(`Play album ${album.name}`, album.musics);
                 }}
             >
                 <Play />

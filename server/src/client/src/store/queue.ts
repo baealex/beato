@@ -95,18 +95,10 @@ export const resetQueue = (title: string = '', musics: Music[] = []) => queue.up
         if (state.items.length === 0) {
             return history;
         }
-        if (history.find((item) =>
-            item.title === state.title &&
-            item.items.every((music, index) => music.id === state.items[index].id))
-        ) {
-            return history;
-        }
-        const newHistory = [...history];
-        newHistory.unshift({
+        return [{
             title: state.title,
             items: state.items,
-        });
-        return newHistory.slice(0, 20);
+        }, ...history].slice(0, 20);
     });
     const newState = { ...state };
     newState.title = title;
@@ -122,7 +114,7 @@ export const insertToQueue = (music: Music) => queue.update((state) => {
 
     // 아무것도 없을 때
     if (state.items.length === 0) {
-        newState.title = getFormattedDate(new Date())
+        newState.title = 'Create at ' + getFormattedDate(new Date())
         newState.selected = 0;
         newState.items = [music];
         return newState;

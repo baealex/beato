@@ -503,17 +503,8 @@
             flex-direction: row;
             justify-content: space-between;
 
-            .mode,
-            .shuffle {
-                :global(svg) {
-                    width: 1.25rem;
-                    height: 1.25rem;
-                }
-            }
-
             .shuffle.active {
                 :global(svg) {
-                    fill: #a076f1;
                     color: #a076f1;
                 }
             }

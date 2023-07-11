@@ -88,7 +88,7 @@
                             return;
                         }
                         resetQueue(
-                            `Play songs by ${artist.name}`,
+                            `Play music by ${artist.name}`,
                             artist.musics
                         );
                     }}

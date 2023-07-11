@@ -65,7 +65,8 @@
                         });
                     }}
                     onLongPress={() => {
-                        musicActionPanel.update(() => ({
+                        musicActionPanel.update((state) => ({
+                            ...state,
                             isOpen: true,
                             music,
                         }));

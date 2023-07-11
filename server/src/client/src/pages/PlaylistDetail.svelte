@@ -86,7 +86,7 @@
             <button
                 on:click={() => {
                     resetQueue(
-                        `Play playlist - ${playlist.name}`,
+                        `Play playlist ${playlist.name}`,
                         playlist.musics
                     );
                 }}

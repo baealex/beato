@@ -280,10 +280,8 @@
                 bind:progress
                 music={$queue.items[$queue.selected]}
                 onClickPlay={handleClickPlay}
-                onClickStop={handleClickStop}
                 onClickNext={playNext}
                 onClickPrev={playPrev}
-                onClickLike={handleClickLike}
                 onClickProgress={handleClickProgress}
             />
 
