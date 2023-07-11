@@ -47,23 +47,40 @@
 </div>
 
 <style lang="scss">
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-in {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+
     .wrapper {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        display: flex;
+        display: none;
         flex-direction: column;
         z-index: 110;
-        opacity: 0;
         pointer-events: none;
         background-color: rgba(0, 0, 0, 0.88);
-        transition: opacity 0.2s ease-in-out;
 
         &.open {
             pointer-events: all;
-            opacity: 1;
+            display: flex;
+            animation: fade-in 0.2s ease-in-out;
         }
     }
 
@@ -81,11 +98,9 @@
         border-radius: 16px 16px 0 0;
         background-color: #151515;
         z-index: 100;
-        transform: translateY(100%);
-        transition: transform 0.2s ease-in-out;
 
         &.open {
-            transform: translateY(0);
+            animation: slide-in 0.2s ease-in-out;
         }
     }
 

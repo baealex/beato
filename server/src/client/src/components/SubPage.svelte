@@ -48,23 +48,31 @@
 </div>
 
 <style lang="scss">
+    @keyframes slide-in {
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .sub-page {
-        opacity: 0;
-        transform: translateY(100%);
         background-color: #000;
         position: fixed;
-        display: flex;
+        display: none;
         flex-direction: column;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         z-index: 100;
-        transition: all 0.3s ease-in-out;
 
         &.open {
-            opacity: 1;
-            transform: translateY(0);
+            display: flex;
+            animation: slide-in 0.3s ease-in-out;
         }
     }
 
