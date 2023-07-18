@@ -12,6 +12,11 @@
 
     let isLoading = false;
     let message = "";
+    let connectors: {
+        id: string;
+        userAgent: string;
+        connectedAt: number;
+    }[] = [];
 
     onMount(() => {
         socket.on("sync-music", (serverMessage: string | "done" | "error") => {
@@ -25,10 +30,17 @@
             }
             message = serverMessage;
         });
+
+        socket.emit("get-connectors");
+
+        socket.on("get-connectors", (connectorsData) => {
+            connectors = connectorsData;
+        });
     });
 
     onDestroy(() => {
         socket.off("sync-music");
+        socket.off("get-connectors");
     });
 
     const handleClickSyncMusic = async (force: boolean) => {
@@ -106,6 +118,59 @@
     <section style="justify-content: space-between;">
         <p>Something wrong?</p>
         <button on:click={handleClickRefreshApp}>Try Refresh</button>
+    </section>
+    <section
+        style="
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        "
+    >
+        <p>Connectors</p>
+        {#each connectors as connector}
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    gap: 0.5rem;
+                "
+            >
+                {connector.userAgent}
+                <span
+                    style="
+                        font-size: 0.75rem;
+                        color: #999;
+                    "
+                >
+                    {new Date(connector.connectedAt).toLocaleString()}
+                </span>
+                {#if connector.id === socket.id}
+                    <span
+                        style="
+                            padding: 0.25rem 0.5rem;
+                            border-radius: 0.5rem;
+                            background-color: #333;
+                            font-size: 0.75rem;
+                            color: #eee;
+                        "
+                    >
+                        This device
+                    </span>
+                {:else}
+                    <button
+                        style="padding: 0.25rem 0.5rem;"
+                        on:click={() =>
+                            socket.emit("disconnect-connector", {
+                                id: connector.id,
+                            })}
+                    >
+                        Disconnect
+                    </button>
+                {/if}
+            </div>
+        {/each}
     </section>
 
     <Loading {isLoading} {message} />

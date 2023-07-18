@@ -1,17 +1,22 @@
 import type { Socket } from 'socket.io';
 
+type Connector = Socket & {
+    userAgent: string;
+    connectedAt: number;
+};
+
 export const connectors = (() => {
-    let connectors: Socket[] = [];
+    let connectors: Connector[] = [];
 
     return {
         get: () => connectors,
-        set: (newUsers: Socket[]) => {
-            connectors = newUsers;
+        set: (newConnectors: Connector[]) => {
+            connectors = newConnectors;
         },
-        remove: (connector: Socket) => {
-            connectors = connectors.filter((c) => c.id !== connector.id);
+        remove: (id: string) => {
+            connectors = connectors.filter((c) => c.id !== id);
         },
-        append: (connector: Socket) => {
+        append: (connector: Connector) => {
             connectors = [...connectors, connector];
         },
         broadcast: <T>(event: string, data: T) => {
