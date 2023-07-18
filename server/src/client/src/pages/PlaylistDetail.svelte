@@ -64,14 +64,16 @@
         musics.subscribe((value) => {
             if (playlist) {
                 playlist.musics = playlist.musics.map((music) => {
-                    music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
+                    music.isLiked = value.find(
+                        (m) => m.id === music.id
+                    )?.isLiked;
                     return music;
                 });
             }
         });
     });
 
-    $: if(id) {
+    $: if (id) {
         getPlaylist(id).then(({ data }) => {
             playlist = data.playlist;
         });

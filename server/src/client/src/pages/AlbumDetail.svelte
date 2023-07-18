@@ -7,8 +7,6 @@
 
     import type { Album } from "../models/type";
 
-    import { confirm } from "../modules/ui/modal";
-
     import { getAlbum } from "../api";
 
     import {
@@ -27,7 +25,9 @@
         musics.subscribe((value) => {
             if (album) {
                 album.musics = album.musics.map((music) => {
-                    music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
+                    music.isLiked = value.find(
+                        (m) => m.id === music.id
+                    )?.isLiked;
                     return music;
                 });
             }
@@ -58,17 +58,8 @@
         </div>
         <div class="play-all">
             <button
-                on:click={async () => {
-                    if (
-                        existQueue() &&
-                        !(await confirm(
-                            "The queue will be replaced with this."
-                        ))
-                    ) {
-                        return;
-                    }
-                    resetQueue(`Play album ${album.name}`, album.musics);
-                }}
+                on:click={() =>
+                    resetQueue(`Play album ${album.name}`, album.musics)}
             >
                 <Play />
             </button>

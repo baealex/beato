@@ -10,8 +10,6 @@
 
     import type { Artist } from "../models/type";
 
-    import { confirm } from "../modules/ui/modal";
-
     import { getArtist } from "../api";
 
     import {
@@ -32,7 +30,9 @@
         musics.subscribe((value) => {
             if (artist) {
                 artist.musics = artist.musics.map((music) => {
-                    music.isLiked = value.find((m) => m.id === music.id)?.isLiked;
+                    music.isLiked = value.find(
+                        (m) => m.id === music.id
+                    )?.isLiked;
                     return music;
                 });
             }
@@ -79,20 +79,11 @@
             <div class="play-all">
                 <button
                     class="gray-button"
-                    on:click={async () => {
-                        if (
-                            existQueue() &&
-                            !(await confirm(
-                                "The queue will be replaced with this."
-                            ))
-                        ) {
-                            return;
-                        }
+                    on:click={() =>
                         resetQueue(
                             `Play music by ${artist.name}`,
                             artist.musics
-                        );
-                    }}
+                        )}
                 >
                     <Play />
                     Play

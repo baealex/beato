@@ -3,6 +3,7 @@ import { writable, get } from 'svelte/store';
 import type { Music } from '../models/type';
 
 import { toast } from '../modules/ui/toast';
+import { confirm } from '../modules/ui/modal';
 import { getFormattedDate } from '../modules/time';
 
 import { queueHistory } from './queue-history';
@@ -90,24 +91,34 @@ export const shuffleQueue = () => queue.update((state) => {
     return newState;
 });
 
-export const resetQueue = (title: string = '', musics: Music[] = []) => queue.update((state) => {
-    queueHistory.update((history) => {
-        if (state.items.length === 0) {
-            return history;
-        }
-        return [{
-            title: state.title,
-            items: state.items,
-        }, ...history].slice(0, 20);
+export const resetQueue = async (title: string = '', musics: Music[] = []) => {
+    if (
+        existQueue() &&
+        musics.length > 0 &&
+        !(await confirm("The queue will be replaced with this."))
+    ) {
+        return;
+    }
+
+    queue.update((state) => {
+        queueHistory.update((history) => {
+            if (state.items.length === 0) {
+                return history;
+            }
+            return [{
+                title: state.title,
+                items: state.items,
+            }, ...history].slice(0, 20);
+        });
+        const newState = { ...state };
+        newState.title = title;
+        newState.items = musics;
+        newState.sourceItems = [];
+        newState.shuffle = false;
+        newState.selected = musics.length > 0 ? 0 : null;
+        return newState;
     });
-    const newState = { ...state };
-    newState.title = title;
-    newState.items = musics;
-    newState.sourceItems = [];
-    newState.shuffle = false;
-    newState.selected = musics.length > 0 ? 0 : null;
-    return newState;
-});
+}
 
 export const insertToQueue = (music: Music) => queue.update((state) => {
     let newState = { ...state };

@@ -1,9 +1,7 @@
 <script lang="ts">
     import PlaylistItem from "../components/PlaylistItem.svelte";
 
-    import { confirm } from "../modules/ui/modal";
-
-    import { existQueue, resetQueue, queueHistory } from "../store";
+    import { resetQueue, queueHistory } from "../store";
 </script>
 
 <div class="help">Last 20 queues are saved on this device.</div>
@@ -14,18 +12,7 @@
                 name={queue.title}
                 items={queue.items}
                 itemCount={queue.items.length}
-                onClick={async () => {
-                    if (
-                        existQueue() &&
-                        !(await confirm(
-                            "The queue will be replaced with this."
-                        ))
-                    ) {
-                        return;
-                    }
-
-                    resetQueue(queue.title, queue.items);
-                }}
+                onClick={() => resetQueue(queue.title, queue.items)}
             />
         </li>
     {/each}
