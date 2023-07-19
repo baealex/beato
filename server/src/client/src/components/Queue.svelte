@@ -3,13 +3,21 @@
 
     import SubPage from "./SubPage.svelte";
     import MusicListItem from "./MusicListItem.svelte";
+
     import Cross from "../icons/Cross.svelte";
+    import CheckBox from "../icons/CheckBox.svelte";
+
+    import type { Music } from "../models/type";
 
     import { musicActionPanel, queue, resetQueue } from "../store";
+    import Checkbox from "./Checkbox.svelte";
+    import TrashBin from "../icons/TrashBin.svelte";
 
     export let isOpen = false;
 
     let listRef: HTMLUListElement;
+    let enableSelect = false;
+    let selectedMusics: Music[] = [];
 
     $: {
         if (isOpen) {
@@ -22,20 +30,56 @@
                     behavior: "smooth",
                 });
             }, 100);
+        } else {
+            enableSelect = false;
+            selectedMusics = [];
         }
     }
 
     const handleClose = () => {
         isOpen = false;
     };
+
+    const handleChangeCheckbox = (music: Music) => {
+        if (selectedMusics.find((m) => m.id === music.id)) {
+            selectedMusics = selectedMusics.filter((m) => m.id !== music.id);
+        } else {
+            selectedMusics = [...selectedMusics, music];
+        }
+    };
+
+    const handleDeleteMusics = () => {
+        queue.update((value) => {
+            value.items = value.items.filter(
+                (m) => !selectedMusics.find((sm) => sm.id === m.id)
+            );
+            if (value.selected >= value.items.length) {
+                value.selected = value.items.length - 1;
+            }
+            if (value.items.length === 0) {
+                value.selected = null;
+            }
+            return value;
+        });
+        enableSelect = false;
+        selectedMusics = [];
+    };
 </script>
 
 <SubPage {isOpen} hasHeader={false}>
     <div class="header">
-        <div class="count">
+        <button
+            class="clickable"
+            class:active={enableSelect}
+            on:click={() => {
+                enableSelect = !enableSelect;
+            }}
+        >
+            <CheckBox />
             {$queue.items.length}
-            {#if $queue.items.length === 1}song{:else}songs{/if}
-        </div>
+            {#if $queue.items.length === 1}music{:else}musics{/if}
+        </button>
+        <div class="count" />
         <button
             class="clickable title"
             on:click={() => {
@@ -51,6 +95,16 @@
     <ul class="list" bind:this={listRef}>
         {#each $queue.items as music, idx}
             <li class:active={$queue.selected === idx}>
+                {#if enableSelect}
+                    <div class="checkbox">
+                        <Checkbox
+                            checked={selectedMusics.some(
+                                (m) => m.id === music.id
+                            )}
+                            onChange={() => handleChangeCheckbox(music)}
+                        />
+                    </div>
+                {/if}
                 <MusicListItem
                     musicName={music.name}
                     artistName={music.artist.name}
@@ -59,6 +113,10 @@
                     musicCodec={music.codec}
                     isLiked={music.isLiked}
                     onClick={() => {
+                        if (enableSelect) {
+                            handleChangeCheckbox(music);
+                            return;
+                        }
                         queue.update((value) => {
                             value.selected = idx;
                             return value;
@@ -76,6 +134,14 @@
             </li>
         {/each}
     </ul>
+    {#if enableSelect && selectedMusics.length > 0}
+        <div class="select-actions">
+            <button class="clickable" on:click={handleDeleteMusics}>
+                <TrashBin />
+                Delete
+            </button>
+        </div>
+    {/if}
     <div class="action">
         <div class="buttons">
             <button class="button" on:click={() => resetQueue()}>
@@ -89,6 +155,8 @@
 </SubPage>
 
 <style lang="scss">
+    @import "../styles/var.scss";
+
     .list {
         flex: 1;
         overflow-y: auto;
@@ -101,11 +169,6 @@
         height: 60px;
         padding: 0 1rem;
         border-bottom: 1px solid #333;
-
-        .count {
-            color: #ccc;
-            font-size: 0.8rem;
-        }
 
         button {
             width: auto;
@@ -123,6 +186,15 @@
                 border-bottom: 0.3rem solid transparent;
                 border-left: 0.3rem solid currentColor;
                 transform: rotate(90deg);
+            }
+
+            &.active {
+                color: $PRIMARY_COLOR;
+            }
+
+            :global(svg) {
+                width: 1rem;
+                height: 1rem;
             }
         }
     }
@@ -150,6 +222,32 @@
         }
     }
 
+    .select-actions {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        background-color: $PRIMARY_COLOR;
+
+        button {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            gap: 0.25rem;
+
+            :global(svg) {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+        }
+    }
+
     ul {
         margin: 0;
         padding: 0;
@@ -158,6 +256,12 @@
 
         li {
             position: relative;
+            display: flex;
+            align-items: center;
+
+            .checkbox {
+                margin-left: 1rem;
+            }
 
             @keyframes breathing {
                 0% {
