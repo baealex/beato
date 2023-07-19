@@ -1,17 +1,23 @@
 <script lang="ts">
+    import { get } from "svelte/store";
     import { navigate } from "svelte-routing";
 
     import SubPage from "./SubPage.svelte";
+    import Checkbox from "./Checkbox.svelte";
     import MusicListItem from "./MusicListItem.svelte";
 
     import Cross from "../icons/Cross.svelte";
     import CheckBox from "../icons/CheckBox.svelte";
+    import TrashBin from "../icons/TrashBin.svelte";
+    import DoubleCheck from "../icons/DoubleCheck.svelte";
+
+    import { prompt } from "../modules/ui/modal";
 
     import type { Music } from "../models/type";
 
-    import { musicActionPanel, queue, resetQueue } from "../store";
-    import Checkbox from "./Checkbox.svelte";
-    import TrashBin from "../icons/TrashBin.svelte";
+    import * as socketManager from "../socket";
+
+    import { musicActionPanel, queue } from "../store";
 
     export let isOpen = false;
 
@@ -57,6 +63,7 @@
                 value.selected = value.items.length - 1;
             }
             if (value.items.length === 0) {
+                value.title = "";
                 value.selected = null;
             }
             return value;
@@ -64,22 +71,49 @@
         enableSelect = false;
         selectedMusics = [];
     };
+
+    const handleSaveAsPlaylist = async () => {
+        const name = await prompt("Input playlist name");
+
+        if (name) {
+            socketManager.socket.emit(socketManager.PLAYLIST_CREATE, {
+                name,
+                musics: get(queue).items.map((m) => m.id),
+            });
+        }
+    };
 </script>
 
 <SubPage {isOpen} hasHeader={false}>
     <div class="header">
-        <button
-            class="clickable"
-            class:active={enableSelect}
-            on:click={() => {
-                enableSelect = !enableSelect;
-            }}
-        >
-            <CheckBox />
-            {$queue.items.length}
-            {#if $queue.items.length === 1}music{:else}musics{/if}
-        </button>
-        <div class="count" />
+        <div class="actions">
+            <button
+                class="clickable"
+                class:active={enableSelect}
+                on:click={() => {
+                    enableSelect = !enableSelect;
+                }}
+            >
+                <CheckBox />
+                {$queue.items.length}
+                {#if $queue.items.length === 1}music{:else}musics{/if}
+            </button>
+            {#if enableSelect}
+                <button
+                    class="clickable"
+                    on:click={() => {
+                        if (selectedMusics.length === get(queue).items.length) {
+                            selectedMusics = [];
+                            return;
+                        }
+                        selectedMusics = get(queue).items;
+                    }}
+                >
+                    <DoubleCheck />
+                    Select all
+                </button>
+            {/if}
+        </div>
         <button
             class="clickable title"
             on:click={() => {
@@ -144,8 +178,8 @@
     {/if}
     <div class="action">
         <div class="buttons">
-            <button class="button" on:click={() => resetQueue()}>
-                Clear Queue
+            <button class="button" on:click={handleSaveAsPlaylist}>
+                Save as playlist
             </button>
         </div>
         <button class="icon-button" on:click={handleClose}>
@@ -169,6 +203,12 @@
         height: 60px;
         padding: 0 1rem;
         border-bottom: 1px solid #333;
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
         button {
             width: auto;

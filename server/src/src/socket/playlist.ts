@@ -18,20 +18,48 @@ export const playlistListener = (socket: Socket) => {
     socket.on(PLAYLIST_REMOVE_MUSIC, removeMusicFromPlaylist);
 };
 
-const createPlaylist = async ({ name = '' }) => {
+const createPlaylist = async ({ name = '', musics = [] }) => {
     if (!name) {
         return;
     }
 
+    console.log(name, musics);
+
     const playist = await models.playlist.create({
         data: {
             name,
+            PlaylistMusic: {
+                create: musics.map((musicId, index) => ({
+                    order: index,
+                    musicId: Number(musicId),
+                })),
+            },
         },
     });
+
+    const headerMusics = musics.length > 0 ? await models.playlistMusic.findMany({
+        where: {
+            playlistId: playist.id,
+        },
+        take: 4,
+        include: {
+            Music: {
+                include: {
+                    Album: true,
+                },
+            },
+        },
+    }) : [];
+
     connectors.broadcast(PLAYLIST_CREATE, {
         ...playist,
-        musicCount: 0,
-        headerMusics: [],
+        musicCount: musics.length,
+        headerMusics: headerMusics.map((playlistMusic) => ({
+            id: playlistMusic.musicId.toString(),
+            album: {
+                cover: playlistMusic.Music.Album.cover,
+            },
+        })),
     });
 };
 

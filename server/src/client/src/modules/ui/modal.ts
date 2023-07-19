@@ -107,7 +107,7 @@ export function alert(text: string): Promise<void> {
     });
 }
 
-export function prompt(text: string, value: string): Promise<string> {
+export function prompt(text: string, defaultValue = ''): Promise<string> {
     return new Promise((resolve) => {
         container.childNodes.forEach(($node) => {
             $node.remove();
@@ -119,7 +119,7 @@ export function prompt(text: string, value: string): Promise<string> {
             "<form class=\"window-content\">",
             "<div class=\"window-text\">" + text + "</div>",
             "<div class=\"window-input\">",
-            "<input type=\"text\" name=\"value\" value=\"" + value + "\">",
+            "<input type=\"text\" name=\"value\" value=\"" + defaultValue + "\">",
             "</div>",
             "<div class=\"window-buttons\">",
             "<button type=\"button\" class=\"window-cancel\">Cancel</button>",
