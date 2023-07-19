@@ -4,8 +4,8 @@ services:
   app:
     image: baealex/beato
     volumes:
-      - ./server/src/prisma:/data
-      - ./server/src/cache:/cache
+      - ./data:/data
+      - ./cache:/cache
       - ./music:/music
     ports:
       - 4000:4000
