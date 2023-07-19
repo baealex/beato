@@ -53,7 +53,7 @@ Please place the 'music' folder at the 'server/src' of the project.
 git clone https://github.com/baealex/beato
 cd beato/server/src
 ln -s YOUR_MUSIC_PATH music
-git pull && npm i && npm run build:client && npm run start
+npm i && npm run build:client && npm run start
 ```
 
 you can connect to `http://localhost:4000`
@@ -63,10 +63,12 @@ you can connect to `http://localhost:4000`
 Please place the 'music' folder at the top level of the project.
 
 ```
-git clone https://github.com/baealex/beato
-cd beato
-ln -s YOUR_MUSIC_PATH music
-git pull && docker-compose pull && docker-compose up -d
+docker run \
+    -v {YOUR_MUSIC_PATH}:/music \
+    -v ./cache:/cache \
+    -v ./data:/data \
+    -p 4000:4000 \
+    baealex/beato
 ```
 
 you can connect to `http://localhost:4000`
