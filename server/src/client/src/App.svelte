@@ -223,14 +223,14 @@
     {#if !isLoading}
         <Router>
             <SiteHeader />
-            <Route path="/" scrollToTop={true} exact={true}>
-                <div class="container">
-                    <FavoriteMusic />
-                </div>
-            </Route>
-            <Route path="/music">
+            <Route path="/">
                 <div class="container">
                     <MusicList />
+                </div>
+            </Route>
+            <Route path="/favorite" scrollToTop={true} exact={true}>
+                <div class="container">
+                    <FavoriteMusic />
                 </div>
             </Route>
             <Route path="/album">
