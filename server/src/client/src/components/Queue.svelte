@@ -1,6 +1,7 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import { navigate } from "svelte-routing";
+    import { prompt } from "blend-box";
 
     import SubPage from "./SubPage.svelte";
     import Checkbox from "./Checkbox.svelte";
@@ -10,8 +11,6 @@
     import CheckBox from "../icons/CheckBox.svelte";
     import TrashBin from "../icons/TrashBin.svelte";
     import DoubleCheck from "../icons/DoubleCheck.svelte";
-
-    import { prompt } from "../modules/ui/modal";
 
     import type { Music } from "../models/type";
 

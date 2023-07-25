@@ -1,9 +1,9 @@
 import { writable, get } from 'svelte/store';
+import { confirm } from 'blend-box';
 
 import type { Music } from '../models/type';
 
 import { toast } from '../modules/ui/toast';
-import { confirm } from '../modules/ui/modal';
 import { getFormattedDate } from '../modules/time';
 
 import { queueHistory } from './queue-history';

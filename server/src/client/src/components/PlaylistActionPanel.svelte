@@ -1,13 +1,12 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
+    import { confirm, prompt } from "blend-box";
 
     import Image from "./Image.svelte";
     import BottomPanel from "./BottomPanel.svelte";
 
     import Cross from "../icons/Cross.svelte";
     import Pencil from "../icons/Pencil.svelte";
-
-    import { confirm, prompt } from "../modules/ui/modal";
 
     import * as socketManager from "../socket";
 

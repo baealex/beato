@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { confirm } from "blend-box";
 
     import MusicListItem from "../components/MusicListItem.svelte";
     import Checkbox from "../components/Checkbox.svelte";
@@ -10,8 +11,6 @@
     import DoubleCheck from "../icons/DoubleCheck.svelte";
 
     import type { Playlist } from "../models/type";
-
-    import { confirm } from "../modules/ui/modal";
 
     import { getPlaylist } from "../api";
 

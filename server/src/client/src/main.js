@@ -1,6 +1,6 @@
-import './styles/app.scss';
+import 'blend-box/css/style.css';
 import './styles/toast.scss';
-import './styles/window-modal.scss';
+import './styles/app.scss';
 
 import App from './App.svelte';
 

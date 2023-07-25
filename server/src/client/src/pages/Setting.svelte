@@ -1,11 +1,12 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
+    import { confirm } from "blend-box";
+
     import Loading from "../components/Loading.svelte";
     import Select from "../components/Select.svelte";
 
     import { socket } from "../socket";
     import { toast } from "../modules/ui/toast";
-    import { confirm } from "../modules/ui/modal";
 
     import { queue } from "../store";
     import type { QueueInsertMode, QueuePlayMode } from "../store";
