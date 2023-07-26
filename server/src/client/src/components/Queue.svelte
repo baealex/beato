@@ -113,17 +113,19 @@
                 </button>
             {/if}
         </div>
-        <button
-            class="clickable title"
-            on:click={() => {
-                handleClose();
-                setTimeout(() => {
-                    navigate("/queue-history");
-                }, 100);
-            }}
-        >
-            {$queue.title} <span class="link" />
-        </button>
+        {#if !enableSelect}
+            <button
+                class="clickable title"
+                on:click={() => {
+                    handleClose();
+                    setTimeout(() => {
+                        navigate("/queue-history");
+                    }, 100);
+                }}
+            >
+                {$queue.title} <span class="link" />
+            </button>
+        {/if}
     </div>
     <ul class="list" bind:this={listRef}>
         {#each $queue.items as music, idx}
@@ -178,7 +180,7 @@
     <div class="action">
         <div class="buttons">
             <button class="button" on:click={handleSaveAsPlaylist}>
-                Save as playlist
+                Save as
             </button>
         </div>
         <button class="icon-button" on:click={handleClose}>
