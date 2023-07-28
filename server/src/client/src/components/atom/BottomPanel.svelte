@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { createUUID } from "../modules/uuid";
-    import { layerPopState } from "../store";
+    import { createUUID } from "~/modules/uuid";
+    import { layerPopState } from "~/store";
 
     let id = createUUID();
     export let title = "";

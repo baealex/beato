@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Menu from "../icons/Menu.svelte";
+    import { Menu } from "~/icons";
 
     export let options: {
         value: string;

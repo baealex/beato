@@ -1,5 +1,3 @@
-import 'blend-box/css/style.css';
-import './styles/toast.scss';
 import './styles/app.scss';
 
 import App from './App.svelte';

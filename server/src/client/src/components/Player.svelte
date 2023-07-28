@@ -2,20 +2,22 @@
     import { onMount } from "svelte";
 
     import Queue from "./Queue.svelte";
-    import SubPage from "./SubPage.svelte";
+    import SubPage from "./atom/SubPage.svelte";
 
-    import Play from "../icons/Play.svelte";
-    import Pause from "../icons/Pause.svelte";
-    import Menu from "../icons/Menu.svelte";
-    import ArrowRepaet from "../icons/ArrowRepaet.svelte";
-    import Infinite from "../icons/Infinite.svelte";
-    import RightLeft from "../icons/RightLeft.svelte";
-    import Shuffle from "../icons/Shuffle.svelte";
+    import {
+        Play,
+        Pause,
+        Menu,
+        ArrowRepaet,
+        Infinite,
+        RightLeft,
+        Shuffle,
+    } from "~/icons";
 
-    import type { Music } from "../models/type";
+    import type { Music } from "~/models/type";
 
-    import { getImage } from "../modules/image";
-    import { makePlayTime } from "../modules/time";
+    import { getImage } from "~/modules/image";
+    import { makePlayTime } from "~/modules/time";
 
     import {
         queue,

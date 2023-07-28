@@ -1,6 +1,7 @@
 <script lang="ts">
-    import Image from "../components/Image.svelte";
-    import MoreVerticalFill from "../icons/MoreVerticalFill.svelte";
+    import Image from "~/components/atom/Image.svelte";
+
+    import { MoreVerticalFill } from "~/icons";
 
     import type { Music } from "../models/type";
 

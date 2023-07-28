@@ -1,26 +1,23 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { confirm } from "blend-box";
+    import { confirm } from "@baejino/ui";
 
-    import MusicListItem from "../components/MusicListItem.svelte";
-    import Checkbox from "../components/Checkbox.svelte";
+    import { MusicListItem, Checkbox } from "~/components";
 
-    import Play from "../icons/Play.svelte";
-    import TrashBin from "../icons/TrashBin.svelte";
-    import CheckBox from "../icons/CheckBox.svelte";
-    import DoubleCheck from "../icons/DoubleCheck.svelte";
+    import { Play, TrashBin, CheckBox, DoubleCheck } from "~/icons";
 
-    import type { Playlist } from "../models/type";
+    import type { Playlist } from "~/models/type";
 
-    import { getPlaylist } from "../api";
+    import { getPlaylist } from "~/api";
 
     import {
         resetQueue,
         insertToQueue,
         musicActionPanel,
         musics,
-    } from "../store";
-    import * as socketManager from "../socket";
+    } from "~/store";
+
+    import * as socketManager from "~/socket";
 
     export let id = "";
 

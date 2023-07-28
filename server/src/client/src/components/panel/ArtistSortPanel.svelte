@@ -1,21 +1,22 @@
 <script lang="ts">
-    import BottomPanel from "./BottomPanel.svelte";
-    import List from "../icons/List.svelte";
+    import { BottomPanel } from "~/components";
 
-    import { shuffle } from "../modules/shuffle";
-    import { sort } from "../modules/sort";
+    import { List } from "~/icons";
 
-    import { albums, albumSortPanel } from "../store";
+    import { artists, artistSortPanel } from "~/store";
 
-    $: isOpen = $albumSortPanel.isOpen;
-    $: latestSort = $albumSortPanel.latestSort;
+    import { shuffle } from "~/modules/shuffle";
+    import { sort } from "~/modules/sort";
+
+    $: isOpen = $artistSortPanel.isOpen;
+    $: latestSort = $artistSortPanel.latestSort;
 
     const sortItems = [
         {
             name: "Name (A-Z)",
             sort: "nameAsc",
             onClick: () => {
-                albums.update(
+                artists.update(
                     sort({
                         key: "name",
                         type: "text",
@@ -28,7 +29,7 @@
             name: "Name (Z-A)",
             sort: "nameDesc",
             onClick: () => {
-                albums.update(
+                artists.update(
                     sort({
                         key: "name",
                         type: "text",
@@ -38,52 +39,52 @@
             },
         },
         {
-            name: "Artist Name (A-Z)",
-            sort: "artistAsc",
+            name: "Song Count (Low-High)",
+            sort: "songCountAsc",
             onClick: () => {
-                albums.update(
+                artists.update(
                     sort({
-                        key: "artist.name" as any,
-                        type: "text",
+                        key: "musicCount",
+                        type: "number",
                         direction: "asc",
                     })
                 );
             },
         },
         {
-            name: "Artist Name (Z-A)",
-            sort: "artistDesc",
+            name: "Song Count (High-Low)",
+            sort: "songCountDesc",
             onClick: () => {
-                albums.update(
+                artists.update(
                     sort({
-                        key: "artist.name" as any,
-                        type: "text",
+                        key: "musicCount",
+                        type: "number",
                         direction: "desc",
                     })
                 );
             },
         },
         {
-            name: "Published Year (Old-New)",
-            sort: "publishedYearAsc",
+            name: "Album Count (Low-High)",
+            sort: "albumCountAsc",
             onClick: () => {
-                albums.update(
+                artists.update(
                     sort({
-                        key: "publishedYear",
-                        type: "text",
+                        key: "albumCount",
+                        type: "number",
                         direction: "asc",
                     })
                 );
             },
         },
         {
-            name: "Published Year (New-Old)",
-            sort: "publishedYearDesc",
+            name: "Album Count (High-Low)",
+            sort: "albumCountDesc",
             onClick: () => {
-                albums.update(
+                artists.update(
                     sort({
-                        key: "publishedYear",
-                        type: "text",
+                        key: "albumCount",
+                        type: "number",
                         direction: "desc",
                     })
                 );
@@ -93,7 +94,7 @@
             name: "Date Added (Old-New)",
             sort: "createdAtAsc",
             onClick: () => {
-                albums.update(
+                artists.update(
                     sort({
                         key: "createdAt",
                         type: "text",
@@ -106,7 +107,7 @@
             name: "Date Added (New-Old)",
             sort: "createdAtDesc",
             onClick: () => {
-                albums.update(
+                artists.update(
                     sort({
                         key: "createdAt",
                         type: "text",
@@ -119,7 +120,7 @@
             name: "Random (Discover)",
             sort: "random",
             onClick: () => {
-                albums.update(shuffle);
+                artists.update(shuffle);
             },
         },
     ] as const;
@@ -129,7 +130,7 @@
     title="Sort By"
     {isOpen}
     onClose={() =>
-        albumSortPanel.update((state) => ({ ...state, isOpen: false }))}
+        artistSortPanel.update((state) => ({ ...state, isOpen: false }))}
 >
     <ul class="items">
         {#each sortItems as sortItem}
@@ -138,7 +139,7 @@
                     class="clickable item"
                     on:click={() => {
                         sortItem.onClick();
-                        albumSortPanel.update(() => ({
+                        artistSortPanel.update(() => ({
                             isOpen: false,
                             latestSort: sortItem.sort,
                         }));

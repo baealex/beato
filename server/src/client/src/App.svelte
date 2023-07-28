@@ -1,15 +1,18 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { Router, Route } from "svelte-routing";
+    import { toast } from "@baejino/ui";
 
-    import SiteHeader from "./components/SiteHeader.svelte";
-    import Player from "./components/Player.svelte";
-    import Loading from "./components/Loading.svelte";
-    import MusicSortPanel from "./components/MusicSortPanel.svelte";
-    import AlbumSortPanel from "./components/AlbumSortPanel.svelte";
-    import ArtistSortPanel from "./components/ArtistSortPanel.svelte";
-    import MusicActionPanel from "./components/MusicActionPanel.svelte";
-    import PlaylistActionPanel from "./components/PlaylistActionPanel.svelte";
+    import {
+        SiteHeader,
+        Player,
+        Loading,
+        MusicSortPanel,
+        AlbumSortPanel,
+        ArtistSortPanel,
+        MusicActionPanel,
+        PlaylistActionPanel,
+    } from "~/components";
 
     import MusicList from "./pages/MusicList.svelte";
     import FavoriteMusic from "./pages/FavoriteMusic.svelte";
@@ -17,6 +20,7 @@
     import AlbumDetail from "./pages/AlbumDetail.svelte";
     import ArtistList from "./pages/ArtistList.svelte";
     import ArtistDetail from "./pages/ArtistDetail.svelte";
+    import PlaylistDetail from "./pages/PlaylistDetail.svelte";
     import QueueHistory from "./pages/QueueHistory.svelte";
     import Playlist from "./pages/Playlist.svelte";
     import Setting from "./pages/Setting.svelte";
@@ -27,10 +31,8 @@
     import { queue, syncAll } from "./store";
 
     import * as socketManager from "./socket";
-    import { toast } from "./modules/ui/toast";
 
     import type { Music } from "./models/type";
-    import PlaylistDetail from "./pages/PlaylistDetail.svelte";
 
     let audioElement: HTMLAudioElement;
     let playing = false;

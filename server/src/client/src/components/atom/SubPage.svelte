@@ -1,8 +1,9 @@
 <script lang="ts">
-    import Left from "../icons/Left.svelte";
+    import { Left } from "~/icons";
 
-    import { createUUID } from "../modules/uuid";
-    import { layerPopState } from "../store";
+    import { createUUID } from "~/modules/uuid";
+
+    import { layerPopState } from "~/store";
 
     let id = createUUID();
     export let isOpen = false;

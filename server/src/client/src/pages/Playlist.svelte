@@ -1,16 +1,13 @@
 <script lang="ts">
+    import { toast } from "@baejino/ui";
+
     import PlaylistDetail from "./PlaylistDetail.svelte";
 
-    import SubPage from "../components/SubPage.svelte";
-    import BottomPanel from "../components/BottomPanel.svelte";
-    import PlaylistItem from "../components/PlaylistItem.svelte";
-    import Beato from "../components/Beato.svelte";
+    import { SubPage, BottomPanel, PlaylistItem, Beato } from "~/components";
 
-    import { toast } from "../modules/ui/toast";
+    import * as socketManager from "~/socket";
 
-    import * as socketManager from "../socket";
-
-    import { playlists, playlistActionPanel } from "../store";
+    import { playlists, playlistActionPanel } from "~/store";
 
     let name = "";
     let nameInputRef: HTMLInputElement;

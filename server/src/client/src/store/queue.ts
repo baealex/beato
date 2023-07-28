@@ -1,9 +1,8 @@
 import { writable, get } from 'svelte/store';
-import { confirm } from 'blend-box';
+import { confirm, toast } from '@baejino/ui';
 
 import type { Music } from '../models/type';
 
-import { toast } from '../modules/ui/toast';
 import { getFormattedDate } from '../modules/time';
 
 import { queueHistory } from './queue-history';

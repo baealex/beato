@@ -1,5 +1,5 @@
 <script lang="ts">
-    import PlaylistItem from "../components/PlaylistItem.svelte";
+    import { PlaylistItem } from "~/components";
 
     import { resetQueue, queueHistory } from "../store";
 </script>

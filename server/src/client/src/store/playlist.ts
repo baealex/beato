@@ -1,8 +1,7 @@
 import { writable } from 'svelte/store';
+import { toast } from "@baejino/ui";
 
 import type { Playlist, Music } from '../models/type';
-
-import { toast } from '../modules/ui/toast';
 
 import { getPlaylists } from '../api';
 import * as socketManager from "../socket";

@@ -12,7 +12,7 @@
 </label>
 
 <style lang="scss">
-    @import "../styles/var.scss";
+    @import "@baejino/style/scss/var.scss";
 
     .checkbox-wrapper {
         font-size: 1rem;
@@ -35,8 +35,8 @@
         }
 
         input:checked + .checkbox {
-            border-color: $PRIMARY_COLOR;
-            background-color: $PRIMARY_COLOR;
+            border-color: $COLOR_PURPLE_PROMINENT;
+            background-color: $COLOR_PURPLE_PROMINENT;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M9.172 16.172a.5.5 0 0 1-.707 0L4.5 12.207l1.414-1.414L9.172 13.58l7.88-7.88 1.414 1.414z'/%3E%3C/svg%3E");
         }
     }

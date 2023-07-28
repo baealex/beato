@@ -2,13 +2,14 @@
     import { onMount } from "svelte";
 
     import ArtistDetail from "./ArtistDetail.svelte";
-    import SubPage from "../components/SubPage.svelte";
-    import Image from "../components/Image.svelte";
-    import Sort from "../icons/Sort.svelte";
 
-    import { useGradualRender } from "../hooks/useGradualRender";
+    import { SubPage, Image } from "~/components";
 
-    import { artists, artistSortPanel } from "../store";
+    import { Sort } from "~/icons";
+
+    import { useGradualRender } from "~/hooks/useGradualRender";
+
+    import { artists, artistSortPanel } from "~/store";
 
     let selectedId: string | null = null;
     let isOpenDetail = false;

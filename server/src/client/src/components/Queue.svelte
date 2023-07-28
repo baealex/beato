@@ -1,16 +1,13 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import { navigate } from "svelte-routing";
-    import { prompt } from "blend-box";
+    import { prompt } from "@baejino/ui";
 
-    import SubPage from "./SubPage.svelte";
-    import Checkbox from "./Checkbox.svelte";
+    import SubPage from "./atom/SubPage.svelte";
+    import { Checkbox } from "~/components";
     import MusicListItem from "./MusicListItem.svelte";
 
-    import Cross from "../icons/Cross.svelte";
-    import CheckBox from "../icons/CheckBox.svelte";
-    import TrashBin from "../icons/TrashBin.svelte";
-    import DoubleCheck from "../icons/DoubleCheck.svelte";
+    import { Cross, CheckBox, TrashBin, DoubleCheck } from "~/icons";
 
     import type { Music } from "../models/type";
 

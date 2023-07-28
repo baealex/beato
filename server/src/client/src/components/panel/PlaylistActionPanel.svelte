@@ -1,16 +1,14 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
-    import { confirm, prompt } from "blend-box";
+    import { confirm, prompt } from "@baejino/ui";
 
-    import Image from "./Image.svelte";
-    import BottomPanel from "./BottomPanel.svelte";
+    import { Image, BottomPanel } from "~/components";
 
-    import Cross from "../icons/Cross.svelte";
-    import Pencil from "../icons/Pencil.svelte";
+    import { Cross, Pencil } from "~/icons";
 
-    import * as socketManager from "../socket";
+    import * as socketManager from "~/socket";
 
-    import { playlistActionPanel } from "../store";
+    import { playlistActionPanel } from "~/store";
 
     $: isOpen = $playlistActionPanel.isOpen;
     $: playlist = $playlistActionPanel.playlist;

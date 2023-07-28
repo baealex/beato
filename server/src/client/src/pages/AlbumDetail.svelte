@@ -1,13 +1,14 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    import Image from "../components/Image.svelte";
-    import MusicListItem from "../components/MusicListItem.svelte";
-    import Play from "../icons/Play.svelte";
+    import Image from "~/components/atom/Image.svelte";
+    import MusicListItem from "~/components/MusicListItem.svelte";
 
-    import type { Album } from "../models/type";
+    import { Play } from "~/icons";
 
-    import { getAlbum } from "../api";
+    import type { Album } from "~/models/type";
+
+    import { getAlbum } from "~/api";
 
     import {
         existQueue,

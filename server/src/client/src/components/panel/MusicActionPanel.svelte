@@ -1,23 +1,18 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
 
-    import type { Music, Playlist } from "../models/type";
+    import type { Music, Playlist } from "~/models/type";
 
-    import Image from "./Image.svelte";
-    import BottomPanel from "./BottomPanel.svelte";
-    import PlaylistItem from "./PlaylistItem.svelte";
+    import { Image, BottomPanel, PlaylistItem } from "~/components";
 
-    import Play from "../icons/Play.svelte";
-    import Data from "../icons/Data.svelte";
-    import Heart from "../icons/Heart.svelte";
-    import Download from "../icons/Download.svelte";
+    import { Play, Data, Heart, Download } from "~/icons";
 
     import {
         playlists,
         insertToPlaylist,
         insertToQueue,
         musicActionPanel,
-    } from "../store";
+    } from "~/store";
 
     export let onClickLike: (music: Music) => void;
     export let onClickDownload: (music: Music) => void;

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { afterUpdate, onDestroy, onMount } from "svelte";
 
-    import { getImage } from "../modules/image";
+    import { getImage } from "../../modules/image";
 
     let imageRef: HTMLImageElement;
     export let src: string;

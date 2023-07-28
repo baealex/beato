@@ -2,13 +2,15 @@
     import { onMount } from "svelte";
 
     import AlbumDetail from "./AlbumDetail.svelte";
-    import SubPage from "../components/SubPage.svelte";
-    import AlbumListItem from "../components/AlbumListItem.svelte";
-    import Sort from "../icons/Sort.svelte";
 
-    import { useGradualRender } from "../hooks/useGradualRender";
+    import { SubPage } from "~/components";
+    import AlbumListItem from "~/components/AlbumListItem.svelte";
 
-    import { albums, albumSortPanel } from "../store";
+    import { Sort } from "~/icons";
+
+    import { useGradualRender } from "~/hooks/useGradualRender";
+
+    import { albums, albumSortPanel } from "~/store";
 
     let selectedId: string | null = null;
     let isOpenDetail = false;

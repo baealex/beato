@@ -1,7 +1,7 @@
 <script lang="ts">
-    import Image from "./Image.svelte";
-    import Heart from "../icons/Heart.svelte";
-    import MoreVerticalFill from "../icons/MoreVerticalFill.svelte";
+    import Image from "./atom/Image.svelte";
+
+    import { Heart, MoreVerticalFill } from "~/icons";
 
     export let albumName: string = null;
     export let albumCover: string = null;

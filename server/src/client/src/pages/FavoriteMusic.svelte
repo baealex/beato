@@ -1,11 +1,11 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    import MusicListItem from "../components/MusicListItem.svelte";
-    import Play from "../icons/Play.svelte";
-    import Sort from "../icons/Sort.svelte";
+    import { MusicListItem } from "~/components";
 
-    import { useGradualRender } from "../hooks/useGradualRender";
+    import { Play, Sort } from "~/icons";
+
+    import { useGradualRender } from "~/hooks/useGradualRender";
 
     import {
         resetQueue,

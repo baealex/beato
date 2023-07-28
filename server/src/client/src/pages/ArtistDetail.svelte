@@ -2,11 +2,13 @@
     import { onMount } from "svelte";
 
     import AlbumDetail from "./AlbumDetail.svelte";
-    import Image from "../components/Image.svelte";
-    import SubPage from "../components/SubPage.svelte";
-    import MusicListItem from "../components/MusicListItem.svelte";
-    import AlbumListItem from "../components/AlbumListItem.svelte";
-    import Play from "../icons/Play.svelte";
+
+    import Image from "~/components/atom/Image.svelte";
+    import SubPage from "~/components/atom/SubPage.svelte";
+    import MusicListItem from "~/components/MusicListItem.svelte";
+    import AlbumListItem from "~/components/AlbumListItem.svelte";
+
+    import { Play } from "~/icons";
 
     import type { Artist } from "../models/type";
 
