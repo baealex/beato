@@ -23,7 +23,7 @@
     "vite": "^4.3.9"
   },
   "dependencies": {
-    "@baejino/style": "^0.0.3",
+    "@baejino/style": "^0.0.4",
     "@baejino/ui": "^0.0.2",
     "axios": "^1.4.0",
     "socket.io-client": "^4.7.0"
