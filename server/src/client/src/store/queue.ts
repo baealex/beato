@@ -122,7 +122,9 @@ export const insertToQueue = (music: Pick<Music, 'id'>) => queue.update((state) 
         newState.title = 'Create at ' + getFormattedDate(new Date())
         newState.selected = 0;
         newState.items = [music];
-        newState.sourceItems = [music];
+        if (newState.shuffle) {
+            newState.sourceItems = [music];
+        }
         return newState;
     }
 
@@ -137,7 +139,9 @@ export const insertToQueue = (music: Pick<Music, 'id'>) => queue.update((state) 
     // 마지막에 추가할 때
     if (state.insertMode === 'last') {
         newState.items = [...state.items, music];
-        newState.sourceItems = [...state.sourceItems, music];
+        if (newState.shuffle) {
+            newState.sourceItems = [...state.sourceItems, music];
+        }
         if (state.playMode === 'immediate') {
             newState.selected = newState.items.findIndex((item) => item.id === music.id);
         } else {
@@ -154,14 +158,23 @@ export const insertToQueue = (music: Pick<Music, 'id'>) => queue.update((state) 
         const before = state.items.slice(0, state.selected + 1);
         const after = state.items.slice(state.selected + 1);
         newState.items = [...before, music, ...after];
+        if (newState.shuffle) {
+            const before = state.sourceItems.slice(0, state.selected + 1);
+            const after = state.sourceItems.slice(state.selected + 1);
+            newState.sourceItems = [...before, music, ...after];
+        }
     }
     if (state.insertMode === 'before') {
         const before = state.items.slice(0, state.selected);
         const after = state.items.slice(state.selected);
         newState.selected = state.selected + 1;
         newState.items = [...before, music, ...after];
+        if (newState.shuffle) {
+            const before = state.sourceItems.slice(0, state.selected);
+            const after = state.sourceItems.slice(state.selected);
+            newState.sourceItems = [...before, music, ...after];
+        }
     }
-    newState.sourceItems = [...state.sourceItems, music];
     if (state.playMode === 'immediate') {
         newState.selected = newState.items.findIndex((item) => item.id === music.id);
     } else {
