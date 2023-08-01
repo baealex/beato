@@ -59,7 +59,7 @@
         socketManager.socket.on("resync", () => {
             isLoading = true;
             syncAll(() => {
-                if (initialLoading) {
+                if (initialLoading && $queue.selected !== null) {
                     currentMusic = $musicMap.get(
                         $queue.items[$queue.selected].id
                     );
