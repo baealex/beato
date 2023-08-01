@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { derived, get } from "svelte/store";
 
     import Image from "~/components/atom/Image.svelte";
     import MusicListItem from "~/components/MusicListItem.svelte";
@@ -14,7 +14,7 @@
         resetQueue,
         insertToQueue,
         musicActionPanel,
-        musics,
+        musicMap,
     } from "../store";
     import { Link } from "svelte-routing";
 
@@ -22,24 +22,18 @@
 
     let album: Album = null;
 
-    onMount(async () => {
-        musics.subscribe((value) => {
-            if (album) {
-                album.musics = album.musics.map((music) => {
-                    music.isLiked = value.find(
-                        (m) => m.id === music.id
-                    )?.isLiked;
-                    return music;
-                });
-            }
-        });
-    });
-
     $: if (id) {
         getAlbum(id).then(({ data }) => {
             album = data.album;
         });
     }
+
+    $: resolveMusics = derived(musicMap, ($musicMap) => {
+        if (album) {
+            return album.musics.map(({ id }) => $musicMap.get(id));
+        }
+        return [];
+    });
 </script>
 
 {#if album}
@@ -74,7 +68,7 @@
 
 {#if album?.musics}
     <ul>
-        {#each album.musics as music}
+        {#each $resolveMusics as music}
             <li>
                 <MusicListItem
                     trackNumber={music.trackNumber}
@@ -82,12 +76,12 @@
                     musicName={music.name}
                     musicCodec={music.codec}
                     isLiked={music.isLiked}
-                    onClick={() => insertToQueue(music)}
+                    onClick={() => insertToQueue({ id: music.id })}
                     onLongPress={() => {
                         musicActionPanel.update((state) => ({
                             ...state,
                             isOpen: true,
-                            music,
+                            music: music,
                         }));
                     }}
                 />

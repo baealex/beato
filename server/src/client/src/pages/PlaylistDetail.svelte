@@ -14,10 +14,11 @@
         resetQueue,
         insertToQueue,
         musicActionPanel,
-        musics,
+        musicMap,
     } from "~/store";
 
     import * as socketManager from "~/socket";
+    import { derived } from "svelte/store";
 
     export let id = "";
 
@@ -30,6 +31,18 @@
             selectedMusics = [];
         }
     }
+
+    $: if (id) {
+        getPlaylist(id).then(({ data }) => {
+            playlist = data.playlist;
+        });
+    }
+
+    $: resolveMusics = derived(musicMap, ($musicMap) => {
+        return playlist?.musics.map((music) => {
+            return $musicMap.get(music.id);
+        });
+    });
 
     const handleChangeCheckbox = (music: Playlist["musics"][0]) => {
         if (selectedMusics.find((m) => m.id === music.id)) {
@@ -55,25 +68,6 @@
             selectedMusics = [];
         }
     };
-
-    onMount(async () => {
-        musics.subscribe((value) => {
-            if (playlist) {
-                playlist.musics = playlist.musics.map((music) => {
-                    music.isLiked = value.find(
-                        (m) => m.id === music.id
-                    )?.isLiked;
-                    return music;
-                });
-            }
-        });
-    });
-
-    $: if (id) {
-        getPlaylist(id).then(({ data }) => {
-            playlist = data.playlist;
-        });
-    }
 </script>
 
 {#if playlist}
@@ -124,7 +118,7 @@
             {/if}
         </div>
         <ul>
-            {#each playlist.musics as music}
+            {#each $resolveMusics as music}
                 <li>
                     {#if enableSelect}
                         <div class="checkbox">
@@ -147,7 +141,7 @@
                                 handleChangeCheckbox(music);
                                 return;
                             }
-                            insertToQueue(music);
+                            insertToQueue({ id: music.id });
                         }}
                         onLongPress={() => {
                             musicActionPanel.update((state) => ({

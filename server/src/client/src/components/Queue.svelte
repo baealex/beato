@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { get } from "svelte/store";
+    import { derived, get } from "svelte/store";
     import { navigate } from "svelte-routing";
     import { prompt } from "@baejino/ui";
 
@@ -13,13 +13,13 @@
 
     import * as socketManager from "../socket";
 
-    import { musicActionPanel, queue } from "../store";
+    import { musicActionPanel, musicMap, queue } from "../store";
 
     export let isOpen = false;
 
     let listRef: HTMLUListElement;
     let enableSelect = false;
-    let selectedMusics: Music[] = [];
+    let selectedMusics: { id: string }[] = [];
 
     $: {
         if (isOpen) {
@@ -38,11 +38,19 @@
         }
     }
 
+    $: resolveMusics = derived(musicMap, ($musicMap) => {
+        return $queue.items.map(({ id }) => {
+            return {
+                ...$musicMap.get(id),
+            };
+        });
+    });
+
     const handleClose = () => {
         isOpen = false;
     };
 
-    const handleChangeCheckbox = (music: Music) => {
+    const handleChangeCheckbox = (music: Pick<Music, "id">) => {
         if (selectedMusics.find((m) => m.id === music.id)) {
             selectedMusics = selectedMusics.filter((m) => m.id !== music.id);
         } else {
@@ -125,7 +133,7 @@
         {/if}
     </div>
     <ul class="list" bind:this={listRef}>
-        {#each $queue.items as music, idx}
+        {#each $resolveMusics as music, idx}
             <li class:active={$queue.selected === idx}>
                 {#if enableSelect}
                     <div class="checkbox">

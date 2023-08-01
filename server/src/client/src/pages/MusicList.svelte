@@ -72,7 +72,7 @@
                 musicName={music.name}
                 musicCodec={music.codec}
                 isLiked={music.isLiked}
-                onClick={() => insertToQueue(music)}
+                onClick={() => insertToQueue({ id: music.id })}
                 onLongPress={() => {
                     musicActionPanel.update((state) => ({
                         ...state,

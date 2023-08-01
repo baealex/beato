@@ -28,33 +28,31 @@ export async function graphQLRequest<T extends string, K>(query: string): Promis
         },
     });
     return data;
-}
-
-const musicQuery = (itemName: string) => createQuery<Music>(itemName, [
-    'id',
-    'name',
-    'filePath',
-    'codec',
-    'duration',
-    'playCount',
-    'trackNumber',
-    'isLiked',
-    'createdAt',
-    createQuery<Artist>('artist', [
-        'id',
-        'name'
-    ]),
-    createQuery<Album>('album', [
-        'id',
-        'name',
-        'cover',
-        'publishedYear'
-    ])
-]);
+};
 
 export function getMusics() {
     return graphQLRequest<"allMusics", Music[]>(
-        wrapper("query", (musicQuery('allMusics')))
+        wrapper("query", (createQuery<Music>('allMusics', [
+            'id',
+            'name',
+            'filePath',
+            'codec',
+            'duration',
+            'playCount',
+            'trackNumber',
+            'isLiked',
+            'createdAt',
+            createQuery<Artist>('artist', [
+                'id',
+                'name'
+            ]),
+            createQuery<Album>('album', [
+                'id',
+                'name',
+                'cover',
+                'publishedYear'
+            ])
+        ])))
     );
 }
 
@@ -90,7 +88,9 @@ export function getArtist(id: string) {
                 'cover',
                 'publishedYear'
             ]),
-            musicQuery('musics')
+            createQuery<Music>('musics', [
+                'id',
+            ])
         ]))
     );
 }
@@ -122,7 +122,9 @@ export function getAlbum(id: string) {
                 'id',
                 'name'
             ]),
-            musicQuery('musics')
+            createQuery<Music>('musics', [
+                'id',
+            ])
         ]))
     );
 }
@@ -137,9 +139,6 @@ export function getPlaylists() {
             'updatedAt',
             createQuery<Music>('headerMusics', [
                 'id',
-                createQuery<Album>('album', [
-                    'cover'
-                ])
             ])
         ]))
     );
@@ -153,7 +152,9 @@ export function getPlaylist(id: string) {
             'musicCount',
             'createdAt',
             'updatedAt',
-            musicQuery('musics')
+            createQuery<Music>('musics', [
+                'id',
+            ])
         ]))
     );
 }

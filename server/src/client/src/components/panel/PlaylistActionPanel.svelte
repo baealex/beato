@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { derived } from "svelte/store";
     import { navigate } from "svelte-routing";
     import { confirm, prompt } from "@baejino/ui";
 
@@ -8,10 +9,15 @@
 
     import * as socketManager from "~/socket";
 
-    import { playlistActionPanel } from "~/store";
+    import { musicMap, playlistActionPanel } from "~/store";
 
     $: isOpen = $playlistActionPanel.isOpen;
     $: playlist = $playlistActionPanel.playlist;
+    $: resolveMusic = derived(musicMap, ($musicMap) => {
+        return playlist?.headerMusics
+            ?.slice(0, 4)
+            .map((music) => $musicMap[music.id]);
+    });
 
     const handleClose = () => {
         playlistActionPanel.update((state) => ({
@@ -58,17 +64,17 @@
                     }, 100);
                 }}
             >
-                {#if playlist.headerMusics.length >= 4}
+                {#if $resolveMusic.length >= 4}
                     <div class="album-cover-grid">
-                        {#each playlist.headerMusics.slice(0, 4) as music}
+                        {#each $resolveMusic as music}
                             <Image src={music.album.cover} alt="Album cover" />
                         {/each}
                     </div>
                 {/if}
-                {#if playlist.headerMusics.length < 4}
+                {#if $resolveMusic.length < 4}
                     <div class="album-cover">
                         <Image
-                            src={playlist.headerMusics?.[0]?.album.cover}
+                            src={$resolveMusic?.[0]?.album.cover}
                             alt="Album cover"
                         />
                     </div>

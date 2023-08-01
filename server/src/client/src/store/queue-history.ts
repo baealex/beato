@@ -1,9 +1,8 @@
 import { writable } from 'svelte/store';
-import type { Music } from '../models/type';
 
 interface QueueHistory {
     title: string;
-    items: Music[];
+    items: { id: string; }[];
 }
 
 const INITIAL_STATE = [];

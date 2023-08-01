@@ -32,7 +32,7 @@
 
     const handleClickAddToQueue = () => {
         handleClose();
-        insertToQueue(music);
+        insertToQueue({ id: music.id });
     };
 
     const handleClickAddToPlaylist = () => {

@@ -1,15 +1,25 @@
 <script lang="ts">
+    import { derived } from "svelte/store";
+
     import Image from "~/components/atom/Image.svelte";
 
     import { MoreVerticalFill } from "~/icons";
 
     import type { Music } from "../models/type";
 
+    import { musicMap } from "~/store";
+
     export let name: string;
-    export let items: Music[];
+    export let items: Pick<Music, "id">[];
     export let itemCount: number;
     export let onClick: () => void;
     export let onLongPress: () => void = null;
+
+    $: resolveMusics = derived(musicMap, ($musicMap) => {
+        return items.slice(0, 4).map((music) => {
+            return $musicMap.get(music.id);
+        });
+    });
 </script>
 
 <button
@@ -20,16 +30,16 @@
         onLongPress?.();
     }}
 >
-    {#if items.length >= 4}
+    {#if $resolveMusics.length >= 4}
         <div class="album-cover-grid">
-            {#each items.slice(0, 4) as music}
+            {#each $resolveMusics as music}
                 <Image src={music.album.cover} alt="Album cover" />
             {/each}
         </div>
     {/if}
-    {#if items.length < 4}
+    {#if $resolveMusics.length < 4}
         <div class="album-cover">
-            <Image src={items?.[0]?.album.cover} alt="Album cover" />
+            <Image src={$resolveMusics[0]?.album.cover} alt="Album cover" />
         </div>
     {/if}
     <div class="info">

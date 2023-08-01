@@ -64,17 +64,18 @@ export const updatePlaylist = async (playlist: Playlist) => {
 
 interface AddMusicToPlaylist {
     id: string;
-    music: Music;
+    music: Pick<Music, 'id'>;
+    headerMusics: Pick<Music, 'id'>[];
 }
 
-export const addMusicToPlaylist = async ({ id, music }: AddMusicToPlaylist) => {
+export const addMusicToPlaylist = async ({ id, headerMusics }: AddMusicToPlaylist) => {
     playlists.update((state) => {
         return state.map((item) => {
             if (item.id === id) {
                 return {
                     ...item,
+                    headerMusics,
                     musicCount: item.musicCount + 1,
-                    headerMusics: [...item.headerMusics, music],
                 };
             }
             return item;
@@ -85,16 +86,17 @@ export const addMusicToPlaylist = async ({ id, music }: AddMusicToPlaylist) => {
 interface RemoveMusicFromPlaylist {
     id: string;
     musicIds: string[];
+    headerMusics: Pick<Music, 'id'>[];
 }
 
-export const removeMusicFromPlaylist = async ({ id, musicIds }: RemoveMusicFromPlaylist) => {
+export const removeMusicFromPlaylist = async ({ id, musicIds, headerMusics }: RemoveMusicFromPlaylist) => {
     playlists.update((state) => {
         return state.map((item) => {
             if (item.id === id) {
                 return {
                     ...item,
+                    headerMusics,
                     musicCount: item.musicCount - musicIds.length,
-                    headerMusics: item.headerMusics.filter((music) => !musicIds.includes(music.id)),
                 };
             }
             return item;

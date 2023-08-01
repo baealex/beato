@@ -23,8 +23,6 @@ const createPlaylist = async ({ name = '', musics = [] }) => {
         return;
     }
 
-    console.log(name, musics);
-
     const playist = await models.playlist.create({
         data: {
             name,
@@ -37,29 +35,10 @@ const createPlaylist = async ({ name = '', musics = [] }) => {
         },
     });
 
-    const headerMusics = musics.length > 0 ? await models.playlistMusic.findMany({
-        where: {
-            playlistId: playist.id,
-        },
-        take: 4,
-        include: {
-            Music: {
-                include: {
-                    Album: true,
-                },
-            },
-        },
-    }) : [];
-
     connectors.broadcast(PLAYLIST_CREATE, {
         ...playist,
         musicCount: musics.length,
-        headerMusics: headerMusics.map((playlistMusic) => ({
-            id: playlistMusic.musicId.toString(),
-            album: {
-                cover: playlistMusic.Music.Album.cover,
-            },
-        })),
+        headerMusics: musics.slice(0, 4),
     });
 };
 
@@ -132,23 +111,20 @@ const addMusicToPlaylist = async ({
             musicId: Number(musicId),
         },
     });
-    const album = await models.album.findFirst({
+    const headerMusics = await models.playlistMusic.findMany({
         where: {
-            Music: {
-                some: {
-                    id: Number(musicId),
-                },
-            },
+            playlistId: Number(id),
         },
+        take: 4,
     });
     connectors.broadcast(PLAYLIST_ADD_MUSIC, {
         id,
         music: {
-            id: musicId.toString(),
-            album: {
-                cover: album?.cover,
-            }
-        }
+            id: musicId.toString()
+        },
+        headerMusics: headerMusics.map((music) => ({
+            id: music.musicId.toString(),
+        })),
     });
 };
 
@@ -167,8 +143,17 @@ const removeMusicFromPlaylist = async ({
             },
         },
     });
+    const headerMusics = await models.playlistMusic.findMany({
+        where: {
+            playlistId: Number(id),
+        },
+        take: 4,
+    });
     connectors.broadcast(PLAYLIST_REMOVE_MUSIC, {
         id,
         musicIds,
+        headerMusics: headerMusics.map((music) => ({
+            id: music.musicId.toString(),
+        })),
     });
 };

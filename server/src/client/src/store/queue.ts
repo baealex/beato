@@ -14,8 +14,8 @@ export type QueueInsertMode = 'after' | 'before' | 'last';
 
 interface Queue {
     title: string;
-    items: Music[];
-    sourceItems: Music[];
+    items: Pick<Music, 'id'>[];
+    sourceItems: Pick<Music, 'id'>[];
     selected: number | null;
     shuffle: boolean;
     playMode: QueuePlayMode;
@@ -46,11 +46,6 @@ export const queue = writable<Queue>(loadQueue());
 queue.subscribe((value) => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({
         ...value,
-        title: '',
-        items: [],
-        sourceItems: [],
-        selected: null,
-        shuffle: false,
     }));
 });
 
@@ -90,7 +85,7 @@ export const shuffleQueue = () => queue.update((state) => {
     return newState;
 });
 
-export const resetQueue = async (title: string = '', musics: Music[] = []) => {
+export const resetQueue = async (title: string = '', musics: Pick<Music, 'id'>[] = []) => {
     if (
         existQueue() &&
         musics.length > 0 &&
@@ -119,7 +114,7 @@ export const resetQueue = async (title: string = '', musics: Music[] = []) => {
     });
 }
 
-export const insertToQueue = (music: Music) => queue.update((state) => {
+export const insertToQueue = (music: Pick<Music, 'id'>) => queue.update((state) => {
     let newState = { ...state };
 
     // 아무것도 없을 때
@@ -127,6 +122,7 @@ export const insertToQueue = (music: Music) => queue.update((state) => {
         newState.title = 'Create at ' + getFormattedDate(new Date())
         newState.selected = 0;
         newState.items = [music];
+        newState.sourceItems = [music];
         return newState;
     }
 
@@ -141,6 +137,7 @@ export const insertToQueue = (music: Music) => queue.update((state) => {
     // 마지막에 추가할 때
     if (state.insertMode === 'last') {
         newState.items = [...state.items, music];
+        newState.sourceItems = [...state.sourceItems, music];
         if (state.playMode === 'immediate') {
             newState.selected = newState.items.findIndex((item) => item.id === music.id);
         } else {
@@ -164,6 +161,7 @@ export const insertToQueue = (music: Music) => queue.update((state) => {
         newState.selected = state.selected + 1;
         newState.items = [...before, music, ...after];
     }
+    newState.sourceItems = [...state.sourceItems, music];
     if (state.playMode === 'immediate') {
         newState.selected = newState.items.findIndex((item) => item.id === music.id);
     } else {

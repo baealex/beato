@@ -26,7 +26,7 @@ export interface Album {
         id: string;
         name: string;
     };
-    musics: Music[];
+    musics: Pick<Music, 'id'>[];
     createdAt: string;
 }
 
@@ -36,7 +36,7 @@ export interface Artist {
     latestAlbum?: Album;
     albums: Album[];
     albumCount: number;
-    musics: Music[];
+    musics: Pick<Music, 'id'>[];
     musicCount: number;
     createdAt: string;
 }
@@ -44,9 +44,9 @@ export interface Artist {
 export interface Playlist {
     id: string;
     name: string;
-    musics: Music[];
+    musics: Pick<Music, 'id'>[];
     musicCount: number;
-    headerMusics: Music[];
+    headerMusics: Pick<Music, 'id'>[];
     createdAt: string;
     updatedAt: string;
 }

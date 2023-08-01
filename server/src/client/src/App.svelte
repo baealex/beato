@@ -28,7 +28,7 @@
     import { downloadFile } from "./modules/download";
     import { getAudio } from "./api";
 
-    import { queue, syncAll } from "./store";
+    import { musicMap, queue, syncAll } from "./store";
 
     import * as socketManager from "./socket";
 
@@ -38,15 +38,13 @@
     let playing = false;
     let volume = 1;
     let progress = 0;
-    let isLoading = false;
+    let isLoading = true;
     let shouldCount = false;
-    let nowPlayMusic: Music = null;
+    let currentMusic: Music = null;
 
     $: {
-        if ($queue.items[$queue.selected]) {
-            document.title = `${$queue.items[$queue.selected].name} - ${
-                $queue.items[$queue.selected].artist.name
-            }`;
+        if (currentMusic) {
+            document.title = `${currentMusic.name} - ${currentMusic.artist.name}`;
         }
     }
 
@@ -58,7 +56,10 @@
 
     onMount(() => {
         isLoading = true;
-        syncAll(() => (isLoading = false));
+        syncAll(() => {
+            isLoading = false;
+            currentMusic = $musicMap.get($queue.items[$queue.selected].id);
+        });
 
         socketManager.socket.on("resync", () => {
             isLoading = true;
@@ -70,8 +71,7 @@
         audioElement.addEventListener("timeupdate", () => {
             progress = Number(
                 (
-                    (audioElement.currentTime /
-                        $queue.items[$queue.selected]?.duration) *
+                    (audioElement.currentTime / currentMusic?.duration) *
                     100
                 ).toFixed(2)
             );
@@ -79,7 +79,7 @@
             if (progress >= 80 && shouldCount) {
                 shouldCount = false;
                 socketManager.socket.emit(socketManager.MUSIC_COUNT, {
-                    id: $queue.items[$queue.selected]?.id,
+                    id: currentMusic?.id,
                 });
             }
         });
@@ -121,17 +121,17 @@
 
         queue.subscribe((value) => {
             if (value.items.length === 0 || value.selected === null) {
-                nowPlayMusic = null;
+                currentMusic = null;
                 handleClickStop();
                 return;
             }
             if (
-                nowPlayMusic &&
-                nowPlayMusic.id === value.items[value.selected].id
+                currentMusic &&
+                currentMusic.id === value.items[value.selected].id
             ) {
                 return;
             }
-            nowPlayMusic = value.items[value.selected];
+            currentMusic = $musicMap.get(value.items[value.selected].id);
             requestFile(value.items[value.selected].id);
         });
     });
@@ -153,7 +153,7 @@
     };
 
     const playAgain = () => {
-        requestFile($queue.items[$queue.selected].id);
+        requestFile(currentMusic.id);
     };
 
     const playNext = () => {
@@ -201,7 +201,7 @@
         const x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
         const width = rect.width;
         const percent = (x - rect.left) / width;
-        const duration = $queue.items[$queue.selected].duration;
+        const duration = currentMusic.duration;
         audioElement.currentTime = duration * percent;
     };
 
@@ -294,7 +294,7 @@
                 bind:playing
                 bind:volume
                 bind:progress
-                music={$queue.items[$queue.selected]}
+                music={currentMusic}
                 onClickPlay={handleClickPlay}
                 onClickNext={playNext}
                 onClickPrev={playPrev}

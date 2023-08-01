@@ -1,12 +1,9 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { derived } from "svelte/store";
 
     import AlbumDetail from "./AlbumDetail.svelte";
 
-    import Image from "~/components/atom/Image.svelte";
-    import SubPage from "~/components/atom/SubPage.svelte";
-    import MusicListItem from "~/components/MusicListItem.svelte";
-    import AlbumListItem from "~/components/AlbumListItem.svelte";
+    import { Image, SubPage, MusicListItem, AlbumListItem } from "~/components";
 
     import { Play } from "~/icons";
 
@@ -17,7 +14,7 @@
     import {
         insertToQueue,
         musicActionPanel,
-        musics,
+        musicMap,
         resetQueue,
     } from "../store";
 
@@ -27,24 +24,18 @@
     let selectedAlbumId: string | null = null;
     let isOpenAlbumDetail = false;
 
-    onMount(async () => {
-        musics.subscribe((value) => {
-            if (artist) {
-                artist.musics = artist.musics.map((music) => {
-                    music.isLiked = value.find(
-                        (m) => m.id === music.id
-                    )?.isLiked;
-                    return music;
-                });
-            }
-        });
-    });
-
     $: if (id) {
         getArtist(id).then(({ data }) => {
             artist = data.artist;
         });
     }
+
+    $: resolveMusics = derived(musicMap, ($musicMap) => {
+        if (artist) {
+            return artist.musics.map(({ id }) => $musicMap.get(id));
+        }
+        return [];
+    });
 </script>
 
 <section>
@@ -92,7 +83,7 @@
         </div>
         <div class="musics">
             <ul>
-                {#each artist.musics as music}
+                {#each $resolveMusics as music}
                     <li>
                         <MusicListItem
                             artistName={music.album.name}
@@ -101,7 +92,7 @@
                             musicName={music.name}
                             musicCodec={music.codec}
                             isLiked={music.isLiked}
-                            onClick={() => insertToQueue(music)}
+                            onClick={() => insertToQueue({ id: music.id })}
                             onLongPress={() => {
                                 musicActionPanel.update((state) => ({
                                     ...state,
