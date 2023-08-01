@@ -48,6 +48,10 @@ jobs:
       run: npm run lint
       working-directory: server/src/client/src
 
+    - name: Check (Client)
+      run: npm run check
+      working-directory: server/src/client/src
+
     - name: Test (Client)
       run: npm run test
       working-directory: server/src/client/src
