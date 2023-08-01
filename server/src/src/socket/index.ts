@@ -17,6 +17,7 @@ export const socketManager = (socket: Socket) => {
         connectedAt: c.connectedAt,
     })));
 
+    socket.emit('resync', '');
     syncListener(socket);
     musicListener(socket);
     playlistListener(socket);

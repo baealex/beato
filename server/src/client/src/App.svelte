@@ -39,6 +39,7 @@
     let volume = 1;
     let progress = 0;
     let isLoading = true;
+    let initialLoading = true;
     let shouldCount = false;
     let currentMusic: Music = null;
 
@@ -55,15 +56,20 @@
     }
 
     onMount(() => {
-        isLoading = true;
-        syncAll(() => {
-            isLoading = false;
-            currentMusic = $musicMap.get($queue.items[$queue.selected].id);
-        });
-
         socketManager.socket.on("resync", () => {
             isLoading = true;
-            syncAll(() => (isLoading = false));
+            syncAll(() => {
+                if (initialLoading) {
+                    currentMusic = $musicMap.get(
+                        $queue.items[$queue.selected].id
+                    );
+                    initialLoading = false;
+                }
+                isLoading = false;
+            });
+        });
+        window.addEventListener("focus", () => {
+            socketManager.socket.connect();
         });
         socketManager.musicListener();
         socketManager.playlistListener();
