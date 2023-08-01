@@ -11,12 +11,12 @@
     import { getAlbum } from "~/api";
 
     import {
-        existQueue,
         resetQueue,
         insertToQueue,
         musicActionPanel,
         musics,
     } from "../store";
+    import { Link } from "svelte-routing";
 
     export let id = "";
 
@@ -44,14 +44,18 @@
 
 {#if album}
     <div class="album">
-        <Image class="album-cover" src={album.cover} alt={album.name} />
+        <Image
+            class="album-cover"
+            src={album.cover.replace("/resized", "")}
+            alt={album.name}
+        />
         <div class="album-title">
             {album.name}
         </div>
         <div class="row">
-            <div class="album-artist">
+            <Link class="album-artist" to={`/artist/${album.artist.id}`}>
                 {album.artist.name}
-            </div>
+            </Link>
             <span>-</span>
             <div class="album-year">
                 {album.publishedYear}
@@ -98,7 +102,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: 0.5rem;
         padding: 2rem 1rem;
         background-color: #111;
         border-radius: 0.5rem;
@@ -107,6 +111,7 @@
             width: 100%;
             max-width: 300px;
             border-radius: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .album-title {
@@ -125,14 +130,14 @@
             }
         }
 
-        .album-artist {
+        :global(.album-artist) {
             font-size: 0.875rem;
             color: #aaa;
         }
 
         .album-year {
             font-size: 0.875rem;
-            color: #aaa;
+            color: #555;
         }
 
         .play-all {

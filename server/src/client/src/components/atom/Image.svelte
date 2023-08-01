@@ -56,7 +56,7 @@
         class={className}
         class:lazy={true}
         class:load={loadded}
-        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg=="
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2P4DwQACfsD/Z8fLAAAAAAASUVORK5CYII="
         {alt}
         {style}
     />
@@ -66,7 +66,7 @@
 
 <style lang="scss">
     img.lazy {
-        opacity: 0;
+        opacity: 0.1;
         transition: opacity 0.3s ease-in-out;
     }
 

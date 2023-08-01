@@ -23,7 +23,7 @@
     button {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.25rem;
         border-radius: 0.5rem;
         background-color: #111;
         transition: background-color 0.2s ease-in-out;

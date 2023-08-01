@@ -15,7 +15,6 @@
     import { getArtist } from "../api";
 
     import {
-        existQueue,
         insertToQueue,
         musicActionPanel,
         musics,
@@ -54,7 +53,6 @@
             <Image src={artist.latestAlbum?.cover || ""} alt={artist.name} />
             {artist.name}
         </div>
-
         <div class="section-title">
             Albums ({artist.albums.length})
         </div>
@@ -161,7 +159,7 @@
         }
 
         .albums {
-            padding: 0 1rem 1rem 1rem;
+            padding: 1rem;
             margin-bottom: 3rem;
 
             ul {

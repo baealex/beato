@@ -23,6 +23,7 @@ export interface Album {
     cover: string;
     publishedYear: string;
     artist: {
+        id: string;
         name: string;
     };
     musics: Music[];
