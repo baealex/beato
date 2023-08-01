@@ -59,10 +59,11 @@
         border-radius: 0.5rem;
         border: 1px solid #333;
         background-color: #000;
+        font-size: 0.825rem;
         color: #eee;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.25rem;
 
         :global(svg) {
             width: 1rem;

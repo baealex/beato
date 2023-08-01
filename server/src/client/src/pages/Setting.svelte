@@ -2,12 +2,13 @@
     import { onDestroy, onMount } from "svelte";
     import { confirm, toast } from "@baejino/ui";
 
-    import { Loading, Select } from "~/components";
+    import { Select } from "~/components";
 
     import { socket } from "../socket";
 
     import { queue } from "../store";
     import type { QueueInsertMode, QueuePlayMode } from "../store";
+    import Beato from "~/components/Beato.svelte";
 
     let isLoading = false;
     let message = "";
@@ -76,13 +77,23 @@
 
 <div class="continer">
     <section style="justify-content: space-between;">
-        <p>Sync music from server</p>
         <div>
-            <button on:click={() => handleClickSyncMusic(false)}>Start</button>
-            <button on:click={() => handleClickSyncMusic(true)}>
-                Force Start
-            </button>
-            <div />
+            <p>Sync music from server</p>
+            {#if isLoading}
+                <p class="message">{message}</p>
+            {/if}
+        </div>
+        <div>
+            {#if isLoading}
+                <button disabled={isLoading}>Syncing...</button>
+            {:else}
+                <button on:click={() => handleClickSyncMusic(false)}>
+                    Start
+                </button>
+                <button on:click={() => handleClickSyncMusic(true)}>
+                    Force Start
+                </button>
+            {/if}
         </div>
     </section>
     <section>
@@ -114,10 +125,6 @@
             ]}
         />
     </section>
-    <section style="justify-content: space-between;">
-        <p>Something wrong?</p>
-        <button on:click={handleClickRefreshApp}>Try Refresh</button>
-    </section>
     <section
         style="
             flex-direction: column;
@@ -133,13 +140,14 @@
                     justify-content: space-between;
                     align-items: center;
                     flex-wrap: wrap;
+                    font-size: 0.825rem;
                     gap: 0.5rem;
                 "
             >
                 {connector.userAgent}
                 <span
                     style="
-                        font-size: 0.75rem;
+                        font-size: 0.825rem;
                         color: #999;
                     "
                 >
@@ -171,8 +179,10 @@
             </div>
         {/each}
     </section>
-
-    <Loading {isLoading} {message} />
+    <section style="justify-content: space-between;">
+        <p>Something wrong?</p>
+        <button on:click={handleClickRefreshApp}>Try Refresh</button>
+    </section>
 </div>
 
 <style lang="scss">
@@ -180,12 +190,22 @@
         padding: 1rem 0.5rem;
     }
 
+    .message {
+        font-size: 0.825rem;
+        color: #999;
+    }
+
     button {
         padding: 0.5rem 1rem;
         border-radius: 0.5rem;
+        font-size: 0.825rem;
         border: 1px solid #333;
         background-color: #000;
         color: #eee;
+
+        &:disabled {
+            opacity: 0.5;
+        }
     }
 
     section {

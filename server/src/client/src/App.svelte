@@ -6,7 +6,6 @@
     import {
         SiteHeader,
         Player,
-        Loading,
         MusicSortPanel,
         AlbumSortPanel,
         ArtistSortPanel,
@@ -220,11 +219,9 @@
 </script>
 
 <main>
-    <Loading {isLoading} message="Loading..." />
-
-    {#if !isLoading}
-        <Router>
-            <SiteHeader />
+    <Router>
+        <SiteHeader />
+        {#if !isLoading}
             <Route path="/">
                 <div class="container">
                     <MusicList />
@@ -296,8 +293,8 @@
             <MusicSortPanel />
             <AlbumSortPanel />
             <ArtistSortPanel />
-        </Router>
-    {/if}
+        {/if}
+    </Router>
 </main>
 
 <audio bind:this={audioElement} />
