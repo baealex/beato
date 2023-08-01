@@ -4,6 +4,7 @@
     import { toast } from "@baejino/ui";
 
     import {
+        Beato,
         SiteHeader,
         Player,
         MusicSortPanel,
@@ -221,7 +222,23 @@
 <main>
     <Router>
         <SiteHeader />
-        {#if !isLoading}
+        {#if isLoading}
+            <div class="container">
+                <div
+                    style="
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+                        gap: 2rem;
+                    "
+                >
+                    <Beato dance />
+                    <div style="color: #ccc;">Loading...</div>
+                </div>
+            </div>
+        {:else}
             <Route path="/">
                 <div class="container">
                     <MusicList />

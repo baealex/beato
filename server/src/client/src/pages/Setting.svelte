@@ -4,11 +4,10 @@
 
     import { Select } from "~/components";
 
-    import { socket } from "../socket";
+    import { socket } from "~/socket";
 
-    import { queue } from "../store";
-    import type { QueueInsertMode, QueuePlayMode } from "../store";
-    import Beato from "~/components/Beato.svelte";
+    import { queue } from "~/store";
+    import type { QueueInsertMode, QueuePlayMode } from "~/store";
 
     let isLoading = false;
     let message = "";
