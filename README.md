@@ -37,7 +37,7 @@ Self host music streaming platform
 
 ## Demo site
 
-[beato-demo.baejino.com](https://beato-demo.baejino.com/)
+[demo-beato.baejino.com](https://demo-beato.baejino.com/)
 
 <br>
 
