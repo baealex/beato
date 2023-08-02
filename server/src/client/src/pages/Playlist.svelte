@@ -34,7 +34,9 @@
 
     $: {
         if (isOpenCreatePlaylist) {
-            nameInputRef.focus();
+            setTimeout(() => {
+                nameInputRef.focus();
+            }, 200);
         }
     }
 </script>
