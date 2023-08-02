@@ -205,15 +205,15 @@
             position: absolute;
             bottom: 0;
             right: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             transform: translateY(50%);
 
             button {
                 border-radius: 100%;
                 width: 4rem;
                 height: 4rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 background-color: #1c1c1c;
                 border: 4px solid #000;
                 color: #ccc;

@@ -75,14 +75,13 @@
 </script>
 
 <div class="continer">
-    <section style="justify-content: space-between;">
-        <div>
-            <p>Sync music from server</p>
-            {#if isLoading}
-                <p class="message">{message}</p>
-            {/if}
-        </div>
-        <div>
+    <h3>Synchronization</h3>
+    <section>
+        <p>Synchronize the music with your server</p>
+        {#if isLoading}
+            <p class="message">{message}</p>
+        {/if}
+        <div class="buttons">
             {#if isLoading}
                 <button disabled={isLoading}>Syncing...</button>
             {:else}
@@ -95,44 +94,43 @@
             {/if}
         </div>
     </section>
+    <h3>Play Mode</h3>
     <section>
-        <p>When you press the music, the music will</p>
-        <Select
-            title="The music will..."
-            value={$queue.playMode}
-            onChange={handleChangePlayMode}
-            options={[
-                { value: "later", label: "Play later" },
-                { value: "immediate", label: "Play immediately" },
-            ]}
-        />
-        and
-        <Select
-            title="The music will..."
-            value={$queue.insertMode}
-            onChange={handleChangeQueueMode}
-            options={[
-                {
-                    value: "after",
-                    label: "Add to queue after current music",
-                },
-                {
-                    value: "before",
-                    label: "Add to queue before current music",
-                },
-                { value: "last", label: "Add to queue at the end" },
-            ]}
-        />
+        When you add music to the queue, it will...
+        <div class="buttons">
+            <Select
+                title="It will..."
+                value={$queue.playMode}
+                onChange={handleChangePlayMode}
+                options={[
+                    { value: "later", label: "Play later" },
+                    { value: "immediate", label: "Play immediately" },
+                ]}
+            />
+            <Select
+                title="It will..."
+                value={$queue.insertMode}
+                onChange={handleChangeQueueMode}
+                options={[
+                    {
+                        value: "after",
+                        label: "Be added after the current music",
+                    },
+                    {
+                        value: "before",
+                        label: "Be added before the current music",
+                    },
+                    {
+                        value: "last",
+                        label: "Be added at the end of the queue",
+                    },
+                ]}
+            />
+        </div>
     </section>
-    <section
-        style="
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
-        "
-    >
-        <p>Connectors</p>
-        {#each connectors as connector}
+    <h3>Connectors</h3>
+    <section style="align-items: flex-start;">
+        {#each connectors as connector, idx}
             <div
                 style="
                     display: flex;
@@ -143,7 +141,7 @@
                     gap: 0.5rem;
                 "
             >
-                {connector.userAgent}
+                {idx + 1}. {connector.userAgent}
                 <span
                     style="
                         font-size: 0.825rem;
@@ -178,20 +176,36 @@
             </div>
         {/each}
     </section>
+    <h3>Have a problem?</h3>
     <section style="justify-content: space-between;">
-        <p>Something wrong?</p>
-        <button on:click={handleClickRefreshApp}>Try Refresh</button>
+        <div>
+            <button on:click={handleClickRefreshApp}>Try Refresh</button>
+        </div>
     </section>
 </div>
 
 <style lang="scss">
     .continer {
-        padding: 1rem 0.5rem;
+        padding: 1rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #656565;
+        margin: 2rem 0 0;
     }
 
     .message {
         font-size: 0.825rem;
         color: #999;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
     button {
@@ -209,11 +223,9 @@
 
     section {
         display: flex;
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
         gap: 0.5rem;
-        border-bottom: 1px solid #212121;
-        padding: 1rem;
-        flex-wrap: wrap;
+        border-bottom: 1px solid #222;
+        padding: 1rem 0 2rem;
     }
 </style>
