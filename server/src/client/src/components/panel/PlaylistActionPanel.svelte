@@ -14,9 +14,7 @@
     $: isOpen = $playlistActionPanel.isOpen;
     $: playlist = $playlistActionPanel.playlist;
     $: resolveMusic = derived(musicMap, ($musicMap) => {
-        return playlist?.headerMusics
-            ?.slice(0, 4)
-            .map((music) => $musicMap[music.id]);
+        return playlist?.headerMusics.map(({ id }) => $musicMap.get(id));
     });
 
     const handleClose = () => {
