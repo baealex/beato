@@ -240,7 +240,7 @@
                         <Infinite />
                     {/if}
                 </button>
-                <div>
+                <div class="playback">
                     <button
                         class="icon-button skip-back"
                         on:click={onClickPrev}
@@ -421,11 +421,14 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+        padding: 1rem;
 
         .album-art {
             position: relative;
-            width: 300px;
-            height: 300px;
+            max-width: 300px;
+            max-height: 300px;
+            width: 100%;
+            height: 100%;
 
             .foreground {
                 width: 100%;
@@ -502,12 +505,26 @@
             width: 500px;
             max-width: 90%;
             display: flex;
+            flex-wrap: wrap;
             flex-direction: row;
             justify-content: space-between;
+
+            .playback {
+                display: flex;
+                justify-content: space-between;
+            }
 
             .shuffle.active {
                 :global(svg) {
                     color: #a076f1;
+                }
+            }
+
+            @media (max-width: 400px) {
+                .playback {
+                    width: 100%;
+                    order: -1;
+                    margin-bottom: 1rem;
                 }
             }
 
