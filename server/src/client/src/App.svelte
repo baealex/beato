@@ -55,6 +55,46 @@
         }
     }
 
+    interface SetMediaItemAction {
+        action: "setMediaItem";
+        mediaItem: {
+            id: string;
+            title: string;
+            artist: string;
+            album: string;
+            duration: number;
+            artUri: string;
+        };
+    }
+
+    interface PlayAction {
+        action: "play";
+    }
+
+    interface PauseAction {
+        action: "pause";
+    }
+
+    interface StopAction {
+        action: "stop";
+    }
+
+    interface SeekAction {
+        action: "seek";
+        position: number;
+    }
+
+    const PostMessage = (
+        action:
+            | SetMediaItemAction
+            | PlayAction
+            | PauseAction
+            | StopAction
+            | SeekAction
+    ) => {
+        return JSON.stringify(action);
+    };
+
     onMount(() => {
         socketManager.socket.on("resync", () => {
             isLoading = true;
@@ -114,6 +154,13 @@
                 progress = Number(
                     ((value / 1000 / currentMusic?.duration) * 100).toFixed(2)
                 );
+
+                if (progress >= 80 && shouldCount) {
+                    shouldCount = false;
+                    socketManager.socket.emit(socketManager.MUSIC_COUNT, {
+                        id: currentMusic?.id,
+                    });
+                }
             };
         }
 
@@ -192,21 +239,26 @@
     });
 
     const requestFile = async (id: string) => {
+        shouldCount = true;
+
         if (window.AppChannel) {
             window.AppChannel.postMessage(
-                JSON.stringify({
-                    id: location.origin + "/api/audio/" + id,
-                    album: currentMusic.album.name,
-                    title: currentMusic.name,
-                    artist: currentMusic.artist.name,
-                    duration: Math.floor(Number(currentMusic.duration) * 1000),
-                    artUri: location.origin + currentMusic.album.cover,
+                PostMessage({
+                    action: "setMediaItem",
+                    mediaItem: {
+                        id: location.origin + "/api/audio/" + id,
+                        album: currentMusic.album.name,
+                        title: currentMusic.name,
+                        artist: currentMusic.artist.name,
+                        duration: Math.floor(
+                            Number(currentMusic.duration) * 1000
+                        ),
+                        artUri: location.origin + currentMusic.album.cover,
+                    },
                 })
             );
         } else {
             audioElement.pause();
-            shouldCount = true;
-
             const audioResource = "/api/audio/" + id;
             audioElement.src = audioResource;
             audioElement.load();
@@ -244,16 +296,41 @@
 
     const handleClickPlay = () => {
         if (!playing) {
-            audioElement.play();
+            if (window.AppChannel) {
+                window.AppChannel.postMessage(
+                    PostMessage({
+                        action: "play",
+                    })
+                );
+            } else {
+                audioElement.play();
+            }
         } else {
-            audioElement.pause();
+            if (window.AppChannel) {
+                window.AppChannel.postMessage(
+                    PostMessage({
+                        action: "pause",
+                    })
+                );
+            } else {
+                audioElement.pause();
+            }
         }
     };
 
     const handleClickStop = () => {
         playing = false;
-        audioElement.pause();
-        audioElement.currentTime = 0;
+
+        if (window.AppChannel) {
+            window.AppChannel.postMessage(
+                PostMessage({
+                    action: "stop",
+                })
+            );
+        } else {
+            audioElement.pause();
+            audioElement.currentTime = 0;
+        }
     };
 
     const handleClickProgress = (e: MouseEvent | TouchEvent) => {
@@ -264,7 +341,17 @@
         const width = rect.width;
         const percent = (x - rect.left) / width;
         const duration = currentMusic.duration;
-        audioElement.currentTime = duration * percent;
+
+        if (window.AppChannel) {
+            window.AppChannel.postMessage(
+                PostMessage({
+                    action: "seek",
+                    position: Math.floor(Number(duration * percent * 1000)),
+                })
+            );
+        } else {
+            audioElement.currentTime = duration * percent;
+        }
     };
 
     const handleClickLike = (music: Music) => {
