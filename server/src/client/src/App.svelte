@@ -74,6 +74,49 @@
         socketManager.musicListener();
         socketManager.playlistListener();
 
+        if (window.AppChannel) {
+            window.AppChannel.syncAudioState = (state) => {
+                if (state === "play") {
+                    playing = true;
+                }
+                if (state === "pause") {
+                    playing = false;
+                }
+                if (state === "stop") {
+                    playing = false;
+                    progress = 0;
+                }
+                if (state === "end") {
+                    if ($queue.repeatMode === "one") {
+                        playAgain();
+                        return;
+                    }
+                    if ($queue.repeatMode === "all") {
+                        if ($queue.items.length === 1) {
+                            playAgain();
+                            return;
+                        }
+                        playNext();
+                        return;
+                    }
+                    if ($queue.repeatMode === "off") {
+                        if ($queue.selected === $queue.items.length - 1) {
+                            progress = 0;
+                            return;
+                        }
+                        playNext();
+                        return;
+                    }
+                }
+            };
+
+            window.AppChannel.syncAudioTime = (value) => {
+                progress = Number(
+                    ((value / 1000 / currentMusic?.duration) * 100).toFixed(2)
+                );
+            };
+        }
+
         audioElement.addEventListener("timeupdate", () => {
             progress = Number(
                 (
@@ -149,13 +192,26 @@
     });
 
     const requestFile = async (id: string) => {
-        audioElement.pause();
-        shouldCount = true;
+        if (window.AppChannel) {
+            window.AppChannel.postMessage(
+                JSON.stringify({
+                    id: location.origin + "/api/audio/" + id,
+                    album: currentMusic.album.name,
+                    title: currentMusic.name,
+                    artist: currentMusic.artist.name,
+                    duration: Math.floor(Number(currentMusic.duration) * 1000),
+                    artUri: location.origin + currentMusic.album.cover,
+                })
+            );
+        } else {
+            audioElement.pause();
+            shouldCount = true;
 
-        const audioResouce = "/api/audio/" + id;
-        audioElement.src = audioResouce;
-        audioElement.load();
-        await audioElement.play();
+            const audioResource = "/api/audio/" + id;
+            audioElement.src = audioResource;
+            audioElement.load();
+            await audioElement.play();
+        }
     };
 
     const playAgain = () => {
