@@ -126,6 +126,12 @@
                     playing = false;
                     progress = 0;
                 }
+                if (state === "skipToNext") {
+                    playNext();
+                }
+                if (state === "skipToPrev") {
+                    playPrev();
+                }
                 if (state === "end") {
                     if ($queue.repeatMode === "one") {
                         playAgain();
@@ -340,17 +346,20 @@
         const x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
         const width = rect.width;
         const percent = (x - rect.left) / width;
+        const cleanPercent = percent > 1 ? 1 : percent < 0 ? 0 : percent;
         const duration = currentMusic.duration;
 
         if (window.AppChannel) {
             window.AppChannel.postMessage(
                 PostMessage({
                     action: "seek",
-                    position: Math.floor(Number(duration * percent * 1000)),
+                    position: Math.floor(
+                        Number(duration * cleanPercent * 1000)
+                    ),
                 })
             );
         } else {
-            audioElement.currentTime = duration * percent;
+            audioElement.currentTime = duration * cleanPercent;
         }
     };
 
