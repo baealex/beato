@@ -451,7 +451,7 @@
         align-items: center;
         text-align: center;
         padding: 1rem;
-        overflow: hidden;
+        overflow-x: hidden;
 
         .album-art {
             position: relative;

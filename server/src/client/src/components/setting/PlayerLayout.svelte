@@ -24,12 +24,3 @@
         { value: "none", label: "None" },
     ]}
 />
-
-<style>
-    .buttons {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-</style>
