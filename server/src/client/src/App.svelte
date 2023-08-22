@@ -144,8 +144,13 @@
                     handlePause();
                 }
                 if (message.actionType === "stop") {
+                    window.AppChannel.postMessage(
+                        PostMessageWrapper({
+                            actionType: "setPosition",
+                            position: 0,
+                        })
+                    );
                     playing = false;
-                    progress = 0;
                 }
                 if (message.actionType === "skipToNext") {
                     playNext();
@@ -205,11 +210,6 @@
         if (window.AppChannel) {
             window.AppChannel.postMessage(
                 PostMessageWrapper({
-                    actionType: "pause",
-                })
-            );
-            window.AppChannel.postMessage(
-                PostMessageWrapper({
                     actionType: "setMediaItem",
                     mediaItem: {
                         id: location.origin + "/api/audio/" + id,
@@ -219,12 +219,6 @@
                         duration: secondToMillisecond(currentMusic.duration),
                         artUri: location.origin + currentMusic.album.cover,
                     },
-                })
-            );
-            window.AppChannel.postMessage(
-                PostMessageWrapper({
-                    actionType: "setPosition",
-                    position: 0,
                 })
             );
         } else {
