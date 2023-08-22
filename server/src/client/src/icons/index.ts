@@ -1,5 +1,5 @@
 export { default as ArrowDown } from './ArrowDown.svelte'
-export { default as ArrowRepaet } from './ArrowRepaet.svelte'
+export { default as ArrowRepeat } from './ArrowRepeat.svelte'
 export { default as ArrowUp } from './ArrowUp.svelte'
 export { default as CheckBox } from './CheckBox.svelte'
 export { default as Cross } from './Cross.svelte'

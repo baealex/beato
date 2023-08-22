@@ -1,5 +1,10 @@
 <script lang="ts">
-    import { Connectors, PlayMode, SyncMusic } from "~/components/setting";
+    import {
+        Connectors,
+        PlayerLayout,
+        PlayMode,
+        SyncMusic,
+    } from "~/components/setting";
 
     const handleClickRefreshApp = () => {
         location.reload();
@@ -14,6 +19,10 @@
     <section>
         <h3>Play Mode</h3>
         <PlayMode />
+    </section>
+    <section>
+        <h3>Player Layout</h3>
+        <PlayerLayout />
     </section>
     <section style="align-items: flex-start;">
         <h3>Connectors</h3>

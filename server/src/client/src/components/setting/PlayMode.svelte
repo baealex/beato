@@ -38,15 +38,15 @@
         options={[
             {
                 value: "after",
-                label: "Be added after the current music",
+                label: "Added after the current music",
             },
             {
                 value: "before",
-                label: "Be added before the current music",
+                label: "Added before the current music",
             },
             {
                 value: "last",
-                label: "Be added at the end of the queue",
+                label: "Added at the end of the queue",
             },
         ]}
     />

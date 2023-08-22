@@ -8,7 +8,7 @@
         Play,
         Pause,
         Menu,
-        ArrowRepaet,
+        ArrowRepeat,
         Infinite,
         RightLeft,
         Shuffle,
@@ -21,6 +21,7 @@
 
     import {
         queue,
+        player,
         switchRepeatMode,
         shuffleQueue,
         musicActionPanel,
@@ -40,6 +41,7 @@
     let isOpenPlayer = false;
     let isOpenQueue = false;
     let randomBorderRadius = "50% 50% 50% 50%";
+    let timer: ReturnType<typeof setTimeout>;
 
     $: totalTimeText = makePlayTime(music?.duration);
     $: currentTimeText = makePlayTime(currentTime);
@@ -60,16 +62,30 @@
     };
 
     onMount(() => {
-        const setRandomBorderRadius = () => {
-            if (playing && isOpenPlayer) {
-                const makeRandom = () => {
-                    return Math.floor(Math.random() * 90 + 10) + "%";
+        player.subscribe((state) => {
+            if (state.coverAnimation === "bounce") {
+                const setRandomBorderRadius = () => {
+                    if (playing && isOpenPlayer) {
+                        const makeRandom = () => {
+                            return Math.floor(Math.random() * 90 + 10) + "%";
+                        };
+                        randomBorderRadius = `${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`;
+                    }
+                    timer = setTimeout(setRandomBorderRadius, 1000);
                 };
-                randomBorderRadius = `${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`;
+                setRandomBorderRadius();
             }
-            setTimeout(setRandomBorderRadius, 1000);
-        };
-        setRandomBorderRadius();
+
+            if (state.coverAnimation === "rotate") {
+                clearTimeout(timer);
+                randomBorderRadius = "50% 50% 50% 50%";
+            }
+
+            if (state.coverAnimation === "none") {
+                clearTimeout(timer);
+                randomBorderRadius = "50% 50% 50% 50%";
+            }
+        });
     });
 </script>
 
@@ -121,7 +137,7 @@
                         {#if $queue.repeatMode === "off"}
                             <RightLeft />
                         {:else if $queue.repeatMode === "all"}
-                            <ArrowRepaet />
+                            <ArrowRepeat />
                         {:else if $queue.repeatMode === "one"}
                             <Infinite />
                         {/if}
@@ -175,7 +191,10 @@
     </div>
     <SubPage isOpen={isOpenPlayer} onClose={() => (isOpenPlayer = false)}>
         <div class="detail">
-            <div class="album-art">
+            <div
+                class="album-art"
+                class:cd-shape={$player.coverAnimation === "rotate"}
+            >
                 <img
                     class="background"
                     style={`border-radius: ${randomBorderRadius}`}
@@ -184,6 +203,8 @@
                 />
                 <img
                     class="foreground"
+                    class:playing
+                    class:rotate={$player.coverAnimation === "rotate"}
                     style={`border-radius: ${randomBorderRadius}`}
                     src={getImage(music.album.cover.replace("/resized", ""))}
                     alt={music.album.name}
@@ -240,7 +261,7 @@
                     {#if $queue.repeatMode === "off"}
                         <RightLeft />
                     {:else if $queue.repeatMode === "all"}
-                        <ArrowRepaet />
+                        <ArrowRepeat />
                     {:else if $queue.repeatMode === "one"}
                         <Infinite />
                     {/if}
@@ -430,13 +451,43 @@
         align-items: center;
         text-align: center;
         padding: 1rem;
+        overflow: hidden;
 
         .album-art {
             position: relative;
-            max-width: 300px;
-            max-height: 300px;
-            width: 100%;
-            height: 100%;
+            width: 300px;
+            height: 300px;
+
+            &.cd-shape {
+                box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.28);
+                border-radius: 50%;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    background-color: rgba(255, 255, 255, 0.28);
+                }
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background-color: #000;
+                }
+            }
 
             .foreground {
                 width: 100%;
@@ -445,6 +496,24 @@
                 border-radius: 50%;
                 transition: border-radius 1s
                     cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+                @keyframes rotate {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+
+                &.rotate {
+                    animation: rotate 3s linear infinite;
+                    animation-play-state: paused;
+                }
+
+                &.rotate.playing {
+                    animation-play-state: running;
+                }
             }
 
             .background {

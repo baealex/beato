@@ -6,6 +6,7 @@ export * from './layer-pop-state';
 export * from './musics';
 export * from './music-action-panel';
 export * from './music-sort-panel';
+export * from './player';
 export * from './playlist';
 export * from './playlist-action-panel';
 // export * from './playlist-sort-panel';
