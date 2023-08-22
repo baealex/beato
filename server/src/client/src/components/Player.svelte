@@ -30,6 +30,7 @@
     export let volume: number;
     export let playing: boolean;
     export let progress: number;
+    export let currentTime: number;
     export let onClickPlay: () => void;
     export let onClickPause: () => void;
     export let onClickNext: () => void;
@@ -40,8 +41,8 @@
     let isOpenQueue = false;
     let randomBorderRadius = "50% 50% 50% 50%";
 
-    $: totalTime = makePlayTime(music?.duration);
-    $: currentTime = makePlayTime(music?.duration * (progress / 100));
+    $: totalTimeText = makePlayTime(music?.duration);
+    $: currentTimeText = makePlayTime(currentTime);
 
     const handleMoveProgress = (e: MouseEvent | TouchEvent) => {
         if (e instanceof MouseEvent && e.buttons === 1) {
@@ -208,10 +209,10 @@
             </div>
             <div class="time-info">
                 <div class="current-time">
-                    {currentTime}
+                    {currentTimeText}
                 </div>
                 <div class="total-time">
-                    {totalTime}
+                    {totalTimeText}
                 </div>
             </div>
             {#if isOpenPlayer}

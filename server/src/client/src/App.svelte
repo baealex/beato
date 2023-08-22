@@ -40,6 +40,7 @@
     let playing = false;
     let volume = 1;
     let progress = 0;
+    let currentTime = 0;
     let isLoaded = false;
     let playReady = false;
     let shouldCount = false;
@@ -169,7 +170,8 @@
                     });
                 }
                 if (message.actionType === "setPosition") {
-                    handleSetPosition(millisecondToSecond(message.position));
+                    currentTime = millisecondToSecond(message.position);
+                    handleSetPosition(currentTime);
                 }
             };
         } else {
@@ -189,7 +191,8 @@
             });
 
             audioElement.addEventListener("timeupdate", () => {
-                handleSetPosition(audioElement.currentTime);
+                currentTime = audioElement.currentTime;
+                handleSetPosition(currentTime);
             });
 
             audioElement.addEventListener("error", () => {
@@ -412,6 +415,7 @@
                 bind:volume
                 bind:progress
                 music={currentMusic}
+                {currentTime}
                 onClickPlay={handleClickPlay}
                 onClickPause={handleClickPause}
                 onClickNext={playNext}
