@@ -10,3 +10,11 @@ export const getFormattedDate = (date: Date) => {
     const minute = ('0' + date.getMinutes()).slice(-2);
     return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
 }
+
+export const secondToMillisecond = (second: number) => {
+    return Math.floor(second * 1000);
+};
+
+export const millisecondToSecond = (millisecond: number) => {
+    return millisecond / 1000;
+};

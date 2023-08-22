@@ -26,6 +26,8 @@
     import Setting from "./pages/Setting.svelte";
 
     import { downloadFile } from "./modules/download";
+    import { PostMessageWrapper } from "./modules/app-channel";
+    import { millisecondToSecond, secondToMillisecond } from "./modules/time";
     import { getAudio } from "./api";
 
     import { musicMap, queue, syncAll } from "./store";
@@ -38,8 +40,8 @@
     let playing = false;
     let volume = 1;
     let progress = 0;
-    let isLoading = true;
-    let initialLoading = true;
+    let isLoaded = false;
+    let playReady = false;
     let shouldCount = false;
     let currentMusic: Music = null;
 
@@ -55,57 +57,32 @@
         }
     }
 
-    interface SetMediaItemAction {
-        action: "setMediaItem";
-        mediaItem: {
-            id: string;
-            title: string;
-            artist: string;
-            album: string;
-            duration: number;
-            artUri: string;
-        };
+    $: {
+        if (isLoaded) {
+            queue.subscribe((value) => {
+                if (value.items.length === 0 || value.selected === null) {
+                    currentMusic = null;
+                    handleClickStop();
+                    return;
+                }
+                if (
+                    currentMusic &&
+                    currentMusic.id === value.items[value.selected].id
+                ) {
+                    return;
+                }
+                currentMusic = $musicMap.get(value.items[value.selected].id);
+                requestFile(value.items[value.selected].id);
+                playReady ? handleClickPlay() : (playReady = true);
+            });
+        }
     }
-
-    interface PlayAction {
-        action: "play";
-    }
-
-    interface PauseAction {
-        action: "pause";
-    }
-
-    interface StopAction {
-        action: "stop";
-    }
-
-    interface SeekAction {
-        action: "seek";
-        position: number;
-    }
-
-    const PostMessage = (
-        action:
-            | SetMediaItemAction
-            | PlayAction
-            | PauseAction
-            | StopAction
-            | SeekAction
-    ) => {
-        return JSON.stringify(action);
-    };
 
     onMount(() => {
         socketManager.socket.on("resync", () => {
-            isLoading = true;
+            isLoaded = false;
             syncAll(() => {
-                if (initialLoading && $queue.selected !== null) {
-                    currentMusic = $musicMap.get(
-                        $queue.items[$queue.selected].id
-                    );
-                    initialLoading = false;
-                }
-                isLoading = false;
+                isLoaded = true;
             });
         });
         window.addEventListener("focus", () => {
@@ -114,79 +91,15 @@
         socketManager.musicListener();
         socketManager.playlistListener();
 
-        if (window.AppChannel) {
-            window.AppChannel.syncAudioState = (state) => {
-                if (state === "play") {
-                    playing = true;
-                }
-                if (state === "pause") {
-                    playing = false;
-                }
-                if (state === "stop") {
-                    playing = false;
-                    progress = 0;
-                }
-                if (state === "skipToNext") {
-                    playNext();
-                }
-                if (state === "skipToPrev") {
-                    playPrev();
-                }
-                if (state === "end") {
-                    if ($queue.repeatMode === "one") {
-                        playAgain();
-                        return;
-                    }
-                    if ($queue.repeatMode === "all") {
-                        if ($queue.items.length === 1) {
-                            playAgain();
-                            return;
-                        }
-                        playNext();
-                        return;
-                    }
-                    if ($queue.repeatMode === "off") {
-                        if ($queue.selected === $queue.items.length - 1) {
-                            progress = 0;
-                            return;
-                        }
-                        playNext();
-                        return;
-                    }
-                }
-            };
+        const handlePlay = () => {
+            playing = true;
+        };
 
-            window.AppChannel.syncAudioTime = (value) => {
-                progress = Number(
-                    ((value / 1000 / currentMusic?.duration) * 100).toFixed(2)
-                );
+        const handlePause = () => {
+            playing = false;
+        };
 
-                if (progress >= 80 && shouldCount) {
-                    shouldCount = false;
-                    socketManager.socket.emit(socketManager.MUSIC_COUNT, {
-                        id: currentMusic?.id,
-                    });
-                }
-            };
-        }
-
-        audioElement.addEventListener("timeupdate", () => {
-            progress = Number(
-                (
-                    (audioElement.currentTime / currentMusic?.duration) *
-                    100
-                ).toFixed(2)
-            );
-
-            if (progress >= 80 && shouldCount) {
-                shouldCount = false;
-                socketManager.socket.emit(socketManager.MUSIC_COUNT, {
-                    id: currentMusic?.id,
-                });
-            }
-        });
-
-        audioElement.addEventListener("ended", () => {
+        const handleEnd = (onLast: Function) => {
             if ($queue.repeatMode === "one") {
                 playAgain();
                 return;
@@ -201,41 +114,83 @@
             }
             if ($queue.repeatMode === "off") {
                 if ($queue.selected === $queue.items.length - 1) {
-                    audioElement.currentTime = 0;
+                    onLast();
                     return;
                 }
                 playNext();
                 return;
             }
-        });
+        };
 
-        audioElement.addEventListener("error", () => {
-            toast("Failed to load audio");
-        });
+        const handleSetPosition = (secondPosition: number) => {
+            progress = Number(
+                ((secondPosition / currentMusic?.duration) * 100).toFixed(2)
+            );
 
-        audioElement.addEventListener("play", () => {
-            playing = true;
-        });
-
-        audioElement.addEventListener("pause", () => {
-            playing = false;
-        });
-
-        queue.subscribe((value) => {
-            if (value.items.length === 0 || value.selected === null) {
-                currentMusic = null;
-                handleClickStop();
-                return;
+            if (progress >= 80 && shouldCount) {
+                shouldCount = false;
+                socketManager.socket.emit(socketManager.MUSIC_COUNT, {
+                    id: currentMusic?.id,
+                });
             }
-            if (
-                currentMusic &&
-                currentMusic.id === value.items[value.selected].id
-            ) {
-                return;
-            }
-            currentMusic = $musicMap.get(value.items[value.selected].id);
-            requestFile(value.items[value.selected].id);
-        });
+        };
+
+        if (window.AppChannel) {
+            window.AppChannel.receiveMessage = (message) => {
+                if (message.actionType === "play") {
+                    handlePlay();
+                }
+                if (message.actionType === "pause") {
+                    handlePause();
+                }
+                if (message.actionType === "stop") {
+                    playing = false;
+                    progress = 0;
+                }
+                if (message.actionType === "skipToNext") {
+                    playNext();
+                }
+                if (message.actionType === "skipToPrevious") {
+                    playPrev();
+                }
+                if (message.actionType === "end") {
+                    handleEnd(() => {
+                        window.AppChannel.postMessage(
+                            PostMessageWrapper({
+                                actionType: "stop",
+                            })
+                        );
+                        progress = 0;
+                    });
+                }
+                if (message.actionType === "setPosition") {
+                    handleSetPosition(millisecondToSecond(message.position));
+                }
+            };
+        } else {
+            audioElement.addEventListener("play", () => {
+                handlePlay();
+            });
+
+            audioElement.addEventListener("pause", () => {
+                handlePause();
+            });
+
+            audioElement.addEventListener("ended", () => {
+                handleEnd(() => {
+                    audioElement.currentTime = 0;
+                    progress = 0;
+                });
+            });
+
+            audioElement.addEventListener("timeupdate", () => {
+                handleSetPosition(audioElement.currentTime);
+            });
+
+            audioElement.addEventListener("error", () => {
+                toast("Failed to load audio");
+            });
+        }
     });
 
     onDestroy(() => {
@@ -249,31 +204,41 @@
 
         if (window.AppChannel) {
             window.AppChannel.postMessage(
-                PostMessage({
-                    action: "setMediaItem",
+                PostMessageWrapper({
+                    actionType: "pause",
+                })
+            );
+            window.AppChannel.postMessage(
+                PostMessageWrapper({
+                    actionType: "setMediaItem",
                     mediaItem: {
                         id: location.origin + "/api/audio/" + id,
                         album: currentMusic.album.name,
                         title: currentMusic.name,
                         artist: currentMusic.artist.name,
-                        duration: Math.floor(
-                            Number(currentMusic.duration) * 1000
-                        ),
+                        duration: secondToMillisecond(currentMusic.duration),
                         artUri: location.origin + currentMusic.album.cover,
                     },
                 })
             );
+            window.AppChannel.postMessage(
+                PostMessageWrapper({
+                    actionType: "setPosition",
+                    position: 0,
+                })
+            );
         } else {
-            audioElement.pause();
             const audioResource = "/api/audio/" + id;
+            audioElement.pause();
             audioElement.src = audioResource;
+            audioElement.currentTime = 0;
             audioElement.load();
-            await audioElement.play();
         }
     };
 
     const playAgain = () => {
         requestFile(currentMusic.id);
+        handleClickPlay();
     };
 
     const playNext = () => {
@@ -287,9 +252,11 @@
     };
 
     const playPrev = () => {
-        if (audioElement.currentTime > 10) {
-            audioElement.currentTime = 0;
-            return;
+        if (!window.AppChannel) {
+            if (audioElement.currentTime > 10) {
+                audioElement.currentTime = 0;
+                return;
+            }
         }
         queue.update((state) => {
             state.selected = state.selected - 1;
@@ -301,26 +268,26 @@
     };
 
     const handleClickPlay = () => {
-        if (!playing) {
-            if (window.AppChannel) {
-                window.AppChannel.postMessage(
-                    PostMessage({
-                        action: "play",
-                    })
-                );
-            } else {
-                audioElement.play();
-            }
+        if (window.AppChannel) {
+            window.AppChannel.postMessage(
+                PostMessageWrapper({
+                    actionType: "play",
+                })
+            );
         } else {
-            if (window.AppChannel) {
-                window.AppChannel.postMessage(
-                    PostMessage({
-                        action: "pause",
-                    })
-                );
-            } else {
-                audioElement.pause();
-            }
+            audioElement.play();
+        }
+    };
+
+    const handleClickPause = () => {
+        if (window.AppChannel) {
+            window.AppChannel.postMessage(
+                PostMessageWrapper({
+                    actionType: "pause",
+                })
+            );
+        } else {
+            audioElement.pause();
         }
     };
 
@@ -329,8 +296,8 @@
 
         if (window.AppChannel) {
             window.AppChannel.postMessage(
-                PostMessage({
-                    action: "stop",
+                PostMessageWrapper({
+                    actionType: "stop",
                 })
             );
         } else {
@@ -340,26 +307,24 @@
     };
 
     const handleClickProgress = (e: MouseEvent | TouchEvent) => {
-        const rect = (
+        const { width, left, right } = (
             e.currentTarget as HTMLDivElement
         ).getBoundingClientRect();
-        const x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
-        const width = rect.width;
-        const percent = (x - rect.left) / width;
-        const cleanPercent = percent > 1 ? 1 : percent < 0 ? 0 : percent;
+
+        let x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
+        x = x < left ? left : x > right ? right : x;
+        const percent = (x - left) / width;
         const duration = currentMusic.duration;
 
         if (window.AppChannel) {
             window.AppChannel.postMessage(
-                PostMessage({
-                    action: "seek",
-                    position: Math.floor(
-                        Number(duration * cleanPercent * 1000)
-                    ),
+                PostMessageWrapper({
+                    actionType: "setPosition",
+                    position: secondToMillisecond(duration * percent),
                 })
             );
         } else {
-            audioElement.currentTime = duration * cleanPercent;
+            audioElement.currentTime = duration * percent;
         }
     };
 
@@ -380,7 +345,7 @@
 <main>
     <Router>
         <SiteHeader />
-        {#if isLoading}
+        {#if !isLoaded}
             <div class="container">
                 <div
                     style="
@@ -454,6 +419,7 @@
                 bind:progress
                 music={currentMusic}
                 onClickPlay={handleClickPlay}
+                onClickPause={handleClickPause}
                 onClickNext={playNext}
                 onClickPrev={playPrev}
                 onClickProgress={handleClickProgress}

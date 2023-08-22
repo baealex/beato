@@ -31,6 +31,7 @@
     export let playing: boolean;
     export let progress: number;
     export let onClickPlay: () => void;
+    export let onClickPause: () => void;
     export let onClickNext: () => void;
     export let onClickPrev: () => void;
     export let onClickProgress: (e: MouseEvent | TouchEvent) => void;
@@ -130,7 +131,10 @@
                     >
                         <Play />
                     </button>
-                    <button class="icon-button" on:click={onClickPlay}>
+                    <button
+                        class="icon-button"
+                        on:click={playing ? onClickPause : onClickPlay}
+                    >
                         {#if playing}
                             <Pause />
                         {:else}
@@ -247,7 +251,10 @@
                     >
                         <Play />
                     </button>
-                    <button class="icon-button" on:click={onClickPlay}>
+                    <button
+                        class="icon-button"
+                        on:click={playing ? onClickPause : onClickPlay}
+                    >
                         {#if playing}
                             <Pause />
                         {:else}
