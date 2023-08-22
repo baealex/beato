@@ -27,11 +27,11 @@ Self host music streaming platform
 
 ## Features
 
-- [x] Organize information about music (supported mp3, acc, wav, ogg, flac)
+- [x] Organize information about music (Supported mp3, acc, wav, ogg, flac)
 - [x] Count the number of times music is listened to
 - [x] Make your own playlist
+- [x] Background playable mobile apps available (Download for [Android](https://www.dropbox.com/scl/fo/0mjqlwcj44p7uz999868e/h?rlkey=wyush6qcvbkoss72b18q8gqjg&dl=0))
 - [ ] Audio transcoding
-- [ ] Mobile-friendly (Preparing app for background playback)
 
 <br>
 
