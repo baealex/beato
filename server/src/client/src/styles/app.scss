@@ -57,6 +57,12 @@ main {
     background: rgba(255, 255, 255, 0.2);
 }
 
+@media (max-width: 1024px) {
+    ::-webkit-scrollbar {
+        width: 0.25rem;
+    }
+}
+
 .container {
     overflow: auto;
     flex: 1;
@@ -191,7 +197,7 @@ button {
     background-color: #222;
     border-radius: 0.5rem;
     color: #eee;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     width: 10rem;
 
@@ -206,7 +212,7 @@ button {
     background-color: #222;
     border-radius: 0.5rem;
     color: #eee;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     display: flex;
     flex-direction: row;
@@ -214,8 +220,8 @@ button {
     gap: 0.5rem;
 
     svg {
-        width: 1rem;
-        height: 1rem;
+        width: 1.25rem;
+        height: 1.25rem;
     }
 
     @media (min-width: 1024px) {
