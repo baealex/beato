@@ -201,14 +201,18 @@
                     src={getImage(music.album.cover)}
                     alt={music.album.name}
                 />
-                <img
-                    class="foreground"
-                    class:playing
-                    class:rotate={$player.coverAnimation === "rotate"}
-                    style={`border-radius: ${randomBorderRadius}`}
-                    src={getImage(music.album.cover.replace("/resized", ""))}
-                    alt={music.album.name}
-                />
+                <div class="foreground-wrapper">
+                    <img
+                        class="foreground"
+                        class:playing
+                        class:rotate={$player.coverAnimation === "rotate"}
+                        style={`border-radius: ${randomBorderRadius}`}
+                        src={getImage(
+                            music.album.cover.replace("/resized", "")
+                        )}
+                        alt={music.album.name}
+                    />
+                </div>
             </div>
             <div class="title-info">
                 <button
@@ -451,42 +455,45 @@
         align-items: center;
         text-align: center;
         padding: 1rem;
-        overflow-x: hidden;
 
         .album-art {
             position: relative;
+            max-width: 100%;
             width: 300px;
             height: 300px;
 
+            @media (max-width: 332px) {
+                height: calc(100vw - 2rem);
+            }
+
             &.cd-shape {
-                box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.28);
+                box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.18);
                 border-radius: 50%;
 
-                &::before {
-                    content: "";
-                    position: absolute;
-                    z-index: 1;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 50%;
-                    background-color: rgba(255, 255, 255, 0.28);
-                }
-
+                &::before,
                 &::after {
                     content: "";
                     position: absolute;
                     z-index: 1;
                     top: 50%;
                     left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 40px;
-                    height: 40px;
                     border-radius: 50%;
-                    background-color: #000;
+                    transform: translate(-50%, -50%);
+                    width: 48px;
+                    height: 48px;
+                    background-color: rgba(255, 255, 255, 0.18);
                 }
+
+                &::after {
+                    width: 32px;
+                    height: 32px;
+                    background-color: #000000;
+                }
+            }
+
+            .foreground-wrapper {
+                overflow: hidden;
+                aspect-ratio: 1/1;
             }
 
             .foreground {
@@ -518,25 +525,25 @@
 
             .background {
                 position: absolute;
-                top: 64px;
+                top: 48px;
                 left: 0;
-                width: 90%;
-                height: 90%;
-                transform: translate(5%, 5%);
+                width: 100%;
+                height: 100%;
+                transform: scale(0.88);
                 object-fit: cover;
                 border-radius: 50%;
-                opacity: 0.45;
+                opacity: 0.5;
                 z-index: -1;
-                filter: blur(50px);
+                filter: blur(48px);
                 transition: border-radius 1s
                     cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
         }
 
         .title-info {
-            margin-top: 2.5rem;
+            margin-top: 3rem;
             width: 500px;
-            max-width: 90%;
+            max-width: 100%;
 
             .title {
                 .name {
