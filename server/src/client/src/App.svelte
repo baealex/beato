@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { Router, Route } from "svelte-routing";
-    import { toast } from "@baejino/ui";
+    import { alert, toast } from "@baejino/ui";
 
     import {
         Beato,
@@ -27,7 +27,7 @@
 
     import { downloadFile } from "./modules/download";
     import { PostMessageWrapper } from "./modules/app-channel";
-    import { millisecondToSecond, secondToMillisecond } from "./modules/time";
+    import { convertToMillisecond, convertToSecond } from "./modules/time";
     import { getAudio } from "./api";
 
     import { musicMap, queue, syncAll } from "./store";
@@ -170,7 +170,7 @@
                     });
                 }
                 if (message.actionType === "setPosition") {
-                    currentTime = millisecondToSecond(message.position);
+                    currentTime = convertToSecond(message.position);
                     handleSetPosition(currentTime);
                 }
             };
@@ -219,7 +219,7 @@
                         album: currentMusic.album.name,
                         title: currentMusic.name,
                         artist: currentMusic.artist.name,
-                        duration: secondToMillisecond(currentMusic.duration),
+                        duration: convertToMillisecond(currentMusic.duration),
                         artUri: location.origin + currentMusic.album.cover,
                     },
                 })
@@ -317,7 +317,7 @@
             window.AppChannel.postMessage(
                 PostMessageWrapper({
                     actionType: "setPosition",
-                    position: secondToMillisecond(duration * percent),
+                    position: convertToMillisecond(duration * percent),
                 })
             );
         } else {
@@ -329,13 +329,14 @@
         socketManager.socket.emit(socketManager.MUSIC_LIKE, { id: music.id });
     };
 
-    const handleClickDownload = (music: Music) => {
-        getAudio(music.id).then((res) => {
-            if (res.data) {
-                const fileName = music.filePath.split("/").pop();
-                downloadFile(fileName, URL.createObjectURL(res.data));
-            }
-        });
+    const handleClickDownload = async (music: Music) => {
+        if (window.AppChannel) {
+            await alert("Not yet supported");
+        } else {
+            const { data } = await getAudio(music.id);
+            const fileName = music.filePath.split("/").pop();
+            downloadFile(fileName, URL.createObjectURL(data));
+        }
     };
 </script>
 

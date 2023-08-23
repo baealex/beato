@@ -11,10 +11,10 @@ export const getFormattedDate = (date: Date) => {
     return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
 }
 
-export const secondToMillisecond = (second: number) => {
+export const convertToMillisecond = (second: number) => {
     return Math.floor(second * 1000);
 };
 
-export const millisecondToSecond = (millisecond: number) => {
+export const convertToSecond = (millisecond: number) => {
     return millisecond / 1000;
 };
