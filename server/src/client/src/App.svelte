@@ -28,6 +28,7 @@
     import { downloadFile } from "./modules/download";
     import { PostMessageWrapper } from "./modules/app-channel";
     import { convertToMillisecond, convertToSecond } from "./modules/time";
+    import { getImage } from "./modules/image";
     import { getAudio } from "./api";
 
     import { musicMap, queue, syncAll } from "./store";
@@ -174,6 +175,13 @@
                     handleSetPosition(currentTime);
                 }
             };
+            window.addEventListener("beforeunload", () => {
+                window.AppChannel.postMessage(
+                    PostMessageWrapper({
+                        actionType: "stop",
+                    })
+                );
+            });
         } else {
             audioElement.addEventListener("play", () => {
                 handlePlay();
@@ -220,7 +228,9 @@
                         title: currentMusic.name,
                         artist: currentMusic.artist.name,
                         duration: convertToMillisecond(currentMusic.duration),
-                        artUri: location.origin + currentMusic.album.cover,
+                        artUri:
+                            location.origin +
+                            getImage(currentMusic.album.cover),
                     },
                 })
             );
@@ -249,8 +259,18 @@
     };
 
     const playPrev = () => {
-        if (!window.AppChannel) {
-            if (audioElement.currentTime > 10) {
+        if (window.AppChannel) {
+            if (currentTime > 10) {
+                window.AppChannel.postMessage(
+                    PostMessageWrapper({
+                        actionType: "setPosition",
+                        position: 0,
+                    })
+                );
+                return;
+            }
+        } else {
+            if (currentTime > 10) {
                 audioElement.currentTime = 0;
                 return;
             }
