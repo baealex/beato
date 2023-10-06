@@ -3,14 +3,14 @@ import { useQuery } from 'react-query'
 import { getMusics } from '~/api'
 import MusicItem from '~/components/MusicItem'
 
-export default function Home() {
+export default function Favorite() {
     const { data: musics } = useQuery('musics', async () => {
         return (await getMusics()).data.allMusics
     });
 
     return (
         <>
-            {musics?.map((music: Music) => (
+            {musics?.filter(music => music.isLiked).map((music: Music) => (
                 <MusicItem
                     key={music.id}
                     albumName={music.album.name}

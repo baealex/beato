@@ -1,7 +1,17 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-import Home from '~/pages/Home'
+import {
+    Album,
+    AlbumDetail,
+    Artist,
+    ArtistDetail,
+    Favorite,
+    Music,
+    Playlist,
+    Queue,
+    Setting,
+} from './pages';
 import { SiteHeader } from './components';
 
 const client = new QueryClient({
@@ -30,31 +40,39 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Home />,
+                element: <Music />,
             },
             {
                 path: '/favorite',
-                element: <Home />,
+                element: <Favorite />,
+            },
+            {
+                path: '/album/:id',
+                element: <AlbumDetail />,
             },
             {
                 path: '/album',
-                element: <Home />,
+                element: <Album />,
+            },
+            {
+                path: '/artist/:id',
+                element: <ArtistDetail />,
             },
             {
                 path: '/artist',
-                element: <Home />,
+                element: <Artist />,
             },
             {
                 path: '/playlist',
-                element: <Home />,
+                element: <Playlist />,
             },
             {
                 path: '/queue-history',
-                element: <Home />,
+                element: <Queue />,
             },
             {
                 path: '/setting',
-                element: <Home />,
+                element: <Setting />,
             },
         ],
     }
