@@ -2,12 +2,12 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 import {
-    Album,
     AlbumDetail,
-    Artist,
+    AlbumList,
     ArtistDetail,
+    ArtistList,
     Favorite,
-    Music,
+    MusicList,
     Playlist,
     Queue,
     Setting,
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Music />,
+                element: <MusicList />,
             },
             {
                 path: '/favorite',
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/album',
-                element: <Album />,
+                element: <AlbumList />,
             },
             {
                 path: '/artist/:id',
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/artist',
-                element: <Artist />,
+                element: <ArtistList />,
             },
             {
                 path: '/playlist',

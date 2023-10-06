@@ -5,7 +5,7 @@ import { Heart, MoreVerticalFill } from '~/icon'
 
 interface MusicItemProps {
     albumName: string;
-    albumCover: string;
+    albumCover?: string;
     artistName: string;
     trackNumber?: number;
     musicName: string;
@@ -123,12 +123,14 @@ export default function MusicItem({
 }: MusicItemProps) {
     return (
         <Container className="clickable" onClick={onClick} onContextMenu={onLongPress}>
-            <Image className="album-art" src={albumCover} alt={albumName} />
+            {albumCover && (
+                <Image className="album-art" src={albumCover} alt={albumName} />
+            )}
             <div className="row">
                 <div className="info">
                     <div className="title">
                         {trackNumber && (
-                            <span className="track-number">{trackNumber}</span>
+                            <span className="track-number">{trackNumber}.</span>
                         )}
                         {musicName}
                         {musicCodec && musicCodec.toLocaleLowerCase() === "flac" && (

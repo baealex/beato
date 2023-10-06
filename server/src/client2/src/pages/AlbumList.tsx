@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
+import { useStore } from 'badland-react'
+import { useNavigate } from 'react-router-dom'
 
 import { AlbumItem } from '~/components'
 
-import { useStore } from 'badland-react'
 import { albumStore } from '~/store/album'
 
 const Grid = styled.div`
@@ -18,6 +19,8 @@ const Grid = styled.div`
 `
 
 export default function Album() {
+    const navigate = useNavigate()
+
     const [{ albums }] = useStore(albumStore)
 
     return (
@@ -28,7 +31,7 @@ export default function Album() {
                     albumName={album.name}
                     albumCover={album.cover}
                     artistName={album.artist.name}
-                    onClick={() => { }}
+                    onClick={() => navigate(`/album/${album.id}`)}
                 />
             ))}
         </Grid>

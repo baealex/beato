@@ -4,6 +4,7 @@ import { Music } from '~/models/type'
 
 interface MusicState {
     musics: Music[]
+    musicMap: Map<string, Music>
 }
 
 class MusicStore extends Store<MusicState> {
@@ -12,7 +13,8 @@ class MusicStore extends Store<MusicState> {
     constructor() {
         super()
         this.state = {
-            musics: []
+            musics: [],
+            musicMap: new Map(),
         }
     }
 
@@ -30,7 +32,10 @@ class MusicStore extends Store<MusicState> {
 
     async sync() {
         getMusics().then(({ data }) => {
-            this.set({ musics: data.allMusics })
+            this.set({
+                musics: data.allMusics,
+                musicMap: new Map(data.allMusics.map(music => [music.id, music]))
+            })
         })
     }
 }
