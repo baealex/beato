@@ -1,16 +1,15 @@
-import { Music } from '~/models/type'
-import { useQuery } from 'react-query'
-import { getMusics } from '~/api'
+import { useStore } from 'badland-react'
+
 import MusicItem from '~/components/MusicItem'
 
-export default function Favorite() {
-    const { data: musics } = useQuery('musics', async () => {
-        return (await getMusics()).data.allMusics
-    });
+import { musicStore } from '~/store/music'
+
+export default function Music() {
+    const [{ musics }] = useStore(musicStore)
 
     return (
         <>
-            {musics?.filter(music => music.isLiked).map((music: Music) => (
+            {musics?.filter(music => music.isLiked).map((music) => (
                 <MusicItem
                     key={music.id}
                     albumName={music.album.name}

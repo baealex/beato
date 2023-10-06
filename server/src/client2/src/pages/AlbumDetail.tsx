@@ -6,7 +6,7 @@ import MusicItem from '~/components/MusicItem'
 export default function AlbumDetail() {
     const { data: musics } = useQuery('musics', async () => {
         return (await getMusics()).data.allMusics
-    });
+    })
 
     return (
         <>

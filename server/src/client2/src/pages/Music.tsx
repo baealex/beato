@@ -1,13 +1,11 @@
-import { useQuery } from 'react-query'
+import { useStore } from 'badland-react'
 
 import MusicItem from '~/components/MusicItem'
 
-import { getMusics } from '~/api'
+import { musicStore } from '~/store/music'
 
 export default function Music() {
-    const { data: musics } = useQuery('musics', async () => {
-        return (await getMusics()).data.allMusics
-    });
+    const [{ musics }] = useStore(musicStore)
 
     return (
         <>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react"
 
 interface ImageProps {
     src: string;
@@ -7,47 +7,53 @@ interface ImageProps {
     className?: string;
 }
 
+export const getImage = (src?: string) => {
+    if (!src) {
+        return '/images/beato.jpg'
+    }
+    return src
+}
+
 export default function Image({
     src,
     alt,
     loading = "lazy",
     className,
 }: ImageProps) {
-    const ref = useRef<HTMLImageElement>(null);
+    const ref = useRef<HTMLImageElement>(null)
 
     useEffect(() => {
-        if (!ref.current || loading !== "lazy" || !src) {
-            return;
+        if (!ref.current || loading !== "lazy") {
+            return
         }
 
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
-                const img = entry.target as HTMLImageElement;
-                img.src = img.dataset.src as string;
-                observer.unobserve(img);
+                const img = entry.target as HTMLImageElement
+                img.src = getImage(src)
+                observer.unobserve(img)
             }
-        });
+        })
 
-        observer.observe(ref.current);
+        observer.observe(ref.current)
 
         return () => {
-            observer.disconnect();
+            observer.disconnect()
         }
-    }, [loading, src]);
+    }, [loading, src])
 
     return (
         <>
             {loading !== "lazy" ? (
-                <img src={src} alt={alt} className={className} />
+                <img src={getImage(src)} alt={alt} className={className} />
             ) : (
                 <img
                     ref={ref}
-                    src={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2O4evXqfwAIgQN/QHwrfwAAAABJRU5ErkJggg=="}
+                    src={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NQV1f/DwACYwF11mMyYQAAAABJRU5ErkJggg=="}
                     alt={alt}
-                    data-src={src}
                     className={className}
                 />
             )}
         </>
-    );
+    )
 }

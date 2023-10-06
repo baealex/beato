@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
+import styled from '@emotion/styled'
 
-import Image from './Image';
-import { Heart, MoreVerticalFill } from '~/icon';
+import Image from './Image'
+import { Heart, MoreVerticalFill } from '~/icon'
 
 interface MusicItemProps {
     albumName: string;

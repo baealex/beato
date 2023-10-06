@@ -1,5 +1,5 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import {
     Album,
@@ -11,8 +11,8 @@ import {
     Playlist,
     Queue,
     Setting,
-} from './pages';
-import { SiteHeader } from './components';
+} from './pages'
+import { SiteHeader } from './components'
 
 const client = new QueryClient({
     defaultOptions: {

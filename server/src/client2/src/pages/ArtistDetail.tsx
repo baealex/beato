@@ -1,26 +1,24 @@
-import { Music } from '~/models/type'
 import { useQuery } from 'react-query'
-import { getMusics } from '~/api'
-import MusicItem from '~/components/MusicItem'
+
+import { getArtists } from '~/api'
+
+import { ArtistItem } from '~/components'
 
 export default function ArtistDetail() {
-    const { data: musics } = useQuery('musics', async () => {
-        return (await getMusics()).data.allMusics
-    });
+    const { data: artists } = useQuery('artists', async () => {
+        return (await getArtists()).data.allArtists
+    })
 
     return (
         <>
-            {musics?.map((music: Music) => (
-                <MusicItem
-                    key={music.id}
-                    albumName={music.album.name}
-                    albumCover={music.album.cover}
-                    artistName={music.artist.name}
-                    musicName={music.name}
-                    musicCodec={music.codec}
-                    isLiked={music.isLiked}
+            {artists?.map((artist) => (
+                <ArtistItem
+                    key={artist.id}
+                    artistName={artist.name}
+                    artistCover={artist.latestAlbum?.cover || ''}
+                    albumCount={artist.albumCount}
+                    musicCount={artist.musicCount}
                     onClick={() => { }}
-                    onLongPress={() => { }}
                 />
             ))}
         </>
