@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 import {
@@ -12,7 +12,7 @@ import {
     Queue,
     Setting,
 } from './pages'
-import { SiteHeader } from './components'
+import { SiteLayout } from './components'
 
 const client = new QueryClient({
     defaultOptions: {
@@ -22,17 +22,6 @@ const client = new QueryClient({
         },
     },
 })
-
-const SiteLayout = () => {
-    return (
-        <main>
-            <SiteHeader />
-            <div className="container">
-                <Outlet />
-            </div>
-        </main>
-    )
-}
 
 const router = createBrowserRouter([
     {
@@ -47,16 +36,8 @@ const router = createBrowserRouter([
                 element: <Favorite />,
             },
             {
-                path: '/album/:id',
-                element: <AlbumDetail />,
-            },
-            {
                 path: '/album',
                 element: <AlbumList />,
-            },
-            {
-                path: '/artist/:id',
-                element: <ArtistDetail />,
             },
             {
                 path: '/artist',
@@ -75,15 +56,30 @@ const router = createBrowserRouter([
                 element: <Setting />,
             },
         ],
-    }
+    },
+    {
+        element: <SiteLayout isSubPage />,
+        children: [
+            {
+                path: '/album/:id',
+                element: <AlbumDetail />,
+            },
+            {
+                path: '/artist/:id',
+                element: <ArtistDetail />,
+            },
+        ],
+    },
+    {
+        element: <div>Page Not Found</div>,
+        path: '*',
+    },
 ])
 
-function App() {
+export default function App() {
     return (
         <QueryClientProvider client={client}>
             <RouterProvider router={router} />
         </QueryClientProvider>
     )
 }
-
-export default App

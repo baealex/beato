@@ -123,7 +123,7 @@ export default function MusicItem({
 }: MusicItemProps) {
     return (
         <Container className="clickable" onClick={onClick} onContextMenu={onLongPress}>
-            {albumCover && (
+            {typeof albumCover === 'string' && (
                 <Image className="album-art" src={albumCover} alt={albumName} />
             )}
             <div className="row">

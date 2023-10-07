@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 import { useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { getArtist } from '~/api'
 import { AlbumItem, Image, MusicItem } from '~/components'
@@ -63,6 +63,8 @@ const Container = styled.section`
 `
 
 export default function ArtistDetail() {
+    const navigate = useNavigate()
+
     const { id } = useParams<{ id: string }>()
 
     const { data: artist } = useQuery(['album', id], () => getArtist(id!).then(res => res.data.artist), {
@@ -88,7 +90,7 @@ export default function ArtistDetail() {
                         albumCover={album.cover}
                         albumName={album.name}
                         artistName={album.publishedYear}
-                        onClick={() => { }}
+                        onClick={() => navigate(`/album/${album.id}`)}
                     />
                 ))}
             </div>
