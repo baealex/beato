@@ -1,17 +1,38 @@
 import { useEffect, useRef } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 import SiteHeader from './SiteHeader'
 import SubPageHeader from './SubPageHeader'
+import MusicPlayer from './MusicPlayer'
 
 interface SiteLayoutProps {
     isSubPage?: boolean
+    disablePlayer?: boolean
+    animationDirection?: 'RightToLeft' | 'bottomToTop'
 }
 
-export default function SiteLayout({ isSubPage }: SiteLayoutProps) {
+export default function SiteLayout({
+    isSubPage,
+    disablePlayer = false,
+    animationDirection = 'RightToLeft',
+}: SiteLayoutProps) {
     const ref = useRef<HTMLDivElement>(null)
 
     const location = useLocation()
+
+    const animationVariants = {
+        in: {
+            opacity: 1,
+            x: 0,
+            y: 0,
+        },
+        out: {
+            opacity: 0,
+            x: animationDirection === 'RightToLeft' ? 50 : 0,
+            y: animationDirection === 'bottomToTop' ? 50 : 0,
+        },
+    }
 
     useEffect(() => {
         if (!ref.current) {
@@ -45,9 +66,23 @@ export default function SiteLayout({ isSubPage }: SiteLayoutProps) {
     return (
         <main>
             {isSubPage ? <SubPageHeader /> : <SiteHeader />}
-            <div ref={ref} className="container">
+            <motion.div
+                ref={ref}
+                key={location.pathname}
+                className="container"
+                animate="in"
+                exit="out"
+                initial="out"
+                variants={animationVariants}
+                transition={{
+                    duration: 0.25,
+                }}
+            >
                 <Outlet />
-            </div>
+            </motion.div>
+            {!disablePlayer &&
+                <MusicPlayer />
+            }
         </main>
     )
 }
