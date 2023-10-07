@@ -4,7 +4,7 @@ import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { getArtist } from '~/api'
-import { AlbumItem, Image, MusicItem } from '~/components'
+import { AlbumItem, Image, MusicItem, SecondaryButton } from '~/components'
 import { Play } from '~/icon'
 import { musicStore } from '~/store/music'
 
@@ -53,13 +53,6 @@ const Container = styled.section`
         padding: 0;
         list-style: none;
     }
-
-    .play-all {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.75rem;
-    }
 `
 
 export default function ArtistDetail() {
@@ -87,6 +80,7 @@ export default function ArtistDetail() {
             <div className="albums">
                 {artist.albums.map(album => (
                     <AlbumItem
+                        key={album.id}
                         albumCover={album.cover}
                         albumName={album.name}
                         artistName={album.publishedYear}
@@ -97,14 +91,9 @@ export default function ArtistDetail() {
 
             <div className="section-title">
                 Songs ({artist.musics.length})
-                <div className="play-all">
-                    <button
-                        className="gray-button"
-                    >
-                        <Play />
-                        Play
-                    </button>
-                </div>
+                <SecondaryButton>
+                    <Play /> Play
+                </SecondaryButton>
             </div>
             <div className="musics">
                 {artist.musics.map(({ id }) => {
@@ -114,6 +103,7 @@ export default function ArtistDetail() {
 
                     return (
                         <MusicItem
+                            key={music.id}
                             artistName={music.album.name}
                             albumCover={music.album.cover}
                             albumName={music.album.name}

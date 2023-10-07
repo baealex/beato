@@ -3,7 +3,8 @@ import { useStore } from 'badland-react'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 
-import { MusicItem } from '~/components'
+import { Image, MusicItem } from '~/components'
+import { Play } from '~/icon'
 
 import { getAlbum } from '~/api'
 
@@ -96,10 +97,12 @@ export default function AlbumDetail() {
 
     const [{ musicMap }] = useStore(musicStore)
 
+    if (!album) return null
+
     return (
         <>
             <Container>
-                <img className="album-cover" src={album?.cover} alt={album?.name} />
+                <Image className="album-cover" src={album?.cover.replace('/resized', '') || ''} alt={album?.name} />
                 <div className="album-title">{album?.name}</div>
                 <div className="row">
                     <span className="album-artist">{album?.artist.name}</span>
@@ -108,9 +111,7 @@ export default function AlbumDetail() {
                 </div>
                 <div className="play-all">
                     <button>
-                        <svg viewBox="0 0 24 24">
-                            <path d="M3 22v-20l18 10-18 10z" />
-                        </svg>
+                        <Play />
                     </button>
                 </div>
             </Container>
