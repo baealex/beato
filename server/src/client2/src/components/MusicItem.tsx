@@ -9,10 +9,10 @@ interface MusicItemProps {
     artistName: string;
     trackNumber?: number;
     musicName: string;
-    musicCodec: string;
-    isLiked: boolean;
-    onClick: () => void;
-    onLongPress: () => void;
+    musicCodec?: string;
+    isLiked?: boolean;
+    onClick?: () => void;
+    onLongPress?: () => void;
 }
 
 const Container = styled.button`
@@ -141,13 +141,15 @@ export default function MusicItem({
                         <div>{artistName}</div>
                     </div>
                 </div>
-                <button className={`icon-button ${isLiked ? "liked" : ""}`}>
-                    {isLiked ? (
-                        <Heart />
-                    ) : (
-                        <MoreVerticalFill />
-                    )}
-                </button>
+                {onLongPress && (
+                    <button className={`icon-button ${isLiked ? "liked" : ""}`}>
+                        {isLiked ? (
+                            <Heart />
+                        ) : (
+                            <MoreVerticalFill />
+                        )}
+                    </button>
+                )}
             </div>
         </Container>
     )

@@ -8,8 +8,10 @@ import {
     ArtistList,
     Favorite,
     MusicList,
+    PlayerDetail,
     Playlist,
     Queue,
+    QueueHistory,
     Setting,
 } from './pages'
 import { SiteLayout } from './components'
@@ -49,7 +51,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/queue-history',
-                element: <Queue />,
+                element: <QueueHistory />,
             },
             {
                 path: '/setting',
@@ -69,6 +71,29 @@ const router = createBrowserRouter([
                 element: <ArtistDetail />,
             },
         ],
+    },
+    {
+        element: (
+            <SiteLayout
+                isSubPage
+                disablePlayer
+                animationDirection="BottomToTop"
+            />
+        ),
+        children: [
+            {
+                path: '/player',
+                element: <PlayerDetail />,
+            },
+        ],
+    },
+    {
+        children: [
+            {
+                path: '/queue',
+                element: <Queue />,
+            },
+        ]
     },
     {
         element: <div>Page Not Found</div>,

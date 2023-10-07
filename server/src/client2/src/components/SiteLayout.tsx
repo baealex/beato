@@ -9,7 +9,7 @@ import MusicPlayer from './MusicPlayer'
 interface SiteLayoutProps {
     isSubPage?: boolean
     disablePlayer?: boolean
-    animationDirection?: 'RightToLeft' | 'bottomToTop'
+    animationDirection?: 'RightToLeft' | 'BottomToTop'
 }
 
 export default function SiteLayout({
@@ -30,7 +30,7 @@ export default function SiteLayout({
         out: {
             opacity: 0,
             x: animationDirection === 'RightToLeft' ? 50 : 0,
-            y: animationDirection === 'bottomToTop' ? 50 : 0,
+            y: animationDirection === 'BottomToTop' ? 50 : 0,
         },
     }
 

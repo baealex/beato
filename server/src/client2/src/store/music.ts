@@ -2,12 +2,12 @@ import Store from 'badland'
 import { getMusics } from '~/api'
 import { Music } from '~/models/type'
 
-interface MusicState {
+interface MusicStoreState {
     musics: Music[]
     musicMap: Map<string, Music>
 }
 
-class MusicStore extends Store<MusicState> {
+class MusicStore extends Store<MusicStoreState> {
     init = false
 
     constructor() {

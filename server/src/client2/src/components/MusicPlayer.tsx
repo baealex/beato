@@ -1,5 +1,12 @@
 import styled from '@emotion/styled'
+import { useStore } from 'badland-react'
+import { useNavigate } from 'react-router-dom'
+
+import MusicItem from './MusicItem'
 import { Menu, Play, Repeat, Shuffle } from '~/icon'
+
+import { musicStore } from '~/store/music'
+import { queueStore } from '~/store/queue'
 
 const Container = styled.div`
     display: flex;
@@ -92,7 +99,6 @@ const Container = styled.div`
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: 0.5rem;
 
         .music {
             cursor: pointer;
@@ -166,6 +172,15 @@ const Container = styled.div`
 `
 
 export default function MusicPlayer() {
+    const navigate = useNavigate()
+
+    const [state] = useStore(queueStore)
+    const [{ musicMap }] = useStore(musicStore)
+
+    const currentMusic = state.selected !== null
+        ? musicMap.get(state.items[state.selected])
+        : null
+
     return (
         <Container>
             <div className="progress">
@@ -173,10 +188,13 @@ export default function MusicPlayer() {
             </div>
             <div className="player">
                 <div className="music">
-                    <div className="info">
-                        <div className="title">Title</div>
-                        <div className="artist">Artist</div>
-                    </div>
+                    <MusicItem
+                        albumName={currentMusic?.album.name ?? ''}
+                        albumCover={currentMusic?.album.cover ?? ''}
+                        musicName={currentMusic?.name ?? 'No music is playing'}
+                        artistName={currentMusic?.artist.name ?? ''}
+                        onClick={() => currentMusic && navigate('/player')}
+                    />
                 </div>
                 <div className="action">
                     <div className="mode">

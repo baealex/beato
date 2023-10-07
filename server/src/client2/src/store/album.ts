@@ -2,11 +2,11 @@ import Store from 'badland'
 import { getAlbums } from '~/api'
 import { Album } from '~/models/type'
 
-interface AlbumState {
+interface AlbumStoreState {
     albums: Album[]
 }
 
-class AlbumStore extends Store<AlbumState> {
+class AlbumStore extends Store<AlbumStoreState> {
     init = false
 
     constructor() {
