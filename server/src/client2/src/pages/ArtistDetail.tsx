@@ -39,26 +39,19 @@ const Container = styled.section`
     .albums {
         padding: 1rem;
         margin-bottom: 3rem;
+        display: grid;
+        grid-gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 
-        ul {
-            display: grid;
-            grid-gap: 1rem;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            padding: 0;
-            list-style: none;
-
-            @media (max-width: 600px) {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
+        @media (max-width: 600px) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
     .musics {
-        ul {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 
     .play-all {
@@ -90,18 +83,14 @@ export default function ArtistDetail() {
                 Albums ({artist.albums.length})
             </div>
             <div className="albums">
-                <ul>
-                    {artist.albums.map(album => (
-                        <li>
-                            <AlbumItem
-                                albumCover={album.cover}
-                                albumName={album.name}
-                                artistName={album.publishedYear}
-                                onClick={() => { }}
-                            />
-                        </li>
-                    ))}
-                </ul>
+                {artist.albums.map(album => (
+                    <AlbumItem
+                        albumCover={album.cover}
+                        albumName={album.name}
+                        artistName={album.publishedYear}
+                        onClick={() => { }}
+                    />
+                ))}
             </div>
 
             <div className="section-title">
@@ -116,30 +105,26 @@ export default function ArtistDetail() {
                 </div>
             </div>
             <div className="musics">
-                <ul>
-                    {artist.musics.map(({ id }) => {
-                        const music = musicMap.get(id)
+                {artist.musics.map(({ id }) => {
+                    const music = musicMap.get(id)
 
-                        if (!music) return null
+                    if (!music) return null
 
-                        return (
-                            <li>
-                                <MusicItem
-                                    artistName={music.album.name}
-                                    albumCover={music.album.cover}
-                                    albumName={music.album.name}
-                                    musicName={music.name}
-                                    musicCodec={music.codec}
-                                    isLiked={music.isLiked}
-                                    onClick={() => { }}
-                                    onLongPress={() => {
+                    return (
+                        <MusicItem
+                            artistName={music.album.name}
+                            albumCover={music.album.cover}
+                            albumName={music.album.name}
+                            musicName={music.name}
+                            musicCodec={music.codec}
+                            isLiked={music.isLiked}
+                            onClick={() => { }}
+                            onLongPress={() => {
 
-                                    }}
-                                />
-                            </li>
-                        )
-                    })}
-                </ul>
+                            }}
+                        />
+                    )
+                })}
             </div>
         </Container>
     )

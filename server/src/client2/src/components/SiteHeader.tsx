@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import styled from "@emotion/styled"
+import { Link as RouterLink, useLocation } from "react-router-dom"
 
 const HEADER_ITEMS = [
     {
@@ -30,7 +30,7 @@ const HEADER_ITEMS = [
         name: "Setting",
         path: "/setting",
     },
-];
+]
 
 const Header = styled.header`
     position: relative;
@@ -42,7 +42,7 @@ const Header = styled.header`
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #333;
-`;
+`
 
 const Nav = styled.nav`
     position: relative;
@@ -88,7 +88,7 @@ const Nav = styled.nav`
             font-size: 1rem;
         }
     }
-`;
+`
 
 const Link = styled.a<{ active: boolean, to: string }>`
     position: relative;
@@ -117,10 +117,10 @@ const Link = styled.a<{ active: boolean, to: string }>`
             transform: scaleX(1);
         }
     `}
-`;
+`
 
 export default function SiteHeader() {
-    const location = useLocation();
+    const location = useLocation()
 
     return (
         <Header>

@@ -138,7 +138,7 @@ export default function MusicItem({
                         )}
                     </div>
                     <div className="artist">
-                        <div className="artist-name">{artistName}</div>
+                        <div>{artistName}</div>
                     </div>
                 </div>
                 <button className={`icon-button ${isLiked ? "liked" : ""}`}>
