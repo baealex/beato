@@ -3,10 +3,11 @@ import styled from "@emotion/styled"
 import { useStore } from "badland-react"
 
 import { getImage } from "~/components/Image"
-import { Play, RightLeft, Shuffle } from "~/icon"
+import * as Icon from "~/icon"
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
+import { makePlayTime } from "~/modules/time"
 
 const Container = styled.div`
     flex: 1;
@@ -246,14 +247,49 @@ export default function PlayerDetail() {
     const [state] = useStore(queueStore)
     const [{ musicMap }] = useStore(musicStore)
 
+    const [borderRadius, setBorderRadius] = useState("50%")
+
     const currentMusic = state.selected !== null
         ? musicMap.get(state.items[state.selected])
         : null
+    const progress = (state.currentTime / (currentMusic?.duration || 1) * 100).toFixed(2)
 
-    const [borderRadius, setBorderRadius] = useState("50%")
+    const handleClickProgress = (e: MouseEvent | TouchEvent) => {
+        const { width, left, right } = (
+            e.currentTarget as HTMLDivElement
+        ).getBoundingClientRect()
+
+        let x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX
+        x = x < left ? left : x > right ? right : x
+        const percent = (x - left) / width
+        const duration = currentMusic?.duration || 1
+
+        queueStore.seek(duration * percent)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const handleMoveProgress = (e: MouseEvent | TouchEvent) => {
+        if (e instanceof MouseEvent && e.buttons === 1) {
+            handleClickProgress(e)
+            return
+        }
+
+        if (
+            window.TouchEvent &&
+            e instanceof TouchEvent &&
+            e.touches.length === 1
+        ) {
+            handleClickProgress(e)
+        }
+    }
 
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout> | null = null
+
+        if (!state.isPlaying) {
+            setBorderRadius("50%")
+            return
+        }
 
         const setRandomBorderRadius = () => {
             const makeRandom = () => {
@@ -269,7 +305,7 @@ export default function PlayerDetail() {
                 clearTimeout(timer)
             }
         }
-    }, [])
+    }, [state.isPlaying])
 
     return (
         <Container>
@@ -308,51 +344,51 @@ export default function PlayerDetail() {
             </div>
             <div className="time-info">
                 <div className="current-time">
-                    0:00
+                    {makePlayTime(state.currentTime)}
                 </div>
                 <div className="total-time">
-                    0:00
+                    {makePlayTime(currentMusic?.duration || 0)}
                 </div>
             </div>
             <div
                 className="progress"
                 role="slider"
                 tabIndex={0}
-            // aria-valuenow={progress}
-            // on: click={onClickProgress}
-            // on: keydown={() => { }}
-            // on: mousemove={handleMoveProgress}
-            // on: touchmove={handleMoveProgress}
+                aria-valuenow={Number(progress)}
+                aria-valuemin={0}
+                aria-valuemax={100}
             >
                 <div
                     className="bar"
-                // style="transform: translate(-{100 - progress}%);"
+                    style={{
+                        transform: `translate(-${(100 - Number(progress))}%, 0)`
+                    }}
                 />
             </div>
             <div className="action">
-                <button
-                    className="icon-button mode"
-                >
-                    <RightLeft />
+                <button className="icon-button mode" onClick={() => queueStore.changeRepeatMode()}>
+                    {state.repeatMode === 'all' && <Icon.Repeat />}
+                    {state.repeatMode === 'one' && <Icon.Infinite />}
+                    {state.repeatMode === 'none' && <Icon.RightLeft />}
                 </button>
                 <div className="playback">
                     <button
                         className="icon-button skip-back"
-                    // on: click={onClickPrev}
+                        onClick={() => queueStore.prev()}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                     <button
                         className="icon-button"
-                    // on: click={playing ? onClickPause : onClickPlay}
+                        onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}
                     >
-                        <Play />
+                        {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
                     </button>
                     <button
                         className="icon-button skip-forward"
-                    // on: click={onClickNext}
+                        onClick={() => queueStore.next()}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                 </div>
                 <button
@@ -360,7 +396,7 @@ export default function PlayerDetail() {
                 // className: active={$queue.shuffle}
                 // on: click={shuffleQueue}
                 >
-                    <Shuffle />
+                    <Icon.Shuffle />
                 </button>
             </div>
         </Container>

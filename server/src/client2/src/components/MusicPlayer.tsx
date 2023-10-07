@@ -3,7 +3,7 @@ import { useStore } from 'badland-react'
 import { useNavigate } from 'react-router-dom'
 
 import MusicItem from './MusicItem'
-import { Menu, Play, Repeat, Shuffle } from '~/icon'
+import * as Icon from '~/icon'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
@@ -181,40 +181,54 @@ export default function MusicPlayer() {
         ? musicMap.get(state.items[state.selected])
         : null
 
+    const progress = (state.currentTime / (currentMusic?.duration || 1) * 100).toFixed(2)
+
     return (
         <Container>
-            <div className="progress">
-                <div className="bar"></div>
+            <div
+                className="progress"
+                role="progressbar"
+                aria-valuenow={Number(progress)}
+                aria-valuemin={0}
+                aria-valuemax={100}
+            >
+                <div
+                    className="bar"
+                    style={{
+                        transform: `translate(-${(100 - Number(progress))}%, 0)`
+                    }}
+                />
             </div>
             <div className="player">
                 <div className="music">
                     <MusicItem
                         albumName={currentMusic?.album.name ?? ''}
                         albumCover={currentMusic?.album.cover ?? ''}
-                        musicName={currentMusic?.name ?? 'No music is playing'}
+                        musicName={currentMusic?.name ?? 'There is no music playing'}
                         artistName={currentMusic?.artist.name ?? ''}
                         onClick={() => currentMusic && navigate('/player')}
                     />
                 </div>
                 <div className="action">
-                    <div className="mode">
-                        <Repeat />
+                    <div className="mode" onClick={() => queueStore.changeRepeatMode()}>
+                        {state.repeatMode === 'all' && <Icon.Repeat />}
+                        {state.repeatMode === 'one' && <Icon.Infinite />}
+                        {state.repeatMode === 'none' && <Icon.RightLeft />}
                     </div>
-                    <div className="skip-back">
-                        <Play />
+                    <div className="skip-back" onClick={() => queueStore.prev()}>
+                        <Icon.Play />
                     </div>
-                    <div className="play">
-                        <Play />
+                    <div className="play" onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
+                        {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
                     </div>
-                    <div className="skip-forward">
-                        <Play />
+                    <div className="skip-forward" onClick={() => queueStore.next()}>
+                        <Icon.Play />
                     </div>
                     <div className="shuffle">
-                        <Shuffle />
+                        <Icon.Shuffle />
                     </div>
-                    <input className="volume" type="range" min="0" max="100" />
                     <div className="queue">
-                        <Menu />
+                        <Icon.Menu />
                     </div>
                 </div>
             </div>
