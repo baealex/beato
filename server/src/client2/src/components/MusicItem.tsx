@@ -142,7 +142,7 @@ export default function MusicItem({
                     </div>
                 </div>
                 {onLongPress && (
-                    <button className={`icon-button ${isLiked ? "liked" : ""}`}>
+                    <button className={`icon-button ${isLiked ? "liked" : ""}`} onClick={onLongPress}>
                         {isLiked ? (
                             <Heart />
                         ) : (

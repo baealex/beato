@@ -1,4 +1,6 @@
 import Store from 'badland'
+import { toast } from '@baejino/ui'
+
 import { AudioChannel, WebAudioChannel } from '~/modules/audio-channel'
 
 interface QueueStoreState {
@@ -61,6 +63,10 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     add(id: string) {
+        if (this.state.items.includes(id)) {
+            toast("Already added to queue")
+            return
+        }
         if (this.state.insertMode === 'first') {
             this.set({
                 items: [id, ...this.state.items]
@@ -86,6 +92,7 @@ class QueueStore extends Store<QueueStoreState> {
                 })
             }
         }
+        toast("Added to queue")
         if (this.state.selected === null) {
             this.audioChannel.load(id)
             this.set({

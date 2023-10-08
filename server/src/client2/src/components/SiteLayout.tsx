@@ -59,6 +59,7 @@ export default function SiteLayout({
             if (timer) {
                 clearTimeout(timer)
             }
+
             ref.current?.removeEventListener('scroll', handleScroll)
         }
     }, [ref, location])

@@ -10,6 +10,7 @@ import {
     MusicList,
     PlayerDetail,
     Playlist,
+    PlaylistDetail,
     Queue,
     QueueHistory,
     Setting,
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
             {
                 path: '/artist/:id',
                 element: <ArtistDetail />,
+            },
+            {
+                path: '/playlist/:id',
+                element: <PlaylistDetail />,
             },
         ],
     },

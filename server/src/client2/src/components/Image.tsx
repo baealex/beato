@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 
 interface ImageProps {
-    src: string;
+    src?: string;
     alt?: string;
     loading?: "lazy" | "eager";
     className?: string;
