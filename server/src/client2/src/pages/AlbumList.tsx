@@ -1,8 +1,9 @@
+import { prompt } from '@baejino/ui'
 import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { AlbumItem } from '~/components'
+import { AlbumItem, SecondaryButton, StickyHeader } from '~/components'
 
 import { albumStore } from '~/store/album'
 
@@ -23,17 +24,37 @@ export default function Album() {
 
     const [{ albums }] = useStore(albumStore)
 
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const handleSearch = async () => {
+        const q = await prompt('Search keyword', searchParams.get('q') || '')
+        setSearchParams({ q })
+    }
+
+    const filteredAlbums = albums
+        ?.filter(album =>
+            album.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
+            album.artist.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '')
+        )
+
     return (
-        <Grid>
-            {albums?.map((album) => (
-                <AlbumItem
-                    key={album.id}
-                    albumName={album.name}
-                    albumCover={album.cover}
-                    artistName={album.artist.name}
-                    onClick={() => navigate(`/album/${album.id}`)}
-                />
-            ))}
-        </Grid>
+        <>
+            <StickyHeader>
+                <SecondaryButton style={{ width: '160px' }} onClick={handleSearch}>
+                    {searchParams.get('q') || 'Search'}
+                </SecondaryButton>
+            </StickyHeader>
+            <Grid>
+                {filteredAlbums.map((album) => (
+                    <AlbumItem
+                        key={album.id}
+                        albumName={album.name}
+                        albumCover={album.cover}
+                        artistName={album.artist.name}
+                        onClick={() => navigate(`/album/${album.id}`)}
+                    />
+                ))}
+            </Grid>
+        </>
     )
 }

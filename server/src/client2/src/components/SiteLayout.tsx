@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
 import SiteHeader from './SiteHeader'
@@ -19,7 +19,7 @@ export default function SiteLayout({
 }: SiteLayoutProps) {
     const ref = useRef<HTMLDivElement>(null)
 
-    const location = useLocation()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const animationVariants = {
         in: {
@@ -39,7 +39,7 @@ export default function SiteLayout({
             return
         }
 
-        ref.current.scrollTop = parseInt(new URLSearchParams(location.search).get('py') || '0')
+        ref.current.scrollTop = parseInt(searchParams.get('py') || '0')
 
         let timer: ReturnType<typeof setTimeout> | null = null
 
@@ -49,8 +49,20 @@ export default function SiteLayout({
             }
 
             timer = setTimeout(() => {
-                window.history.replaceState(null, '', `?py=${ref.current?.scrollTop}`)
-            }, 100)
+                if (ref.current !== null) {
+                    const q = searchParams.get('q')
+                    if (q) {
+                        setSearchParams({
+                            q,
+                            py: ref.current.scrollTop.toString(),
+                        }, { replace: true })
+                        return
+                    }
+                    setSearchParams({
+                        py: ref.current.scrollTop.toString(),
+                    }, { replace: true })
+                }
+            }, 50)
         }
 
         ref.current.addEventListener('scroll', handleScroll)
@@ -62,7 +74,7 @@ export default function SiteLayout({
 
             ref.current?.removeEventListener('scroll', handleScroll)
         }
-    }, [ref, location])
+    }, [ref, searchParams, setSearchParams])
 
     return (
         <main>
