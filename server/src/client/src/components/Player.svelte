@@ -25,10 +25,9 @@
         switchRepeatMode,
         shuffleQueue,
         musicActionPanel,
-    } from "../store";
+    } from "~/store";
 
     export let music: Music;
-    export let volume: number;
     export let playing: boolean;
     export let progress: number;
     export let currentTime: number;
@@ -171,14 +170,6 @@
                     >
                         <Shuffle />
                     </button>
-                    <input
-                        bind:value={volume}
-                        class="volume"
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.05"
-                    />
                     <button
                         class="icon-button"
                         on:click={() => (isOpenQueue = !isOpenQueue)}
@@ -406,7 +397,6 @@
 
                 .mode,
                 .shuffle,
-                .volume,
                 .skip-back {
                     @media (max-width: 768px) {
                         display: none;
@@ -415,33 +405,6 @@
 
                 .shuffle.active {
                     color: #a076f1;
-                }
-
-                .volume {
-                    -webkit-appearance: none;
-                    appearance: none;
-                    width: 100px;
-                    height: 0.25rem;
-                    background-color: rgba(255, 255, 255, 0.1);
-                    border-radius: 0.25rem;
-                    outline: none;
-                    transition: background-color 0.25s ease-in-out;
-
-                    &::-webkit-slider-thumb {
-                        -webkit-appearance: none;
-                        appearance: none;
-                        width: 0.75rem;
-                        height: 0.75rem;
-                        background-color: #a076f1;
-                        border-radius: 50%;
-                        cursor: pointer;
-                    }
-
-                    @media (min-width: 1024px) {
-                        &:hover {
-                            background-color: rgba(255, 255, 255, 0.2);
-                        }
-                    }
                 }
             }
         }
