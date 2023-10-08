@@ -7,6 +7,7 @@ import { MusicItem } from '~/components'
 import { getPlaylist } from '~/api'
 
 import { musicStore } from '~/store/music'
+import { queueStore } from '~/store/queue'
 
 export default function PlaylistDetail() {
     const { id } = useParams<{ id: string }>()
@@ -35,7 +36,7 @@ export default function PlaylistDetail() {
                         musicName={music.name}
                         musicCodec={music.codec}
                         isLiked={music.isLiked}
-                        onClick={() => { }}
+                        onClick={() => queueStore.add(music.id)}
                         onLongPress={() => { }}
                     />
                 )

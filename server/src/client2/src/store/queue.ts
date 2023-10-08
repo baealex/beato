@@ -64,7 +64,7 @@ class QueueStore extends Store<QueueStoreState> {
 
     add(id: string) {
         if (this.state.items.includes(id)) {
-            toast("Already added to queue")
+            toast('Already added to queue')
             return
         }
         if (this.state.insertMode === 'first') {
@@ -92,7 +92,7 @@ class QueueStore extends Store<QueueStoreState> {
                 })
             }
         }
-        toast("Added to queue")
+        toast('Added to queue')
         if (this.state.selected === null) {
             this.audioChannel.load(id)
             this.set({
@@ -109,9 +109,12 @@ class QueueStore extends Store<QueueStoreState> {
 
     select(index: number) {
         this.set({
-            selected: index
+            selected: index,
+            currentTime: 0,
+            isPlaying: true
         })
         this.audioChannel.load(this.state.items[index])
+        this.audioChannel.play()
     }
 
     play() {

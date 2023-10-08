@@ -3,6 +3,7 @@ import { useStore } from 'badland-react'
 import MusicItem from '~/components/MusicItem'
 
 import { musicStore } from '~/store/music'
+import { queueStore } from '~/store/queue'
 
 export default function Music() {
     const [{ musics }] = useStore(musicStore)
@@ -18,7 +19,7 @@ export default function Music() {
                     musicName={music.name}
                     musicCodec={music.codec}
                     isLiked={music.isLiked}
-                    onClick={() => { }}
+                    onClick={() => queueStore.add(music.id)}
                     onLongPress={() => { }}
                 />
             ))}

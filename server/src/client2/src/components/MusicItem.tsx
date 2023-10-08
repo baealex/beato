@@ -133,7 +133,7 @@ export default function MusicItem({
                             <span className="track-number">{trackNumber}.</span>
                         )}
                         {musicName}
-                        {musicCodec && musicCodec.toLocaleLowerCase() === "flac" && (
+                        {musicCodec && musicCodec.toLocaleLowerCase() === 'flac' && (
                             <span className="codec">{musicCodec}</span>
                         )}
                     </div>
@@ -142,7 +142,7 @@ export default function MusicItem({
                     </div>
                 </div>
                 {onLongPress && (
-                    <button className={`icon-button ${isLiked ? "liked" : ""}`} onClick={onLongPress}>
+                    <button className={`icon-button ${isLiked ? 'liked' : ''}`} onClick={onLongPress}>
                         {isLiked ? (
                             <Heart />
                         ) : (

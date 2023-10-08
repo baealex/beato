@@ -210,24 +210,24 @@ export default function MusicPlayer() {
                     />
                 </div>
                 <div className="action">
-                    <div className="mode" onClick={() => queueStore.changeRepeatMode()}>
+                    <div className="icon-button mode" onClick={() => queueStore.changeRepeatMode()}>
                         {state.repeatMode === 'all' && <Icon.Repeat />}
                         {state.repeatMode === 'one' && <Icon.Infinite />}
                         {state.repeatMode === 'none' && <Icon.RightLeft />}
                     </div>
-                    <div className="skip-back" onClick={() => queueStore.prev()}>
+                    <div className="icon-button skip-back" onClick={() => queueStore.prev()}>
                         <Icon.Play />
                     </div>
-                    <div className="play" onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
+                    <div className="icon-button play" onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
                         {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
                     </div>
-                    <div className="skip-forward" onClick={() => queueStore.next()}>
+                    <div className="icon-button skip-forward" onClick={() => queueStore.next()}>
                         <Icon.Play />
                     </div>
-                    <div className="shuffle">
+                    <div className="icon-button shuffle">
                         <Icon.Shuffle />
                     </div>
-                    <div className="queue">
+                    <div className="icon-button queue" onClick={() => navigate('/queue')}>
                         <Icon.Menu />
                     </div>
                 </div>

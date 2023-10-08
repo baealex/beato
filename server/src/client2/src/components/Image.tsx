@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef } from 'react'
 
 interface ImageProps {
     src?: string;
     alt?: string;
-    loading?: "lazy" | "eager";
+    loading?: 'lazy' | 'eager';
     className?: string;
 }
 
@@ -17,13 +17,13 @@ export const getImage = (src?: string) => {
 export default function Image({
     src,
     alt,
-    loading = "lazy",
+    loading = 'lazy',
     className,
 }: ImageProps) {
     const ref = useRef<HTMLImageElement>(null)
 
     useEffect(() => {
-        if (!ref.current || loading !== "lazy") {
+        if (!ref.current || loading !== 'lazy') {
             return
         }
 
@@ -44,12 +44,12 @@ export default function Image({
 
     return (
         <>
-            {loading !== "lazy" ? (
+            {loading !== 'lazy' ? (
                 <img src={getImage(src)} alt={alt} className={className} />
             ) : (
                 <img
                     ref={ref}
-                    src={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NQV1f/DwACYwF11mMyYQAAAABJRU5ErkJggg=="}
+                    src={'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NQV1f/DwACYwF11mMyYQAAAABJRU5ErkJggg=='}
                     alt={alt}
                     className={className}
                 />

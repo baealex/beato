@@ -3,10 +3,13 @@ import { useStore } from 'badland-react'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { getArtist } from '~/api'
 import { AlbumItem, Image, MusicItem, SecondaryButton } from '~/components'
 import { Play } from '~/icon'
+
+import { getArtist } from '~/api'
+
 import { musicStore } from '~/store/music'
+import { queueStore } from '~/store/queue'
 
 const Container = styled.section`
     .artist-name {
@@ -71,7 +74,7 @@ export default function ArtistDetail() {
     return (
         <Container>
             <div className="artist-name">
-                <Image src={artist.latestAlbum?.cover || ""} alt={artist.name} />
+                <Image src={artist.latestAlbum?.cover || ''} alt={artist.name} />
                 {artist.name}
             </div>
             <div className="section-title">
@@ -110,7 +113,7 @@ export default function ArtistDetail() {
                             musicName={music.name}
                             musicCodec={music.codec}
                             isLiked={music.isLiked}
-                            onClick={() => { }}
+                            onClick={() => queueStore.add(music.id)}
                             onLongPress={() => {
 
                             }}

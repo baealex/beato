@@ -9,6 +9,7 @@ import { Play } from '~/icon'
 import { getAlbum } from '~/api'
 
 import { musicStore } from '~/store/music'
+import { queueStore } from '~/store/queue'
 
 const Container = styled.div`
     position: relative;
@@ -133,7 +134,7 @@ export default function AlbumDetail() {
                             musicName={music.name}
                             musicCodec={music.codec}
                             isLiked={music.isLiked}
-                            onClick={() => { }}
+                            onClick={() => queueStore.add(music.id)}
                             onLongPress={() => { }}
                         />
                     )

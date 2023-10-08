@@ -1,34 +1,34 @@
-import styled from "@emotion/styled"
-import { Link as RouterLink, useLocation } from "react-router-dom"
+import styled from '@emotion/styled'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
 
 const HEADER_ITEMS = [
     {
-        name: "Music",
-        path: "/",
+        name: 'Music',
+        path: '/',
     },
     {
-        name: "Favorite",
-        path: "/favorite",
+        name: 'Favorite',
+        path: '/favorite',
     },
     {
-        name: "Album",
-        path: "/album",
+        name: 'Album',
+        path: '/album',
     },
     {
-        name: "Artist",
-        path: "/artist",
+        name: 'Artist',
+        path: '/artist',
     },
     {
-        name: "Playlist",
-        path: "/playlist",
+        name: 'Playlist',
+        path: '/playlist',
     },
     {
-        name: "Queue",
-        path: "/queue-history",
+        name: 'Queue',
+        path: '/queue-history',
     },
     {
-        name: "Setting",
-        path: "/setting",
+        name: 'Setting',
+        path: '/setting',
     },
 ]
 

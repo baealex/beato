@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react"
-import styled from "@emotion/styled"
-import { useStore } from "badland-react"
+import { useEffect, useState } from 'react'
+import styled from '@emotion/styled'
+import { useStore } from 'badland-react'
 
-import { getImage } from "~/components/Image"
-import * as Icon from "~/icon"
+import { getImage } from '~/components/Image'
+import * as Icon from '~/icon'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
-import { makePlayTime } from "~/modules/time"
+import { makePlayTime } from '~/modules/time'
 
 const Container = styled.div`
     flex: 1;
@@ -247,53 +247,52 @@ export default function PlayerDetail() {
     const [state] = useStore(queueStore)
     const [{ musicMap }] = useStore(musicStore)
 
-    const [borderRadius, setBorderRadius] = useState("50%")
+    const [borderRadius, setBorderRadius] = useState('50%')
 
     const currentMusic = state.selected !== null
         ? musicMap.get(state.items[state.selected])
         : null
     const progress = (state.currentTime / (currentMusic?.duration || 1) * 100).toFixed(2)
 
-    const handleClickProgress = (e: MouseEvent | TouchEvent) => {
-        const { width, left, right } = (
-            e.currentTarget as HTMLDivElement
-        ).getBoundingClientRect()
+    // const handleClickProgress = (e: MouseEvent | TouchEvent) => {
+    //     const { width, left, right } = (
+    //         e.currentTarget as HTMLDivElement
+    //     ).getBoundingClientRect()
 
-        let x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX
-        x = x < left ? left : x > right ? right : x
-        const percent = (x - left) / width
-        const duration = currentMusic?.duration || 1
+    //     let x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX
+    //     x = x < left ? left : x > right ? right : x
+    //     const percent = (x - left) / width
+    //     const duration = currentMusic?.duration || 1
 
-        queueStore.seek(duration * percent)
-    }
+    //     queueStore.seek(duration * percent)
+    // }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleMoveProgress = (e: MouseEvent | TouchEvent) => {
-        if (e instanceof MouseEvent && e.buttons === 1) {
-            handleClickProgress(e)
-            return
-        }
+    // const handleMoveProgress = (e: MouseEvent | TouchEvent) => {
+    //     if (e instanceof MouseEvent && e.buttons === 1) {
+    //         handleClickProgress(e)
+    //         return
+    //     }
 
-        if (
-            window.TouchEvent &&
-            e instanceof TouchEvent &&
-            e.touches.length === 1
-        ) {
-            handleClickProgress(e)
-        }
-    }
+    //     if (
+    //         window.TouchEvent &&
+    //         e instanceof TouchEvent &&
+    //         e.touches.length === 1
+    //     ) {
+    //         handleClickProgress(e)
+    //     }
+    // }
 
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout> | null = null
 
         if (!state.isPlaying) {
-            setBorderRadius("50%")
+            setBorderRadius('50%')
             return
         }
 
         const setRandomBorderRadius = () => {
             const makeRandom = () => {
-                return Math.floor(Math.random() * 90 + 10) + "%"
+                return Math.floor(Math.random() * 90 + 10) + '%'
             }
             setBorderRadius(`${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`)
             timer = setTimeout(setRandomBorderRadius, 1000)
@@ -323,7 +322,7 @@ export default function PlayerDetail() {
                         className="foreground"
                         style={{ borderRadius }}
                         src={getImage(
-                            currentMusic?.album.cover.replace("/resized", "")
+                            currentMusic?.album.cover.replace('/resized', '')
                         )}
                         alt={currentMusic?.album.name}
                     />
