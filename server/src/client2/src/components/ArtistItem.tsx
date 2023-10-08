@@ -53,7 +53,7 @@ export default function ArtistItem({
     onClick,
 }: ArtistItemProps) {
     return (
-        <Container className="clickable" onClick={onClick}>
+        <Container className="clickable linkable" onClick={onClick}>
             <Image
                 src={artistCover}
                 alt={artistName}

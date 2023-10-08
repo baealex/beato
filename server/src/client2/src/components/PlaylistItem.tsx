@@ -81,7 +81,7 @@ const Container = styled.button`
 
 interface PlaylistItemProps {
     name: string;
-    headerMusics: Pick<Music, "id">[];
+    headerMusics: Pick<Music, 'id'>[];
     musicCount: number;
     onClick?: () => void;
     onLongPress?: () => void;

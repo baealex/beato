@@ -91,6 +91,10 @@ class QueueStore extends Store<QueueStoreState> {
         this.audioChannel = window.AppChannel
             ? new AppAudioChannel(audioChannelEventHandler)
             : new WebAudioChannel(audioChannelEventHandler)
+
+        window.addEventListener('beforeunload', () => {
+            this.audioChannel.stop()
+        })
     }
 
     add(id: string) {
