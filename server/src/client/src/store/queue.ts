@@ -89,7 +89,7 @@ export const resetQueue = async (title: string = '', musics: Pick<Music, 'id'>[]
     if (
         existQueue() &&
         musics.length > 0 &&
-        !(await confirm("The queue will be replaced with this."))
+        !(await confirm('The queue will be replaced with this.'))
     ) {
         return;
     }
@@ -132,7 +132,7 @@ export const insertToQueue = (music: Pick<Music, 'id'>) => queue.update((state) 
     if (state.items.find((item) => item.id === music.id)) {
         state.playMode === 'immediate'
             ? newState.selected = state.items.findIndex((item) => item.id === music.id)
-            : toast("Already added to queue")
+            : toast('Already added to queue')
         return newState;
     }
 
@@ -145,7 +145,7 @@ export const insertToQueue = (music: Pick<Music, 'id'>) => queue.update((state) 
         if (state.playMode === 'immediate') {
             newState.selected = newState.items.findIndex((item) => item.id === music.id);
         } else {
-            toast("Added to queue");
+            toast('Added to queue');
         }
         return newState;
     }
@@ -178,7 +178,7 @@ export const insertToQueue = (music: Pick<Music, 'id'>) => queue.update((state) 
     if (state.playMode === 'immediate') {
         newState.selected = newState.items.findIndex((item) => item.id === music.id);
     } else {
-        toast("Added to queue");
+        toast('Added to queue');
     }
     return newState;
 });

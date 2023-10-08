@@ -49,7 +49,7 @@ interface Count {
 
 export const count = async ({ id, playCount }: Count) => {
     const { latestSort } = get(musicSortPanel);
-    if (latestSort === "playCountDesc") {
+    if (latestSort === 'playCountDesc') {
         musics.update((state) =>
             state.map((music) => {
                 if (music.id === id) {
@@ -59,7 +59,7 @@ export const count = async ({ id, playCount }: Count) => {
             }).sort((a, b) => b.playCount - a.playCount)
         );
     }
-    if (latestSort === "playCountAsc") {
+    if (latestSort === 'playCountAsc') {
         musics.update((state) =>
             state.map((music) => {
                 if (music.id === id) {
