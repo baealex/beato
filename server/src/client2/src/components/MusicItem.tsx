@@ -4,6 +4,7 @@ import Image from './Image'
 import { Heart, MoreVerticalFill } from '~/icon'
 
 interface MusicItemProps {
+    id?: number;
     albumName: string;
     albumCover?: string;
     artistName: string;

@@ -1,12 +1,21 @@
 import styled from '@emotion/styled'
+import { theme } from '@baejino/style'
 import { useStore } from 'badland-react'
 import { HTMLMotionProps, motion } from 'framer-motion'
 
+import { DndContext, DragEndEvent, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from '@dnd-kit/core'
+import { SortableContext, arrayMove, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { restrictToFirstScrollableAncestor, restrictToVerticalAxis } from '@dnd-kit/modifiers'
+import { CSS } from '@dnd-kit/utilities'
+
 import { MusicItem } from '~/components'
-import { CheckBox, Cross } from '~/icon'
+import { CheckBox, Cross, Menu } from '~/icon'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
+import MusicSelector from '~/components/MusicSelector'
+import { useState } from 'react'
+import { Music } from '~/models/type'
 
 const Container = styled.div<HTMLMotionProps<'div'>>`
     display: flex;
@@ -46,7 +55,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
             }
 
             &.active {
-                color: $PRIMARY_COLOR;
+                color: ${theme.COLOR_PURPLE_PROMINENT};
             }
 
             svg {
@@ -56,7 +65,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         }
     }
 
-    .action {
+    .footer {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -87,7 +96,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         align-items: center;
         justify-content: space-between;
         padding: 0.5rem 0;
-        background-color: $PRIMARY_COLOR;
+        background-color: ${theme.COLOR_PURPLE_PROMINENT};
 
         button {
             display: flex;
@@ -110,49 +119,155 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         padding: 0;
         width: 100%;
         list-style: none;
+    }
+`
 
-        li {
-            position: relative;
-            display: flex;
-            align-items: center;
+const Item = styled.li`
+    position: relative;
+    display: flex;
+    align-items: center;
 
-            .checkbox {
-                margin-left: 1rem;
+    .checkbox {
+        margin-left: 1rem;
+
+        svg {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        &.active {
+            svg {
+                fill: ${theme.COLOR_PURPLE_PROMINENT};
             }
+        }
+    }
 
-            @keyframes breathing {
-                0% {
-                    opacity: 0.15;
-                }
-                50% {
-                    opacity: 0.25;
-                }
-                100% {
-                    opacity: 0.15;
-                }
-            }
+    @keyframes breathing {
+        0% {
+            opacity: 0.15;
+        }
+        50% {
+            opacity: 0.25;
+        }
+        100% {
+            opacity: 0.15;
+        }
+    }
 
-            &.active {
-                &::before {
-                    content: "";
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    right: 0;
-                    bottom: 0;
-                    background-color: #735af2;
-                    animation: breathing 3s ease infinite;
-                    z-index: -1;
-                    pointer-events: none;
-                }
-            }
+    &.active {
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #735af2;
+            animation: breathing 3s ease infinite;
+            z-index: -1;
+            pointer-events: none;
         }
     }
 `
 
+const QueueItem = ({
+    id,
+    music,
+    isCurrentMusic,
+    isSelectMode,
+    isSelected,
+    onSelect,
+    onClick,
+}: {
+    id: string
+    music: Music
+    isCurrentMusic: boolean
+    isSelectMode: boolean
+    isSelected: boolean
+    onSelect: () => void
+    onClick: () => void
+}) => {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    }
+
+    return (
+        <Item ref={setNodeRef} {...attributes} style={style} className={isCurrentMusic ? 'active' : ''}>
+            {isSelectMode ? (
+                <button
+                    className={`icon-button checkbox ${isSelected ? 'active' : ''}`}
+                    onClick={onSelect}
+                >
+                    <CheckBox />
+                </button>
+            ) : (
+                <button
+                    {...listeners}
+                    className="icon-button checkbox"
+                    style={{
+                        cursor: 'grab',
+                        touchAction: 'none'
+                    }}
+                >
+                    <Menu />
+                </button>
+            )}
+            <MusicItem
+                key={music.id}
+                musicName={music?.name}
+                artistName={music?.artist.name}
+                albumName={music?.album.name}
+                albumCover={music?.album.cover}
+                onClick={onClick}
+            />
+        </Item>
+    )
+}
+
 export default function Queue() {
-    const [{ items, selected }] = useStore(queueStore)
+    const [{ items, selected }, setState] = useStore(queueStore)
     const [{ musicMap }] = useStore(musicStore)
+
+    const [isSelectMode, setIsSelectMode] = useState(false)
+    const [selectedItems, setSelectedItems] = useState<string[]>([])
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates
+        })
+    )
+
+    const handleDragEnd = async (event: DragEndEvent) => {
+        const { active, over } = event
+
+        if (over) {
+            if (active.id === over.id) return
+
+            setState((prevState) => {
+                const prevSelectedItem = prevState.items[prevState.selected!]
+
+                const oldIndex = prevState.items.indexOf(active.id.toString())
+                const newIndex = prevState.items.indexOf(over.id.toString())
+                const newItems = arrayMove(prevState.items, oldIndex, newIndex)
+
+                if (prevSelectedItem) {
+                    return {
+                        ...prevState,
+                        items: newItems,
+                        selected: newItems.indexOf(prevSelectedItem)
+                    }
+                }
+
+                return {
+                    ...prevState,
+                    items: newItems
+                }
+            })
+        }
+    }
 
     return (
         <Container
@@ -176,35 +291,67 @@ export default function Queue() {
         >
             <div className="header">
                 <div className="actions">
-                    <button className="clickable" onClick={() => { }}>
-                        <CheckBox /> {items.length} musics
-                    </button>
+                    <MusicSelector
+                        label={isSelectMode
+                            ? `${selectedItems.length} musics`
+                            : `${items?.length} musics`}
+                        active={isSelectMode}
+                        onClick={() => setIsSelectMode(!isSelectMode)}
+                        onSelectAll={() => setSelectedItems(items)}
+                    />
                 </div>
                 <button className="clickable title">
                     Queue Title <span className="link" />
                 </button>
             </div>
             <ul className="container">
-                {items?.map((id, idx) => {
-                    const music = musicMap.get(id)
+                <DndContext
+                    sensors={sensors}
+                    modifiers={[
+                        restrictToVerticalAxis,
+                        restrictToFirstScrollableAncestor,
+                    ]}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleDragEnd}>
+                    <SortableContext items={items} strategy={verticalListSortingStrategy}>
+                        {items?.map((id, idx) => {
+                            const music = musicMap.get(id)
 
-                    if (!music) return null
+                            if (!music) return null
 
-                    return (
-                        <li className={idx === selected ? 'active' : ''}>
-                            <MusicItem
-                                key={music.id}
-                                musicName={music?.name}
-                                artistName={music?.artist.name}
-                                albumName={music?.album.name}
-                                albumCover={music?.album.cover}
-                                onClick={() => queueStore.select(idx)}
-                            />
-                        </li>
-                    )
-                })}
+                            return (
+                                <QueueItem
+                                    key={id}
+                                    id={id}
+                                    music={music}
+                                    isCurrentMusic={selected === idx}
+                                    isSelectMode={isSelectMode}
+                                    isSelected={selectedItems.includes(id)}
+                                    onSelect={() => {
+                                        if (selectedItems.includes(id)) {
+                                            setSelectedItems(selectedItems.filter(item => item !== id))
+                                        } else {
+                                            setSelectedItems([...selectedItems, id])
+                                        }
+                                    }}
+                                    onClick={() => {
+                                        if (isSelectMode) {
+                                            if (selectedItems.includes(id)) {
+                                                setSelectedItems(selectedItems.filter(item => item !== id))
+                                            } else {
+                                                setSelectedItems([...selectedItems, id])
+                                            }
+                                        } else {
+                                            queueStore.select(idx)
+                                        }
+                                    }}
+                                />
+                            )
+                        })}
+                    </SortableContext>
+                </DndContext>
             </ul>
-            <div className="action">
+            <div className="footer">
                 <div className="buttons">
                 </div>
                 <button className="icon-button" onClick={() => history.back()}>
