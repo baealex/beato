@@ -1,16 +1,17 @@
+import type { Music } from '~/models/type'
+
 export interface AudioChannelEventHandler {
     onPlay?: () => void;
     onPause?: () => void;
     onStop?: () => void;
     onEnded: () => void;
     onTimeUpdate: (time: number) => void;
-    onSetPosition?: (position: number) => void;
     onSkipToNext?: () => void;
     onSkipToPrevious?: () => void;
 }
 
 export interface AudioChannel {
-    load: (id: string) => void;
+    load: (music: Music) => void;
     play: () => void;
     pause: () => void;
     stop: () => void;

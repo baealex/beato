@@ -1,7 +1,9 @@
 import Store from 'badland'
 import { toast } from '@baejino/ui'
 
-import { AudioChannel, WebAudioChannel } from '~/modules/audio-channel'
+import { AudioChannel, AudioChannelEventHandler, WebAudioChannel } from '~/modules/audio-channel'
+import { musicStore } from './music'
+import { AppAudioChannel } from '~/modules/audio-channel/app-audio-channel'
 
 interface QueueStoreState {
     selected: number | null
@@ -11,6 +13,11 @@ interface QueueStoreState {
     repeatMode: 'none' | 'one' | 'all'
     currentTime: number
     items: string[]
+}
+
+const getMusic = (id: string) => {
+    const musicMap = musicStore.state.musicMap
+    return musicMap.get(id)
 }
 
 class QueueStore extends Store<QueueStoreState> {
@@ -28,13 +35,21 @@ class QueueStore extends Store<QueueStoreState> {
             items: []
         }
 
-        this.audioChannel = new WebAudioChannel({
+        const audioChannelEventHandler: AudioChannelEventHandler = {
+            onPlay: () => {
+                this.set({ isPlaying: true })
+            },
+            onPause: () => {
+                this.set({ isPlaying: false })
+            },
+            onStop: () => {
+                this.set({ isPlaying: false })
+            },
             onEnded: () => {
                 if (this.state.selected === null) return
 
                 if (this.state.repeatMode === 'one') {
-                    this.audioChannel.load(this.state.items[this.state.selected])
-                    this.audioChannel.play()
+                    this.select(this.state.selected)
                     return
                 }
                 if (this.state.repeatMode === 'all') {
@@ -55,11 +70,19 @@ class QueueStore extends Store<QueueStoreState> {
                 }
             },
             onTimeUpdate: (time) => {
-                this.set({
-                    currentTime: time
-                })
+                this.set({ currentTime: time })
+            },
+            onSkipToNext: () => {
+                this.next()
+            },
+            onSkipToPrevious: () => {
+                this.prev()
             }
-        })
+        }
+
+        this.audioChannel = window.AppChannel
+            ? new AppAudioChannel(audioChannelEventHandler)
+            : new WebAudioChannel(audioChannelEventHandler)
     }
 
     add(id: string) {
@@ -94,10 +117,7 @@ class QueueStore extends Store<QueueStoreState> {
         }
         toast('Added to queue')
         if (this.state.selected === null) {
-            this.audioChannel.load(id)
-            this.set({
-                selected: 0
-            })
+            this.select(0)
         }
     }
 
@@ -113,24 +133,21 @@ class QueueStore extends Store<QueueStoreState> {
             currentTime: 0,
             isPlaying: true
         })
-        this.audioChannel.load(this.state.items[index])
+
+        const music = getMusic(this.state.items[index])
+        if (music === undefined) return
+        this.audioChannel.load(music)
         this.audioChannel.play()
     }
 
     play() {
         if (this.state.selected !== null) {
             this.audioChannel.play()
-            this.set({
-                isPlaying: true
-            })
         }
     }
 
     pause() {
         this.audioChannel.pause()
-        this.set({
-            isPlaying: false
-        })
     }
 
     stop() {
