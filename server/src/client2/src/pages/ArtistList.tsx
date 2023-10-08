@@ -1,16 +1,14 @@
-import { useQuery } from 'react-query'
+import { useStore } from 'badland-react'
 import { useNavigate } from 'react-router-dom'
 
 import { ArtistItem } from '~/components'
 
-import { getArtists } from '~/api'
+import { artistStore } from '~/store/artist'
 
 export default function ArtistList() {
     const navigate = useNavigate()
 
-    const { data: artists } = useQuery('artists', async () => {
-        return (await getArtists()).data.allArtists
-    })
+    const [{ artists }] = useStore(artistStore)
 
     return (
         <>

@@ -12,6 +12,7 @@ interface QueueStoreState {
     insertMode: 'first' | 'last' | 'after'
     repeatMode: 'none' | 'one' | 'all'
     currentTime: number
+    progress: number
     items: string[]
 }
 
@@ -21,6 +22,7 @@ const getMusic = (id: string) => {
 }
 
 class QueueStore extends Store<QueueStoreState> {
+    shouldCount: boolean
     audioChannel: AudioChannel
 
     constructor() {
@@ -32,8 +34,10 @@ class QueueStore extends Store<QueueStoreState> {
             insertMode: 'last',
             repeatMode: 'none',
             currentTime: 0,
+            progress: 0,
             items: []
         }
+        this.shouldCount = false
 
         const audioChannelEventHandler: AudioChannelEventHandler = {
             onPlay: () => {
@@ -70,7 +74,11 @@ class QueueStore extends Store<QueueStoreState> {
                 }
             },
             onTimeUpdate: (time) => {
-                this.set({ currentTime: time })
+                const music = getMusic(this.state.items[this.state.selected!])
+                this.set({
+                    currentTime: time,
+                    progress: Number((this.state.currentTime / (music?.duration || 1) * 100).toFixed(2)),
+                })
             },
             onSkipToNext: () => {
                 this.next()
@@ -121,10 +129,36 @@ class QueueStore extends Store<QueueStoreState> {
         }
     }
 
-    remove(id: string) {
-        this.set({
-            items: this.state.items.filter((i) => i !== id)
+    async removeItems(ids: string[]) {
+        const newItems = this.state.items.filter((i) => !ids.includes(i))
+
+        const prevSelected = this.state.selected
+        const prevSelectedItem = newItems.length > 0
+            ? this.state.items[prevSelected || 0]
+            : null
+
+        await this.set({
+            items: this.state.items.filter((i) => !ids.includes(i))
         })
+
+        if (prevSelectedItem) {
+            if (!ids.includes(prevSelectedItem)) {
+                this.set({
+                    selected: newItems.indexOf(prevSelectedItem)
+                })
+                return
+            }
+            if (ids.includes(prevSelectedItem)) {
+                if (this.state.items.length >= prevSelected!) {
+                    this.select(prevSelected!)
+                    return
+                }
+                if (this.state.items.length < prevSelected!) {
+                    this.select(this.state.items.length - 1)
+                    return
+                }
+            }
+        }
     }
 
     select(index: number) {
@@ -136,6 +170,7 @@ class QueueStore extends Store<QueueStoreState> {
 
         const music = getMusic(this.state.items[index])
         if (music === undefined) return
+        document.title = `${music.name} - ${music.artist.name}`
         this.audioChannel.load(music)
         this.audioChannel.play()
     }

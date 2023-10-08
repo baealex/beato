@@ -9,12 +9,12 @@ import { restrictToFirstScrollableAncestor, restrictToVerticalAxis } from '@dnd-
 import { CSS } from '@dnd-kit/utilities'
 
 import { MusicItem } from '~/components'
-import { CheckBox, Cross, Menu } from '~/icon'
+import { CheckBox, Cross, Menu, TrashBin } from '~/icon'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
 import MusicSelector from '~/components/MusicSelector'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Music } from '~/models/type'
 
 const Container = styled.div<HTMLMotionProps<'div'>>`
@@ -269,6 +269,10 @@ export default function Queue() {
         }
     }
 
+    useEffect(() => {
+        setSelectedItems([])
+    }, [isSelectMode])
+
     return (
         <Container
             as={motion.div}
@@ -351,6 +355,17 @@ export default function Queue() {
                     </SortableContext>
                 </DndContext>
             </ul>
+            {isSelectMode && selectedItems.length > 0 && (
+                <div className="select-actions">
+                    <button className="clickable" onClick={() => {
+                        queueStore.removeItems(selectedItems)
+                        setIsSelectMode(false)
+                    }}>
+                        <TrashBin />
+                        <span>Delete</span>
+                    </button>
+                </div>
+            )}
             <div className="footer">
                 <div className="buttons">
                 </div>

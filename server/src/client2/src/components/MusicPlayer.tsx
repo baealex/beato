@@ -181,21 +181,19 @@ export default function MusicPlayer() {
         ? musicMap.get(state.items[state.selected])
         : null
 
-    const progress = (state.currentTime / (currentMusic?.duration || 1) * 100).toFixed(2)
-
     return (
         <Container>
             <div
                 className="progress"
                 role="progressbar"
-                aria-valuenow={Number(progress)}
+                aria-valuenow={state.progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
             >
                 <div
                     className="bar"
                     style={{
-                        transform: `translate(-${(100 - Number(progress))}%, 0)`
+                        transform: `translate(-${(100 - state.progress)}%, 0)`
                     }}
                 />
             </div>
@@ -232,6 +230,7 @@ export default function MusicPlayer() {
                     </div>
                 </div>
             </div>
+
         </Container >
     )
 }

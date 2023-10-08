@@ -252,35 +252,31 @@ export default function PlayerDetail() {
     const currentMusic = state.selected !== null
         ? musicMap.get(state.items[state.selected])
         : null
-    const progress = (state.currentTime / (currentMusic?.duration || 1) * 100).toFixed(2)
 
-    // const handleClickProgress = (e: MouseEvent | TouchEvent) => {
-    //     const { width, left, right } = (
-    //         e.currentTarget as HTMLDivElement
-    //     ).getBoundingClientRect()
+    const handleClickProgress = (e: React.MouseEvent | React.TouchEvent) => {
+        const { width, left, right } = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
 
-    //     let x = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX
-    //     x = x < left ? left : x > right ? right : x
-    //     const percent = (x - left) / width
-    //     const duration = currentMusic?.duration || 1
+        // @ts-ignore
+        let x = e.touches ? e.touches[0].clientX : e.clientX
+        x = x < left ? left : x > right ? right : x
+        const percent = (x - left) / width
+        const duration = currentMusic?.duration || 1
 
-    //     queueStore.seek(duration * percent)
-    // }
+        queueStore.seek(duration * percent)
+    }
 
-    // const handleMoveProgress = (e: MouseEvent | TouchEvent) => {
-    //     if (e instanceof MouseEvent && e.buttons === 1) {
-    //         handleClickProgress(e)
-    //         return
-    //     }
+    const handleMoveProgress = (e: React.MouseEvent | React.TouchEvent) => {
+        // @ts-ignore
+        if (e.buttons === 1) {
+            handleClickProgress(e)
+            return
+        }
 
-    //     if (
-    //         window.TouchEvent &&
-    //         e instanceof TouchEvent &&
-    //         e.touches.length === 1
-    //     ) {
-    //         handleClickProgress(e)
-    //     }
-    // }
+        // @ts-ignore
+        if (e.touches?.length === 1) {
+            handleClickProgress(e)
+        }
+    }
 
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout> | null = null
@@ -353,14 +349,17 @@ export default function PlayerDetail() {
                 className="progress"
                 role="slider"
                 tabIndex={0}
-                aria-valuenow={Number(progress)}
+                aria-valuenow={state.progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
+                onClick={handleClickProgress}
+                onMouseMove={handleMoveProgress}
+                onTouchMove={handleMoveProgress}
             >
                 <div
                     className="bar"
                     style={{
-                        transform: `translate(-${(100 - Number(progress))}%, 0)`
+                        transform: `translate(-${(100 - state.progress)}%, 0)`
                     }}
                 />
             </div>
