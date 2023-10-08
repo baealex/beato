@@ -15,7 +15,11 @@ export default function Playlist() {
     return (
         <>
             {playlists?.map((playlist) => (
-                <PlaylistItem {...playlist} onClick={() => navigate(`/playlist/${playlist.id}`)} />
+                <PlaylistItem
+                    key={playlist.id}
+                    {...playlist}
+                    onClick={() => navigate(`/playlist/${playlist.id}`)}
+                />
             ))}
         </>
     )

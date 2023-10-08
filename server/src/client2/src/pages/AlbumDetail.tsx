@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 import { useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { Image, MusicItem } from '~/components'
 import { Play } from '~/icon'
@@ -106,7 +106,9 @@ export default function AlbumDetail() {
                 <Image className="album-cover" src={album?.cover.replace('/resized', '') || ''} alt={album?.name} />
                 <div className="album-title">{album?.name}</div>
                 <div className="row">
-                    <span className="album-artist">{album?.artist.name}</span>
+                    <Link className="album-artist" to={`/artist/${album?.artist.id}`}>
+                        {album?.artist.name}
+                    </Link>
                     -
                     <span className="album-year">{album?.publishedYear}</span>
                 </div>

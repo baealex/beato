@@ -1,17 +1,26 @@
 import { prompt } from '@baejino/ui'
 import { useStore } from 'badland-react'
+import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { ArtistItem, SecondaryButton, StickyHeader } from '~/components'
 
 import { artistStore } from '~/store/artist'
 
+const RENDER_LIMIT = 100
+
 export default function ArtistList() {
     const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const [{ artists }] = useStore(artistStore)
+    const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT)
 
-    const [searchParams, setSearchParams] = useSearchParams()
+    const handleReadMore = () => {
+        setRenderLimit(renderLimit + RENDER_LIMIT)
+        searchParams.set('l', (renderLimit + RENDER_LIMIT).toString())
+        setSearchParams(searchParams, { replace: true })
+    }
 
     const handleSearch = async () => {
         const q = await prompt('Search keyword', searchParams.get('q') || '')
@@ -30,7 +39,7 @@ export default function ArtistList() {
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
             </StickyHeader>
-            {filteredArtists.map((artist) => (
+            {filteredArtists.slice(0, renderLimit).map((artist) => (
                 <ArtistItem
                     key={artist.id}
                     artistName={artist.name}
@@ -40,6 +49,13 @@ export default function ArtistList() {
                     onClick={() => navigate(`/artist/${artist.id}`)}
                 />
             ))}
+            {filteredArtists.length > renderLimit && (
+                <div style={{ padding: '0 16px 16px' }}>
+                    <SecondaryButton style={{ width: '100%', justifyContent: 'center' }} onClick={handleReadMore}>
+                        Load More
+                    </SecondaryButton>
+                </div>
+            )}
         </>
     )
 }

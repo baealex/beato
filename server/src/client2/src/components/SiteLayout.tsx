@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -9,17 +10,18 @@ import MusicPlayer from './MusicPlayer'
 interface SiteLayoutProps {
     isSubPage?: boolean
     disablePlayer?: boolean
-    animationDirection?: 'RightToLeft' | 'BottomToTop'
+    animationDirection?: 'None' | 'RightToLeft' | 'BottomToTop'
 }
 
 export default function SiteLayout({
     isSubPage,
     disablePlayer = false,
-    animationDirection = 'RightToLeft',
+    animationDirection = 'None',
 }: SiteLayoutProps) {
-    const ref = useRef<HTMLDivElement>(null)
-
     const [searchParams, setSearchParams] = useSearchParams()
+
+    const containerRef = useRef<HTMLDivElement>(null)
+    const shouldBeScroll = useRef(true)
 
     const animationVariants = {
         in: {
@@ -35,11 +37,19 @@ export default function SiteLayout({
     }
 
     useEffect(() => {
-        if (!ref.current) {
+        if (containerRef.current && shouldBeScroll.current) {
+            containerRef.current.scrollTop = parseInt(searchParams.get('py') || '0')
+            shouldBeScroll.current = false
+        }
+        return () => {
+            shouldBeScroll.current = true
+        }
+    }, [containerRef, shouldBeScroll, location.pathname])
+
+    useEffect(() => {
+        if (!containerRef.current) {
             return
         }
-
-        ref.current.scrollTop = parseInt(searchParams.get('py') || '0')
 
         let timer: ReturnType<typeof setTimeout> | null = null
 
@@ -49,38 +59,26 @@ export default function SiteLayout({
             }
 
             timer = setTimeout(() => {
-                if (ref.current !== null) {
-                    const q = searchParams.get('q')
-                    if (q) {
-                        setSearchParams({
-                            q,
-                            py: ref.current.scrollTop.toString(),
-                        }, { replace: true })
-                        return
-                    }
-                    setSearchParams({
-                        py: ref.current.scrollTop.toString(),
-                    }, { replace: true })
-                }
+                searchParams.set('py', containerRef.current?.scrollTop.toString() || '0')
+                setSearchParams(searchParams, { replace: true })
             }, 50)
         }
 
-        ref.current.addEventListener('scroll', handleScroll)
+        containerRef.current.addEventListener('scroll', handleScroll)
 
         return () => {
             if (timer) {
                 clearTimeout(timer)
             }
-
-            ref.current?.removeEventListener('scroll', handleScroll)
+            containerRef.current?.removeEventListener('scroll', handleScroll)
         }
-    }, [ref, searchParams, setSearchParams])
+    }, [location.pathname, containerRef, searchParams, setSearchParams])
 
     return (
         <main>
             {isSubPage ? <SubPageHeader /> : <SiteHeader />}
             <motion.div
-                ref={ref}
+                ref={containerRef}
                 key={location.pathname}
                 className="container"
                 animate="in"

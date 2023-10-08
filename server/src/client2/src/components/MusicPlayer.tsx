@@ -112,14 +112,8 @@ const Container = styled.div`
             white-space: nowrap;
         }
 
-        .info {
-            width: calc(100% - 45px - 0.5rem);
-
-            .title {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
+        .row {
+            width: 100%
         }
 
         .action {
@@ -139,33 +133,6 @@ const Container = styled.div`
 
             .shuffle.active {
                 color: #a076f1;
-            }
-
-            .volume {
-                -webkit-appearance: none;
-                appearance: none;
-                width: 100px;
-                height: 0.25rem;
-                background-color: rgba(255, 255, 255, 0.1);
-                border-radius: 0.25rem;
-                outline: none;
-                transition: background-color 0.25s ease-in-out;
-
-                &::-webkit-slider-thumb {
-                    -webkit-appearance: none;
-                    appearance: none;
-                    width: 0.75rem;
-                    height: 0.75rem;
-                    background-color: #a076f1;
-                    border-radius: 50%;
-                    cursor: pointer;
-                }
-
-                @media (min-width: 1024px) {
-                    &:hover {
-                        background-color: rgba(255, 255, 255, 0.2);
-                    }
-                }
             }
         }
     }

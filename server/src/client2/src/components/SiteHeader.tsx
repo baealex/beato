@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { LinkProps, Link as RouterLink, useLocation } from 'react-router-dom'
 
 const HEADER_ITEMS = [
     {
@@ -90,7 +90,7 @@ const Nav = styled.nav`
     }
 `
 
-const Link = styled.a<{ active: boolean, to: string }>`
+const Link = styled.a<LinkProps>`
     position: relative;
     color: #fff;
     padding: 1rem 0;
@@ -110,13 +110,13 @@ const Link = styled.a<{ active: boolean, to: string }>`
         transition: transform 0.3s ease;
     }
 
-    ${(props) => props.active && `
+    &.active {
         opacity: 1;
 
         &::after {
             transform: scaleX(1);
         }
-    `}
+    }
 `
 
 export default function SiteHeader() {
@@ -128,7 +128,7 @@ export default function SiteHeader() {
                 <ul>
                     {HEADER_ITEMS.map((item) => (
                         <li key={item.name}>
-                            <Link as={RouterLink} to={item.path} active={location.pathname === item.path}>
+                            <Link as={RouterLink} to={item.path} className={location.pathname === item.path ? 'active' : ''}>
                                 {item.name}
                             </Link>
                         </li>

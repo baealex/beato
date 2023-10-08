@@ -1,5 +1,6 @@
 import { prompt } from '@baejino/ui'
 import { useStore } from 'badland-react'
+import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { MusicItem, SecondaryButton, StickyHeader } from '~/components'
@@ -8,14 +9,23 @@ import { Play } from '~/icon'
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
 
-export default function Music() {
-    const [{ musics }] = useStore(musicStore)
+const RENDER_LIMIT = 150
 
+export default function Music() {
     const [searchParams, setSearchParams] = useSearchParams()
+
+    const [{ musics }] = useStore(musicStore)
+    const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT)
 
     const handleSearch = async () => {
         const q = await prompt('Search keyword', searchParams.get('q') || '')
         setSearchParams({ q })
+    }
+
+    const handleReadMore = () => {
+        setRenderLimit(renderLimit + RENDER_LIMIT)
+        searchParams.set('l', (renderLimit + RENDER_LIMIT).toString())
+        setSearchParams(searchParams, { replace: true })
     }
 
     const filteredMusics = musics
@@ -37,7 +47,7 @@ export default function Music() {
                     <Play /> Play
                 </SecondaryButton>
             </StickyHeader>
-            {filteredMusics.map((music) => (
+            {filteredMusics.slice(0, renderLimit).map((music) => (
                 <MusicItem
                     key={music.id}
                     albumName={music.album.name}
@@ -50,6 +60,13 @@ export default function Music() {
                     onLongPress={() => { }}
                 />
             ))}
+            {filteredMusics.length > renderLimit && (
+                <div style={{ padding: '0 16px 16px' }}>
+                    <SecondaryButton style={{ width: '100%', justifyContent: 'center' }} onClick={handleReadMore}>
+                        Load More
+                    </SecondaryButton>
+                </div>
+            )}
         </>
     )
 }

@@ -16,7 +16,7 @@ interface MusicItemProps {
     onLongPress?: () => void;
 }
 
-const Container = styled.button`
+const Container = styled.button<{ hasAlbumCover: boolean }>`
     color: #eee;
     font-size: 0.8rem;
     cursor: pointer;
@@ -24,7 +24,7 @@ const Container = styled.button`
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     width: 100%;
 
     @media (min-width: 1024px) {
@@ -40,50 +40,56 @@ const Container = styled.button`
         object-fit: cover;
     }
 
-    .into {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        gap: 0.25rem;
-    }
-
-    .artist {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
-
-    .title {
-        font-size: 0.9rem;
-
-        .track-number {
-            margin-right: 0.25rem;
-            color: #666;
-            font-size: 0.8rem;
-            font-weight: 400;
-        }
-
-        .codec {
-            border: 1px solid #333;
-            color: #eee;
-            margin-left: 0.25rem;
-            padding: 0.1rem 0.5rem;
-            border-radius: 0.5rem;
-            font-size: 0.6rem;
-            font-weight: 400;
-        }
-    }
-
     .row {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        flex: 1;
         width: 100%;
-        gap: 0.5rem;
+        max-width: ${props => props.hasAlbumCover ? 'calc(100% - 45px - 0.75rem)' : '100%'};
+        gap: 0.75rem;
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+            max-width: calc(100% - 2.5rem - 0.75rem);
+            gap: 0.125rem;
+        }
+
+        .artist,
+        .title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .artist {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .title {
+            font-size: 0.9rem;
+
+            .track-number {
+                margin-right: 0.25rem;
+                color: #666;
+                font-weight: 400;
+            }
+
+            .codec {
+                border: 1px solid #333;
+                color: #eee;
+                margin-left: 0.25rem;
+                padding: 0.1rem 0.5rem;
+                border-radius: 0.5rem;
+                font-size: 0.6rem;
+                font-weight: 400;
+            }
+        }
 
         .icon-button {
             color: #eee;
@@ -123,7 +129,12 @@ export default function MusicItem({
     onLongPress,
 }: MusicItemProps) {
     return (
-        <Container className="clickable" onClick={onClick} onContextMenu={onLongPress}>
+        <Container
+            className="clickable"
+            onClick={onClick}
+            onContextMenu={onLongPress}
+            hasAlbumCover={typeof albumCover === 'string'}
+        >
             {typeof albumCover === 'string' && (
                 <Image className="album-art" src={albumCover} alt={albumName} />
             )}
@@ -139,7 +150,7 @@ export default function MusicItem({
                         )}
                     </div>
                     <div className="artist">
-                        <div>{artistName}</div>
+                        {artistName}
                     </div>
                 </div>
                 {onLongPress && (

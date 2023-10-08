@@ -4,7 +4,7 @@
     "description": "",
     "scripts": {
         "dev": "cross-env PORT=4000 ts-node script/_dev.ts",
-        "dev:client": "npm run dev --prefix client",
+        "dev:client": "npm run dev --prefix client2",
         "dev:with": "concurrently \"npm run dev\" \"npm run dev:client\"",
         "start": "cross-env PORT=4000 ts-node script/_start.ts",
         "build": "tsc",
