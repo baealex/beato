@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { Router, Route } from "svelte-routing";
-    import { alert, toast } from "@baejino/ui";
 
     import {
         Beato,
@@ -13,26 +12,25 @@
         MusicActionPanel,
         PlaylistActionPanel,
     } from "~/components";
+    import {
+        MusicList,
+        FavoriteMusic,
+        AlbumList,
+        AlbumDetail,
+        ArtistList,
+        ArtistDetail,
+        QueueHistory,
+        Playlist,
+        PlaylistDetail,
+        Setting,
+    } from "~/pages";
 
-    import MusicList from "./pages/MusicList.svelte";
-    import FavoriteMusic from "./pages/FavoriteMusic.svelte";
-    import AlbumList from "./pages/AlbumList.svelte";
-    import AlbumDetail from "./pages/AlbumDetail.svelte";
-    import ArtistList from "./pages/ArtistList.svelte";
-    import ArtistDetail from "./pages/ArtistDetail.svelte";
-    import PlaylistDetail from "./pages/PlaylistDetail.svelte";
-    import QueueHistory from "./pages/QueueHistory.svelte";
-    import Playlist from "./pages/Playlist.svelte";
-    import Setting from "./pages/Setting.svelte";
-
-    import { downloadFile } from "./modules/download";
     import {
         WebAudioChannel,
         AppAudioChannel,
         type AudioChannel,
         type AudioChannelEventHandler,
     } from "./modules/audio-channel";
-    import { getAudio } from "./api";
 
     import { musicMap, queue, syncAll } from "./store";
 
@@ -218,13 +216,7 @@
     };
 
     const handleClickDownload = async (music: Music) => {
-        if (window.AppChannel) {
-            await alert("Not yet supported");
-        } else {
-            const { data } = await getAudio(music.id);
-            const fileName = music.filePath.split("/").pop();
-            downloadFile(fileName, URL.createObjectURL(data));
-        }
+        audioChannel.download(music);
     };
 </script>
 

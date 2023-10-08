@@ -1,3 +1,4 @@
+import { alert } from '@baejino/ui';
 import { getImage } from '../image';
 import { convertToMillisecond, convertToSecond } from '../time'
 import type { AudioChannel, AudioChannelEventHandler } from './audio-channel'
@@ -126,5 +127,9 @@ export class AppAudioChannel implements AudioChannel {
                 position: convertToMillisecond(time),
             })
         )
+    }
+
+    download(music: Music) {
+        alert('Not supported yet')
     }
 }

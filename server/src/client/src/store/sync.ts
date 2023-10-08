@@ -3,7 +3,7 @@ import {
     syncArtists,
     syncMusics,
     syncPlaylists,
-} from "./index";
+} from './index';
 
 export function syncAll(callback: () => void) {
     Promise.all([

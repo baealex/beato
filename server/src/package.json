@@ -4,11 +4,11 @@
     "description": "",
     "scripts": {
         "dev": "cross-env PORT=4000 ts-node script/_dev.ts",
-        "dev:client": "npm run dev --prefix client2",
+        "dev:client": "npm run dev --prefix client",
         "dev:with": "concurrently \"npm run dev\" \"npm run dev:client\"",
         "start": "cross-env PORT=4000 ts-node script/_start.ts",
         "build": "tsc",
-        "build:client": "npm run build --prefix client2",
+        "build:client": "npm run build --prefix client",
         "lint": "eslint src",
         "test": "DATABASE_URL=file:./test.sqlite3 ts-node script/_test.ts"
     },

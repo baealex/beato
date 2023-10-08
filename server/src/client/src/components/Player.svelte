@@ -1,18 +1,9 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    import Queue from "./Queue.svelte";
-    import SubPage from "./atom/SubPage.svelte";
+    import { Queue, SubPage } from "~/components";
 
-    import {
-        Play,
-        Pause,
-        Menu,
-        ArrowRepeat,
-        Infinite,
-        RightLeft,
-        Shuffle,
-    } from "~/icons";
+    import * as Icon from "~/icons";
 
     import type { Music } from "~/models/type";
 
@@ -134,47 +125,47 @@
                         on:click={() => switchRepeatMode()}
                     >
                         {#if $queue.repeatMode === "off"}
-                            <RightLeft />
+                            <Icon.RightLeft />
                         {:else if $queue.repeatMode === "all"}
-                            <ArrowRepeat />
+                            <Icon.ArrowRepeat />
                         {:else if $queue.repeatMode === "one"}
-                            <Infinite />
+                            <Icon.Infinite />
                         {/if}
                     </button>
                     <button
                         class="icon-button skip-back"
                         on:click={onClickPrev}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                     <button
                         class="icon-button"
                         on:click={playing ? onClickPause : onClickPlay}
                     >
                         {#if playing}
-                            <Pause />
+                            <Icon.Pause />
                         {:else}
-                            <Play />
+                            <Icon.Play />
                         {/if}
                     </button>
                     <button
                         class="icon-button skip-forward"
                         on:click={onClickNext}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                     <button
                         class="icon-button shuffle"
                         class:active={$queue.shuffle}
                         on:click={shuffleQueue}
                     >
-                        <Shuffle />
+                        <Icon.Shuffle />
                     </button>
                     <button
                         class="icon-button"
                         on:click={() => (isOpenQueue = !isOpenQueue)}
                     >
-                        <Menu />
+                        <Icon.Menu />
                     </button>
                 </div>
             </div>
@@ -254,11 +245,11 @@
                     on:click={() => switchRepeatMode()}
                 >
                     {#if $queue.repeatMode === "off"}
-                        <RightLeft />
+                        <Icon.RightLeft />
                     {:else if $queue.repeatMode === "all"}
-                        <ArrowRepeat />
+                        <Icon.ArrowRepeat />
                     {:else if $queue.repeatMode === "one"}
-                        <Infinite />
+                        <Icon.Infinite />
                     {/if}
                 </button>
                 <div class="playback">
@@ -266,23 +257,23 @@
                         class="icon-button skip-back"
                         on:click={onClickPrev}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                     <button
                         class="icon-button"
                         on:click={playing ? onClickPause : onClickPlay}
                     >
                         {#if playing}
-                            <Pause />
+                            <Icon.Pause />
                         {:else}
-                            <Play />
+                            <Icon.Play />
                         {/if}
                     </button>
                     <button
                         class="icon-button skip-forward"
                         on:click={onClickNext}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                 </div>
                 <button
@@ -290,7 +281,7 @@
                     class:active={$queue.shuffle}
                     on:click={shuffleQueue}
                 >
-                    <Shuffle />
+                    <Icon.Shuffle />
                 </button>
             </div>
         </div>

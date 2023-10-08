@@ -1,15 +1,15 @@
 import { writable } from 'svelte/store';
 
 type LatestSort =
-    | "nameAsc"
-    | "nameDesc"
-    | "createdAtAsc"
-    | "createdAtDesc"
-    | "albumCountAsc"
-    | "albumCountDesc"
-    | "songCountAsc"
-    | "songCountDesc"
-    | "random";
+    | 'nameAsc'
+    | 'nameDesc'
+    | 'createdAtAsc'
+    | 'createdAtDesc'
+    | 'albumCountAsc'
+    | 'albumCountDesc'
+    | 'songCountAsc'
+    | 'songCountDesc'
+    | 'random';
 
 export const artistSortPanel = writable<{
     isOpen: boolean;
