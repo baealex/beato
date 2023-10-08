@@ -9,6 +9,8 @@
     export let isOpen = false;
     export let hasHeader = true;
     export let onClose: () => void = null;
+    export let animationDirection: "LeftToRight" | "BottomToTop" =
+        "LeftToRight";
 
     const handlePopState = (e: PopStateEvent) => {
         if (layerPopState.at(-1) !== id || e.state === id) {
@@ -35,7 +37,12 @@
     }
 </script>
 
-<div class="sub-page" class:open={isOpen}>
+<div
+    class="sub-page"
+    class:open={isOpen}
+    class:slide-in-left={animationDirection === "LeftToRight"}
+    class:slide-in-bottom={animationDirection === "BottomToTop"}
+>
     {#if hasHeader}
         <div class="header">
             <button on:click={handleClose}>
@@ -49,7 +56,7 @@
 </div>
 
 <style lang="scss">
-    @keyframes slide-in {
+    @keyframes slide-in-bottom {
         from {
             opacity: 0;
             transform: translateY(100%);
@@ -57,6 +64,17 @@
         to {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+
+    @keyframes slide-in-left {
+        from {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
         }
     }
 
@@ -73,7 +91,14 @@
 
         &.open {
             display: flex;
-            animation: slide-in 0.3s ease-in-out;
+        }
+
+        &.slide-in-left {
+            animation: slide-in-left 0.3s ease-in-out;
+        }
+
+        &.slide-in-bottom {
+            animation: slide-in-bottom 0.3s ease-in-out;
         }
     }
 

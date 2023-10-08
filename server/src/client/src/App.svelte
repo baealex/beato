@@ -72,6 +72,8 @@
             }
         },
         onTimeUpdate: (secondPosition) => {
+            currentTime = secondPosition;
+
             progress = Number(
                 ((secondPosition / currentMusic?.duration) * 100).toFixed(2)
             );

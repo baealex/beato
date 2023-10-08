@@ -171,7 +171,11 @@
             </div>
         {/if}
     </div>
-    <SubPage isOpen={isOpenPlayer} onClose={() => (isOpenPlayer = false)}>
+    <SubPage
+        isOpen={isOpenPlayer}
+        onClose={() => (isOpenPlayer = false)}
+        animationDirection="BottomToTop"
+    >
         <div class="detail">
             <div
                 class="album-art"

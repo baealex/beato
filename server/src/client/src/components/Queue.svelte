@@ -88,7 +88,7 @@
     };
 </script>
 
-<SubPage {isOpen} hasHeader={false}>
+<SubPage {isOpen} hasHeader={false} animationDirection="BottomToTop">
     <div class="header">
         <div class="actions">
             <button
