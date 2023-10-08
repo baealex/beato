@@ -9,7 +9,7 @@ export const layerPopState = (() => {
             return state.pop();
         },
         push: (value: string) => {
-            history.pushState(value, "", `#${value}`);
+            history.pushState(value, '', `#${value}`);
             state.push(value);
         },
         back: (value: string) => {

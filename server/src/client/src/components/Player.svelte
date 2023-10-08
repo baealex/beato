@@ -1,18 +1,9 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    import Queue from "./Queue.svelte";
-    import SubPage from "./atom/SubPage.svelte";
+    import { Queue, SubPage } from "~/components";
 
-    import {
-        Play,
-        Pause,
-        Menu,
-        ArrowRepeat,
-        Infinite,
-        RightLeft,
-        Shuffle,
-    } from "~/icons";
+    import * as Icon from "~/icons";
 
     import type { Music } from "~/models/type";
 
@@ -25,10 +16,9 @@
         switchRepeatMode,
         shuffleQueue,
         musicActionPanel,
-    } from "../store";
+    } from "~/store";
 
     export let music: Music;
-    export let volume: number;
     export let playing: boolean;
     export let progress: number;
     export let currentTime: number;
@@ -135,61 +125,57 @@
                         on:click={() => switchRepeatMode()}
                     >
                         {#if $queue.repeatMode === "off"}
-                            <RightLeft />
+                            <Icon.RightLeft />
                         {:else if $queue.repeatMode === "all"}
-                            <ArrowRepeat />
+                            <Icon.ArrowRepeat />
                         {:else if $queue.repeatMode === "one"}
-                            <Infinite />
+                            <Icon.Infinite />
                         {/if}
                     </button>
                     <button
                         class="icon-button skip-back"
                         on:click={onClickPrev}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                     <button
                         class="icon-button"
                         on:click={playing ? onClickPause : onClickPlay}
                     >
                         {#if playing}
-                            <Pause />
+                            <Icon.Pause />
                         {:else}
-                            <Play />
+                            <Icon.Play />
                         {/if}
                     </button>
                     <button
                         class="icon-button skip-forward"
                         on:click={onClickNext}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                     <button
                         class="icon-button shuffle"
                         class:active={$queue.shuffle}
                         on:click={shuffleQueue}
                     >
-                        <Shuffle />
+                        <Icon.Shuffle />
                     </button>
-                    <input
-                        bind:value={volume}
-                        class="volume"
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.05"
-                    />
                     <button
                         class="icon-button"
                         on:click={() => (isOpenQueue = !isOpenQueue)}
                     >
-                        <Menu />
+                        <Icon.Menu />
                     </button>
                 </div>
             </div>
         {/if}
     </div>
-    <SubPage isOpen={isOpenPlayer} onClose={() => (isOpenPlayer = false)}>
+    <SubPage
+        isOpen={isOpenPlayer}
+        onClose={() => (isOpenPlayer = false)}
+        animationDirection="BottomToTop"
+    >
         <div class="detail">
             <div
                 class="album-art"
@@ -263,11 +249,11 @@
                     on:click={() => switchRepeatMode()}
                 >
                     {#if $queue.repeatMode === "off"}
-                        <RightLeft />
+                        <Icon.RightLeft />
                     {:else if $queue.repeatMode === "all"}
-                        <ArrowRepeat />
+                        <Icon.ArrowRepeat />
                     {:else if $queue.repeatMode === "one"}
-                        <Infinite />
+                        <Icon.Infinite />
                     {/if}
                 </button>
                 <div class="playback">
@@ -275,23 +261,23 @@
                         class="icon-button skip-back"
                         on:click={onClickPrev}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                     <button
                         class="icon-button"
                         on:click={playing ? onClickPause : onClickPlay}
                     >
                         {#if playing}
-                            <Pause />
+                            <Icon.Pause />
                         {:else}
-                            <Play />
+                            <Icon.Play />
                         {/if}
                     </button>
                     <button
                         class="icon-button skip-forward"
                         on:click={onClickNext}
                     >
-                        <Play />
+                        <Icon.Play />
                     </button>
                 </div>
                 <button
@@ -299,7 +285,7 @@
                     class:active={$queue.shuffle}
                     on:click={shuffleQueue}
                 >
-                    <Shuffle />
+                    <Icon.Shuffle />
                 </button>
             </div>
         </div>
@@ -406,7 +392,6 @@
 
                 .mode,
                 .shuffle,
-                .volume,
                 .skip-back {
                     @media (max-width: 768px) {
                         display: none;
@@ -415,33 +400,6 @@
 
                 .shuffle.active {
                     color: #a076f1;
-                }
-
-                .volume {
-                    -webkit-appearance: none;
-                    appearance: none;
-                    width: 100px;
-                    height: 0.25rem;
-                    background-color: rgba(255, 255, 255, 0.1);
-                    border-radius: 0.25rem;
-                    outline: none;
-                    transition: background-color 0.25s ease-in-out;
-
-                    &::-webkit-slider-thumb {
-                        -webkit-appearance: none;
-                        appearance: none;
-                        width: 0.75rem;
-                        height: 0.75rem;
-                        background-color: #a076f1;
-                        border-radius: 50%;
-                        cursor: pointer;
-                    }
-
-                    @media (min-width: 1024px) {
-                        &:hover {
-                            background-color: rgba(255, 255, 255, 0.2);
-                        }
-                    }
                 }
             }
         }

@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import { Router, Route } from "svelte-routing";
-    import { alert, toast } from "@baejino/ui";
 
     import {
         Beato,
@@ -13,23 +12,25 @@
         MusicActionPanel,
         PlaylistActionPanel,
     } from "~/components";
+    import {
+        MusicList,
+        FavoriteMusic,
+        AlbumList,
+        AlbumDetail,
+        ArtistList,
+        ArtistDetail,
+        QueueHistory,
+        Playlist,
+        PlaylistDetail,
+        Setting,
+    } from "~/pages";
 
-    import MusicList from "./pages/MusicList.svelte";
-    import FavoriteMusic from "./pages/FavoriteMusic.svelte";
-    import AlbumList from "./pages/AlbumList.svelte";
-    import AlbumDetail from "./pages/AlbumDetail.svelte";
-    import ArtistList from "./pages/ArtistList.svelte";
-    import ArtistDetail from "./pages/ArtistDetail.svelte";
-    import PlaylistDetail from "./pages/PlaylistDetail.svelte";
-    import QueueHistory from "./pages/QueueHistory.svelte";
-    import Playlist from "./pages/Playlist.svelte";
-    import Setting from "./pages/Setting.svelte";
-
-    import { downloadFile } from "./modules/download";
-    import { PostMessageWrapper } from "./modules/app-channel";
-    import { convertToMillisecond, convertToSecond } from "./modules/time";
-    import { getImage } from "./modules/image";
-    import { getAudio } from "./api";
+    import {
+        WebAudioChannel,
+        AppAudioChannel,
+        type AudioChannel,
+        type AudioChannelEventHandler,
+    } from "./modules/audio-channel";
 
     import { musicMap, queue, syncAll } from "./store";
 
@@ -37,25 +38,75 @@
 
     import type { Music } from "./models/type";
 
-    let audioElement: HTMLAudioElement;
+    const audioEventHandler: AudioChannelEventHandler = {
+        onPlay: () => {
+            playing = true;
+        },
+        onPause: () => {
+            playing = false;
+        },
+        onStop: () => {
+            playing = false;
+        },
+        onEnded: () => {
+            playing = false;
+            if ($queue.repeatMode === "one") {
+                playAgain();
+                return;
+            }
+            if ($queue.repeatMode === "all") {
+                if ($queue.items.length === 1) {
+                    playAgain();
+                    return;
+                }
+                playNext();
+                return;
+            }
+            if ($queue.repeatMode === "off") {
+                if ($queue.selected === $queue.items.length - 1) {
+                    progress = 0;
+                    return;
+                }
+                playNext();
+                return;
+            }
+        },
+        onTimeUpdate: (secondPosition) => {
+            currentTime = secondPosition;
+
+            progress = Number(
+                ((secondPosition / currentMusic?.duration) * 100).toFixed(2)
+            );
+
+            if (progress >= 80 && shouldCount) {
+                shouldCount = false;
+                socketManager.socket.emit(socketManager.MUSIC_COUNT, {
+                    id: currentMusic?.id,
+                });
+            }
+        },
+        onSkipToNext: () => {
+            playNext();
+        },
+        onSkipToPrevious: () => {
+            playPrev();
+        },
+    };
+
     let playing = false;
-    let volume = 1;
     let progress = 0;
     let currentTime = 0;
     let isLoaded = false;
     let playReady = false;
     let shouldCount = false;
     let currentMusic: Music = null;
+    let audioChannel: AudioChannel = window.AppChannel
+        ? new AppAudioChannel(audioEventHandler)
+        : new WebAudioChannel(audioEventHandler);
 
     $: {
         if (currentMusic) {
             document.title = `${currentMusic.name} - ${currentMusic.artist.name}`;
-        }
-    }
-
-    $: {
-        if (audioElement) {
-            audioElement.volume = volume;
         }
     }
 
@@ -90,123 +141,11 @@
         window.addEventListener("focus", () => {
             socketManager.socket.connect();
         });
+        window.addEventListener("beforeunload", () => {
+            audioChannel.stop();
+        });
         socketManager.musicListener();
         socketManager.playlistListener();
-
-        const handlePlay = () => {
-            playing = true;
-        };
-
-        const handlePause = () => {
-            playing = false;
-        };
-
-        const handleEnd = (onLast: Function) => {
-            if ($queue.repeatMode === "one") {
-                playAgain();
-                return;
-            }
-            if ($queue.repeatMode === "all") {
-                if ($queue.items.length === 1) {
-                    playAgain();
-                    return;
-                }
-                playNext();
-                return;
-            }
-            if ($queue.repeatMode === "off") {
-                if ($queue.selected === $queue.items.length - 1) {
-                    onLast();
-                    return;
-                }
-                playNext();
-                return;
-            }
-        };
-
-        const handleSetPosition = (secondPosition: number) => {
-            progress = Number(
-                ((secondPosition / currentMusic?.duration) * 100).toFixed(2)
-            );
-
-            if (progress >= 80 && shouldCount) {
-                shouldCount = false;
-                socketManager.socket.emit(socketManager.MUSIC_COUNT, {
-                    id: currentMusic?.id,
-                });
-            }
-        };
-
-        if (window.AppChannel) {
-            window.AppChannel.receiveMessage = (message) => {
-                if (message.actionType === "play") {
-                    handlePlay();
-                }
-                if (message.actionType === "pause") {
-                    handlePause();
-                }
-                if (message.actionType === "stop") {
-                    window.AppChannel.postMessage(
-                        PostMessageWrapper({
-                            actionType: "setPosition",
-                            position: 0,
-                        })
-                    );
-                    playing = false;
-                }
-                if (message.actionType === "skipToNext") {
-                    playNext();
-                }
-                if (message.actionType === "skipToPrevious") {
-                    playPrev();
-                }
-                if (message.actionType === "end") {
-                    handleEnd(() => {
-                        window.AppChannel.postMessage(
-                            PostMessageWrapper({
-                                actionType: "stop",
-                            })
-                        );
-                        progress = 0;
-                    });
-                }
-                if (message.actionType === "setPosition") {
-                    currentTime = convertToSecond(message.position);
-                    handleSetPosition(currentTime);
-                }
-            };
-            window.addEventListener("beforeunload", () => {
-                window.AppChannel.postMessage(
-                    PostMessageWrapper({
-                        actionType: "stop",
-                    })
-                );
-            });
-        } else {
-            audioElement.addEventListener("play", () => {
-                handlePlay();
-            });
-
-            audioElement.addEventListener("pause", () => {
-                handlePause();
-            });
-
-            audioElement.addEventListener("ended", () => {
-                handleEnd(() => {
-                    audioElement.currentTime = 0;
-                    progress = 0;
-                });
-            });
-
-            audioElement.addEventListener("timeupdate", () => {
-                currentTime = audioElement.currentTime;
-                handleSetPosition(currentTime);
-            });
-
-            audioElement.addEventListener("error", () => {
-                toast("Failed to load audio");
-            });
-        }
     });
 
     onDestroy(() => {
@@ -217,30 +156,7 @@
 
     const requestFile = async (id: string) => {
         shouldCount = true;
-
-        if (window.AppChannel) {
-            window.AppChannel.postMessage(
-                PostMessageWrapper({
-                    actionType: "setMediaItem",
-                    mediaItem: {
-                        id: location.origin + "/api/audio/" + id,
-                        album: currentMusic.album.name,
-                        title: currentMusic.name,
-                        artist: currentMusic.artist.name,
-                        duration: convertToMillisecond(currentMusic.duration),
-                        artUri:
-                            location.origin +
-                            getImage(currentMusic.album.cover),
-                    },
-                })
-            );
-        } else {
-            const audioResource = "/api/audio/" + id;
-            audioElement.pause();
-            audioElement.src = audioResource;
-            audioElement.currentTime = 0;
-            audioElement.load();
-        }
+        audioChannel.load(currentMusic);
     };
 
     const playAgain = () => {
@@ -259,21 +175,9 @@
     };
 
     const playPrev = () => {
-        if (window.AppChannel) {
-            if (currentTime > 10) {
-                window.AppChannel.postMessage(
-                    PostMessageWrapper({
-                        actionType: "setPosition",
-                        position: 0,
-                    })
-                );
-                return;
-            }
-        } else {
-            if (currentTime > 10) {
-                audioElement.currentTime = 0;
-                return;
-            }
+        if (currentTime > 10) {
+            audioChannel.seek(0);
+            return;
         }
         queue.update((state) => {
             state.selected = state.selected - 1;
@@ -285,42 +189,15 @@
     };
 
     const handleClickPlay = () => {
-        if (window.AppChannel) {
-            window.AppChannel.postMessage(
-                PostMessageWrapper({
-                    actionType: "play",
-                })
-            );
-        } else {
-            audioElement.play();
-        }
+        audioChannel.play();
     };
 
     const handleClickPause = () => {
-        if (window.AppChannel) {
-            window.AppChannel.postMessage(
-                PostMessageWrapper({
-                    actionType: "pause",
-                })
-            );
-        } else {
-            audioElement.pause();
-        }
+        audioChannel.pause();
     };
 
     const handleClickStop = () => {
-        playing = false;
-
-        if (window.AppChannel) {
-            window.AppChannel.postMessage(
-                PostMessageWrapper({
-                    actionType: "stop",
-                })
-            );
-        } else {
-            audioElement.pause();
-            audioElement.currentTime = 0;
-        }
+        audioChannel.stop();
     };
 
     const handleClickProgress = (e: MouseEvent | TouchEvent) => {
@@ -333,16 +210,7 @@
         const percent = (x - left) / width;
         const duration = currentMusic.duration;
 
-        if (window.AppChannel) {
-            window.AppChannel.postMessage(
-                PostMessageWrapper({
-                    actionType: "setPosition",
-                    position: convertToMillisecond(duration * percent),
-                })
-            );
-        } else {
-            audioElement.currentTime = duration * percent;
-        }
+        audioChannel.seek(duration * percent);
     };
 
     const handleClickLike = (music: Music) => {
@@ -350,13 +218,7 @@
     };
 
     const handleClickDownload = async (music: Music) => {
-        if (window.AppChannel) {
-            await alert("Not yet supported");
-        } else {
-            const { data } = await getAudio(music.id);
-            const fileName = music.filePath.split("/").pop();
-            downloadFile(fileName, URL.createObjectURL(data));
-        }
+        audioChannel.download(music);
     };
 </script>
 
@@ -433,7 +295,6 @@
 
             <Player
                 bind:playing
-                bind:volume
                 bind:progress
                 music={currentMusic}
                 {currentTime}
@@ -456,5 +317,3 @@
         {/if}
     </Router>
 </main>
-
-<audio bind:this={audioElement} />

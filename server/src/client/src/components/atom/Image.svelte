@@ -54,8 +54,6 @@
     <img
         bind:this={imageRef}
         class={className}
-        class:lazy={!loadded}
-        class:load={loadded}
         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NQV1f/DwACYwF11mMyYQAAAABJRU5ErkJggg=="
         {alt}
         {style}
@@ -63,21 +61,3 @@
 {:else}
     <img src={getImage(src)} {alt} class={className} {style} />
 {/if}
-
-<style lang="scss">
-    @keyframes loading {
-        0% {
-            opacity: 0.5;
-        }
-        50% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0.5;
-        }
-    }
-
-    img.lazy:not(.load) {
-        animation: loading 1s ease-out infinite;
-    }
-</style>

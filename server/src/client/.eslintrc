@@ -15,5 +15,14 @@
             ],
             "parser": "@typescript-eslint/parser"
         }
-    ]
+    ],
+    "rules": {
+        "quotes": [
+            "error",
+            "single",
+            {
+                "avoidEscape": true
+            }
+        ]
+    }
 }

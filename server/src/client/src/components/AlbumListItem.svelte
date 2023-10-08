@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Image from "~/components/atom/Image.svelte";
+    import { Image } from "~/components";
 
     export let albumCover: string;
     export let albumName: string;
