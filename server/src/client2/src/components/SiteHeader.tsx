@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { useEffect, useRef } from 'react'
 import { LinkProps, Link as RouterLink, useLocation } from 'react-router-dom'
 
 const HEADER_ITEMS = [
@@ -86,6 +87,7 @@ const Nav = styled.nav`
 
         li {
             font-size: 1rem;
+            font-weight: bold;
         }
     }
 `
@@ -122,9 +124,29 @@ const Link = styled.a<LinkProps>`
 export default function SiteHeader() {
     const location = useLocation()
 
+    const ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const el = ref.current
+
+        if (el) {
+            const activeItem = el.querySelector<HTMLAnchorElement>('a.active')
+
+            if (activeItem) {
+                const { left, width } = activeItem.getBoundingClientRect()
+                const { width: navWidth } = ref.current.getBoundingClientRect()
+                const center = left + width / 2 - navWidth / 2
+                ref.current.scrollBy({
+                    left: center,
+                    behavior: 'smooth',
+                })
+            }
+        }
+    }, [location.pathname])
+
     return (
         <Header>
-            <Nav>
+            <Nav ref={ref}>
                 <ul>
                     {HEADER_ITEMS.map((item) => (
                         <li key={item.name}>

@@ -7,7 +7,7 @@ import { ArtistItem, SecondaryButton, StickyHeader } from '~/components'
 
 import { artistStore } from '~/store/artist'
 
-const RENDER_LIMIT = 100
+const RENDER_LIMIT = 150
 
 export default function ArtistList() {
     const navigate = useNavigate()

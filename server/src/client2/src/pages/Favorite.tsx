@@ -9,7 +9,7 @@ import { Play } from '~/icon'
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
 
-const RENDER_LIMIT = 150
+const RENDER_LIMIT = 200
 
 export default function Music() {
     const [searchParams, setSearchParams] = useSearchParams()

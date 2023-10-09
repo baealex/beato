@@ -20,7 +20,7 @@ const Grid = styled.div`
     }
 `
 
-const RENDER_LIMIT = 80
+const RENDER_LIMIT = 100
 
 export default function Album() {
     const navigate = useNavigate()
