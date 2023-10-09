@@ -39,14 +39,24 @@ interface PlaylistListenerEventHandler {
 }
 
 export class PlaylistListener implements Listener {
-    connect({ onCreate, onDelete, onUpdate, onChangeOrder, onAddMusic, onRemoveMusic, onChangeMusicOrder }: PlaylistListenerEventHandler) {
-        socket.on(PLAYLIST_CREATE, onCreate)
-        socket.on(PLAYLIST_DELETE, onDelete)
-        socket.on(PLAYLIST_UPDATE, onUpdate)
-        socket.on(PLAYLIST_CHANGE_ORDER, onChangeOrder)
-        socket.on(PLAYLIST_ADD_MUSIC, onAddMusic)
-        socket.on(PLAYLIST_REMOVE_MUSIC, onRemoveMusic)
-        socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, onChangeMusicOrder)
+    handler: PlaylistListenerEventHandler | null
+
+    constructor() {
+        this.handler = null
+    }
+
+    connect(handler: PlaylistListenerEventHandler) {
+        if (this.handler !== null) {
+            this.disconnect()
+        }
+        this.handler = handler
+        socket.on(PLAYLIST_CREATE, this.handler.onCreate)
+        socket.on(PLAYLIST_DELETE, this.handler.onDelete)
+        socket.on(PLAYLIST_UPDATE, this.handler.onUpdate)
+        socket.on(PLAYLIST_CHANGE_ORDER, this.handler.onChangeOrder)
+        socket.on(PLAYLIST_ADD_MUSIC, this.handler.onAddMusic)
+        socket.on(PLAYLIST_REMOVE_MUSIC, this.handler.onRemoveMusic)
+        socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, this.handler.onChangeMusicOrder)
     }
 
     static create(name: string) {
@@ -78,10 +88,12 @@ export class PlaylistListener implements Listener {
     }
 
     disconnect() {
-        socket.off(PLAYLIST_CREATE)
-        socket.off(PLAYLIST_DELETE)
-        socket.off(PLAYLIST_UPDATE)
-        socket.off(PLAYLIST_ADD_MUSIC)
-        socket.off(PLAYLIST_REMOVE_MUSIC)
+        if (this.handler === null) return
+
+        socket.off(PLAYLIST_CREATE, this.handler.onCreate)
+        socket.off(PLAYLIST_DELETE, this.handler.onDelete)
+        socket.off(PLAYLIST_UPDATE, this.handler.onUpdate)
+        socket.off(PLAYLIST_ADD_MUSIC, this.handler.onAddMusic)
+        socket.off(PLAYLIST_REMOVE_MUSIC, this.handler.onRemoveMusic)
     }
 }

@@ -36,8 +36,9 @@ class PlaylistStore extends Store<PlaylistStoreState> {
             onRemoveMusic: (data) => {
                 this.set({ playlists: this.state.playlists.map((playlist) => playlist.id === data.id ? { ...playlist, musics: playlist.musics.filter((music) => !data.musicIds.includes(music.id)) } : playlist) })
             },
-            onChangeMusicOrder: (data) => {
-                // TODO: implement
+            onChangeMusicOrder: ({ id, musicIds }) => {
+                console.log(111)
+                this.set({ playlists: this.state.playlists.map((playlist) => playlist.id === id ? { ...playlist, musics: playlist.headerMusics.sort((a, b) => musicIds.indexOf(a.id.toString()) - musicIds.indexOf(b.id.toString())) } : playlist) })
             },
         })
     }

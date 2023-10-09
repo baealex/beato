@@ -20,9 +20,15 @@ interface MusicListenerEventHandler {
 }
 
 export class MusicListener implements Listener {
-    connect({ onLike, onCount }: MusicListenerEventHandler) {
-        socket.on(MUSIC_LIKE, onLike)
-        socket.on(MUSIC_COUNT, onCount)
+    handler: MusicListenerEventHandler | null
+
+    connect(handler: MusicListenerEventHandler) {
+        if (this.handler !== null) {
+            this.disconnect()
+        }
+        this.handler = handler
+        socket.on(MUSIC_LIKE, this.handler.onLike)
+        socket.on(MUSIC_COUNT, this.handler.onCount)
     }
 
     static like(id: string, isLiked: boolean) {
@@ -34,6 +40,8 @@ export class MusicListener implements Listener {
     }
 
     disconnect() {
+        if (this.handler === null) return
+
         socket.off(MUSIC_LIKE)
         socket.off(MUSIC_COUNT)
     }
