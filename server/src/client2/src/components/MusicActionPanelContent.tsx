@@ -4,6 +4,7 @@ import { Image, PanelContent, PlaylistPanelContent } from '~/components'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
+import { makePlayTime } from '~/modules/time'
 import { MusicListener } from '~/socket'
 
 import { musicStore } from '~/store/music'
@@ -96,6 +97,13 @@ export default function MusicActionPanelContent({
                     onClick: () => queueStore.add(music.id),
                 },
             ]}
+            footer={(
+                <>
+                    <span>listen: {music.playCount} times</span> /
+                    <span>duration: {makePlayTime(music.duration)}</span> /
+                    <span>codec: {music.codec}</span>
+                </>
+            )}
         />
     )
 }
