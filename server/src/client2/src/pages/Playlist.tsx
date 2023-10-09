@@ -7,7 +7,7 @@ import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { PlaylistItem, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
+import { PlaylistActionPanelContent, PlaylistItem, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
 import { Menu } from '~/icon'
 
 import { Playlist as PlaylistModel } from '~/models/type'
@@ -15,6 +15,7 @@ import { Playlist as PlaylistModel } from '~/models/type'
 import { PlaylistListener } from '~/socket'
 
 import { playlistStore } from '~/store/playlist'
+import { panel } from '~/modules/panel'
 
 const Item = styled.div`
     display: flex;
@@ -34,9 +35,11 @@ const Item = styled.div`
 function PlaylistDndItem({
     playlist,
     onClick,
+    onLongPress,
 }: {
     playlist: PlaylistModel
     onClick: () => void
+    onLongPress: () => void
 }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: playlist.id })
     const style = {
@@ -46,14 +49,17 @@ function PlaylistDndItem({
 
     return (
         <Item ref={setNodeRef} style={style} {...attributes}>
-            <div className="icon-button" {...listeners}>
+            <div className="icon-button" {...listeners} style={{ cursor: 'grab', touchAction: 'none' }}>
                 <Menu />
             </div>
-            <PlaylistItem
-                key={playlist.id}
-                {...playlist}
-                onClick={onClick}
-            />
+            <div style={{ flex: 1, maxWidth: 'calc(100% - 4rem)' }}>
+                <PlaylistItem
+                    key={playlist.id}
+                    {...playlist}
+                    onClick={onClick}
+                    onLongPress={onLongPress}
+                />
+            </div>
         </Item>
     )
 }
@@ -99,6 +105,11 @@ export default function Playlist() {
                         key={playlist.id}
                         playlist={playlist}
                         onClick={() => navigate(`/playlist/${playlist.id}`)}
+                        onLongPress={() => panel.open({
+                            content: (
+                                <PlaylistActionPanelContent id={playlist.id} />
+                            )
+                        })}
                     />
                 ))}
             </VerticalSortable>

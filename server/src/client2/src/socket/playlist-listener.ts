@@ -11,6 +11,11 @@ export const PLAYLIST_ADD_MUSIC = 'playlist-add-music'
 export const PLAYLIST_REMOVE_MUSIC = 'playlist-remove-music'
 export const PLAYLIST_CHANGE_MUSIC_ORDER = 'playlist-change-music-order'
 
+interface OnUpdateData {
+    id: string;
+    name: string;
+}
+
 interface OnAddMusicData {
     id: string;
     music: Pick<Music, 'id'>;
@@ -31,7 +36,7 @@ interface OnChangeMusicOrderData {
 interface PlaylistListenerEventHandler {
     onCreate: (playlist: Playlist) => void;
     onDelete: (id: string) => void;
-    onUpdate: (playlist: Playlist) => void;
+    onUpdate: (data: OnUpdateData) => void;
     onChangeOrder: (ids: string[]) => void;
     onAddMusic: (data: OnAddMusicData) => void;
     onRemoveMusic: (data: OnRemoveMusicData) => void;
@@ -50,6 +55,7 @@ export class PlaylistListener implements Listener {
             this.disconnect()
         }
         this.handler = handler
+
         socket.on(PLAYLIST_CREATE, this.handler.onCreate)
         socket.on(PLAYLIST_DELETE, this.handler.onDelete)
         socket.on(PLAYLIST_UPDATE, this.handler.onUpdate)
@@ -95,5 +101,7 @@ export class PlaylistListener implements Listener {
         socket.off(PLAYLIST_UPDATE, this.handler.onUpdate)
         socket.off(PLAYLIST_ADD_MUSIC, this.handler.onAddMusic)
         socket.off(PLAYLIST_REMOVE_MUSIC, this.handler.onRemoveMusic)
+
+        this.handler = null
     }
 }

@@ -1,10 +1,12 @@
 import { prompt } from '@baejino/ui'
 import { useStore } from 'badland-react'
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { MusicItem, SecondaryButton, StickyHeader } from '~/components'
-import { Play } from '~/icon'
+import { MusicItem, SecondaryButton, StickyHeader, MusicActionPanelContent } from '~/components'
+import * as Icon from '~/icon'
+
+import { panel } from '~/modules/panel'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
@@ -12,6 +14,7 @@ import { queueStore } from '~/store/queue'
 const RENDER_LIMIT = 200
 
 export default function Music() {
+    const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
 
     const [{ musics }] = useStore(musicStore)
@@ -43,7 +46,7 @@ export default function Music() {
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
                 <SecondaryButton>
-                    <Play /> Play
+                    <Icon.Play /> Play
                 </SecondaryButton>
             </StickyHeader>
             {filteredMusics.slice(0, renderLimit).map(music => (
@@ -56,7 +59,16 @@ export default function Music() {
                     musicCodec={music.codec}
                     isLiked={music.isLiked}
                     onClick={() => queueStore.add(music.id)}
-                    onLongPress={() => { }}
+                    onLongPress={() => panel.open({
+                        title: 'Related to this music',
+                        content: (
+                            <MusicActionPanelContent
+                                id={music.id}
+                                onAlbumClick={() => navigate(`/album/${music.album.id}`)}
+                                onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
+                            />
+                        )
+                    })}
                 />
             ))}
             {filteredMusics.length > renderLimit && (

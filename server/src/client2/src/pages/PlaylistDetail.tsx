@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import styled from '@emotion/styled'
 import { useQuery, useQueryClient } from 'react-query'
 import { useStore } from 'badland-react'
@@ -13,7 +14,11 @@ import { Menu } from '~/icon'
 import { Music } from '~/models/type'
 
 import { getPlaylist } from '~/api'
-import { PlaylistListener } from '~/socket'
+import {
+    PLAYLIST_CHANGE_MUSIC_ORDER,
+    PlaylistListener,
+    socket
+} from '~/socket'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
@@ -50,19 +55,21 @@ function PlaylistDndMusicItem({
 
     return (
         <Item ref={setNodeRef} style={style} {...attributes}>
-            <div className="icon-button" {...listeners}>
+            <div className="icon-button" {...listeners} style={{ cursor: 'grab', touchAction: 'none' }}>
                 <Menu />
             </div>
-            <MusicItem
-                albumName={music.album.name}
-                albumCover={music.album.cover}
-                artistName={music.artist.name}
-                musicName={music.name}
-                musicCodec={music.codec}
-                isLiked={music.isLiked}
-                onClick={onClick}
-                onLongPress={onLongPress}
-            />
+            <div style={{ flex: 1, maxWidth: 'calc(100% - 4rem)' }}>
+                <MusicItem
+                    albumName={music.album.name}
+                    albumCover={music.album.cover}
+                    artistName={music.artist.name}
+                    musicName={music.name}
+                    musicCodec={music.codec}
+                    isLiked={music.isLiked}
+                    onClick={onClick}
+                    onLongPress={onLongPress}
+                />
+            </div>
         </Item>
     )
 }
@@ -95,6 +102,16 @@ export default function PlaylistDetail() {
             })
         }
     }
+
+    useEffect(() => {
+        const eventHandler = () => {
+            queryClient.invalidateQueries(['playlist', id])
+        }
+        socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, eventHandler)
+        return () => {
+            socket.off(PLAYLIST_CHANGE_MUSIC_ORDER, eventHandler)
+        }
+    }, [id, queryClient])
 
     if (!playlist) return null
 

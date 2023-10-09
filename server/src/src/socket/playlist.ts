@@ -41,8 +41,11 @@ const createPlaylist = async ({ name = '', musics = [] }) => {
 
     connectors.broadcast(PLAYLIST_CREATE, {
         ...playlist,
+        id: playlist.id.toString(),
         musicCount: musics.length,
-        headerMusics: musics.slice(0, 4),
+        headerMusics: musics.slice(0, 4).map((musicId) => ({
+            id: musicId.toString(),
+        })),
     });
 };
 
@@ -142,7 +145,7 @@ const updatePlaylist = async ({
         return;
     }
 
-    const playlist = await models.playlist.update({
+    await models.playlist.update({
         where: {
             id: Number(id),
         },
@@ -150,7 +153,7 @@ const updatePlaylist = async ({
             name,
         },
     });
-    connectors.broadcast(PLAYLIST_UPDATE, playlist);
+    connectors.broadcast(PLAYLIST_UPDATE, { id, name });
 };
 
 const addMusicToPlaylist = async ({

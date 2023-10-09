@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 
+import { MusicActionPanelContent } from '~/components'
 import { getImage } from '~/components/Image'
 import * as Icon from '~/icon'
 
+import { panel } from '~/modules/panel'
+import { makePlayTime } from '~/modules/time'
+
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
-import { makePlayTime } from '~/modules/time'
 
 const Container = styled.div`
     flex: 1;
@@ -244,6 +248,8 @@ const Container = styled.div`
 `
 
 export default function PlayerDetail() {
+    const navigate = useNavigate()
+
     const [state] = useStore(queueStore)
     const [{ musicMap }] = useStore(musicStore)
 
@@ -327,7 +333,15 @@ export default function PlayerDetail() {
             <div className="title-info">
                 <button
                     className="clickable title"
-                    onClick={() => { }}
+                    onClick={() => currentMusic && panel.open({
+                        content: (
+                            <MusicActionPanelContent
+                                id={currentMusic.id}
+                                onAlbumClick={() => navigate(`/album/${currentMusic.album.id}`)}
+                                onArtistClick={() => navigate(`/artist/${currentMusic.artist.id}`)}
+                            />
+                        )
+                    })}
                 >
                     <div className="name">
                         {currentMusic?.name}
@@ -397,6 +411,6 @@ export default function PlayerDetail() {
                     <Icon.Shuffle />
                 </button>
             </div>
-        </Container>
+        </Container >
     )
 }

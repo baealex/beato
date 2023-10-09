@@ -16,7 +16,7 @@ import {
     QueueHistory,
     Setting,
 } from './pages'
-import { SiteLayout } from './components'
+import { PanelProvider, SiteLayout } from './components'
 
 import { socket } from './socket'
 
@@ -122,8 +122,10 @@ export default function App() {
         })
     }, [])
     return (
-        <QueryClientProvider client={client}>
-            <RouterProvider router={router} />
-        </QueryClientProvider>
+        <PanelProvider>
+            <QueryClientProvider client={client}>
+                <RouterProvider router={router} />
+            </QueryClientProvider>
+        </PanelProvider>
     )
 }

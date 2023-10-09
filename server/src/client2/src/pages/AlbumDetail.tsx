@@ -1,15 +1,16 @@
 import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 import { useQuery } from 'react-query'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { Image, MusicItem } from '~/components'
+import { Image, MusicActionPanelContent, MusicItem } from '~/components'
 import { Play } from '~/icon'
 
 import { getAlbum } from '~/api'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
+import { panel } from '~/modules/panel'
 
 const Container = styled.div`
     position: relative;
@@ -91,6 +92,7 @@ const List = styled.ul`
 
 export default function AlbumDetail() {
     const { id } = useParams<{ id: string }>()
+    const navigate = useNavigate()
 
     const { data: album } = useQuery(['album', id], () => getAlbum(id!).then(res => res.data.album), {
         enabled: !!id,
@@ -137,7 +139,15 @@ export default function AlbumDetail() {
                             musicCodec={music.codec}
                             isLiked={music.isLiked}
                             onClick={() => queueStore.add(music.id)}
-                            onLongPress={() => { }}
+                            onLongPress={() => panel.open({
+                                content: (
+                                    <MusicActionPanelContent
+                                        id={music.id}
+                                        onAlbumClick={() => navigate(`/album/${music.album.id}`)}
+                                        onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
+                                    />
+                                )
+                            })}
                         />
                     )
                 })}

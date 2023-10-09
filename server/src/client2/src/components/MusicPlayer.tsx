@@ -20,18 +20,6 @@ const Container = styled.div`
     .shuffle,
     .skip-back,
     .skip-forward {
-        position: relative;
-        width: 3rem;
-        height: 3rem;
-        border-radius: 0.25rem;
-        background-color: transparent;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-        text-transform: uppercase;
-        transition: background-color 0.25s ease-in-out;
-
         svg {
             position: absolute;
             top: 50%;
@@ -159,9 +147,7 @@ export default function MusicPlayer() {
             >
                 <div
                     className="bar"
-                    style={{
-                        transform: `translate(-${(100 - state.progress)}%, 0)`
-                    }}
+                    style={{ transform: `translate(-${(100 - state.progress)}%, 0)` }}
                 />
             </div>
             <div className="player">
@@ -169,32 +155,32 @@ export default function MusicPlayer() {
                     <MusicItem
                         albumName={currentMusic?.album.name ?? ''}
                         albumCover={currentMusic?.album.cover ?? ''}
-                        musicName={currentMusic?.name ?? 'There is no music playing'}
+                        musicName={currentMusic?.name ?? 'No music'}
                         artistName={currentMusic?.artist.name ?? ''}
                         onClick={() => currentMusic && navigate('/player')}
                     />
                 </div>
                 <div className="action">
-                    <div className="icon-button mode" onClick={() => queueStore.changeRepeatMode()}>
+                    <button className="icon-button mode" onClick={() => queueStore.changeRepeatMode()}>
                         {state.repeatMode === 'all' && <Icon.Repeat />}
                         {state.repeatMode === 'one' && <Icon.Infinite />}
                         {state.repeatMode === 'none' && <Icon.RightLeft />}
-                    </div>
-                    <div className="icon-button skip-back" onClick={() => queueStore.prev()}>
+                    </button>
+                    <button className="icon-button skip-back" onClick={() => queueStore.prev()}>
                         <Icon.Play />
-                    </div>
-                    <div className="icon-button play" onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
+                    </button>
+                    <button className="icon-button play" onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
                         {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
-                    </div>
-                    <div className="icon-button skip-forward" onClick={() => queueStore.next()}>
+                    </button>
+                    <button className="icon-button skip-forward" onClick={() => queueStore.next()}>
                         <Icon.Play />
-                    </div>
-                    <div className="icon-button shuffle">
+                    </button>
+                    <button className="icon-button shuffle">
                         <Icon.Shuffle />
-                    </div>
-                    <div className="icon-button queue" onClick={() => navigate('/queue')}>
+                    </button>
+                    <button className="icon-button queue" onClick={() => navigate('/queue')}>
                         <Icon.Menu />
-                    </div>
+                    </button>
                 </div>
             </div>
 

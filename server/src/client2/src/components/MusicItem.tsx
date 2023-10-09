@@ -132,7 +132,10 @@ export default function MusicItem({
         <Container
             className="clickable"
             onClick={onClick}
-            onContextMenu={onLongPress}
+            onContextMenu={(e) => {
+                e.preventDefault()
+                onLongPress?.()
+            }}
             hasAlbumCover={typeof albumCover === 'string'}
             hasLongPress={typeof onLongPress === 'function'}
         >
@@ -155,7 +158,12 @@ export default function MusicItem({
                     </div>
                 </div>
                 {onLongPress && (
-                    <button className={`icon-button ${isLiked ? 'liked' : ''}`} onClick={onLongPress}>
+                    <button
+                        className={`icon-button ${isLiked ? 'liked' : ''}`}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onLongPress?.()
+                        }}>
                         {isLiked ? (
                             <Heart />
                         ) : (

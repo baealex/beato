@@ -22,11 +22,16 @@ interface MusicListenerEventHandler {
 export class MusicListener implements Listener {
     handler: MusicListenerEventHandler | null
 
+    constructor() {
+        this.handler = null
+    }
+
     connect(handler: MusicListenerEventHandler) {
         if (this.handler !== null) {
             this.disconnect()
         }
         this.handler = handler
+
         socket.on(MUSIC_LIKE, this.handler.onLike)
         socket.on(MUSIC_COUNT, this.handler.onCount)
     }
@@ -44,5 +49,7 @@ export class MusicListener implements Listener {
 
         socket.off(MUSIC_LIKE)
         socket.off(MUSIC_COUNT)
+
+        this.handler = null
     }
 }

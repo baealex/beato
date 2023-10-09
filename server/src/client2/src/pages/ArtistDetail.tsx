@@ -3,13 +3,14 @@ import { useStore } from 'badland-react'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { AlbumItem, Image, MusicItem, SecondaryButton } from '~/components'
+import { AlbumItem, Image, MusicActionPanelContent, MusicItem, SecondaryButton } from '~/components'
 import { Play } from '~/icon'
 
 import { getArtist } from '~/api'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
+import { panel } from '~/modules/panel'
 
 const Container = styled.section`
     .artist-name {
@@ -114,9 +115,15 @@ export default function ArtistDetail() {
                             musicCodec={music.codec}
                             isLiked={music.isLiked}
                             onClick={() => queueStore.add(music.id)}
-                            onLongPress={() => {
-
-                            }}
+                            onLongPress={() => panel.open({
+                                content: (
+                                    <MusicActionPanelContent
+                                        id={music.id}
+                                        onAlbumClick={() => navigate(`/album/${music.album.id}`)}
+                                        onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
+                                    />
+                                )
+                            })}
                         />
                     )
                 })}

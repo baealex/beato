@@ -97,7 +97,14 @@ export default function PlaylistItem({
     const [{ musicMap }] = useStore(musicStore)
 
     return (
-        <Container className="clickable" onClick={onClick} onContextMenu={onLongPress}>
+        <Container
+            className="clickable"
+            onClick={onClick}
+            onContextMenu={(e) => {
+                e.preventDefault()
+                onLongPress?.()
+            }}
+        >
             {headerMusics.length >= 4 && (
                 <div className="album-cover-grid">
                     {headerMusics.slice(0, 4).map(({ id }) => (
@@ -127,7 +134,10 @@ export default function PlaylistItem({
                 <div className="song-count">{musicCount} songs</div>
             </div>
             {onLongPress && (
-                <button className="icon-button" onClick={onLongPress}>
+                <button className="icon-button" onClick={(e) => {
+                    e.stopPropagation()
+                    onLongPress()
+                }}>
                     <MoreVerticalFill />
                 </button>
             )}

@@ -203,10 +203,7 @@ const QueueItem = ({
                 <button
                     {...listeners}
                     className="icon-button checkbox"
-                    style={{
-                        cursor: 'grab',
-                        touchAction: 'none'
-                    }}
+                    style={{ cursor: 'grab', touchAction: 'none' }}
                 >
                     <Menu />
                 </button>
