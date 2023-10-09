@@ -33,9 +33,10 @@ export const playlistTypeDefs = `
 export const playlistResolvers: IResolvers = {
     Query: {
         allPlaylist: () => models.playlist.findMany({
-            orderBy: {
-                order: 'asc',
-            },
+            orderBy: [
+                { order: 'asc' },
+                { createdAt: 'desc' }
+            ]
         }),
         playlist: (_, { id }: Playlist) => models.playlist.findUnique({
             where: {
