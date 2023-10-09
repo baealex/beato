@@ -4,10 +4,10 @@ import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 
 import { MusicActionPanelContent } from '~/components'
-import { getImage } from '~/components/Image'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
+import { getImage } from '~/modules/image'
 import { makePlayTime } from '~/modules/time'
 
 import { musicStore } from '~/store/music'

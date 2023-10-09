@@ -1,6 +1,7 @@
-import { getImage } from '~/components/Image'
-import { convertToMillisecond, convertToSecond } from '../time'
 import type { AudioChannel, AudioChannelEventHandler } from './audio-channel'
+
+import { getImage } from '~/modules/image'
+import { convertToMillisecond, convertToSecond } from '~/modules/time'
 
 import type { Music } from '~/models/type'
 

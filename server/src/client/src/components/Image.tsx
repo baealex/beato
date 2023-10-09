@@ -1,17 +1,11 @@
 import { useEffect, useRef } from 'react'
+import { getImage } from '~/modules/image'
 
 interface ImageProps {
     src?: string;
     alt?: string;
     loading?: 'lazy' | 'eager';
     className?: string;
-}
-
-export const getImage = (src?: string) => {
-    if (!src) {
-        return '/images/beato.jpg'
-    }
-    return src
 }
 
 export default function Image({
