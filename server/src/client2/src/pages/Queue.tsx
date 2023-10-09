@@ -293,9 +293,6 @@ export default function Queue() {
                         onSelectAll={() => setSelectedItems(items)}
                     />
                 </div>
-                <button className="clickable title">
-                    Queue Title <span className="link" />
-                </button>
             </div>
             <ul className="container">
                 <VerticalSortable items={items} onDragEnd={handleDragEnd}>

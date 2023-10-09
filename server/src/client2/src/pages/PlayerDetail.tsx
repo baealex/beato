@@ -216,7 +216,7 @@ const Container = styled.div`
         }
 
         .shuffle.active {
-            :global(svg) {
+            svg {
                 color: #a076f1;
             }
         }
@@ -259,10 +259,10 @@ export default function PlayerDetail() {
         ? musicMap.get(state.items[state.selected])
         : null
 
-    const handleClickProgress = (e: React.MouseEvent | React.TouchEvent) => {
+    // TODO: Fix type
+    const handleClickProgress = (e: any) => {
         const { width, left, right } = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
 
-        // @ts-ignore
         let x = e.touches ? e.touches[0].clientX : e.clientX
         x = x < left ? left : x > right ? right : x
         const percent = (x - left) / width
@@ -271,14 +271,13 @@ export default function PlayerDetail() {
         queueStore.seek(duration * percent)
     }
 
-    const handleMoveProgress = (e: React.MouseEvent | React.TouchEvent) => {
-        // @ts-ignore
+    // TODO: Fix type
+    const handleMoveProgress = (e: any) => {
         if (e.buttons === 1) {
             handleClickProgress(e)
             return
         }
 
-        // @ts-ignore
         if (e.touches?.length === 1) {
             handleClickProgress(e)
         }
@@ -404,9 +403,8 @@ export default function PlayerDetail() {
                     </button>
                 </div>
                 <button
-                    className="icon-button shuffle"
-                // className: active={$queue.shuffle}
-                // on: click={shuffleQueue}
+                    className={`icon-button shuffle ${state.shuffle ? 'active' : ''}`}
+                    onClick={() => queueStore.toggleShuffle()}
                 >
                     <Icon.Shuffle />
                 </button>

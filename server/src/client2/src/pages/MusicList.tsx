@@ -45,7 +45,7 @@ export default function Music() {
                 <SecondaryButton style={{ width: '160px' }} onClick={handleSearch}>
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
-                <SecondaryButton>
+                <SecondaryButton onClick={() => queueStore.reset(filteredMusics.map(music => music.id))}>
                     <Icon.Play /> Play
                 </SecondaryButton>
             </StickyHeader>

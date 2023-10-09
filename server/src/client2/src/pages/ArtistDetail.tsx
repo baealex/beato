@@ -95,7 +95,7 @@ export default function ArtistDetail() {
 
             <div className="section-title">
                 Songs ({artist.musics.length})
-                <SecondaryButton>
+                <SecondaryButton onClick={() => queueStore.reset(artist.musics.map(music => music.id))}>
                     <Play /> Play
                 </SecondaryButton>
             </div>

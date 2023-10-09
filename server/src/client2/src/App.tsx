@@ -13,7 +13,6 @@ import {
     Playlist,
     PlaylistDetail,
     Queue,
-    QueueHistory,
     Setting,
 } from './pages'
 import { PanelProvider, SiteLayout } from './components'
@@ -52,10 +51,6 @@ const router = createBrowserRouter([
             {
                 path: '/playlist',
                 element: <Playlist />,
-            },
-            {
-                path: '/queue-history',
-                element: <QueueHistory />,
             },
             {
                 path: '/setting',

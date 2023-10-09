@@ -4,6 +4,7 @@ import { Music } from '~/models/type'
 import { MusicListener } from '~/socket'
 
 interface MusicStoreState {
+    loaded: boolean
     musics: Music[]
     musicMap: Map<string, Music>
 }
@@ -15,6 +16,7 @@ class MusicStore extends Store<MusicStoreState> {
     constructor() {
         super()
         this.state = {
+            loaded: false,
             musics: [],
             musicMap: new Map(),
         }
@@ -58,6 +60,7 @@ class MusicStore extends Store<MusicStoreState> {
     async sync() {
         getMusics().then(({ data }) => {
             this.set({
+                loaded: true,
                 musics: data.allMusics,
                 musicMap: new Map(data.allMusics.map(music => [music.id, music]))
             })

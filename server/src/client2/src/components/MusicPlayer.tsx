@@ -136,6 +136,30 @@ export default function MusicPlayer() {
         ? musicMap.get(state.items[state.selected])
         : null
 
+    // TODO: Fix type
+    const handleClickProgress = (e: any) => {
+        const { width, left, right } = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
+
+        let x = e.touches ? e.touches[0].clientX : e.clientX
+        x = x < left ? left : x > right ? right : x
+        const percent = (x - left) / width
+        const duration = currentMusic?.duration || 1
+
+        queueStore.seek(duration * percent)
+    }
+
+    // TODO: Fix type
+    const handleMoveProgress = (e: any) => {
+        if (e.buttons === 1) {
+            handleClickProgress(e)
+            return
+        }
+
+        if (e.touches?.length === 1) {
+            handleClickProgress(e)
+        }
+    }
+
     return (
         <Container>
             <div
@@ -144,6 +168,9 @@ export default function MusicPlayer() {
                 aria-valuenow={state.progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
+                onClick={handleClickProgress}
+                onMouseMove={handleMoveProgress}
+                onTouchMove={handleMoveProgress}
             >
                 <div
                     className="bar"
@@ -175,7 +202,7 @@ export default function MusicPlayer() {
                     <button className="icon-button skip-forward" onClick={() => queueStore.next()}>
                         <Icon.Play />
                     </button>
-                    <button className="icon-button shuffle">
+                    <button className={`icon-button shuffle ${state.shuffle ? 'active' : ''}`} onClick={() => queueStore.toggleShuffle()}>
                         <Icon.Shuffle />
                     </button>
                     <button className="icon-button queue" onClick={() => navigate('/queue')}>

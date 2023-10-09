@@ -1,5 +1,5 @@
 import Store from 'badland'
-import { toast } from '@baejino/ui'
+import { confirm, toast } from '@baejino/ui'
 
 import { musicStore } from './music'
 
@@ -10,6 +10,7 @@ import {
     AppAudioChannel
 } from '~/modules/audio-channel'
 import { MusicListener } from '~/socket'
+import { shuffle } from '~/modules/shuffle'
 
 interface QueueStoreState {
     selected: number | null
@@ -20,7 +21,10 @@ interface QueueStoreState {
     currentTime: number
     progress: number
     items: string[]
+    sourceItems: string[]
 }
+
+let saveTimer: ReturnType<typeof setTimeout> | null = null
 
 const getMusic = (id: string) => {
     const musicMap = musicStore.state.musicMap
@@ -41,7 +45,8 @@ class QueueStore extends Store<QueueStoreState> {
             repeatMode: 'none',
             currentTime: 0,
             progress: 0,
-            items: []
+            items: [],
+            sourceItems: [],
         }
         this.shouldCount = false
 
@@ -105,15 +110,46 @@ class QueueStore extends Store<QueueStoreState> {
             ? new AppAudioChannel(audioChannelEventHandler)
             : new WebAudioChannel(audioChannelEventHandler)
 
+        const key = musicStore.subscribe(async ({ loaded }) => {
+            if (loaded) {
+                const queue = localStorage.getItem('queue')
+                if (queue) {
+                    const nextState = JSON.parse(queue) as QueueStoreState
+                    await this.set(nextState)
+                    this.select(nextState.selected || 0, false)
+                }
+                this.unsubscribe(key)
+            }
+        })
+
         window.addEventListener('beforeunload', () => {
             this.audioChannel.stop()
         })
+    }
+
+    async reset(ids: string[]) {
+        if (this.state.items.length > 0 && !(await confirm('Are you sure to reset queue?'))) {
+            return
+        }
+        await this.set({
+            items: ids,
+            selected: null,
+            currentTime: 0,
+            progress: 0,
+            isPlaying: false
+        })
+        this.select(0)
     }
 
     add(id: string) {
         if (this.state.items.includes(id)) {
             toast('Already added to queue')
             return
+        }
+        if (this.state.shuffle) {
+            this.set({
+                sourceItems: [...this.state.items, id]
+            })
         }
         if (this.state.insertMode === 'first') {
             this.set({
@@ -178,15 +214,15 @@ class QueueStore extends Store<QueueStoreState> {
         }
     }
 
-    select(index: number) {
+    select(index: number, directPlay = true) {
         this.shouldCount = true
-        this.set({ selected: index, currentTime: 0, isPlaying: true })
+        this.set({ selected: index, currentTime: 0, isPlaying: directPlay })
 
         const music = getMusic(this.state.items[index])
         if (music === undefined) return
         document.title = `${music.name} - ${music.artist.name}`
         this.audioChannel.load(music)
-        this.audioChannel.play()
+        directPlay && this.audioChannel.play()
     }
 
     play() {
@@ -223,6 +259,30 @@ class QueueStore extends Store<QueueStoreState> {
         }
     }
 
+    toggleShuffle() {
+        const selectedMusic = this.state.items[this.state.selected!]
+
+        if (this.state.shuffle) {
+            this.set({
+                shuffle: false,
+                selected: this.state.sourceItems.indexOf(selectedMusic),
+                items: [...this.state.sourceItems],
+                sourceItems: []
+            })
+            return
+        }
+        const newItems = shuffle([...this.state.items]).filter((item) =>
+            item !== selectedMusic
+        )
+        newItems.unshift(selectedMusic)
+        this.set({
+            shuffle: true,
+            selected: 0,
+            items: newItems,
+            sourceItems: [...this.state.items],
+        })
+    }
+
     next() {
         if (this.state.selected !== null) {
             this.select((this.state.selected + 1) % this.state.items.length)
@@ -239,6 +299,22 @@ class QueueStore extends Store<QueueStoreState> {
             this.select((this.state.selected - 1 + this.state.items.length) % this.state.items.length)
             this.audioChannel.play()
         }
+    }
+
+    afterStateChange() {
+        if (saveTimer) {
+            return
+        }
+
+        saveTimer = setTimeout(() => {
+            localStorage.setItem('queue', JSON.stringify({
+                ...this.state,
+                isPlaying: false,
+                currentTime: 0,
+                progress: 0
+            }))
+            saveTimer = null
+        }, 3000)
     }
 }
 

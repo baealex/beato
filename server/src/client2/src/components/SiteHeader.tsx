@@ -24,10 +24,6 @@ const HEADER_ITEMS = [
         path: '/playlist',
     },
     {
-        name: 'Queue',
-        path: '/queue-history',
-    },
-    {
         name: 'Setting',
         path: '/setting',
     },

@@ -115,7 +115,7 @@ export default function AlbumDetail() {
                     <span className="album-year">{album?.publishedYear}</span>
                 </div>
                 <div className="play-all">
-                    <button>
+                    <button onClick={() => queueStore.reset(album.musics.map(music => music.id))}>
                         <Play />
                     </button>
                 </div>
