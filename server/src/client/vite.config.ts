@@ -30,7 +30,7 @@ export default defineConfig({
                 target: 'http://localhost:4000',
                 ws: true,
                 onProxyReqWs: (proxyReq) => {
-                    proxyReq.setHeader('Origin', 'http://localhost:4000');
+                    proxyReq.setHeader('Origin', 'http://localhost:4000')
                 },
             },
         }

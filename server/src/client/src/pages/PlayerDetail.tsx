@@ -260,6 +260,7 @@ export default function PlayerDetail() {
         : null
 
     // TODO: Fix type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleClickProgress = (e: any) => {
         const { width, left, right } = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
 
@@ -272,6 +273,7 @@ export default function PlayerDetail() {
     }
 
     // TODO: Fix type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleMoveProgress = (e: any) => {
         if (e.buttons === 1) {
             handleClickProgress(e)
