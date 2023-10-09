@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useStore } from 'badland-react'
 import { HTMLMotionProps, motion } from 'framer-motion'
 import { theme } from '@baejino/style'
@@ -153,7 +153,7 @@ const Item = styled.li`
         }
     }
 
-    &.active {
+    &.now-playing {
         &::before {
             content: "";
             position: absolute;
@@ -169,7 +169,7 @@ const Item = styled.li`
     }
 `
 
-const QueueItem = ({
+const QueueDndItem = ({
     music,
     isCurrentMusic,
     isSelectMode,
@@ -191,7 +191,7 @@ const QueueItem = ({
     }
 
     return (
-        <Item ref={setNodeRef} {...attributes} style={style} className={isCurrentMusic ? 'active' : ''}>
+        <Item ref={setNodeRef} {...attributes} style={style} className={isCurrentMusic ? 'now-playing' : ''}>
             {isSelectMode ? (
                 <button
                     className={`icon-button checkbox ${isSelected ? 'active' : ''}`}
@@ -226,6 +226,7 @@ export default function Queue() {
     const [{ items, selected }, setState] = useStore(queueStore)
     const [{ musicMap }] = useStore(musicStore)
 
+    const ref = useRef<HTMLUListElement>(null)
     const [isSelectMode, setIsSelectMode] = useState(false)
     const [selectedItems, setSelectedItems] = useState<string[]>([])
 
@@ -262,6 +263,21 @@ export default function Queue() {
         setSelectedItems([])
     }, [isSelectMode])
 
+    useEffect(() => {
+        // 활성화 된 아이템이 가장 위에 오도록 스크롤
+        if (ref.current) {
+            const activeItem = ref.current.querySelector('.now-playing') as HTMLLIElement
+
+            if (activeItem) {
+                activeItem.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'center',
+                })
+            }
+        }
+    }, [ref, selected])
+
     return (
         <Container
             as={motion.div}
@@ -294,7 +310,7 @@ export default function Queue() {
                     />
                 </div>
             </div>
-            <ul className="container">
+            <ul className="container" ref={ref}>
                 <VerticalSortable items={items} onDragEnd={handleDragEnd}>
                     {items?.map((id, idx) => {
                         const music = musicMap.get(id)
@@ -302,7 +318,7 @@ export default function Queue() {
                         if (!music) return null
 
                         return (
-                            <QueueItem
+                            <QueueDndItem
                                 key={id}
                                 music={music}
                                 isCurrentMusic={selected === idx}
