@@ -118,7 +118,7 @@ class QueueStore extends Store<QueueStoreState> {
                     await this.set(nextState)
                     this.select(nextState.selected || 0, false)
                 }
-                this.unsubscribe(key)
+                musicStore.unsubscribe(key)
             }
         })
 
@@ -260,21 +260,23 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     toggleShuffle() {
-        const selectedMusic = this.state.items[this.state.selected!]
+        const selectedMusic = this.state.selected ? this.state.items[this.state.selected] : null
 
         if (this.state.shuffle) {
             this.set({
                 shuffle: false,
-                selected: this.state.sourceItems.indexOf(selectedMusic),
+                selected: selectedMusic ? this.state.sourceItems.indexOf(selectedMusic) : null,
                 items: [...this.state.sourceItems],
                 sourceItems: []
             })
             return
         }
+
         const newItems = shuffle([...this.state.items]).filter((item) =>
             item !== selectedMusic
         )
-        newItems.unshift(selectedMusic)
+        if (selectedMusic) newItems.unshift(selectedMusic)
+
         this.set({
             shuffle: true,
             selected: 0,
