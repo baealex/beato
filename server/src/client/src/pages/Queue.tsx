@@ -8,12 +8,15 @@ import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { MusicItem, MusicSelector, VerticalSortable } from '~/components'
+import { MusicActionPanelContent, MusicItem, MusicSelector, VerticalSortable } from '~/components'
 import { CheckBox, Cross, Menu, TrashBin } from '~/icon'
+
+import { panel } from '~/modules/panel'
+
+import { Music } from '~/models/type'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
-import { Music } from '~/models/type'
 
 const Container = styled.div<HTMLMotionProps<'div'>>`
     display: flex;
@@ -27,12 +30,6 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         height: 60px;
         padding: 0 1rem;
         border-bottom: 1px solid #333;
-
-        .actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
 
         button {
             width: auto;
@@ -176,6 +173,7 @@ const QueueDndItem = ({
     isSelected,
     onSelect,
     onClick,
+    onLongPress,
 }: {
     music: Music
     isCurrentMusic: boolean
@@ -183,6 +181,7 @@ const QueueDndItem = ({
     isSelected: boolean
     onSelect: () => void
     onClick: () => void
+    onLongPress: () => void
 }) => {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: music.id })
     const style = {
@@ -215,7 +214,8 @@ const QueueDndItem = ({
                     artistName={music.artist.name}
                     albumName={music.album.name}
                     albumCover={music.album.cover}
-                    onClick={onClick}
+                    onClick={isSelectMode ? onSelect : onClick}
+                    onLongPress={onLongPress}
                 />
             </div>
         </Item>
@@ -264,7 +264,6 @@ export default function Queue() {
     }, [isSelectMode])
 
     useEffect(() => {
-        // 활성화 된 아이템이 가장 위에 오도록 스크롤
         if (ref.current) {
             const activeItem = ref.current.querySelector('.now-playing') as HTMLLIElement
 
@@ -299,10 +298,10 @@ export default function Queue() {
             }}
         >
             <div className="header">
-                <div className="actions">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <MusicSelector
                         label={isSelectMode
-                            ? `${selectedItems.length} musics`
+                            ? `${selectedItems.length} selected`
                             : `${items?.length} musics`}
                         active={isSelectMode}
                         onClick={() => setIsSelectMode(!isSelectMode)}
@@ -332,16 +331,13 @@ export default function Queue() {
                                     }
                                 }}
                                 onClick={() => {
-                                    if (isSelectMode) {
-                                        if (selectedItems.includes(id)) {
-                                            setSelectedItems(selectedItems.filter(item => item !== id))
-                                        } else {
-                                            setSelectedItems([...selectedItems, id])
-                                        }
-                                    } else {
-                                        queueStore.select(idx)
-                                    }
+                                    queueStore.select(idx)
                                 }}
+                                onLongPress={() => panel.open({
+                                    content: (
+                                        <MusicActionPanelContent id={music.id} />
+                                    )
+                                })}
                             />
                         )
                     })}

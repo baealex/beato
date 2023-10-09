@@ -31,11 +31,10 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                 this.set({ playlists: this.state.playlists.sort((a, b) => ids.indexOf(a.id.toString()) - ids.indexOf(b.id.toString())) })
             },
             onAddMusic: (data) => {
-                console.log(data)
                 this.set({ playlists: this.state.playlists.map((playlist) => playlist.id === data.id ? { ...playlist, ...data, musicCount: playlist.musicCount + 1 } : playlist) })
             },
             onRemoveMusic: (data) => {
-                this.set({ playlists: this.state.playlists.map((playlist) => playlist.id === data.id ? { ...playlist, musics: playlist.musics.filter((music) => !data.musicIds.includes(music.id)) } : playlist) })
+                this.set({ playlists: this.state.playlists.map((playlist) => playlist.id === data.id ? { ...playlist, ...data, musicCount: playlist.musicCount - data.musicIds.length } : playlist) })
             },
             onChangeMusicOrder: ({ id, musicIds }) => {
                 this.set({ playlists: this.state.playlists.map((playlist) => playlist.id === id ? { ...playlist, musics: playlist.headerMusics.sort((a, b) => musicIds.indexOf(a.id.toString()) - musicIds.indexOf(b.id.toString())) } : playlist) })

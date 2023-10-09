@@ -85,8 +85,8 @@ export class PlaylistListener implements Listener {
         socket.emit(PLAYLIST_ADD_MUSIC, { id, musicId })
     }
 
-    static removeMusic(id: string, musicId: string) {
-        socket.emit(PLAYLIST_REMOVE_MUSIC, { id, musicId })
+    static removeMusic(id: string, musicIds: string[]) {
+        socket.emit(PLAYLIST_REMOVE_MUSIC, { id, musicIds })
     }
 
     static changeMusicOrder(id: string, musicIds: string[]) {

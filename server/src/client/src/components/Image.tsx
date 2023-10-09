@@ -4,6 +4,7 @@ import { getImage } from '~/modules/image'
 interface ImageProps {
     src?: string;
     alt?: string;
+    style?: React.CSSProperties;
     loading?: 'lazy' | 'eager';
     className?: string;
 }
@@ -11,6 +12,7 @@ interface ImageProps {
 export default function Image({
     src,
     alt,
+    style,
     loading = 'lazy',
     className,
 }: ImageProps) {
@@ -39,12 +41,13 @@ export default function Image({
     return (
         <>
             {loading !== 'lazy' ? (
-                <img src={getImage(src)} alt={alt} className={className} />
+                <img src={getImage(src)} alt={alt} style={style} className={className} />
             ) : (
                 <img
                     ref={ref}
                     src={'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NQV1f/DwACYwF11mMyYQAAAABJRU5ErkJggg=='}
                     alt={alt}
+                    style={style}
                     className={className}
                 />
             )}
