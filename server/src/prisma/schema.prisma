@@ -2,88 +2,89 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
 }
 
 model Artist {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Album     Album[]
-  Music     Music[]
+    id        Int      @id @default(autoincrement())
+    name      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Album     Album[]
+    Music     Music[]
 }
 
 model Album {
-  id            Int      @id @default(autoincrement())
-  name          String
-  cover         String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  publishedYear String
-  Music         Music[]
-  Artist        Artist   @relation(fields: [artistId], references: [id])
-  artistId      Int
+    id            Int      @id @default(autoincrement())
+    name          String
+    cover         String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    publishedYear String
+    Music         Music[]
+    Artist        Artist   @relation(fields: [artistId], references: [id])
+    artistId      Int
 }
 
 model Genre {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Music     Music[]
+    id        Int      @id @default(autoincrement())
+    name      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Music     Music[]
 }
 
 model Music {
-  id            Int             @id @default(autoincrement())
-  name          String
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  Album         Album           @relation(fields: [albumId], references: [id])
-  Artist        Artist          @relation(fields: [artistId], references: [id])
-  albumId       Int
-  artistId      Int
-  filePath      String
-  duration      Float
-  codec         String
-  container     String
-  bitrate       Float
-  sampleRate    Float
-  playCount     Int             @default(0)
-  trackNumber   Int
-  Genre         Genre[]
-  MusicLike     MusicLike[]
-  PlaylistMusic PlaylistMusic[]
+    id            Int             @id @default(autoincrement())
+    name          String
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @updatedAt
+    Album         Album           @relation(fields: [albumId], references: [id])
+    Artist        Artist          @relation(fields: [artistId], references: [id])
+    albumId       Int
+    artistId      Int
+    filePath      String
+    duration      Float
+    codec         String
+    container     String
+    bitrate       Float
+    sampleRate    Float
+    playCount     Int             @default(0)
+    trackNumber   Int
+    Genre         Genre[]
+    MusicLike     MusicLike[]
+    PlaylistMusic PlaylistMusic[]
 }
 
 model MusicLike {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Music     Music    @relation(fields: [musicId], references: [id])
-  musicId   Int
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Music     Music    @relation(fields: [musicId], references: [id])
+    musicId   Int
 }
 
 model Playlist {
-  id            Int             @id @default(autoincrement())
-  name          String
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  PlaylistMusic PlaylistMusic[]
+    id            Int             @id @default(autoincrement())
+    name          String
+    order         Int             @default(0)
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @updatedAt
+    PlaylistMusic PlaylistMusic[]
 }
 
 model PlaylistMusic {
-  id         Int      @id @default(autoincrement())
-  order      Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  Music      Music    @relation(fields: [musicId], references: [id])
-  musicId    Int
-  Playlist   Playlist @relation(fields: [playlistId], references: [id])
-  playlistId Int
+    id         Int      @id @default(autoincrement())
+    order      Int      @default(0)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    Music      Music    @relation(fields: [musicId], references: [id])
+    musicId    Int
+    Playlist   Playlist @relation(fields: [playlistId], references: [id])
+    playlistId Int
 }

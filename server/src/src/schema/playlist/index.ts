@@ -34,7 +34,7 @@ export const playlistResolvers: IResolvers = {
     Query: {
         allPlaylist: () => models.playlist.findMany({
             orderBy: {
-                createdAt: 'desc',
+                order: 'asc',
             },
         }),
         playlist: (_, { id }: Playlist) => models.playlist.findUnique({

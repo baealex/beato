@@ -7,15 +7,19 @@ import { connectors } from './connectors';
 const PLAYLIST_CREATE = 'playlist-create';
 const PLAYLIST_DELETE = 'playlist-delete';
 const PLAYLIST_UPDATE = 'playlist-update';
+const PLAYLIST_CHANGE_ORDER = 'playlist-change-order';
 const PLAYLIST_ADD_MUSIC = 'playlist-add-music';
 const PLAYLIST_REMOVE_MUSIC = 'playlist-remove-music';
+const PLAYLIST_CHANGE_MUSIC_ORDER = 'playlist-change-music-order';
 
 export const playlistListener = (socket: Socket) => {
     socket.on(PLAYLIST_CREATE, createPlaylist);
     socket.on(PLAYLIST_DELETE, deletePlaylist);
     socket.on(PLAYLIST_UPDATE, updatePlaylist);
+    socket.on(PLAYLIST_CHANGE_ORDER, changePlaylistOrder);
     socket.on(PLAYLIST_ADD_MUSIC, addMusicToPlaylist);
     socket.on(PLAYLIST_REMOVE_MUSIC, removeMusicFromPlaylist);
+    socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, changePlaylistMusicOrder);
 };
 
 const createPlaylist = async ({ name = '', musics = [] }) => {
@@ -23,7 +27,7 @@ const createPlaylist = async ({ name = '', musics = [] }) => {
         return;
     }
 
-    const playist = await models.playlist.create({
+    const playlist = await models.playlist.create({
         data: {
             name,
             PlaylistMusic: {
@@ -36,7 +40,7 @@ const createPlaylist = async ({ name = '', musics = [] }) => {
     });
 
     connectors.broadcast(PLAYLIST_CREATE, {
-        ...playist,
+        ...playlist,
         musicCount: musics.length,
         headerMusics: musics.slice(0, 4),
     });
@@ -58,6 +62,76 @@ const deletePlaylist = async ({ id = '' }) => {
     } catch (e) {
         console.error(e);
     }
+};
+
+const changePlaylistOrder = async ({ ids = [] }) => {
+    if (!ids.length) {
+        return;
+    }
+
+    const playlists = await models.playlist.findMany({
+        where: {
+            id: {
+                in: ids.map((id) => Number(id)),
+            },
+        },
+    });
+
+    for (const playlist of playlists) {
+        const order = ids.indexOf(playlist.id.toString());
+
+        if (playlist.order === order) {
+            continue;
+        }
+
+        await models.playlist.update({
+            where: {
+                id: playlist.id,
+            },
+            data: {
+                order: order,
+            },
+        });
+    }
+
+    connectors.broadcast(PLAYLIST_CHANGE_ORDER, ids);
+};
+
+const changePlaylistMusicOrder = async ({ id = '', musicIds = [] }) => {
+    if (!id || !musicIds.length) {
+        return;
+    }
+
+    const playlistMusics = await models.playlistMusic.findMany({
+        where: {
+            playlistId: Number(id),
+        },
+        orderBy: {
+            order: 'asc',
+        },
+    });
+
+    for (const playlistMusic of playlistMusics) {
+        const order = musicIds.indexOf(playlistMusic.musicId.toString());
+
+        if (playlistMusic.order === order) {
+            continue;
+        }
+
+        await models.playlistMusic.update({
+            where: {
+                id: playlistMusic.id,
+            },
+            data: {
+                order: order,
+            },
+        });
+    }
+
+    connectors.broadcast(PLAYLIST_CHANGE_MUSIC_ORDER, {
+        id,
+        musicIds,
+    });
 };
 
 const updatePlaylist = async ({

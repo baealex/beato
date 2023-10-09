@@ -1,6 +1,7 @@
 import Store from 'badland'
 import { getMusics } from '~/api'
 import { Music } from '~/models/type'
+import { MusicListener } from '~/socket'
 
 interface MusicStoreState {
     musics: Music[]
@@ -9,6 +10,7 @@ interface MusicStoreState {
 
 class MusicStore extends Store<MusicStoreState> {
     init = false
+    listener: MusicListener
 
     constructor() {
         super()
@@ -16,6 +18,29 @@ class MusicStore extends Store<MusicStoreState> {
             musics: [],
             musicMap: new Map(),
         }
+        this.listener = new MusicListener()
+        this.listener.connect({
+            onLike: ({ id, isLiked }) => {
+                this.set({
+                    musics: this.state.musics.map((music) => {
+                        if (music.id === id) {
+                            music.isLiked = isLiked
+                        }
+                        return music
+                    }),
+                })
+            },
+            onCount: ({ id, playCount }) => {
+                this.set({
+                    musics: this.state.musics.map((music) => {
+                        if (music.id === id) {
+                            music.playCount = playCount
+                        }
+                        return music
+                    }).sort((a, b) => b.playCount - a.playCount)
+                })
+            },
+        })
     }
 
     get state() {

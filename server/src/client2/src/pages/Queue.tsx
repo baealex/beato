@@ -1,20 +1,18 @@
 import styled from '@emotion/styled'
-import { theme } from '@baejino/style'
+import { useEffect, useState } from 'react'
 import { useStore } from 'badland-react'
 import { HTMLMotionProps, motion } from 'framer-motion'
+import { theme } from '@baejino/style'
 
-import { DndContext, DragEndEvent, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from '@dnd-kit/core'
-import { SortableContext, arrayMove, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { restrictToFirstScrollableAncestor, restrictToVerticalAxis } from '@dnd-kit/modifiers'
+import { DragEndEvent } from '@dnd-kit/core'
+import { arrayMove, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { MusicItem } from '~/components'
+import { MusicItem, MusicSelector, VerticalSortable } from '~/components'
 import { CheckBox, Cross, Menu, TrashBin } from '~/icon'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
-import MusicSelector from '~/components/MusicSelector'
-import { useEffect, useState } from 'react'
 import { Music } from '~/models/type'
 
 const Container = styled.div<HTMLMotionProps<'div'>>`
@@ -137,6 +135,7 @@ const Item = styled.li`
 
         &.active {
             svg {
+                color: #ccc;
                 fill: ${theme.COLOR_PURPLE_PROMINENT};
             }
         }
@@ -171,7 +170,6 @@ const Item = styled.li`
 `
 
 const QueueItem = ({
-    id,
     music,
     isCurrentMusic,
     isSelectMode,
@@ -179,7 +177,6 @@ const QueueItem = ({
     onSelect,
     onClick,
 }: {
-    id: string
     music: Music
     isCurrentMusic: boolean
     isSelectMode: boolean
@@ -187,7 +184,7 @@ const QueueItem = ({
     onSelect: () => void
     onClick: () => void
 }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: music.id })
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
@@ -214,14 +211,16 @@ const QueueItem = ({
                     <Menu />
                 </button>
             )}
-            <MusicItem
-                key={music.id}
-                musicName={music?.name}
-                artistName={music?.artist.name}
-                albumName={music?.album.name}
-                albumCover={music?.album.cover}
-                onClick={onClick}
-            />
+            <div style={{ flex: 1, maxWidth: 'calc(100% - 4rem)' }}>
+                <MusicItem
+                    key={music.id}
+                    musicName={music.name}
+                    artistName={music.artist.name}
+                    albumName={music.album.name}
+                    albumCover={music.album.cover}
+                    onClick={onClick}
+                />
+            </div>
         </Item>
     )
 }
@@ -232,13 +231,6 @@ export default function Queue() {
 
     const [isSelectMode, setIsSelectMode] = useState(false)
     const [selectedItems, setSelectedItems] = useState<string[]>([])
-
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates
-        })
-    )
 
     const handleDragEnd = async (event: DragEndEvent) => {
         const { active, over } = event
@@ -309,51 +301,41 @@ export default function Queue() {
                 </button>
             </div>
             <ul className="container">
-                <DndContext
-                    sensors={sensors}
-                    modifiers={[
-                        restrictToVerticalAxis,
-                        restrictToFirstScrollableAncestor,
-                    ]}
-                    collisionDetection={closestCenter}
-                    onDragEnd={handleDragEnd}>
-                    <SortableContext items={items} strategy={verticalListSortingStrategy}>
-                        {items?.map((id, idx) => {
-                            const music = musicMap.get(id)
+                <VerticalSortable items={items} onDragEnd={handleDragEnd}>
+                    {items?.map((id, idx) => {
+                        const music = musicMap.get(id)
 
-                            if (!music) return null
+                        if (!music) return null
 
-                            return (
-                                <QueueItem
-                                    key={id}
-                                    id={id}
-                                    music={music}
-                                    isCurrentMusic={selected === idx}
-                                    isSelectMode={isSelectMode}
-                                    isSelected={selectedItems.includes(id)}
-                                    onSelect={() => {
+                        return (
+                            <QueueItem
+                                key={id}
+                                music={music}
+                                isCurrentMusic={selected === idx}
+                                isSelectMode={isSelectMode}
+                                isSelected={selectedItems.includes(id)}
+                                onSelect={() => {
+                                    if (selectedItems.includes(id)) {
+                                        setSelectedItems(selectedItems.filter(item => item !== id))
+                                    } else {
+                                        setSelectedItems([...selectedItems, id])
+                                    }
+                                }}
+                                onClick={() => {
+                                    if (isSelectMode) {
                                         if (selectedItems.includes(id)) {
                                             setSelectedItems(selectedItems.filter(item => item !== id))
                                         } else {
                                             setSelectedItems([...selectedItems, id])
                                         }
-                                    }}
-                                    onClick={() => {
-                                        if (isSelectMode) {
-                                            if (selectedItems.includes(id)) {
-                                                setSelectedItems(selectedItems.filter(item => item !== id))
-                                            } else {
-                                                setSelectedItems([...selectedItems, id])
-                                            }
-                                        } else {
-                                            queueStore.select(idx)
-                                        }
-                                    }}
-                                />
-                            )
-                        })}
-                    </SortableContext>
-                </DndContext>
+                                    } else {
+                                        queueStore.select(idx)
+                                    }
+                                }}
+                            />
+                        )
+                    })}
+                </VerticalSortable>
             </ul>
             {isSelectMode && selectedItems.length > 0 && (
                 <div className="select-actions">

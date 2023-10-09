@@ -16,7 +16,7 @@ interface MusicItemProps {
     onLongPress?: () => void;
 }
 
-const Container = styled.button<{ hasAlbumCover: boolean }>`
+const Container = styled.button<{ hasAlbumCover: boolean, hasLongPress: boolean }>`
     color: #eee;
     font-size: 0.8rem;
     cursor: pointer;
@@ -55,7 +55,7 @@ const Container = styled.button<{ hasAlbumCover: boolean }>`
             flex-direction: column;
             flex: 1;
             width: 100%;
-            max-width: calc(100% - 2.5rem - 0.75rem);
+            max-width: ${props => props.hasLongPress ? 'calc(100% - 2.5rem - 0.75rem)' : '100%'};
             gap: 0.125rem;
         }
 
@@ -134,6 +134,7 @@ export default function MusicItem({
             onClick={onClick}
             onContextMenu={onLongPress}
             hasAlbumCover={typeof albumCover === 'string'}
+            hasLongPress={typeof onLongPress === 'function'}
         >
             {typeof albumCover === 'string' && (
                 <Image className="album-art" src={albumCover} alt={albumName} />

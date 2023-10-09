@@ -1,5 +1,6 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import {
     AlbumDetail,
@@ -16,6 +17,8 @@ import {
     Setting,
 } from './pages'
 import { SiteLayout } from './components'
+
+import { socket } from './socket'
 
 const client = new QueryClient({
     defaultOptions: {
@@ -107,6 +110,17 @@ const router = createBrowserRouter([
 ])
 
 export default function App() {
+    useEffect(() => {
+        window.addEventListener('focus', () => {
+            if (!socket.connected) {
+                socket.connect()
+            }
+        })
+
+        window.addEventListener('beforeunload', () => {
+            socket.disconnect()
+        })
+    }, [])
     return (
         <QueryClientProvider client={client}>
             <RouterProvider router={router} />

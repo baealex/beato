@@ -1,9 +1,15 @@
 import Store from 'badland'
 import { toast } from '@baejino/ui'
 
-import { AudioChannel, AudioChannelEventHandler, WebAudioChannel } from '~/modules/audio-channel'
 import { musicStore } from './music'
-import { AppAudioChannel } from '~/modules/audio-channel/app-audio-channel'
+
+import {
+    type AudioChannel,
+    type AudioChannelEventHandler,
+    WebAudioChannel,
+    AppAudioChannel
+} from '~/modules/audio-channel'
+import { MusicListener } from '~/socket'
 
 interface QueueStoreState {
     selected: number | null
@@ -75,9 +81,16 @@ class QueueStore extends Store<QueueStoreState> {
             },
             onTimeUpdate: (time) => {
                 const music = getMusic(this.state.items[this.state.selected!])
+                const progress = Number((time / (music?.duration || 1) * 100).toFixed(2))
+
+                if (this.shouldCount && progress > 80) {
+                    MusicListener.count(this.state.items[this.state.selected!])
+                    this.shouldCount = false
+                }
+
                 this.set({
                     currentTime: time,
-                    progress: Number((this.state.currentTime / (music?.duration || 1) * 100).toFixed(2)),
+                    progress,
                 })
             },
             onSkipToNext: () => {
@@ -166,11 +179,8 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     select(index: number) {
-        this.set({
-            selected: index,
-            currentTime: 0,
-            isPlaying: true
-        })
+        this.shouldCount = true
+        this.set({ selected: index, currentTime: 0, isPlaying: true })
 
         const music = getMusic(this.state.items[index])
         if (music === undefined) return
