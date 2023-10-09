@@ -147,6 +147,10 @@ class QueueStore extends Store<QueueStoreState> {
 
     async add(id: string) {
         if (this.state.items.includes(id)) {
+            if (this.state.playMode === 'immediately') {
+                this.select(this.state.items.indexOf(id))
+                return
+            }
             toast('Already added to queue')
             return
         }
