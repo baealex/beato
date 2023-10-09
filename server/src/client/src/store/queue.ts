@@ -1,184 +1,339 @@
-import { writable, get } from 'svelte/store';
-import { confirm, toast } from '@baejino/ui';
+import Store from 'badland'
+import { confirm, toast } from '@baejino/ui'
 
-import type { Music } from '../models/type';
+import { musicStore } from './music'
 
-import { getFormattedDate } from '../modules/time';
+import {
+    type AudioChannel,
+    type AudioChannelEventHandler,
+    WebAudioChannel,
+    AppAudioChannel
+} from '~/modules/audio-channel'
+import { MusicListener } from '~/socket'
+import { shuffle } from '~/modules/shuffle'
 
-import { queueHistory } from './queue-history';
-import { shuffle } from '../modules/shuffle';
-
-export type QueuePlayMode = 'immediate' | 'later';
-export type QueueRepeatMode = 'all' | 'one' | 'off';
-export type QueueInsertMode = 'after' | 'before' | 'last';
-
-interface Queue {
-    title: string;
-    items: Pick<Music, 'id'>[];
-    sourceItems: Pick<Music, 'id'>[];
-    selected: number | null;
-    shuffle: boolean;
-    playMode: QueuePlayMode;
-    repeatMode: QueueRepeatMode;
-    insertMode: QueueInsertMode;
+interface QueueStoreState {
+    selected: number | null
+    isPlaying: boolean
+    shuffle: boolean
+    insertMode: 'first' | 'last' | 'after'
+    repeatMode: 'none' | 'one' | 'all'
+    playMode: 'later' | 'immediately'
+    currentTime: number
+    progress: number
+    items: string[]
+    sourceItems: string[]
 }
 
-const INITIAL_STATE: Queue = {
-    title: '',
-    items: [],
-    sourceItems: [],
-    selected: null,
-    shuffle: false,
-    playMode: 'later',
-    repeatMode: 'off',
-    insertMode: 'last',
-};
+let saveTimer: ReturnType<typeof setTimeout> | null = null
 
-const LOCAL_STORAGE_KEY = 'queue';
+const getMusic = (id: string) => {
+    const musicMap = musicStore.state.musicMap
+    return musicMap.get(id)
+}
 
-const loadQueue = () => {
-    const queue = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return queue ? JSON.parse(queue) : INITIAL_STATE;
-};
+class QueueStore extends Store<QueueStoreState> {
+    shouldCount: boolean
+    audioChannel: AudioChannel
 
-export const queue = writable<Queue>(loadQueue());
+    constructor() {
+        super()
+        this.state = {
+            selected: null,
+            isPlaying: false,
+            shuffle: false,
+            insertMode: 'last',
+            repeatMode: 'none',
+            playMode: 'later',
+            currentTime: 0,
+            progress: 0,
+            items: [],
+            sourceItems: [],
+        }
+        this.shouldCount = false
 
-queue.subscribe((value) => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({
-        ...value,
-    }));
-});
+        const audioChannelEventHandler: AudioChannelEventHandler = {
+            onPlay: () => {
+                this.set({ isPlaying: true })
+            },
+            onPause: () => {
+                this.set({ isPlaying: false })
+            },
+            onStop: () => {
+                this.set({ isPlaying: false })
+            },
+            onEnded: () => {
+                if (this.state.selected === null) return
 
-export const switchRepeatMode = () => queue.update((state) => {
-    let newState = { ...state };
-    if (state.repeatMode === 'all') {
-        newState.repeatMode = 'one';
-    } else if (state.repeatMode === 'one') {
-        newState.repeatMode = 'off';
-    } else {
-        newState.repeatMode = 'all';
-    }
-    return newState;
-});
+                if (this.state.repeatMode === 'one') {
+                    this.select(this.state.selected)
+                    return
+                }
+                if (this.state.repeatMode === 'all') {
+                    this.select((this.state.selected + 1) % this.state.items.length)
+                    this.audioChannel.play()
+                    return
+                }
+                if (this.state.repeatMode === 'none') {
+                    if (this.state.selected + 1 < this.state.items.length) {
+                        this.select(this.state.selected + 1)
+                        this.audioChannel.play()
+                    } else {
+                        this.audioChannel.stop()
+                        this.set({
+                            isPlaying: false
+                        })
+                    }
+                }
+            },
+            onTimeUpdate: (time) => {
+                const music = getMusic(this.state.items[this.state.selected!])
+                const progress = Number((time / (music?.duration || 1) * 100).toFixed(2))
 
-export const existQueue = () => get(queue).items.length > 0;
+                if (this.shouldCount && progress > 80) {
+                    MusicListener.count(this.state.items[this.state.selected!])
+                    this.shouldCount = false
+                }
 
-export const shuffleQueue = () => queue.update((state) => {
-    let newState = { ...state };
-
-    newState.shuffle = !state.shuffle;
-
-    if (newState.shuffle) {
-        newState.sourceItems = [...state.items];
-        newState.items = shuffle([...state.items].filter((item) =>
-            item.id !== state.items[state.selected].id),
-        );
-        newState.items.unshift(state.items[state.selected]);
-        newState.selected = 0;
-    } else {
-        newState.selected = state.sourceItems.findIndex((item) =>
-            item.id === state.items[state.selected].id
-        );
-        newState.items = [...state.sourceItems];
-        newState.sourceItems = [];
-    }
-    return newState;
-});
-
-export const resetQueue = async (title: string = '', musics: Pick<Music, 'id'>[] = []) => {
-    if (
-        existQueue() &&
-        musics.length > 0 &&
-        !(await confirm('The queue will be replaced with this.'))
-    ) {
-        return;
-    }
-
-    queue.update((state) => {
-        queueHistory.update((history) => {
-            if (state.items.length === 0) {
-                return history;
+                this.set({
+                    currentTime: time,
+                    progress,
+                })
+            },
+            onSkipToNext: () => {
+                this.next()
+            },
+            onSkipToPrevious: () => {
+                this.prev()
             }
-            return [{
-                title: state.title,
-                items: state.items,
-            }, ...history].slice(0, 20);
-        });
-        const newState = { ...state };
-        newState.title = title;
-        newState.items = musics;
-        newState.sourceItems = [];
-        newState.shuffle = false;
-        newState.selected = musics.length > 0 ? 0 : null;
-        return newState;
-    });
+        }
+
+        this.audioChannel = window.AppChannel
+            ? new AppAudioChannel(audioChannelEventHandler)
+            : new WebAudioChannel(audioChannelEventHandler)
+
+        const key = musicStore.subscribe(async ({ loaded }) => {
+            if (loaded) {
+                const queue = localStorage.getItem('queue')
+                if (queue) {
+                    const nextState = JSON.parse(queue) as QueueStoreState
+                    await this.set(nextState)
+                    this.select(nextState.selected || 0, false)
+                }
+                musicStore.unsubscribe(key)
+            }
+        })
+
+        window.addEventListener('beforeunload', () => {
+            this.audioChannel.stop()
+        })
+    }
+
+    async reset(ids: string[]) {
+        if (this.state.items.length > 0 && !(await confirm('Are you sure to reset queue?'))) {
+            return
+        }
+        await this.set({
+            items: ids,
+            sourceItems: [],
+            shuffle: false,
+            selected: null,
+            currentTime: 0,
+            progress: 0,
+            isPlaying: false
+        })
+        this.select(0)
+    }
+
+    async add(id: string) {
+        if (this.state.items.includes(id)) {
+            toast('Already added to queue')
+            return
+        }
+        if (this.state.shuffle) {
+            this.set({
+                sourceItems: [...this.state.items, id]
+            })
+        }
+        if (this.state.insertMode === 'first') {
+            this.set({
+                items: [id, ...this.state.items]
+            })
+        }
+        if (this.state.insertMode === 'last') {
+            this.set({
+                items: [...this.state.items, id]
+            })
+        }
+        if (this.state.insertMode === 'after') {
+            if (this.state.selected === null) {
+                this.set({
+                    items: [...this.state.items, id]
+                })
+            } else {
+                this.set({
+                    items: [
+                        ...this.state.items.slice(0, this.state.selected + 1),
+                        id,
+                        ...this.state.items.slice(this.state.selected + 1)
+                    ]
+                })
+            }
+        }
+        toast('Added to queue')
+        if (this.state.playMode === 'immediately') {
+            this.select(this.state.items.indexOf(id))
+            return
+        }
+        if (this.state.selected === null) {
+            this.select(0)
+        }
+    }
+
+    async removeItems(ids: string[]) {
+        const newItems = this.state.items.filter((i) => !ids.includes(i))
+
+        const prevSelected = this.state.selected
+        const prevSelectedItem = newItems.length > 0
+            ? this.state.items[prevSelected || 0]
+            : null
+
+        await this.set({
+            items: this.state.items.filter((i) => !ids.includes(i))
+        })
+
+        if (prevSelectedItem) {
+            if (!ids.includes(prevSelectedItem)) {
+                this.set({
+                    selected: newItems.indexOf(prevSelectedItem)
+                })
+                return
+            }
+            if (ids.includes(prevSelectedItem)) {
+                if (this.state.items.length >= prevSelected!) {
+                    this.select(prevSelected!)
+                    return
+                }
+                if (this.state.items.length < prevSelected!) {
+                    this.select(this.state.items.length - 1)
+                    return
+                }
+            }
+        }
+    }
+
+    select(index: number, directPlay = true) {
+        this.shouldCount = true
+        this.set({ selected: index, currentTime: 0, isPlaying: directPlay })
+
+        const music = getMusic(this.state.items[index])
+        if (music === undefined) return
+        document.title = `${music.name} - ${music.artist.name}`
+        this.audioChannel.load(music)
+        directPlay && this.audioChannel.play()
+    }
+
+    play() {
+        if (this.state.selected !== null) {
+            this.audioChannel.play()
+        }
+    }
+
+    pause() {
+        this.audioChannel.pause()
+    }
+
+    stop() {
+        this.audioChannel.stop()
+    }
+
+    seek(time: number) {
+        this.audioChannel.seek(time)
+    }
+
+    setPlayMode(mode: 'later' | 'immediately') {
+        this.set({ playMode: mode })
+    }
+
+    setInsertMode(mode: 'first' | 'last' | 'after') {
+        this.set({ insertMode: mode })
+    }
+
+    changeRepeatMode() {
+        if (this.state.repeatMode === 'none') {
+            this.set({
+                repeatMode: 'all'
+            })
+        } else if (this.state.repeatMode === 'all') {
+            this.set({
+                repeatMode: 'one'
+            })
+        } else if (this.state.repeatMode === 'one') {
+            this.set({
+                repeatMode: 'none'
+            })
+        }
+    }
+
+    toggleShuffle() {
+        const selectedMusic = this.state.items[this.state.selected!]
+
+        if (this.state.shuffle) {
+            this.set({
+                shuffle: false,
+                selected: this.state.sourceItems.indexOf(selectedMusic),
+                items: [...this.state.sourceItems],
+                sourceItems: []
+            })
+            return
+        }
+
+        const newItems = shuffle([...this.state.items]).filter((item) =>
+            item !== selectedMusic
+        )
+        newItems.unshift(selectedMusic)
+
+        this.set({
+            shuffle: true,
+            selected: 0,
+            items: newItems,
+            sourceItems: [...this.state.items],
+        })
+    }
+
+    next() {
+        if (this.state.selected !== null) {
+            this.select((this.state.selected + 1) % this.state.items.length)
+            this.audioChannel.play()
+        }
+    }
+
+    prev() {
+        if (this.state.selected !== null) {
+            if (this.state.currentTime > 10) {
+                this.audioChannel.seek(0)
+                return
+            }
+            this.select((this.state.selected - 1 + this.state.items.length) % this.state.items.length)
+            this.audioChannel.play()
+        }
+    }
+
+    afterStateChange() {
+        if (saveTimer) {
+            return
+        }
+
+        saveTimer = setTimeout(() => {
+            localStorage.setItem('queue', JSON.stringify({
+                ...this.state,
+                isPlaying: false,
+                currentTime: 0,
+                progress: 0
+            }))
+            saveTimer = null
+        }, 3000)
+    }
 }
 
-export const insertToQueue = (music: Pick<Music, 'id'>) => queue.update((state) => {
-    let newState = { ...state };
-
-    // 아무것도 없을 때
-    if (state.items.length === 0) {
-        newState.title = 'Create at ' + getFormattedDate(new Date())
-        newState.selected = 0;
-        newState.items = [music];
-        if (newState.shuffle) {
-            newState.sourceItems = [music];
-        }
-        return newState;
-    }
-
-    // 이미 있을 때
-    if (state.items.find((item) => item.id === music.id)) {
-        state.playMode === 'immediate'
-            ? newState.selected = state.items.findIndex((item) => item.id === music.id)
-            : toast('Already added to queue')
-        return newState;
-    }
-
-    // 마지막에 추가할 때
-    if (state.insertMode === 'last') {
-        newState.items = [...state.items, music];
-        if (newState.shuffle) {
-            newState.sourceItems = [...state.sourceItems, music];
-        }
-        if (state.playMode === 'immediate') {
-            newState.selected = newState.items.findIndex((item) => item.id === music.id);
-        } else {
-            toast('Added to queue');
-        }
-        return newState;
-    }
-    if (state.selected === null) {
-        return newState;
-    }
-
-    // 중간에 추가할 때
-    if (state.insertMode === 'after') {
-        const before = state.items.slice(0, state.selected + 1);
-        const after = state.items.slice(state.selected + 1);
-        newState.items = [...before, music, ...after];
-        if (newState.shuffle) {
-            const before = state.sourceItems.slice(0, state.selected + 1);
-            const after = state.sourceItems.slice(state.selected + 1);
-            newState.sourceItems = [...before, music, ...after];
-        }
-    }
-    if (state.insertMode === 'before') {
-        const before = state.items.slice(0, state.selected);
-        const after = state.items.slice(state.selected);
-        newState.selected = state.selected + 1;
-        newState.items = [...before, music, ...after];
-        if (newState.shuffle) {
-            const before = state.sourceItems.slice(0, state.selected);
-            const after = state.sourceItems.slice(state.selected);
-            newState.sourceItems = [...before, music, ...after];
-        }
-    }
-    if (state.playMode === 'immediate') {
-        newState.selected = newState.items.findIndex((item) => item.id === music.id);
-    } else {
-        toast('Added to queue');
-    }
-    return newState;
-});
+export const queueStore = new QueueStore()

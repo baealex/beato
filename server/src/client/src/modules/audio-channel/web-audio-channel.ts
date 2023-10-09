@@ -1,9 +1,5 @@
 import type { AudioChannel, AudioChannelEventHandler } from './audio-channel'
 
-import { downloadFile } from '~/modules/download'
-
-import { getAudio } from '~/api'
-
 import type { Music } from '~/models/type'
 
 export class WebAudioChannel implements AudioChannel {
@@ -58,11 +54,5 @@ export class WebAudioChannel implements AudioChannel {
 
     seek(time: number) {
         this.audio.currentTime = time
-    }
-
-    async download(music: Music) {
-        const { data } = await getAudio(music.id);
-        const fileName = music.filePath.split('/').pop();
-        downloadFile(fileName, URL.createObjectURL(data));
     }
 }
