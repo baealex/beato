@@ -14,6 +14,32 @@ export default defineConfig({
             '~': path.resolve(__dirname, './src'),
         },
     },
+    build: {
+        sourcemap: false,
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: [
+                        'react',
+                        'react-dom',
+                        'react-router-dom',
+                        'react-router',
+                        'react-query',
+                        'react-query/devtools',
+                    ],
+                    motion: [
+                        'framer-motion',
+                    ],
+                    sortable: [
+                        '@dnd-kit/core',
+                        '@dnd-kit/sortable',
+                        '@dnd-kit/modifiers',
+                        '@dnd-kit/utilities',
+                    ]
+                }
+            }
+        }
+    },
     server: {
         host: '0.0.0.0',
         proxy: {
