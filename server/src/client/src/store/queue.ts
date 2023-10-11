@@ -80,9 +80,7 @@ class QueueStore extends Store<QueueStoreState> {
                         this.audioChannel.play()
                     } else {
                         this.audioChannel.stop()
-                        this.set({
-                            isPlaying: false
-                        })
+                        this.set({ isPlaying: false })
                     }
                 }
             },
@@ -91,8 +89,8 @@ class QueueStore extends Store<QueueStoreState> {
                 const progress = Number((time / (music?.duration || 1) * 100).toFixed(2))
 
                 if (this.shouldCount && progress > 80) {
-                    MusicListener.count(this.state.items[this.state.selected!])
                     this.shouldCount = false
+                    MusicListener.count(this.state.items[this.state.selected!])
                 }
 
                 this.set({
@@ -226,15 +224,21 @@ class QueueStore extends Store<QueueStoreState> {
         }
     }
 
-    select(index: number, directPlay = true) {
+    async select(index: number, play = true) {
+        await this.set({
+            selected: index,
+            progress: 0,
+            currentTime: 0,
+            isPlaying: play
+        })
         this.shouldCount = true
-        this.set({ selected: index, currentTime: 0, isPlaying: directPlay })
 
         const music = getMusic(this.state.items[index])
         if (music === undefined) return
+
         document.title = `${music.name} - ${music.artist.name}`
         this.audioChannel.load(music)
-        directPlay && this.audioChannel.play()
+        play && this.audioChannel.play()
     }
 
     play() {

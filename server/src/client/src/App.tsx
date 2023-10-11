@@ -116,6 +116,7 @@ export default function App() {
             socket.disconnect()
         })
     }, [])
+
     return (
         <PanelProvider>
             <QueryClientProvider client={client}>

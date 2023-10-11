@@ -1,5 +1,6 @@
 import { socket } from './socket'
 import { Listener } from './listener'
+import { increasePlayCount } from '~/api'
 
 export const MUSIC_LIKE = 'music-like'
 export const MUSIC_COUNT = 'music-count'
@@ -41,6 +42,10 @@ export class MusicListener implements Listener {
     }
 
     static count(id: string) {
+        if (!socket.connected) {
+            increasePlayCount(id)
+            return
+        }
         socket.emit(MUSIC_COUNT, { id })
     }
 

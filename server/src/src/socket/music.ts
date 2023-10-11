@@ -4,8 +4,8 @@ import models from '~/models';
 
 import { connectors } from './connectors';
 
-const MUSIC_LIKE = 'music-like';
-const MUSIC_COUNT = 'music-count';
+export const MUSIC_LIKE = 'music-like';
+export const MUSIC_COUNT = 'music-count';
 
 export const musicListener = (socket: Socket) => {
     socket.on(MUSIC_LIKE, like);
