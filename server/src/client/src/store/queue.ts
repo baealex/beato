@@ -33,7 +33,7 @@ const getMusic = (id: string) => {
 }
 
 class QueueStore extends Store<QueueStoreState> {
-    shouldCount: boolean
+    shouldCount = false
     audioChannel: AudioChannel
 
     constructor() {
@@ -50,7 +50,6 @@ class QueueStore extends Store<QueueStoreState> {
             items: [],
             sourceItems: [],
         }
-        this.shouldCount = false
 
         const audioChannelEventHandler: AudioChannelEventHandler = {
             onPlay: () => {
@@ -87,6 +86,10 @@ class QueueStore extends Store<QueueStoreState> {
             onTimeUpdate: (time) => {
                 const music = getMusic(this.state.items[this.state.selected!])
                 const progress = Number((time / (music?.duration || 1) * 100).toFixed(2))
+
+                if (!this.shouldCount && Math.floor(progress) === 0) {
+                    this.shouldCount = true
+                }
 
                 if (this.shouldCount && Math.floor(progress) === 80) {
                     this.shouldCount = false
@@ -236,9 +239,9 @@ class QueueStore extends Store<QueueStoreState> {
         if (music === undefined) return
 
         document.title = `${music.name} - ${music.artist.name}`
+
         this.audioChannel.load(music)
         play && this.audioChannel.play()
-        this.shouldCount = true
     }
 
     play() {
