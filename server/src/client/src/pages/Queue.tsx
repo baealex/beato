@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
-import { useEffect, useRef, useState } from 'react'
 import { useStore } from 'badland-react'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { HTMLMotionProps, motion } from 'framer-motion'
 import { theme } from '@baejino/style'
 
@@ -223,6 +224,8 @@ const QueueDndItem = ({
 }
 
 export default function Queue() {
+    const navigate = useNavigate()
+
     const [{ items, selected }, setState] = useStore(queueStore)
     const [{ musicMap }] = useStore(musicStore)
 
@@ -335,7 +338,11 @@ export default function Queue() {
                                 }}
                                 onLongPress={() => panel.open({
                                     content: (
-                                        <MusicActionPanelContent id={music.id} />
+                                        <MusicActionPanelContent
+                                            id={music.id}
+                                            onAlbumClick={() => navigate(`/album/${music.album.id}`)}
+                                            onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
+                                        />
                                     )
                                 })}
                             />
