@@ -3,7 +3,7 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { MusicItem, SecondaryButton, StickyHeader, MusicActionPanelContent } from '~/components'
+import { MusicItem, SecondaryButton, StickyHeader, MusicActionPanelContent, Loading } from '~/components'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -17,7 +17,7 @@ export default function Music() {
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const [{ musics }] = useStore(musicStore)
+    const [{ musics, loaded }] = useStore(musicStore)
     const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT)
 
     const handleSearch = async () => {
@@ -49,7 +49,10 @@ export default function Music() {
                     <Icon.Play /> Play
                 </SecondaryButton>
             </StickyHeader>
-            {filteredMusics.slice(0, renderLimit).map(music => (
+            {!loaded && (
+                <Loading/>
+            )}
+            {loaded && filteredMusics.slice(0, renderLimit).map(music => (
                 <MusicItem
                     key={music.id}
                     albumName={music.album.name}
@@ -71,7 +74,7 @@ export default function Music() {
                     })}
                 />
             ))}
-            {filteredMusics.length > renderLimit && (
+            {loaded && filteredMusics.length > renderLimit && (
                 <div style={{ padding: '0 16px 16px' }}>
                     <SecondaryButton style={{ width: '100%', justifyContent: 'center' }} onClick={handleReadMore}>
                         Load More

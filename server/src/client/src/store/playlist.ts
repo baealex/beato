@@ -4,6 +4,7 @@ import { Playlist } from '~/models/type'
 import { PlaylistListener } from '~/socket'
 
 interface PlaylistStoreState {
+    loaded: boolean
     playlists: Playlist[]
 }
 
@@ -14,6 +15,7 @@ class PlaylistStore extends Store<PlaylistStoreState> {
     constructor() {
         super()
         this.state = {
+            loaded: false,
             playlists: []
         }
         this.listener = new PlaylistListener()
@@ -56,7 +58,10 @@ class PlaylistStore extends Store<PlaylistStoreState> {
 
     async sync() {
         getPlaylists().then(({ data }) => {
-            this.set({ playlists: data.allPlaylist })
+            this.set({
+                loaded: true,
+                playlists: data.allPlaylist
+            })
         })
     }
 }

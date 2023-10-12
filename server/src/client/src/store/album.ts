@@ -3,6 +3,7 @@ import { getAlbums } from '~/api'
 import { Album } from '~/models/type'
 
 interface AlbumStoreState {
+    loaded: boolean
     albums: Album[]
 }
 
@@ -12,6 +13,7 @@ class AlbumStore extends Store<AlbumStoreState> {
     constructor() {
         super()
         this.state = {
+            loaded: false,
             albums: []
         }
     }
@@ -30,7 +32,10 @@ class AlbumStore extends Store<AlbumStoreState> {
 
     async sync() {
         getAlbums().then(({ data }) => {
-            this.set({ albums: data.allAlbums })
+            this.set({
+                loaded: true,
+                albums: data.allAlbums,
+            })
         })
     }
 }

@@ -3,7 +3,7 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { ArtistItem, SecondaryButton, StickyHeader } from '~/components'
+import { ArtistItem, Loading, SecondaryButton, StickyHeader } from '~/components'
 
 import { artistStore } from '~/store/artist'
 
@@ -13,7 +13,7 @@ export default function ArtistList() {
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const [{ artists }] = useStore(artistStore)
+    const [{ artists, loaded }] = useStore(artistStore)
     const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT)
 
     const handleReadMore = () => {
@@ -39,7 +39,10 @@ export default function ArtistList() {
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
             </StickyHeader>
-            {filteredArtists.slice(0, renderLimit).map((artist) => (
+            {!loaded && (
+                <Loading />
+            )}
+            {loaded && filteredArtists.slice(0, renderLimit).map((artist) => (
                 <ArtistItem
                     key={artist.id}
                     artistName={artist.name}
@@ -49,7 +52,7 @@ export default function ArtistList() {
                     onClick={() => navigate(`/artist/${artist.id}`)}
                 />
             ))}
-            {filteredArtists.length > renderLimit && (
+            {loaded && filteredArtists.length > renderLimit && (
                 <div style={{ padding: '0 16px 16px' }}>
                     <SecondaryButton style={{ width: '100%', justifyContent: 'center' }} onClick={handleReadMore}>
                         Load More

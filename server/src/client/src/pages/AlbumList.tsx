@@ -4,7 +4,7 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { AlbumItem, SecondaryButton, StickyHeader } from '~/components'
+import { AlbumItem, Loading, SecondaryButton, StickyHeader } from '~/components'
 
 import { albumStore } from '~/store/album'
 
@@ -26,7 +26,7 @@ export default function Album() {
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const [{ albums }] = useStore(albumStore)
+    const [{ albums, loaded }] = useStore(albumStore)
     const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT)
 
     const handleSearch = async () => {
@@ -53,8 +53,11 @@ export default function Album() {
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
             </StickyHeader>
+            {!loaded && (
+                <Loading />
+            )}
             <Grid>
-                {filteredAlbums.slice(0, renderLimit).map((album) => (
+                {loaded && filteredAlbums.slice(0, renderLimit).map((album) => (
                     <AlbumItem
                         key={album.id}
                         albumName={album.name}
@@ -64,7 +67,7 @@ export default function Album() {
                     />
                 ))}
             </Grid>
-            {filteredAlbums.length > renderLimit && (
+            {loaded && filteredAlbums.length > renderLimit && (
                 <div style={{ padding: '0 16px 16px' }}>
                     <SecondaryButton style={{ width: '100%', justifyContent: 'center' }} onClick={handleReadMore}>
                         Load More

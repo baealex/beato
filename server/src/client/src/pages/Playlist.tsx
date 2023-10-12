@@ -7,7 +7,7 @@ import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { PlaylistActionPanelContent, PlaylistItem, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
+import { Loading, PlaylistActionPanelContent, PlaylistItem, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
 import { Menu } from '~/icon'
 
 import { Playlist as PlaylistModel } from '~/models/type'
@@ -68,7 +68,7 @@ function PlaylistDndItem({
 export default function Playlist() {
     const navigate = useNavigate()
 
-    const [{ playlists }, setState] = useStore(playlistStore)
+    const [{ playlists, loaded }, setState] = useStore(playlistStore)
 
     const handleCreate = async () => {
         const name = await prompt('Enter playlist name')
@@ -99,8 +99,11 @@ export default function Playlist() {
                     New Playlist
                 </SecondaryButton>
             </StickyHeader>
+            {!loaded && (
+                <Loading />
+            )}
             <VerticalSortable items={playlists.map((playlist) => playlist.id)} onDragEnd={handleDragEnd}>
-                {playlists?.map((playlist) => (
+                {loaded && playlists?.map((playlist) => (
                     <PlaylistDndItem
                         key={playlist.id}
                         playlist={playlist}
