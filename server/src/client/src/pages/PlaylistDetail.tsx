@@ -9,7 +9,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 
-import { Image, Loading, MusicActionPanelContent, MusicItem, MusicSelector, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
+import { Image, MusicActionPanelContent, MusicItem, MusicSelector, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
 import { CheckBox, Menu, Play, TrashBin } from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -169,7 +169,7 @@ export default function PlaylistDetail() {
 
     const queryClient = useQueryClient()
 
-    const { data: playlist, isLoading } = useQuery(['playlist', id], () => getPlaylist(id!).then(res => res.data.playlist), {
+    const { data: playlist } = useQuery(['playlist', id], () => getPlaylist(id!).then(res => res.data.playlist), {
         enabled: !!id,
     })
 
@@ -215,10 +215,8 @@ export default function PlaylistDetail() {
         setSelectedItems([])
     }, [isSelectMode])
 
-    if (isLoading || !playlist) {
-        return (
-            <Loading />
-        )
+    if (!playlist) {
+        return null
     }
 
     return (

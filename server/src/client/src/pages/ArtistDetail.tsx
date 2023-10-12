@@ -3,7 +3,7 @@ import { useStore } from 'badland-react'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { AlbumItem, Image, Loading, MusicActionPanelContent, MusicItem, SecondaryButton } from '~/components'
+import { AlbumItem, Image, MusicActionPanelContent, MusicItem, SecondaryButton } from '~/components'
 import { Play } from '~/icon'
 
 import { getArtist } from '~/api'
@@ -64,16 +64,14 @@ export default function ArtistDetail() {
 
     const { id } = useParams<{ id: string }>()
 
-    const { data: artist, isLoading } = useQuery(['album', id], () => getArtist(id!).then(res => res.data.artist), {
+    const { data: artist } = useQuery(['album', id], () => getArtist(id!).then(res => res.data.artist), {
         enabled: !!id,
     })
 
     const [{ musicMap }] = useStore(musicStore)
 
-    if (isLoading || !artist) {
-        return (
-            <Loading />
-        )
+    if (!artist) {
+        return null
     }
 
     return (

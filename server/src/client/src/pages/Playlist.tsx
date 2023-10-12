@@ -99,9 +99,6 @@ export default function Playlist() {
                     New Playlist
                 </SecondaryButton>
             </StickyHeader>
-            {!loaded && (
-                <Loading />
-            )}
             <VerticalSortable items={playlists.map((playlist) => playlist.id)} onDragEnd={handleDragEnd}>
                 {loaded && playlists?.map((playlist) => (
                     <PlaylistDndItem

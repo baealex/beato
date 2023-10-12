@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
 import SiteHeader from './SiteHeader'
 import SubPageHeader from './SubPageHeader'
 import MusicPlayer from './MusicPlayer'
+import Loading from './Loading'
 
 interface SiteLayoutProps {
     isSubPage?: boolean
@@ -89,7 +90,9 @@ export default function SiteLayout({
                     duration: 0.25,
                 }}
             >
-                <Outlet />
+                <Suspense fallback={<Loading />}>
+                    <Outlet />
+                </Suspense>
             </motion.div>
             {!disablePlayer &&
                 <MusicPlayer />
