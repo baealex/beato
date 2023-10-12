@@ -64,7 +64,7 @@ export default function ArtistDetail() {
 
     const { id } = useParams<{ id: string }>()
 
-    const { data: artist } = useQuery(['album', id], () => getArtist(id!).then(res => res.data.artist), {
+    const { data: artist } = useQuery(['artist', id], () => getArtist(id!).then(res => res.data.artist), {
         enabled: !!id,
     })
 

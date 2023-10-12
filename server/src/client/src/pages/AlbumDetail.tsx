@@ -91,8 +91,9 @@ const List = styled.ul`
 `
 
 export default function AlbumDetail() {
-    const { id } = useParams<{ id: string }>()
     const navigate = useNavigate()
+
+    const { id } = useParams<{ id: string }>()
 
     const { data: album } = useQuery(['album', id], () => getAlbum(id!).then(res => res.data.album), {
         enabled: !!id,
@@ -107,7 +108,7 @@ export default function AlbumDetail() {
     return (
         <>
             <Container>
-                <Image className="album-cover" src={album?.cover.replace('/resized', '') || ''} alt={album?.name} />
+                <Image className="album-cover" src={album.cover.replace('/resized', '') || ''} alt={album?.name} />
                 <div className="album-title">{album?.name}</div>
                 <div className="row">
                     <Link className="album-artist" to={`/artist/${album?.artist.id}`}>
@@ -124,7 +125,7 @@ export default function AlbumDetail() {
             </Container>
 
             <List>
-                {album?.musics.map(({ id }) => {
+                {album.musics.map(({ id }) => {
                     const music = musicMap.get(id)
 
                     if (!music) {
