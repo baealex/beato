@@ -1,5 +1,6 @@
-import { theme } from '@baejino/style'
 import styled from '@emotion/styled'
+import { theme } from '@baejino/style'
+import { useEffect, useState } from 'react'
 
 const Container = styled.div`
     flex: 1;
@@ -26,10 +27,24 @@ const Container = styled.div`
     }
 `
 
-const Loading = () => (
-    <Container>
-        <div className="spinner" />
-    </Container>
-)
+const Loading = () => {
+    const [shouldShow, setShouldShow] = useState(false)
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setShouldShow(true)
+        }, 100)
+
+        return () => clearTimeout(timeout)
+    })
+
+    return (
+        shouldShow && (
+            <Container>
+                <div className="spinner" />
+            </Container>
+        )
+    )
+}
 
 export default Loading
