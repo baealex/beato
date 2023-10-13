@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { useEffect, useRef } from 'react'
 
 interface BottomPanelProps {
     title?: string
@@ -71,6 +72,35 @@ const Container = styled.div`
 `
 
 export default function PanelProvider({ title, isOpen, onClose, children }: BottomPanelProps) {
+    const hasPush = useRef(false)
+
+    useEffect(() => {
+        if (!isOpen) {
+            if (hasPush.current) {
+                hasPush.current = false
+                history.back()
+            }
+            return
+        }
+
+        if (!hasPush.current) {
+            hasPush.current = true
+            history.pushState(null, '')
+        }
+
+        const handlePopState = () => {
+            hasPush.current = false
+            onClose?.()
+        }
+
+        window.addEventListener('popstate', handlePopState)
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState)
+        }
+
+    }, [hasPush, isOpen, onClose])
+
     return (
         <Container className={isOpen ? 'open' : ''}>
             <button className="clickable backdrop" onClick={onClose} />
