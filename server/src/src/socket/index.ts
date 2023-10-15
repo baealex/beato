@@ -30,7 +30,7 @@ export const socketManager = (socket: Socket) => {
         })));
     });
 
-    socket.on('disconnect-connector', ({ id = '' }) => {
+    socket.on('kick-connector', ({ id = '' }) => {
         if (!id) return;
         connectors.get().forEach((connector) => {
             console.log(connector.id, id);

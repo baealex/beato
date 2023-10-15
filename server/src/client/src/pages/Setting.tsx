@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react'
 
 import { SecondaryButton } from '~/components'
 
-import { socket } from '~/socket'
+import { ConnectorListener, socket } from '~/socket'
 
 import { albumStore } from '~/store/album'
 import { artistStore } from '~/store/artist'
+import { connectorStore } from '~/store/connector'
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
 
@@ -63,9 +64,36 @@ const Container = styled.div`
             }
         }
     }
+
+    .connector {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        font-size: 0.825rem;
+        gap: 0.5rem;
+
+        .date {
+            font-size: 0.825rem;
+            color: #999;
+        }
+
+        .this-device, .kick {
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.5rem;
+            background-color: #3d3493;
+            font-size: 0.75rem;
+            color: #eee;
+        }
+
+        .kick {
+            cursor: pointer;
+            background-color: #333;
+        }
+    }
 `
 
 export default function Setting() {
+    const [{ connectors }] = useStore(connectorStore)
     const [{ playMode, insertMode }] = useStore(queueStore)
     const [progressMessage, setProgressMessage] = useState('')
 
@@ -178,6 +206,21 @@ export default function Setting() {
             </section>
             <section>
                 <h3>Connectors</h3>
+                {connectors.map((connector) => (
+                    <div key={connector.id} className="connector">
+                        <span>{connector.userAgent}</span>
+                        <span className="date">{new Date(connector.connectedAt).toLocaleDateString()}</span>
+                        {connector.id === socket.id ? (
+                            <span className="this-device">This device</span>
+                        ) : (
+                            <button
+                                className="kick"
+                                onClick={() => ConnectorListener.kick(connector.id)}>
+                                Kick
+                            </button>
+                        )}
+                    </div>
+                ))}
             </section>
             <section>
                 <h3>Have a problem?</h3>
@@ -187,6 +230,6 @@ export default function Setting() {
                     </SecondaryButton>
                 </div>
             </section>
-        </Container>
+        </Container >
     )
 }
