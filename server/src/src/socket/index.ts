@@ -17,7 +17,6 @@ export const socketManager = (socket: Socket) => {
         connectedAt: c.connectedAt,
     })));
 
-    socket.emit('resync', '');
     syncListener(socket);
     musicListener(socket);
     playlistListener(socket);
@@ -30,7 +29,7 @@ export const socketManager = (socket: Socket) => {
         })));
     });
 
-    socket.on('kick-connector', ({ id = '' }) => {
+    socket.on('remove-connector', ({ id = '' }) => {
         if (!id) return;
         connectors.get().forEach((connector) => {
             console.log(connector.id, id);
@@ -38,7 +37,6 @@ export const socketManager = (socket: Socket) => {
                 connector.disconnect();
             }
         });
-        connectors.remove(id);
     });
 
     socket.on('disconnect', () => {

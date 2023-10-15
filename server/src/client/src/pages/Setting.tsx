@@ -7,10 +7,7 @@ import { SecondaryButton } from '~/components'
 
 import { ConnectorListener, socket } from '~/socket'
 
-import { albumStore } from '~/store/album'
-import { artistStore } from '~/store/artist'
 import { connectorStore } from '~/store/connector'
-import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
 
 const Container = styled.div`
@@ -118,10 +115,6 @@ export default function Setting() {
                     toast('Error while sync music')
                 }
 
-                musicStore.init = false
-                artistStore.init = false
-                albumStore.init = false
-
                 setTimeout(() => {
                     setProgressMessage('')
                 }, 1000)
@@ -215,8 +208,8 @@ export default function Setting() {
                         ) : (
                             <button
                                 className="kick"
-                                onClick={() => ConnectorListener.kick(connector.id)}>
-                                Kick
+                                onClick={() => ConnectorListener.remove(connector.id)}>
+                                Remove
                             </button>
                         )}
                     </div>

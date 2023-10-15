@@ -19,6 +19,10 @@ import { PanelProvider, SiteLayout } from './components'
 
 import { socket } from './socket'
 
+import { musicStore } from './store/music'
+import { artistStore } from './store/artist'
+import { albumStore } from './store/album'
+
 const client = new QueryClient({
     defaultOptions: {
         queries: {
@@ -107,6 +111,12 @@ const router = createBrowserRouter([
 
 export default function App() {
     useEffect(() => {
+        socket.on('resync', () => {
+            musicStore.init = false
+            artistStore.init = false
+            albumStore.init = false
+        })
+
         window.addEventListener('focus', () => {
             if (!socket.connected) {
                 socket.connect()

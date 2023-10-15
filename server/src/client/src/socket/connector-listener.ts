@@ -2,7 +2,7 @@ import { socket } from './socket'
 import { Listener } from './listener'
 
 export const GET_CONNECTORS = 'get-connectors'
-export const KICK_CONNECTOR = 'kick-connector'
+export const REMOVE_CONNECTOR = 'remove-connector'
 
 interface ConnectorListenerEventHandler {
     onConnectors: (connectors: Connector[]) => void
@@ -30,8 +30,8 @@ export class ConnectorListener implements Listener {
         socket.on(GET_CONNECTORS, this.handler.onConnectors)
     }
 
-    static kick(id: string) {
-        socket.emit(KICK_CONNECTOR, { id })
+    static remove(id: string) {
+        socket.emit(REMOVE_CONNECTOR, { id })
     }
 
     disconnect() {
