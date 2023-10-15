@@ -10,8 +10,8 @@ export default function Observer({
     const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const observer = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) {
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
                 onIntersect()
             }
         })
@@ -24,12 +24,13 @@ export default function Observer({
 
         return () => {
             if (current) {
+                console.log('unobserve')
                 observer.unobserve(current)
             }
         }
     }, [ref, onIntersect])
 
     return (
-        <div ref={ref} style={{ height: '1px', width: '1px' }} />
+        <div ref={ref} style={{ minHeight: '1px', minWidth: '1px' }} />
     )
 }
