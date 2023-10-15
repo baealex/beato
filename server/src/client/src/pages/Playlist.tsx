@@ -110,7 +110,10 @@ export default function Playlist() {
                         onClick={() => navigate(`/playlist/${playlist.id}`)}
                         onLongPress={() => panel.open({
                             content: (
-                                <PlaylistActionPanelContent id={playlist.id} />
+                                <PlaylistActionPanelContent
+                                    id={playlist.id}
+                                    onPlaylistClick={() => navigate(`/playlist/${playlist.id}`)}
+                                />
                             )
                         })}
                     />

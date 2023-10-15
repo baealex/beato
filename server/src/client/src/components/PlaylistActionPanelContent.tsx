@@ -31,10 +31,10 @@ export default function PlaylistActionPanelContent({
 
     return (
         <PanelContent
-            header={(
+            header={onPlaylistClick && (
                 <button className="panel-album clickable linkable" onClick={() => {
-                    onPlaylistClick?.()
                     panel.close()
+                    setTimeout(onPlaylistClick, 100)
                 }}>
                     {playlist.headerMusics.length >= 4 && (
                         <div className="album-cover-grid">
@@ -69,6 +69,7 @@ export default function PlaylistActionPanelContent({
                         </div>
                     </div>
                 </button>
+
             )}
             items={[
                 {
@@ -76,7 +77,9 @@ export default function PlaylistActionPanelContent({
                     text: 'Rename',
                     onClick: async () => {
                         const name = await prompt('Rename playlist', playlist.name)
-                        PlaylistListener.update(id, name)
+                        if (name) {
+                            PlaylistListener.update(id, name)
+                        }
                         panel.close()
                     },
                 },

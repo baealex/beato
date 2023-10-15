@@ -35,8 +35,8 @@ export default function MusicActionPanelContent({
                 <>
                     {onAlbumClick && (
                         <button className="panel-album clickable linkable" onClick={() => {
-                            onAlbumClick()
                             panel.close()
+                            setTimeout(onAlbumClick, 100)
                         }}>
                             <Image
                                 className="cover"
@@ -53,8 +53,8 @@ export default function MusicActionPanelContent({
                     )}
                     {onArtistClick && (
                         <button className="panel-artist clickable linkable" onClick={() => {
-                            onArtistClick?.()
                             panel.close()
+                            setTimeout(onArtistClick, 100)
                         }}>
                             <div>
                                 <div className="panel-sub-title">Artist</div>
