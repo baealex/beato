@@ -24,7 +24,6 @@ export default function Observer({
 
         return () => {
             if (current) {
-                console.log('unobserve')
                 observer.unobserve(current)
             }
         }
