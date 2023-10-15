@@ -335,6 +335,7 @@ export default function PlayerDetail() {
                 <button
                     className="clickable title"
                     onClick={() => currentMusic && panel.open({
+                        title: 'Related to this music',
                         content: (
                             <MusicActionPanelContent
                                 id={currentMusic.id}

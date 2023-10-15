@@ -143,10 +143,10 @@ export default function AlbumDetail() {
                             isLiked={music.isLiked}
                             onClick={() => queueStore.add(music.id)}
                             onLongPress={() => panel.open({
+                                title: 'Related to this music',
                                 content: (
                                     <MusicActionPanelContent
                                         id={music.id}
-                                        onAlbumClick={() => navigate(`/album/${music.album.id}`)}
                                         onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
                                     />
                                 )
