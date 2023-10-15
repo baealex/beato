@@ -18,5 +18,6 @@ module.exports = {
         indent: ['error', 4],
         quotes: ['error', 'single', { avoidEscape: true }],
         'jsx-quotes': ['error', 'prefer-double'],
+        'no-console': ['error', { allow: ['warn', 'error'] }],
     },
 }
