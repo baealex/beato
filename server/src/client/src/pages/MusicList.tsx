@@ -3,7 +3,7 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { MusicItem, SecondaryButton, StickyHeader, MusicActionPanelContent, Loading } from '~/components'
+import { MusicItem, SecondaryButton, StickyHeader, MusicActionPanelContent, Loading, Observer } from '~/components'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -26,12 +26,6 @@ export default function Music() {
         setSearchParams(searchParams, { replace: true })
     }
 
-    const handleReadMore = () => {
-        setRenderLimit(renderLimit + RENDER_LIMIT)
-        searchParams.set('l', (renderLimit + RENDER_LIMIT).toString())
-        setSearchParams(searchParams, { replace: true })
-    }
-
     const filteredMusics = musics
         ?.filter(music =>
             music.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
@@ -50,7 +44,7 @@ export default function Music() {
                 </SecondaryButton>
             </StickyHeader>
             {!loaded && (
-                <Loading/>
+                <Loading />
             )}
             {loaded && filteredMusics.slice(0, renderLimit).map(music => (
                 <MusicItem
@@ -75,11 +69,11 @@ export default function Music() {
                 />
             ))}
             {loaded && filteredMusics.length > renderLimit && (
-                <div style={{ padding: '0 16px 16px' }}>
-                    <SecondaryButton style={{ width: '100%', justifyContent: 'center' }} onClick={handleReadMore}>
-                        Load More
-                    </SecondaryButton>
-                </div>
+                <Observer onIntersect={() => {
+                    setRenderLimit(renderLimit + RENDER_LIMIT)
+                    searchParams.set('l', (renderLimit + RENDER_LIMIT).toString())
+                    setSearchParams(searchParams, { replace: true })
+                }} />
             )}
         </>
     )

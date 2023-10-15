@@ -4,7 +4,7 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { AlbumItem, Loading, SecondaryButton, StickyHeader } from '~/components'
+import { AlbumItem, Loading, Observer, SecondaryButton, StickyHeader } from '~/components'
 
 import { albumStore } from '~/store/album'
 
@@ -32,12 +32,6 @@ export default function Album() {
     const handleSearch = async () => {
         const q = await prompt('Search keyword', searchParams.get('q') || '')
         setSearchParams({ q })
-    }
-
-    const handleReadMore = () => {
-        setRenderLimit(renderLimit + RENDER_LIMIT)
-        searchParams.set('l', (renderLimit + RENDER_LIMIT).toString())
-        setSearchParams(searchParams, { replace: true })
     }
 
     const filteredAlbums = albums
@@ -68,11 +62,11 @@ export default function Album() {
                 ))}
             </Grid>
             {loaded && filteredAlbums.length > renderLimit && (
-                <div style={{ padding: '0 16px 16px' }}>
-                    <SecondaryButton style={{ width: '100%', justifyContent: 'center' }} onClick={handleReadMore}>
-                        Load More
-                    </SecondaryButton>
-                </div>
+                <Observer onIntersect={() => {
+                    setRenderLimit(renderLimit + RENDER_LIMIT)
+                    searchParams.set('l', (renderLimit + RENDER_LIMIT).toString())
+                    setSearchParams(searchParams, { replace: true })
+                }} />
             )}
         </>
     )
