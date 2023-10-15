@@ -166,10 +166,3 @@ export function getAudio(id: string) {
         responseType: 'blob',
     })
 }
-
-export function increasePlayCount(id: string) {
-    return axios.request({
-        method: 'GET',
-        url: `/api/music/${id}/count`,
-    })
-}

@@ -1,6 +1,5 @@
 import { socket } from './socket'
 import { Listener } from './listener'
-import { increasePlayCount } from '~/api'
 
 export const MUSIC_LIKE = 'music-like'
 export const MUSIC_COUNT = 'music-count'
@@ -19,6 +18,8 @@ interface MusicListenerEventHandler {
     onLike: (data: Like) => void;
     onCount: (data: Count) => void;
 }
+
+const shouldIncreaseItems: string[] = []
 
 export class MusicListener implements Listener {
     handler: MusicListenerEventHandler | null
@@ -43,8 +44,12 @@ export class MusicListener implements Listener {
 
     static count(id: string) {
         if (!socket.connected) {
-            increasePlayCount(id)
+            shouldIncreaseItems.push(id)
             return
+        }
+        while (shouldIncreaseItems.length > 0) {
+            const id = shouldIncreaseItems.pop()
+            socket.emit(MUSIC_COUNT, { id })
         }
         socket.emit(MUSIC_COUNT, { id })
     }
@@ -52,8 +57,8 @@ export class MusicListener implements Listener {
     disconnect() {
         if (this.handler === null) return
 
-        socket.off(MUSIC_LIKE)
-        socket.off(MUSIC_COUNT)
+        socket.off(MUSIC_LIKE, this.handler.onLike)
+        socket.off(MUSIC_COUNT, this.handler.onCount)
 
         this.handler = null
     }
