@@ -47,11 +47,22 @@ export class MusicListener implements Listener {
             shouldIncreaseItems.push(id)
             return
         }
-        while (shouldIncreaseItems.length > 0) {
-            const id = shouldIncreaseItems.pop()
-            socket.emit(MUSIC_COUNT, { id })
-        }
+
         socket.emit(MUSIC_COUNT, { id })
+
+        if (shouldIncreaseItems.length > 0) {
+            shouldIncreaseItems.reduce((promise, id) => {
+                return promise.then(() => {
+                    return new Promise(resolve => {
+                        setTimeout(() => {
+                            shouldIncreaseItems.splice(shouldIncreaseItems.indexOf(id), 1)
+                            socket.emit(MUSIC_COUNT, { id })
+                            resolve()
+                        }, 500)
+                    })
+                })
+            }, Promise.resolve())
+        }
     }
 
     disconnect() {
