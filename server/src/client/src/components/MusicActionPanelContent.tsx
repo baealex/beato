@@ -94,7 +94,10 @@ export default function MusicActionPanelContent({
                 {
                     icon: <Icon.Download />,
                     text: 'Download',
-                    onClick: () => queueStore.add(music.id),
+                    onClick: () => {
+                        queueStore.download(music.id)
+                        panel.close()
+                    }
                 },
             ]}
             footer={(

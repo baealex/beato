@@ -4,6 +4,7 @@ import { getImage } from '~/modules/image'
 import { convertToMillisecond, convertToSecond } from '~/modules/time'
 
 import type { Music } from '~/models/type'
+import { toast } from '@baejino/ui'
 
 interface SetMediaItemAction {
     actionType: 'setMediaItem';
@@ -127,5 +128,9 @@ export class AppAudioChannel implements AudioChannel {
                 position: convertToMillisecond(time),
             })
         )
+    }
+
+    download() {
+        toast('Not supported yet.')
     }
 }

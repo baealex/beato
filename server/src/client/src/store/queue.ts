@@ -330,6 +330,10 @@ class QueueStore extends Store<QueueStoreState> {
         }
     }
 
+    download(id: string) {
+        this.audioChannel.download(getMusic(id)!)
+    }
+
     afterStateChange() {
         if (saveTimer) {
             return

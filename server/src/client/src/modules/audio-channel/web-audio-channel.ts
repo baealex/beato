@@ -55,4 +55,12 @@ export class WebAudioChannel implements AudioChannel {
     seek(time: number) {
         this.audio.currentTime = time
     }
+
+    download(music: Music) {
+        const audioResource = '/api/audio/' + music.id
+        const a = document.createElement('a')
+        a.href = audioResource
+        a.download = music.filePath.split('/').pop()!
+        a.click()
+    }
 }

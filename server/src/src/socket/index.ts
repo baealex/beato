@@ -32,7 +32,6 @@ export const socketManager = (socket: Socket) => {
     socket.on('remove-connector', ({ id = '' }) => {
         if (!id) return;
         connectors.get().forEach((connector) => {
-            console.log(connector.id, id);
             if (connector.id === id) {
                 connector.disconnect();
             }
