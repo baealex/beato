@@ -3,7 +3,7 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { ArtistItem, Loading, Observer, SecondaryButton, StickyHeader } from '~/components'
+import { ArtistItem, Loading, SecondaryButton, StickyHeader } from '~/components'
 
 import { artistStore } from '~/store/artist'
 
@@ -15,6 +15,12 @@ export default function ArtistList() {
 
     const [{ artists, loaded }] = useStore(artistStore)
     const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT)
+
+    const handleReadMore = () => {
+        setRenderLimit(renderLimit + RENDER_LIMIT)
+        searchParams.set('l', (renderLimit + RENDER_LIMIT).toString())
+        setSearchParams(searchParams, { replace: true })
+    }
 
     const handleSearch = async () => {
         const q = await prompt('Search keyword', searchParams.get('q') || '')
@@ -47,11 +53,11 @@ export default function ArtistList() {
                 />
             ))}
             {loaded && filteredArtists.length > renderLimit && (
-                <Observer onIntersect={() => {
-                    setRenderLimit(renderLimit + RENDER_LIMIT)
-                    searchParams.set('l', (renderLimit + RENDER_LIMIT).toString())
-                    setSearchParams(searchParams, { replace: true })
-                }} />
+                <div style={{ padding: '0 16px 16px' }}>
+                    <SecondaryButton style={{ width: '100%', justifyContent: 'center' }} onClick={handleReadMore}>
+                        Load More
+                    </SecondaryButton>
+                </div>
             )}
         </>
     )
