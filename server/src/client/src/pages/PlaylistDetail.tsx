@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useQuery, useQueryClient } from 'react-query'
 import { useStore } from 'badland-react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { theme } from '@baejino/style'
 
 import { CSS } from '@dnd-kit/utilities'
@@ -165,6 +165,8 @@ function PlaylistDndMusicItem({
 }
 
 export default function PlaylistDetail() {
+    const navigate = useNavigate()
+
     const { id } = useParams<{ id: string }>()
 
     const queryClient = useQueryClient()
@@ -274,7 +276,11 @@ export default function PlaylistDetail() {
                             }}
                             onLongPress={() => panel.open({
                                 content: (
-                                    <MusicActionPanelContent id={music.id} />
+                                    <MusicActionPanelContent
+                                        id={music.id}
+                                        onAlbumClick={() => navigate(`/album/${music.album.id}`)}
+                                        onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
+                                    />
                                 )
                             })}
                         />
