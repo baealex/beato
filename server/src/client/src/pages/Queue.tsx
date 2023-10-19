@@ -268,15 +268,13 @@ export default function Queue() {
 
     useEffect(() => {
         if (ref.current) {
-            const activeItem = ref.current.querySelector('.now-playing') as HTMLLIElement
-
-            if (activeItem) {
-                activeItem.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                    inline: 'center',
-                })
-            }
+            const targetElement = ref.current.children.item(
+                selected || 0
+            ) as HTMLLIElement
+            ref.current.scrollTo({
+                top: targetElement.offsetTop - 60,
+                behavior: 'smooth',
+            })
         }
     }, [ref, selected])
 
