@@ -1,12 +1,6 @@
-FROM node:18.16.0
+FROM baealex/beato-base:latest
 
 WORKDIR /app
-
-COPY ./src/package.json ./
-COPY ./src/package-lock.json ./
-COPY ./src/client/package.json ./client/
-
-RUN npm i
 
 COPY ./src/ ./
 

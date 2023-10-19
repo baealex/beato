@@ -1,17 +1,19 @@
-name: BUILD IMAGE
+name: BUILD BASE IMAGE
 
 on:
-  workflow_run:
-    workflows: ["BUILD BASE IMAGE", "CI"]
-    types:
-      - completed
+  push:
     branches:
       - main
+    paths:
+      - 'server/DockerfileBase'
+      - 'server/src/package.json'
+      - 'server/src/package-lock.json'
+      - 'server/src/client/package.json'
+      - 'server/src/client/package-lock.json'
   workflow_dispatch:
 
 jobs:
   build:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,9 +32,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./server
-          file: ./server/Dockerfile
+          file: ./server/DockerfileBase
           platforms: linux/amd64,linux/arm64/v8
           push: true
-          tags: baealex/beato:latest
+          tags: baealex/beato-base:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
