@@ -25,21 +25,21 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-query": "^3.39.3",
-        "react-router-dom": "^6.16.0",
-        "sass": "^1.69.0",
+        "react-router-dom": "^6.17.0",
+        "sass": "^1.69.4",
         "socket.io-client": "^4.7.2",
-        "vite-plugin-svgr": "^3.2.0"
+        "vite-plugin-svgr": "^3.3.0"
     },
     "devDependencies": {
-        "@types/react": "^18.2.25",
-        "@types/react-dom": "^18.2.11",
-        "@typescript-eslint/eslint-plugin": "^6.6.0",
-        "@typescript-eslint/parser": "^6.6.0",
+        "@types/react": "^18.2.29",
+        "@types/react-dom": "^18.2.14",
+        "@typescript-eslint/eslint-plugin": "^6.8.0",
+        "@typescript-eslint/parser": "^6.8.0",
         "@vitejs/plugin-react": "^4.1.0",
         "eslint": "^8.51.0",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-react-refresh": "^0.4.3",
         "typescript": "^5.2.2",
-        "vite": "^4.4.11"
+        "vite": "^4.5.0"
     }
 }
