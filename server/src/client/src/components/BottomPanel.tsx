@@ -51,9 +51,11 @@ const Container = styled.div`
     }
 
     .bottom-panel {
-        width: 100%;
+        width: 600px;
+        max-width: 100%;
         height: fit-content;
         max-height: 80%;
+        margin: auto;
         overflow-y: auto;
         padding: 32px 16px 16px;
         border-radius: 16px 16px 0 0;

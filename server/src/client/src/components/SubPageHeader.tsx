@@ -14,6 +14,13 @@ const Container = styled.div`
     font-weight: bold;
     border-bottom: 1px solid #333;
 
+    @media (min-width: 1024px) {
+        height: 100%;
+        border-right: 1px solid #222;
+        border-bottom: none;
+        background-color: transparent;
+    }
+
     button {
         background-color: transparent;
         border: none;

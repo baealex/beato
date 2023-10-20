@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
+import { HTMLMotionProps, motion } from 'framer-motion'
 
 import { MusicActionPanelContent } from '~/components'
 import * as Icon from '~/icon'
@@ -13,8 +14,8 @@ import { makePlayTime } from '~/modules/time'
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
 
-const Container = styled.div`
-    flex: 1;
+const Container = styled.div<HTMLMotionProps<'div'>>`
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -245,6 +246,22 @@ const Container = styled.div`
             }
         }
     }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+            color: #888;
+            transform: rotate(-90deg) translate(50%, -50%);
+        }
+    }
 `
 
 export default function PlayerDetail() {
@@ -310,7 +327,25 @@ export default function PlayerDetail() {
     }, [state.isPlaying])
 
     return (
-        <Container>
+        <Container
+            as={motion.div}
+            animate="in"
+            exit="out"
+            initial="out"
+            variants={{
+                in: {
+                    opacity: 1,
+                    y: 0,
+                },
+                out: {
+                    opacity: 0,
+                    y: 50,
+                },
+            }}
+            transition={{
+                duration: 0.25,
+            }}
+        >
             <div
                 className="album-art"
             >
@@ -412,6 +447,11 @@ export default function PlayerDetail() {
                     <Icon.Shuffle />
                 </button>
             </div>
-        </Container >
+            <div className="footer">
+                <button className="icon-button" onClick={() => history.back()}>
+                    <Icon.Left />
+                </button>
+            </div>
+        </Container>
     )
 }

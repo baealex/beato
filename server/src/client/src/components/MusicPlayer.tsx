@@ -14,6 +14,10 @@ const Container = styled.div`
     background-color: #111;
     transition: transform 0.25s ease-in-out;
 
+    @media (min-width: 1024px) {
+        grid-column: 1 / 3;
+    }
+
     .play,
     .mode,
     .queue,
@@ -109,6 +113,7 @@ const Container = styled.div`
             flex-direction: row;
             align-items: center;
             gap: 0.25rem;
+            padding: 0.5rem;
 
             .mode,
             .shuffle,
@@ -119,7 +124,7 @@ const Container = styled.div`
                 }
             }
 
-            .shuffle.active {
+            .shuffle.active svg {
                 color: #a076f1;
             }
         }

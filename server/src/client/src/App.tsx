@@ -81,13 +81,6 @@ const router = createBrowserRouter([
         ],
     },
     {
-        element: (
-            <SiteLayout
-                isSubPage
-                disablePlayer
-                animationDirection="BottomToTop"
-            />
-        ),
         children: [
             {
                 path: '/player',

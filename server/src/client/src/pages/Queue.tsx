@@ -65,13 +65,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0.5rem;
-
-        .buttons {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+        padding: 0.75rem 0.5rem;
 
         .button {
             border: none;
@@ -270,7 +264,10 @@ export default function Queue() {
         if (ref.current) {
             const targetElement = ref.current.children.item(
                 selected || 0
-            ) as HTMLLIElement
+            ) as HTMLElement
+
+            if (!targetElement) return
+
             ref.current.scrollTo({
                 top: targetElement.offsetTop - 60,
                 behavior: 'smooth',
@@ -279,25 +276,7 @@ export default function Queue() {
     }, [ref, selected])
 
     return (
-        <Container
-            as={motion.div}
-            animate="in"
-            exit="out"
-            initial="out"
-            variants={{
-                in: {
-                    opacity: 1,
-                    y: 0,
-                },
-                out: {
-                    opacity: 0,
-                    y: 50,
-                },
-            }}
-            transition={{
-                duration: 0.25,
-            }}
-        >
+        <Container>
             <div className="header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <MusicSelector
@@ -310,7 +289,25 @@ export default function Queue() {
                     />
                 </div>
             </div>
-            <ul className="container" ref={ref}>
+            <motion.ul
+                ref={ref}
+                className="container"
+                animate="in"
+                exit="out"
+                initial="out"
+                variants={{
+                    in: {
+                        opacity: 1,
+                        y: 0,
+                    },
+                    out: {
+                        opacity: 0,
+                        y: 50,
+                    },
+                }}
+                transition={{
+                    duration: 0.25,
+                }}>
                 <VerticalSortable items={items} onDragEnd={handleDragEnd}>
                     {items?.map((id, idx) => {
                         const music = musicMap.get(id)
@@ -347,7 +344,7 @@ export default function Queue() {
                         )
                     })}
                 </VerticalSortable>
-            </ul>
+            </motion.ul>
             {isSelectMode && selectedItems.length > 0 && (
                 <div className="select-actions">
                     <button className="clickable" onClick={() => {
@@ -360,8 +357,7 @@ export default function Queue() {
                 </div>
             )}
             <div className="footer">
-                <div className="buttons">
-                </div>
+                <div />
                 <button className="icon-button" onClick={() => history.back()}>
                     <Cross />
                 </button>

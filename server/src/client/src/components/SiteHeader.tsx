@@ -39,6 +39,12 @@ const Header = styled.header`
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #333;
+
+    @media (min-width: 1024px) {
+        height: 100%;
+        border-right: 1px solid #222;
+        border-bottom: none;
+    }
 `
 
 const Nav = styled.nav`
@@ -71,6 +77,10 @@ const Nav = styled.nav`
         );
         z-index: 1;
         pointer-events: none;
+
+        @media (min-width: 1024px) {
+            display: none;
+        }
     }
 
     ul {
@@ -80,6 +90,12 @@ const Nav = styled.nav`
         margin: 0;
         padding: 0 1rem;
         gap: 1rem;
+
+        @media (min-width: 1024px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2rem;
+        }
 
         li {
             font-size: 1rem;
@@ -95,6 +111,10 @@ const Link = styled.a<LinkProps>`
     opacity: 0.5;
     text-decoration: none;
     transition: opacity 0.3s ease;
+
+    @media (min-width: 1024px) {
+        padding: 0.5rem 0;
+    }
 
     &::after {
         content: "";
