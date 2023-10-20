@@ -32,26 +32,26 @@ const Item = styled.div`
     flex-direction: row;
     align-items: center;
 
-    .icon-button {
+    .checkbox {
         margin-left: 1rem;
 
         svg {
             width: 1rem;
             height: 1rem;
         }
-    }
 
-    .checkbox {
-        &.active {
-            svg {
-                color: #ccc;
-                fill: ${theme.COLOR_PURPLE_PROMINENT};
-            }
+        &.active svg {
+            color: #ccc;
+            fill: ${theme.COLOR_PURPLE_PROMINENT};
         }
     }
 `
 
 const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
     .header {
         display: flex;
         align-items: center;
@@ -144,7 +144,7 @@ function PlaylistDndMusicItem({
                     <CheckBox />
                 </button>
             ) : (
-                <div className="icon-button" {...listeners} style={{ cursor: 'grab', touchAction: 'none' }}>
+                <div className="icon-button checkbox" {...listeners} style={{ cursor: 'grab', touchAction: 'none' }}>
                     <Menu />
                 </div>
             )}
@@ -254,39 +254,41 @@ export default function PlaylistDetail() {
                     <Play /> Play
                 </SecondaryButton>
             </StickyHeader >
-            <VerticalSortable items={playlist.musics.map(({ id }) => id)} onDragEnd={handleDragEnd}>
-                {playlist.musics.map(({ id }) => {
-                    const music = musicMap.get(id)
+            <div style={{ flex: 1 }}>
+                <VerticalSortable items={playlist.musics.map(({ id }) => id)} onDragEnd={handleDragEnd}>
+                    {playlist.musics.map(({ id }) => {
+                        const music = musicMap.get(id)
 
-                    if (!music) return null
+                        if (!music) return null
 
-                    return (
-                        <PlaylistDndMusicItem
-                            key={music.id}
-                            music={music}
-                            isSelectMode={isSelectMode}
-                            isSelected={selectedItems.includes(music.id)}
-                            onClick={() => queueStore.add(music.id)}
-                            onSelect={() => {
-                                if (selectedItems.includes(music.id)) {
-                                    setSelectedItems(selectedItems.filter(item => item !== music.id))
-                                } else {
-                                    setSelectedItems([...selectedItems, music.id])
-                                }
-                            }}
-                            onLongPress={() => panel.open({
-                                content: (
-                                    <MusicActionPanelContent
-                                        id={music.id}
-                                        onAlbumClick={() => navigate(`/album/${music.album.id}`)}
-                                        onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
-                                    />
-                                )
-                            })}
-                        />
-                    )
-                })}
-            </VerticalSortable>
+                        return (
+                            <PlaylistDndMusicItem
+                                key={music.id}
+                                music={music}
+                                isSelectMode={isSelectMode}
+                                isSelected={selectedItems.includes(music.id)}
+                                onClick={() => queueStore.add(music.id)}
+                                onSelect={() => {
+                                    if (selectedItems.includes(music.id)) {
+                                        setSelectedItems(selectedItems.filter(item => item !== music.id))
+                                    } else {
+                                        setSelectedItems([...selectedItems, music.id])
+                                    }
+                                }}
+                                onLongPress={() => panel.open({
+                                    content: (
+                                        <MusicActionPanelContent
+                                            id={music.id}
+                                            onAlbumClick={() => navigate(`/album/${music.album.id}`)}
+                                            onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
+                                        />
+                                    )
+                                })}
+                            />
+                        )
+                    })}
+                </VerticalSortable>
+            </div>
             {isSelectMode && selectedItems.length > 0 && (
                 <div className="select-actions">
                     <button className="clickable" onClick={async () => {
