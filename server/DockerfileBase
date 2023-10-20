@@ -1,20 +1,25 @@
 FROM ubuntu:22.04
 
-RUN /bin/bash
+SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update
 
 RUN apt-get install -y -q --no-install-recommends \
-    build-essential curl git
+    apt-transport-https build-essential ca-certificates curl git
 
 RUN curl https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 
 ENV NODE_VERSION=18.16.0
+ENV NVM_DIR=/root/.nvm
 
-RUN source ~/.bashrc \
+RUN . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
-    && nvm alias default $NODE_VERSION \
-    && nvm use default
+    && nvm use $NODE_VERSION
+
+ENV NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
+ENV PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+SHELL ["/bin/bash", "-c"]
 
 WORKDIR /app
 

@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'server/**'
+      - 'server/src/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'server/**'
+      - 'server/src/**'
   workflow_dispatch:
 
 jobs:
