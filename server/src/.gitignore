@@ -1,8 +1,0 @@
-/node_modules
-/dist
-/coverage
-/music
-/cache
-
-db.sqlite3*
-test.sqlite3*
