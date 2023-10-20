@@ -2,7 +2,7 @@ name: BUILD IMAGE
 
 on:
   workflow_run:
-    workflows: ["BUILD BASE IMAGE", "CI"]
+    workflows: ["BUILD BASE IMAGE", "DEPLOY CLIENT"]
     types:
       - completed
     branches:

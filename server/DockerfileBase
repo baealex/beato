@@ -1,4 +1,20 @@
-FROM node:18.16.0
+FROM ubuntu:22.04
+
+RUN /bin/bash
+
+RUN apt-get update
+
+RUN apt-get install -y -q --no-install-recommends \
+    build-essential curl git
+
+RUN curl https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+
+ENV NODE_VERSION=18.16.0
+
+RUN source ~/.bashrc \
+    && nvm install $NODE_VERSION \
+    && nvm alias default $NODE_VERSION \
+    && nvm use default
 
 WORKDIR /app
 
