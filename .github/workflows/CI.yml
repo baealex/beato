@@ -51,3 +51,10 @@ jobs:
     - name: Build (Client)
       run: npm run build
       working-directory: server/src/client/src
+
+    - name: Deploy (Client)
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: client
+        folder: server/src/client/dist
+        clean: true
