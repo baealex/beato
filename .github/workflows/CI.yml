@@ -43,11 +43,11 @@ jobs:
     - name: Build (Server)
       run: npm run build
       working-directory: server/src
-    
+
     - name: Lint (Client)
       run: npm run lint
-      working-directory: server/src/client/src
+      working-directory: server/src/client
 
     - name: Build (Client)
       run: npm run build
-      working-directory: server/src/client/src
+      working-directory: server/src/client

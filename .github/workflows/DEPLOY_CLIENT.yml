@@ -20,6 +20,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Install
+        run: npm ci
+        working-directory: server/src/client
+
+      - name: Build
+        run: npm run build
+        working-directory: server/src/client
+
       - name: Deploy (Client)
         uses: JamesIves/github-pages-deploy-action@v4
         with:
