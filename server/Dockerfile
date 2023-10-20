@@ -4,7 +4,10 @@ WORKDIR /app
 
 COPY ./src/ ./
 
-RUN cd client && git clone https://github.com/baealex/beato ./dist && cd beato && git checkout client
+RUN git clone https://github.com/baealex/beato ./client/dist && \
+    cd ./client/dist && \
+    git checkout client && \
+    rm -rf .git
 
 RUN ln -s /app/prisma/data /data
 RUN ln -s /app/cache /cache
