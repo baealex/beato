@@ -28,6 +28,18 @@ const Container = styled.div`
         cursor: pointer;
         display: flex;
         align-items: center;
+        justify-content: center;
+
+        .back-text {
+            display: none;
+            font-size: 1rem;
+            margin-left: 0.5rem;
+            margin-top: 0.1rem;
+
+            @media (min-width: 1024px) {
+                display: block;
+            }
+        }
 
         svg {
             width: 1.25rem;
@@ -40,7 +52,7 @@ export default function SubPageHeader() {
     return (
         <Container>
             <button onClick={() => history.back()}>
-                <Left />
+                <Left /> <span className="back-text">Back</span>
             </button>
         </Container>
     )

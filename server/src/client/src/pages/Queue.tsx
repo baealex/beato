@@ -276,7 +276,25 @@ export default function Queue() {
     }, [ref, selected])
 
     return (
-        <Container>
+        <Container
+            as={motion.div}
+            animate="in"
+            exit="out"
+            initial="out"
+            variants={{
+                in: {
+                    opacity: 1,
+                    y: 0,
+                },
+                out: {
+                    opacity: 0,
+                    y: 50,
+                },
+            }}
+            transition={{
+                duration: 0.25,
+            }}
+        >
             <div className="header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <MusicSelector
@@ -289,25 +307,7 @@ export default function Queue() {
                     />
                 </div>
             </div>
-            <motion.ul
-                ref={ref}
-                className="container"
-                animate="in"
-                exit="out"
-                initial="out"
-                variants={{
-                    in: {
-                        opacity: 1,
-                        y: 0,
-                    },
-                    out: {
-                        opacity: 0,
-                        y: 50,
-                    },
-                }}
-                transition={{
-                    duration: 0.25,
-                }}>
+            <ul className="container" ref={ref}>
                 <VerticalSortable items={items} onDragEnd={handleDragEnd}>
                     {items?.map((id, idx) => {
                         const music = musicMap.get(id)
@@ -344,7 +344,7 @@ export default function Queue() {
                         )
                     })}
                 </VerticalSortable>
-            </motion.ul>
+            </ul>
             {isSelectMode && selectedItems.length > 0 && (
                 <div className="select-actions">
                     <button className="clickable" onClick={() => {
