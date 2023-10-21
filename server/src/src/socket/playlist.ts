@@ -140,18 +140,9 @@ const updatePlaylist = async ({
 
 const addMusicToPlaylist = async ({
     id = '',
-    musicId = '',
+    musicIds = [],
 }) => {
-    if (!id || !musicId) {
-        return;
-    }
-
-    if (await models.playlistMusic.findFirst({
-        where: {
-            playlistId: Number(id),
-            musicId: Number(musicId),
-        },
-    })) {
+    if (!id || !musicIds.length) {
         return;
     }
 
@@ -163,13 +154,31 @@ const addMusicToPlaylist = async ({
             order: 'desc',
         },
     });
-    await models.playlistMusic.create({
-        data: {
-            order: lastOrder ? lastOrder.order + 1 : 0,
+
+    for (const [index, musicId] of musicIds.entries()) {
+        if (await models.playlistMusic.findFirst({
+            where: {
+                playlistId: Number(id),
+                musicId: Number(musicId),
+            },
+        })) {
+            continue;
+        }
+        await models.playlistMusic.create({
+            data: {
+                order: lastOrder ? lastOrder.order + index + 1 : index,
+                playlistId: Number(id),
+                musicId: Number(musicId),
+            },
+        });
+    }
+
+    const musicCount = await models.playlistMusic.count({
+        where: {
             playlistId: Number(id),
-            musicId: Number(musicId),
         },
     });
+
     const headerMusics = await models.playlistMusic.findMany({
         where: {
             playlistId: Number(id),
@@ -179,14 +188,14 @@ const addMusicToPlaylist = async ({
             order: 'asc',
         },
     });
+
     connectors.broadcast(PLAYLIST_ADD_MUSIC, {
         id,
-        music: {
-            id: musicId.toString()
-        },
+        musicCount,
         headerMusics: headerMusics.map((music) => ({
             id: music.musicId.toString(),
         })),
+        musicIds,
     });
 };
 
@@ -217,7 +226,6 @@ const moveMusicToPlaylist = async ({
         },
     });
 
-    let addedMusicCount = 0;
     for (const [index, musicId] of musicIds.entries()) {
         if (await models.playlistMusic.findFirst({
             where: {
@@ -234,7 +242,6 @@ const moveMusicToPlaylist = async ({
                 musicId: Number(musicId),
             },
         });
-        addedMusicCount++;
     }
 
     const fromHeaderMusics = await models.playlistMusic.findMany({
@@ -244,6 +251,12 @@ const moveMusicToPlaylist = async ({
         take: 4,
         orderBy: {
             order: 'asc',
+        },
+    });
+
+    const toMusicCount = await models.playlistMusic.count({
+        where: {
+            playlistId: Number(toId),
         },
     });
 
@@ -263,10 +276,10 @@ const moveMusicToPlaylist = async ({
             id: music.musicId.toString(),
         })),
         toId,
+        toMusicCount,
         toHeaderMusics: toHeaderMusics.map((music) => ({
             id: music.musicId.toString(),
         })),
-        toAddedMusicCount: addedMusicCount,
         musicIds,
     });
 };

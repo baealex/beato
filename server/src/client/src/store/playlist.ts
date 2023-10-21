@@ -37,16 +37,16 @@ class PlaylistStore extends Store<PlaylistStoreState> {
             onChangeOrder: (ids) => {
                 this.set({ playlists: this.state.playlists.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id)) })
             },
-            onAddMusic: ({ id, headerMusics }) => {
+            onAddMusic: ({ id, musicCount, headerMusics }) => {
                 this.set({
                     playlists: this.state.playlists.map((playlist) => playlist.id === id ? {
                         ...playlist,
+                        musicCount,
                         headerMusics,
-                        musicCount: playlist.musicCount + 1
                     } : playlist)
                 })
             },
-            onMoveMusic: ({ fromId, formHeaderMusics, toId, toHeaderMusics, toAddedMusicCount, musicIds }) => {
+            onMoveMusic: ({ fromId, formHeaderMusics, toId, toMusicCount, toHeaderMusics, musicIds }) => {
                 this.set({
                     playlists: this.state.playlists.map((playlist) => {
                         if (playlist.id === fromId) {
@@ -59,8 +59,8 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                         if (playlist.id === toId) {
                             return {
                                 ...playlist,
+                                musicCount: toMusicCount,
                                 headerMusics: toHeaderMusics,
-                                musicCount: playlist.musicCount + toAddedMusicCount
                             }
                         }
                         return playlist

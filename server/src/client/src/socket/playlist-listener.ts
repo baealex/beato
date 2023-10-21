@@ -19,7 +19,8 @@ interface OnUpdateData {
 
 interface OnAddMusicData {
     id: string;
-    music: Pick<Music, 'id'>;
+    musicIds: string[];
+    musicCount: number;
     headerMusics: Pick<Music, 'id'>[];
 }
 
@@ -27,8 +28,8 @@ interface OnMoveMusicData {
     fromId: string;
     formHeaderMusics: Pick<Music, 'id'>[];
     toId: string;
+    toMusicCount: number;
     toHeaderMusics: Pick<Music, 'id'>[];
-    toAddedMusicCount: number;
     musicIds: string[];
 }
 
@@ -94,8 +95,8 @@ export class PlaylistListener implements Listener {
         socket.emit(PLAYLIST_CHANGE_ORDER, { ids })
     }
 
-    static addMusic(id: string, musicId: string) {
-        socket.emit(PLAYLIST_ADD_MUSIC, { id, musicId })
+    static addMusic(id: string, musicIds: string[]) {
+        socket.emit(PLAYLIST_ADD_MUSIC, { id, musicIds })
     }
 
     static moveMusic(fromId: string, toId: string, musicIds: string[]) {
