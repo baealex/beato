@@ -1,3 +1,4 @@
+import { toast } from '@baejino/ui'
 import { useStore } from 'badland-react'
 
 import { Image, PanelContent, PlaylistPanelContent } from '~/components'
@@ -5,7 +6,7 @@ import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
 import { makePlayTime } from '~/modules/time'
-import { MusicListener } from '~/socket'
+import { MusicListener, PlaylistListener } from '~/socket'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
@@ -86,7 +87,10 @@ export default function MusicActionPanelContent({
                         panel.open({
                             title: 'Add to Playlist',
                             content: (
-                                <PlaylistPanelContent musicId={music.id} />
+                                <PlaylistPanelContent onClick={(id) => {
+                                    PlaylistListener.addMusic(id, music.id)
+                                    toast('Added to playlist')
+                                }} />
                             )
                         })
                     }

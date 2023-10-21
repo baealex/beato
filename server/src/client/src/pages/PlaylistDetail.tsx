@@ -9,7 +9,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 
-import { GridImage, MusicActionPanelContent, MusicItem, MusicSelector, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
+import { GridImage, MusicActionPanelContent, MusicItem, MusicSelector, PlaylistPanelContent, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -19,6 +19,7 @@ import { Music } from '~/models/type'
 import { getPlaylist } from '~/api'
 import {
     PLAYLIST_CHANGE_MUSIC_ORDER,
+    PLAYLIST_MOVE_MUSIC,
     PLAYLIST_REMOVE_MUSIC,
     PlaylistListener,
     socket
@@ -186,17 +187,18 @@ export default function PlaylistDetail() {
     }
 
     useEffect(() => {
-        const changeMusicOrderHandler = () => {
+        const invalidateQueries = () => {
             queryClient.invalidateQueries(['playlist', id])
         }
-        const removeMusicHandler = () => {
-            queryClient.invalidateQueries(['playlist', id])
-        }
-        socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, changeMusicOrderHandler)
-        socket.on(PLAYLIST_REMOVE_MUSIC, removeMusicHandler)
+
+        socket.on(PLAYLIST_MOVE_MUSIC, invalidateQueries)
+        socket.on(PLAYLIST_REMOVE_MUSIC, invalidateQueries)
+        socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, invalidateQueries)
+
         return () => {
-            socket.off(PLAYLIST_CHANGE_MUSIC_ORDER, changeMusicOrderHandler)
-            socket.off(PLAYLIST_REMOVE_MUSIC, removeMusicHandler)
+            socket.off(PLAYLIST_MOVE_MUSIC, invalidateQueries)
+            socket.off(PLAYLIST_REMOVE_MUSIC, invalidateQueries)
+            socket.off(PLAYLIST_CHANGE_MUSIC_ORDER, invalidateQueries)
         }
     }, [id, queryClient])
 
@@ -281,7 +283,15 @@ export default function PlaylistDetail() {
                         <Icon.TrashBin />
                         <span>Delete</span>
                     </button>
-                    <button className="clickable" onClick={() => setSelectedItems([])}>
+                    <button className="clickable" onClick={() => panel.open({
+                        title: 'Move to',
+                        content: (
+                            <PlaylistPanelContent onClick={(id) => {
+                                PlaylistListener.moveMusic(playlist.id, id, selectedItems)
+                                setIsSelectMode(false)
+                            }} />
+                        )
+                    })}>
                         <Icon.Data />
                         <span>Move to</span>
                     </button>

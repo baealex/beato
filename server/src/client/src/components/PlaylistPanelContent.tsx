@@ -1,20 +1,17 @@
-import { toast } from '@baejino/ui'
 import { useStore } from 'badland-react'
 
 import { PanelContent, PlaylistItem } from '~/components'
 
 import { panel } from '~/modules/panel'
 
-import { PlaylistListener } from '~/socket'
-
 import { playlistStore } from '~/store/playlist'
 
 interface PlaylistPanelContentProps {
-    musicId: string
+    onClick: (id: string) => void
 }
 
 export default function PlaylistPanelContent({
-    musicId,
+    onClick,
 }: PlaylistPanelContentProps) {
     const [{ playlists }] = useStore(playlistStore)
 
@@ -27,8 +24,7 @@ export default function PlaylistPanelContent({
                             key={playlist.id}
                             {...playlist}
                             onClick={() => {
-                                PlaylistListener.addMusic(playlist.id, musicId)
-                                toast('Added to playlist')
+                                onClick(playlist.id)
                                 panel.close()
                             }}
                         />

@@ -8,6 +8,7 @@ export const PLAYLIST_DELETE = 'playlist-delete'
 export const PLAYLIST_UPDATE = 'playlist-update'
 export const PLAYLIST_CHANGE_ORDER = 'playlist-change-order'
 export const PLAYLIST_ADD_MUSIC = 'playlist-add-music'
+export const PLAYLIST_MOVE_MUSIC = 'playlist-move-music'
 export const PLAYLIST_REMOVE_MUSIC = 'playlist-remove-music'
 export const PLAYLIST_CHANGE_MUSIC_ORDER = 'playlist-change-music-order'
 
@@ -20,6 +21,15 @@ interface OnAddMusicData {
     id: string;
     music: Pick<Music, 'id'>;
     headerMusics: Pick<Music, 'id'>[];
+}
+
+interface OnMoveMusicData {
+    fromId: string;
+    formHeaderMusics: Pick<Music, 'id'>[];
+    toId: string;
+    toHeaderMusics: Pick<Music, 'id'>[];
+    toAddedMusicCount: number;
+    musicIds: string[];
 }
 
 interface OnRemoveMusicData {
@@ -40,6 +50,7 @@ interface PlaylistListenerEventHandler {
     onUpdate: (data: OnUpdateData) => void;
     onChangeOrder: (ids: string[]) => void;
     onAddMusic: (data: OnAddMusicData) => void;
+    onMoveMusic: (data: OnMoveMusicData) => void;
     onRemoveMusic: (data: OnRemoveMusicData) => void;
     onChangeMusicOrder: ({ id, musicIds }: OnChangeMusicOrderData) => void;
 }
@@ -62,6 +73,7 @@ export class PlaylistListener implements Listener {
         socket.on(PLAYLIST_UPDATE, this.handler.onUpdate)
         socket.on(PLAYLIST_CHANGE_ORDER, this.handler.onChangeOrder)
         socket.on(PLAYLIST_ADD_MUSIC, this.handler.onAddMusic)
+        socket.on(PLAYLIST_MOVE_MUSIC, this.handler.onMoveMusic)
         socket.on(PLAYLIST_REMOVE_MUSIC, this.handler.onRemoveMusic)
         socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, this.handler.onChangeMusicOrder)
     }
@@ -86,6 +98,10 @@ export class PlaylistListener implements Listener {
         socket.emit(PLAYLIST_ADD_MUSIC, { id, musicId })
     }
 
+    static moveMusic(fromId: string, toId: string, musicIds: string[]) {
+        socket.emit(PLAYLIST_MOVE_MUSIC, { fromId, toId, musicIds })
+    }
+
     static removeMusic(id: string, musicIds: string[]) {
         socket.emit(PLAYLIST_REMOVE_MUSIC, { id, musicIds })
     }
@@ -100,8 +116,11 @@ export class PlaylistListener implements Listener {
         socket.off(PLAYLIST_CREATE, this.handler.onCreate)
         socket.off(PLAYLIST_DELETE, this.handler.onDelete)
         socket.off(PLAYLIST_UPDATE, this.handler.onUpdate)
+        socket.off(PLAYLIST_CHANGE_ORDER, this.handler.onChangeOrder)
         socket.off(PLAYLIST_ADD_MUSIC, this.handler.onAddMusic)
+        socket.off(PLAYLIST_MOVE_MUSIC, this.handler.onMoveMusic)
         socket.off(PLAYLIST_REMOVE_MUSIC, this.handler.onRemoveMusic)
+        socket.off(PLAYLIST_CHANGE_MUSIC_ORDER, this.handler.onChangeMusicOrder)
 
         this.handler = null
     }
