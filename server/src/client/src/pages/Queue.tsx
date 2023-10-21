@@ -4,17 +4,20 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { HTMLMotionProps, motion } from 'framer-motion'
 import { theme } from '@baejino/style'
+import { toast } from '@baejino/ui'
 
 import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { MusicActionPanelContent, MusicItem, MusicSelector, VerticalSortable } from '~/components'
-import { CheckBox, Cross, Menu, TrashBin } from '~/icon'
+import { MusicActionPanelContent, MusicItem, MusicSelector, PlaylistPanelContent, VerticalSortable } from '~/components'
+import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
 
 import { Music } from '~/models/type'
+
+import { PlaylistListener } from '~/socket'
 
 import { musicStore } from '~/store/music'
 import { queueStore } from '~/store/queue'
@@ -191,7 +194,7 @@ const QueueDndItem = ({
                     className={`icon-button checkbox ${isSelected ? 'active' : ''}`}
                     onClick={onSelect}
                 >
-                    <CheckBox />
+                    <Icon.CheckBox />
                 </button>
             ) : (
                 <button
@@ -199,7 +202,7 @@ const QueueDndItem = ({
                     className="icon-button checkbox"
                     style={{ cursor: 'grab', touchAction: 'none' }}
                 >
-                    <Menu />
+                    <Icon.Menu />
                 </button>
             )}
             <div style={{ flex: 1, maxWidth: 'calc(100% - 4rem)' }}>
@@ -352,15 +355,28 @@ export default function Queue() {
                         queueStore.removeItems(selectedItems)
                         setIsSelectMode(false)
                     }}>
-                        <TrashBin />
+                        <Icon.TrashBin />
                         <span>Delete</span>
+                    </button>
+                    <button className="clickable" onClick={() => panel.open({
+                        title: 'Move to playlist',
+                        content: (
+                            <PlaylistPanelContent onClick={(id) => {
+                                PlaylistListener.addMusic(id, selectedItems)
+                                toast('Added to playlist')
+                                setIsSelectMode(false)
+                            }} />
+                        )
+                    })}>
+                        <Icon.Data />
+                        <span>Save</span>
                     </button>
                 </div>
             )}
             <div className="footer">
                 <div />
                 <button className="icon-button" onClick={() => history.back()}>
-                    <Cross />
+                    <Icon.Cross />
                 </button>
             </div>
         </Container >

@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from 'react-query'
 import { useStore } from 'badland-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { theme } from '@baejino/style'
+import { toast } from '@baejino/ui'
 
 import { CSS } from '@dnd-kit/utilities'
 import { DragEndEvent } from '@dnd-kit/core'
@@ -284,16 +285,17 @@ export default function PlaylistDetail() {
                         <span>Delete</span>
                     </button>
                     <button className="clickable" onClick={() => panel.open({
-                        title: 'Move to',
+                        title: 'Move to playlist',
                         content: (
                             <PlaylistPanelContent onClick={(id) => {
                                 PlaylistListener.moveMusic(playlist.id, id, selectedItems)
+                                toast('Moved to playlist')
                                 setIsSelectMode(false)
                             }} />
                         )
                     })}>
                         <Icon.Data />
-                        <span>Move to</span>
+                        <span>Move</span>
                     </button>
                 </div>
             )}
