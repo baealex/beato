@@ -351,13 +351,6 @@ export default function Queue() {
             </ul>
             {isSelectMode && selectedItems.length > 0 && (
                 <div className="select-actions">
-                    <button className="clickable" onClick={() => {
-                        queueStore.removeItems(selectedItems)
-                        setIsSelectMode(false)
-                    }}>
-                        <Icon.TrashBin />
-                        <span>Delete</span>
-                    </button>
                     <button className="clickable" onClick={() => panel.open({
                         title: 'Move to playlist',
                         content: (
@@ -370,6 +363,13 @@ export default function Queue() {
                     })}>
                         <Icon.Data />
                         <span>Save</span>
+                    </button>
+                    <button className="clickable" onClick={() => {
+                        queueStore.removeItems(selectedItems)
+                        setIsSelectMode(false)
+                    }}>
+                        <Icon.TrashBin />
+                        <span>Delete</span>
                     </button>
                 </div>
             )}

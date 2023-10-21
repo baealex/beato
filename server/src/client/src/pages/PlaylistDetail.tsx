@@ -277,13 +277,6 @@ export default function PlaylistDetail() {
                         <Icon.Play />
                         <span>Play</span>
                     </button>
-                    <button className="clickable" onClick={async () => {
-                        PlaylistListener.removeMusic(playlist.id, selectedItems)
-                        setIsSelectMode(false)
-                    }}>
-                        <Icon.TrashBin />
-                        <span>Delete</span>
-                    </button>
                     <button className="clickable" onClick={() => panel.open({
                         title: 'Move to playlist',
                         content: (
@@ -296,6 +289,13 @@ export default function PlaylistDetail() {
                     })}>
                         <Icon.Data />
                         <span>Move</span>
+                    </button>
+                    <button className="clickable" onClick={async () => {
+                        PlaylistListener.removeMusic(playlist.id, selectedItems)
+                        setIsSelectMode(false)
+                    }}>
+                        <Icon.TrashBin />
+                        <span>Delete</span>
                     </button>
                 </div>
             )}
