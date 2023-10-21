@@ -281,6 +281,10 @@ export default function PlaylistDetail() {
                         <Icon.TrashBin />
                         <span>Delete</span>
                     </button>
+                    <button className="clickable" onClick={() => setSelectedItems([])}>
+                        <Icon.Data />
+                        <span>Move to</span>
+                    </button>
                 </div>
             )}
         </Container>

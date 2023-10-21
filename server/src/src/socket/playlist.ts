@@ -131,9 +131,22 @@ const changePlaylistMusicOrder = async ({ id = '', musicIds = [] }) => {
         });
     }
 
+    const headerMusics = await models.playlistMusic.findMany({
+        where: {
+            playlistId: Number(id),
+        },
+        take: 4,
+        orderBy: {
+            order: 'asc',
+        },
+    });
+
     connectors.broadcast(PLAYLIST_CHANGE_MUSIC_ORDER, {
         id,
         musicIds,
+        headerMusics: headerMusics.map((music) => ({
+            id: music.musicId.toString(),
+        })),
     });
 };
 
@@ -193,6 +206,9 @@ const addMusicToPlaylist = async ({
             playlistId: Number(id),
         },
         take: 4,
+        orderBy: {
+            order: 'asc',
+        },
     });
     connectors.broadcast(PLAYLIST_ADD_MUSIC, {
         id,
@@ -225,6 +241,9 @@ const removeMusicFromPlaylist = async ({
             playlistId: Number(id),
         },
         take: 4,
+        orderBy: {
+            order: 'asc',
+        },
     });
     connectors.broadcast(PLAYLIST_REMOVE_MUSIC, {
         id,

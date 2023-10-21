@@ -31,6 +31,7 @@ interface OnRemoveMusicData {
 interface OnChangeMusicOrderData {
     id: string;
     musicIds: string[];
+    headerMusics: Pick<Music, 'id'>[];
 }
 
 interface PlaylistListenerEventHandler {
