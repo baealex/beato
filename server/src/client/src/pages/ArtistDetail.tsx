@@ -20,13 +20,28 @@ const Container = styled.section`
         font-size: 1.25rem;
         font-weight: bold;
         margin: 3rem 0;
+        padding: 1rem;
 
-        img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 1rem;
+        .detail-info {
+            font-size: 1rem;
+            font-weight: normal;
+            text-align: center;
+            margin-top: 0.5rem;
+            color: #888;
+        }
+
+        .cover {
+            max-width: 100%;
+            width: 300px;
+            height: auto;
+            margin-bottom: 2rem;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+            }
         }
     }
 
@@ -74,11 +89,20 @@ export default function ArtistDetail() {
         return null
     }
 
+    const listenedCount = artist.musics.reduce((acc, { id }) => acc += musicMap.get(id)?.playCount || 0, 0)
+
     return (
         <Container>
             <div className="artist-name">
-                <Image src={artist.latestAlbum?.cover || ''} alt={artist.name} />
+                <div className="cover">
+                    <div>
+                        <Image src={artist.latestAlbum?.cover || ''} alt={artist.name} />
+                    </div>
+                </div>
                 {artist.name}
+                <span className="detail-info">
+                    You have listened to a song by this artist {listenedCount} times.
+                </span>
             </div>
             <div className="section-title">
                 Albums ({artist.albums.length})

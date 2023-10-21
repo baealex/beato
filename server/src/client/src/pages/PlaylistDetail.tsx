@@ -58,7 +58,7 @@ const Container = styled.div`
         justify-content: center;
         flex-direction: column;
         background-color: #111;
-        padding: 2rem 1rem;
+        padding: 3rem 1rem;
 
         .cover {
             width: 300px;

@@ -18,7 +18,7 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    padding: 2rem 1rem;
+    padding: 3rem 1rem;
     background-color: #111;
     border-radius: 0.5rem;
 
