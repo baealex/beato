@@ -1,7 +1,7 @@
 import { prompt } from '@baejino/ui'
 import { useStore } from 'badland-react'
 
-import { Image, PanelContent } from '~/components'
+import { GridImage, PanelContent } from '~/components'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -36,30 +36,10 @@ export default function PlaylistActionPanelContent({
                     panel.close()
                     setTimeout(onPlaylistClick, 100)
                 }}>
-                    {playlist.headerMusics.length >= 4 && (
-                        <div className="album-cover-grid">
-                            {playlist.headerMusics.slice(0, 4).map(({ id }) => (
-                                <Image
-                                    key={id}
-                                    src={musicMap.get(id)?.album.cover || ''}
-                                    alt={musicMap.get(id)?.album.name}
-                                />
-                            ))}
-                        </div>
-                    )}
-                    {playlist.headerMusics.length < 4 && playlist.headerMusics.length !== 0 && (
-                        <div className="album-cover">
-                            <Image
-                                src={musicMap.get(playlist.headerMusics[0].id)?.album.cover || ''}
-                                alt={musicMap.get(playlist.headerMusics[0].id)?.album.name}
-                            />
-                        </div>
-                    )}
-                    {playlist.headerMusics.length === 0 && (
-                        <div className="album-cover">
-                            <Image src="" alt="" />
-                        </div>
-                    )}
+                    <GridImage
+                        className="album-cover-grid"
+                        images={playlist.headerMusics.map(music => musicMap.get(music.id)?.album.cover ?? '')}
+                    />
                     <div>
                         <div className="panel-sub-title">
                             {playlist.musicCount} songs

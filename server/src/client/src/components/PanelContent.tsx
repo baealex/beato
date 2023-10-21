@@ -25,44 +25,20 @@ const Container = styled.div`
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 0.5rem;
+        gap: 1rem;
+        overflow: hidden;
+        border-radius: 0.5rem;
 
-        img {
+        & > img {
             width: 60px;
             height: 60px;
             object-fit: cover;
-            border-radius: 5px;
-            transition: border-radius 0.25s ease-in-out;
+            border-radius: 0.5rem;
         }
 
         .album-cover-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
             width: 60px;
             height: 60px;
-
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                
-                &:nth-of-type(1) {
-                    border-radius: 5px 0 0 0;
-                }
-
-                &:nth-of-type(2) {
-                    border-radius: 0 5px 0 0;
-                }
-
-                &:nth-of-type(3) {
-                    border-radius: 0 0 0 5px;
-                }
-
-                &:nth-of-type(4) {
-                    border-radius: 0 0 5px 0;
-                }
-            }
         }
     }
 
@@ -142,6 +118,7 @@ export default function PanelContent({ header, items, footer }: PanelContentProp
                 <div className="items">
                     {items.map(({ icon, text, isActive, onClick }) => (
                         <button
+                            key={text}
                             className={`clickable item ${isActive ? 'active' : ''}`}
                             onClick={onClick}
                         >

@@ -34,7 +34,6 @@ const Container = styled.div`
             display: none;
             font-size: 1rem;
             margin-left: 0.5rem;
-            margin-top: 0.1rem;
 
             @media (min-width: 1024px) {
                 display: block;

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 
-import Image from './Image'
+import GridImage from './GridImage'
 import { MoreVerticalFill } from '~/icon'
 
 import { Music } from '~/models/type'
@@ -53,29 +53,9 @@ const Container = styled.button`
         color: #aaa;
     }
 
-    .album-cover-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
+    .cover {
         width: 60px;
         height: 60px;
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    }
-
-    .album-cover {
-        width: 60px;
-        height: 60px;
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
     }
 `
 
@@ -105,30 +85,10 @@ export default function PlaylistItem({
                 onLongPress?.()
             }}
         >
-            {headerMusics.length >= 4 && (
-                <div className="album-cover-grid">
-                    {headerMusics.slice(0, 4).map(({ id }) => (
-                        <Image
-                            key={id}
-                            src={musicMap.get(id)?.album.cover || ''}
-                            alt={musicMap.get(id)?.album.name}
-                        />
-                    ))}
-                </div>
-            )}
-            {headerMusics.length < 4 && headerMusics.length !== 0 && (
-                <div className="album-cover">
-                    <Image
-                        src={musicMap.get(headerMusics[0].id)?.album.cover || ''}
-                        alt={musicMap.get(headerMusics[0].id)?.album.name}
-                    />
-                </div>
-            )}
-            {headerMusics.length === 0 && (
-                <div className="album-cover">
-                    <Image src="" alt="" />
-                </div>
-            )}
+            <GridImage
+                className="cover"
+                images={headerMusics.map((music) => musicMap.get(music.id)?.album.cover ?? '')}
+            />
             <div className="title">
                 <div className="album-name">{name}</div>
                 <div className="song-count">{musicCount} songs</div>

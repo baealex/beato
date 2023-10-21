@@ -145,7 +145,7 @@ export default function MusicItem({
             <div className="row">
                 <div className="info">
                     <div className="title">
-                        {trackNumber && (
+                        {!!trackNumber && (
                             <span className="track-number">{trackNumber}.</span>
                         )}
                         {musicName}

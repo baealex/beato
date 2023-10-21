@@ -9,7 +9,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 
-import { Image, MusicActionPanelContent, MusicItem, MusicSelector, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
+import { GridImage, MusicActionPanelContent, MusicItem, MusicSelector, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
 import { CheckBox, Menu, Play, TrashBin } from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -60,23 +60,10 @@ const Container = styled.div`
         background-color: #111;
         padding: 2rem 1rem;
 
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            margin-bottom: 2rem;
-            background-color: #000;
-            width: 100%;
-            max-width: calc(4.5rem * 4);
-            height: calc(4.5rem * 4);
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            img {
-                width: 4.5rem;
-                height: 4.5rem;
-                object-fit: cover;
-            }
+        .cover {
+            width: 300px;
+            height: 300px;
+            margin-bottom: 1rem;
         }
 
         h1 {
@@ -224,21 +211,10 @@ export default function PlaylistDetail() {
     return (
         <Container>
             <div className="header">
-                <div className="image-grid">
-                    {playlist.musics.slice(0, 16).map(({ id }) => {
-                        const music = musicMap.get(id)
-
-                        if (!music) return null
-
-                        return (
-                            <Image
-                                key={id}
-                                src={music.album.cover || ''}
-                                alt={music.album.name}
-                            />
-                        )
-                    })}
-                </div>
+                <GridImage
+                    className="cover"
+                    images={playlist.musics.slice(0, 16).map((music) => musicMap.get(music.id)?.album.cover ?? '')}
+                />
                 <h1>{playlist.name}</h1>
             </div>
             <StickyHeader>

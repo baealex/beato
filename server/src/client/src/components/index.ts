@@ -1,6 +1,7 @@
 export { default as AlbumItem } from './AlbumItem'
 export { default as ArtistItem } from './ArtistItem'
 export { default as BottomPanel } from './BottomPanel'
+export { default as GridImage } from './GridImage'
 export { default as Image } from './Image'
 export { default as Loading } from './Loading'
 export { default as MusicActionPanelContent } from './MusicActionPanelContent'

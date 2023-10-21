@@ -20,10 +20,10 @@ const Container = styled.div`
 
     @keyframes slide-in {
         from {
-            transform: translateY(100%);
+            transform: translate(-50%, 100%);
         }
         to {
-            transform: translateY(0);
+            transform: translate(-50%, 0);
         }
     }
 
@@ -46,16 +46,21 @@ const Container = styled.div`
 
     .backdrop {
         cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        flex: 1;
+        height: 100%;
     }
 
     .bottom-panel {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 0);
         width: 600px;
         max-width: 100%;
-        height: fit-content;
         max-height: 80%;
-        margin: auto;
         overflow-y: auto;
         padding: 32px 16px 16px;
         border-radius: 16px 16px 0 0;
