@@ -9,6 +9,7 @@ import {
     ArtistList,
     Favorite,
     MusicList,
+    NotFound,
     PlayerDetail,
     Playlist,
     PlaylistDetail,
@@ -97,7 +98,7 @@ const router = createBrowserRouter([
         ]
     },
     {
-        element: <div>Page Not Found</div>,
+        element: <NotFound />,
         path: '*',
     },
 ])
