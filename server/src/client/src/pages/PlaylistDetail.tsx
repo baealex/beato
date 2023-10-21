@@ -10,7 +10,7 @@ import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 
 import { GridImage, MusicActionPanelContent, MusicItem, MusicSelector, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
-import { CheckBox, Menu, Play, TrashBin } from '~/icon'
+import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
 
@@ -128,11 +128,11 @@ function PlaylistDndMusicItem({
                     className={`icon-button checkbox ${isSelected ? 'active' : ''} `}
                     onClick={onSelect}
                 >
-                    <CheckBox />
+                    <Icon.CheckBox />
                 </button>
             ) : (
                 <div className="icon-button checkbox" {...listeners} style={{ cursor: 'grab', touchAction: 'none' }}>
-                    <Menu />
+                    <Icon.Menu />
                 </div>
             )}
             <div style={{ flex: 1, maxWidth: 'calc(100% - 4rem)' }}>
@@ -227,7 +227,7 @@ export default function PlaylistDetail() {
                     />
                 </div>
                 <SecondaryButton onClick={() => queueStore.reset(playlist.musics.map(({ id }) => id))}>
-                    <Play /> Play
+                    <Icon.Play /> Play
                 </SecondaryButton>
             </StickyHeader >
             <div style={{ flex: 1 }}>
@@ -267,11 +267,18 @@ export default function PlaylistDetail() {
             </div>
             {isSelectMode && selectedItems.length > 0 && (
                 <div className="select-actions">
+                    <button className="clickable" onClick={() => {
+                        selectedItems.forEach(id => queueStore.add(id))
+                        setIsSelectMode(false)
+                    }}>
+                        <Icon.Play />
+                        <span>Play</span>
+                    </button>
                     <button className="clickable" onClick={async () => {
                         PlaylistListener.removeMusic(playlist.id, selectedItems)
                         setIsSelectMode(false)
                     }}>
-                        <TrashBin />
+                        <Icon.TrashBin />
                         <span>Delete</span>
                     </button>
                 </div>
