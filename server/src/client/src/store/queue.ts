@@ -197,6 +197,7 @@ class QueueStore extends Store<QueueStoreState> {
 
     async removeItems(ids: string[]) {
         const newItems = this.state.items.filter((i) => !ids.includes(i))
+        const newSourceItems = this.state.sourceItems.filter((i) => !ids.includes(i))
 
         const prevSelected = this.state.selected
         const prevSelectedItem = newItems.length > 0
@@ -204,7 +205,8 @@ class QueueStore extends Store<QueueStoreState> {
             : null
 
         await this.set({
-            items: this.state.items.filter((i) => !ids.includes(i))
+            items: newItems,
+            sourceItems: newSourceItems
         })
 
         if (prevSelectedItem) {
