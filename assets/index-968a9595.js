@@ -804,7 +804,7 @@ var Us=Object.defineProperty;var Fs=(t,e,n)=>e in t?Us(t,e,{enumerable:!0,config
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    padding: 2rem 1rem;
+    padding: 3rem 1rem;
     background-color: #111;
     border-radius: 0.5rem;
 
@@ -880,13 +880,28 @@ var Us=Object.defineProperty;var Fs=(t,e,n)=>e in t?Us(t,e,{enumerable:!0,config
         font-size: 1.25rem;
         font-weight: bold;
         margin: 3rem 0;
+        padding: 1rem;
 
-        img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 1rem;
+        .detail-info {
+            font-size: 1rem;
+            font-weight: normal;
+            text-align: center;
+            margin-top: 0.5rem;
+            color: #888;
+        }
+
+        .cover {
+            max-width: 100%;
+            width: 300px;
+            height: auto;
+            margin-bottom: 2rem;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+            }
         }
     }
 
@@ -917,7 +932,7 @@ var Us=Object.defineProperty;var Fs=(t,e,n)=>e in t?Us(t,e,{enumerable:!0,config
         padding: 0;
         list-style: none;
     }
-`;function Tl(){var s;const t=Z(),{id:e}=un(),{data:n}=hn(["artist",e],()=>Gc(e).then(i=>i.data.artist),{enabled:!!e}),[{musicMap:r}]=R(z);return n?a.jsxs(Nl,{children:[a.jsxs("div",{className:"artist-name",children:[a.jsx(ue,{src:((s=n.latestAlbum)==null?void 0:s.cover)||"",alt:n.name}),n.name]}),a.jsxs("div",{className:"section-title",children:["Albums (",n.albums.length,")"]}),a.jsx("div",{className:"albums",children:n.albums.map(i=>a.jsx(Wr,{albumCover:i.cover,albumName:i.name,artistName:i.publishedYear,onClick:()=>t(`/album/${i.id}`)},i.id))}),a.jsxs("div",{className:"section-title",children:["Songs (",n.musics.length,")",a.jsxs(q,{onClick:()=>v.reset(n.musics.map(i=>i.id)),children:[a.jsx(X,{})," Play"]})]}),a.jsx("div",{className:"musics",children:n.musics.map(({id:i})=>{const o=r.get(i);return o?a.jsx(be,{artistName:o.album.name,albumCover:o.album.cover,albumName:o.album.name,musicName:o.name,musicCodec:o.codec,isLiked:o.isLiked,onClick:()=>v.add(o.id),onLongPress:()=>M.open({title:"Related to this music",content:a.jsx(ye,{id:o.id,onAlbumClick:()=>t(`/album/${o.album.id}`)})})},o.id):null})})]}):null}const Kt=200;function Ll(){const t=Z(),[e,n]=ze(),[{musics:r,loaded:s}]=R(z),[i,o]=m.useState(Number(e.get("l"))||Kt),l=async()=>{const c=await F.prompt("Search keyword",e.get("q")||"");n({q:c})},d=()=>{o(i+Kt),e.set("l",(i+Kt).toString()),n(e,{replace:!0})},u=r==null?void 0:r.filter(c=>{var h,y,b;return c.isLiked&&(c.name.toLowerCase().includes(((h=e.get("q"))==null?void 0:h.toLowerCase())||"")||c.artist.name.toLowerCase().includes(((y=e.get("q"))==null?void 0:y.toLowerCase())||"")||c.album.name.toLowerCase().includes(((b=e.get("q"))==null?void 0:b.toLowerCase())||""))});return a.jsxs(a.Fragment,{children:[a.jsxs(je,{children:[a.jsx(q,{style:{width:"160px"},onClick:l,children:e.get("q")||"Search"}),a.jsxs(q,{onClick:()=>v.reset(u.map(c=>c.id)),children:[a.jsx(X,{})," Play"]})]}),!s&&a.jsx(Ee,{}),s&&u.slice(0,i).map(c=>a.jsx(be,{albumName:c.album.name,albumCover:c.album.cover,artistName:c.artist.name,musicName:c.name,musicCodec:c.codec,isLiked:c.isLiked,onClick:()=>v.add(c.id),onLongPress:()=>M.open({title:"Related to this music",content:a.jsx(ye,{id:c.id,onAlbumClick:()=>t(`/album/${c.album.id}`),onArtistClick:()=>t(`/artist/${c.artist.id}`)})})},c.id)),s&&u.length>i&&a.jsx("div",{style:{padding:"0 16px 16px"},children:a.jsx(q,{style:{width:"100%",justifyContent:"center"},onClick:d,children:"Load More"})})]})}const Jt=200;function Pl(){const t=Z(),[e,n]=ze(),[{musics:r,loaded:s}]=R(z),[i,o]=m.useState(Number(e.get("l"))||Jt),l=async()=>{const c=await F.prompt("Search keyword",e.get("q")||"");e.set("q",c),n(e,{replace:!0})},d=()=>{o(i+Jt),e.set("l",(i+Jt).toString()),n(e,{replace:!0})},u=r==null?void 0:r.filter(c=>{var h,y,b;return c.name.toLowerCase().includes(((h=e.get("q"))==null?void 0:h.toLowerCase())||"")||c.artist.name.toLowerCase().includes(((y=e.get("q"))==null?void 0:y.toLowerCase())||"")||c.album.name.toLowerCase().includes(((b=e.get("q"))==null?void 0:b.toLowerCase())||"")});return a.jsxs(a.Fragment,{children:[a.jsxs(je,{children:[a.jsx(q,{style:{width:"160px"},onClick:l,children:e.get("q")||"Search"}),a.jsxs(q,{onClick:()=>v.reset(u.map(c=>c.id)),children:[a.jsx(X,{})," Play"]})]}),!s&&a.jsx(Ee,{}),s&&u.slice(0,i).map(c=>a.jsx(be,{albumName:c.album.name,albumCover:c.album.cover,artistName:c.artist.name,musicName:c.name,musicCodec:c.codec,isLiked:c.isLiked,onClick:()=>v.add(c.id),onLongPress:()=>M.open({title:"Related to this music",content:a.jsx(ye,{id:c.id,onAlbumClick:()=>t(`/album/${c.album.id}`),onArtistClick:()=>t(`/artist/${c.artist.id}`)})})},c.id)),s&&u.length>i&&a.jsx("div",{style:{padding:"0 16px 16px"},children:a.jsx(q,{style:{width:"100%",justifyContent:"center"},onClick:d,children:"Load More"})})]})}const Ml=A.div`
+`;function Tl(){var i;const t=Z(),{id:e}=un(),{data:n}=hn(["artist",e],()=>Gc(e).then(o=>o.data.artist),{enabled:!!e}),[{musicMap:r}]=R(z);if(!n)return null;const s=n.musics.reduce((o,{id:l})=>{var d;return o+=((d=r.get(l))==null?void 0:d.playCount)||0},0);return a.jsxs(Nl,{children:[a.jsxs("div",{className:"artist-name",children:[a.jsx("div",{className:"cover",children:a.jsx("div",{children:a.jsx(ue,{src:((i=n.latestAlbum)==null?void 0:i.cover)||"",alt:n.name})})}),n.name,a.jsxs("span",{className:"detail-info",children:["You have listened to a song by this artist ",s," times."]})]}),a.jsxs("div",{className:"section-title",children:["Albums (",n.albums.length,")"]}),a.jsx("div",{className:"albums",children:n.albums.map(o=>a.jsx(Wr,{albumCover:o.cover,albumName:o.name,artistName:o.publishedYear,onClick:()=>t(`/album/${o.id}`)},o.id))}),a.jsxs("div",{className:"section-title",children:["Songs (",n.musics.length,")",a.jsxs(q,{onClick:()=>v.reset(n.musics.map(o=>o.id)),children:[a.jsx(X,{})," Play"]})]}),a.jsx("div",{className:"musics",children:n.musics.map(({id:o})=>{const l=r.get(o);return l?a.jsx(be,{artistName:l.album.name,albumCover:l.album.cover,albumName:l.album.name,musicName:l.name,musicCodec:l.codec,isLiked:l.isLiked,onClick:()=>v.add(l.id),onLongPress:()=>M.open({title:"Related to this music",content:a.jsx(ye,{id:l.id,onAlbumClick:()=>t(`/album/${l.album.id}`)})})},l.id):null})})]})}const Kt=200;function Ll(){const t=Z(),[e,n]=ze(),[{musics:r,loaded:s}]=R(z),[i,o]=m.useState(Number(e.get("l"))||Kt),l=async()=>{const c=await F.prompt("Search keyword",e.get("q")||"");n({q:c})},d=()=>{o(i+Kt),e.set("l",(i+Kt).toString()),n(e,{replace:!0})},u=r==null?void 0:r.filter(c=>{var h,y,b;return c.isLiked&&(c.name.toLowerCase().includes(((h=e.get("q"))==null?void 0:h.toLowerCase())||"")||c.artist.name.toLowerCase().includes(((y=e.get("q"))==null?void 0:y.toLowerCase())||"")||c.album.name.toLowerCase().includes(((b=e.get("q"))==null?void 0:b.toLowerCase())||""))});return a.jsxs(a.Fragment,{children:[a.jsxs(je,{children:[a.jsx(q,{style:{width:"160px"},onClick:l,children:e.get("q")||"Search"}),a.jsxs(q,{onClick:()=>v.reset(u.map(c=>c.id)),children:[a.jsx(X,{})," Play"]})]}),!s&&a.jsx(Ee,{}),s&&u.slice(0,i).map(c=>a.jsx(be,{albumName:c.album.name,albumCover:c.album.cover,artistName:c.artist.name,musicName:c.name,musicCodec:c.codec,isLiked:c.isLiked,onClick:()=>v.add(c.id),onLongPress:()=>M.open({title:"Related to this music",content:a.jsx(ye,{id:c.id,onAlbumClick:()=>t(`/album/${c.album.id}`),onArtistClick:()=>t(`/artist/${c.artist.id}`)})})},c.id)),s&&u.length>i&&a.jsx("div",{style:{padding:"0 16px 16px"},children:a.jsx(q,{style:{width:"100%",justifyContent:"center"},onClick:d,children:"Load More"})})]})}const Jt=200;function Pl(){const t=Z(),[e,n]=ze(),[{musics:r,loaded:s}]=R(z),[i,o]=m.useState(Number(e.get("l"))||Jt),l=async()=>{const c=await F.prompt("Search keyword",e.get("q")||"");e.set("q",c),n(e,{replace:!0})},d=()=>{o(i+Jt),e.set("l",(i+Jt).toString()),n(e,{replace:!0})},u=r==null?void 0:r.filter(c=>{var h,y,b;return c.name.toLowerCase().includes(((h=e.get("q"))==null?void 0:h.toLowerCase())||"")||c.artist.name.toLowerCase().includes(((y=e.get("q"))==null?void 0:y.toLowerCase())||"")||c.album.name.toLowerCase().includes(((b=e.get("q"))==null?void 0:b.toLowerCase())||"")});return a.jsxs(a.Fragment,{children:[a.jsxs(je,{children:[a.jsx(q,{style:{width:"160px"},onClick:l,children:e.get("q")||"Search"}),a.jsxs(q,{onClick:()=>v.reset(u.map(c=>c.id)),children:[a.jsx(X,{})," Play"]})]}),!s&&a.jsx(Ee,{}),s&&u.slice(0,i).map(c=>a.jsx(be,{albumName:c.album.name,albumCover:c.album.cover,artistName:c.artist.name,musicName:c.name,musicCodec:c.codec,isLiked:c.isLiked,onClick:()=>v.add(c.id),onLongPress:()=>M.open({title:"Related to this music",content:a.jsx(ye,{id:c.id,onAlbumClick:()=>t(`/album/${c.album.id}`),onArtistClick:()=>t(`/artist/${c.artist.id}`)})})},c.id)),s&&u.length>i&&a.jsx("div",{style:{padding:"0 16px 16px"},children:a.jsx(q,{style:{width:"100%",justifyContent:"center"},onClick:d,children:"Load More"})})]})}const Ml=A.div`
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -1207,7 +1222,7 @@ var Us=Object.defineProperty;var Fs=(t,e,n)=>e in t?Us(t,e,{enumerable:!0,config
         justify-content: center;
         flex-direction: column;
         background-color: #111;
-        padding: 2rem 1rem;
+        padding: 3rem 1rem;
 
         .cover {
             width: 300px;
