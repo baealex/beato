@@ -105,6 +105,8 @@ const router = createBrowserRouter([
 
 export default function App() {
     useEffect(() => {
+        socket.connect()
+
         socket.on('resync', () => {
             musicStore.init = false
             artistStore.init = false

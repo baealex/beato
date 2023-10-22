@@ -87,11 +87,11 @@ class QueueStore extends Store<QueueStoreState> {
                 const music = getMusic(this.state.items[this.state.selected!])
                 const progress = Number((time / (music?.duration || 1) * 100).toFixed(2))
 
-                if (!this.shouldCount && Math.floor(progress) === 0) {
+                if (!this.shouldCount && Math.floor(progress) >= 0 && Math.floor(progress) < 10) {
                     this.shouldCount = true
                 }
 
-                if (this.shouldCount && Math.floor(progress) === 80) {
+                if (this.shouldCount && Math.floor(progress) >= 80 && Math.floor(progress) < 90) {
                     this.shouldCount = false
                     MusicListener.count(this.state.items[this.state.selected!])
                 }
