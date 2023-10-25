@@ -1,4 +1,4 @@
-import { prompt } from '@baejino/ui'
+import { confirm, prompt } from '@baejino/ui'
 import { useStore } from 'badland-react'
 
 import { GridImage, PanelContent } from '~/components'
@@ -66,7 +66,10 @@ export default function PlaylistActionPanelContent({
                 {
                     icon: <Icon.TrashBin />,
                     text: 'Delete',
-                    onClick: () => {
+                    onClick: async () => {
+                        if (!(await confirm('Are you sure you want to delete this playlist?'))) {
+                            return
+                        }
                         PlaylistListener.delete(id)
                         panel.close()
                     },
