@@ -18,7 +18,7 @@ import {
 } from './pages'
 import { PanelProvider, SiteLayout } from './components'
 
-import { socket } from './socket'
+import { MusicListener, socket } from './socket'
 
 import { musicStore } from './store/music'
 import { artistStore } from './store/artist'
@@ -116,6 +116,7 @@ export default function App() {
         window.addEventListener('focus', () => {
             if (!socket.connected) {
                 socket.connect()
+                MusicListener.count()
             }
         })
 

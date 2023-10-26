@@ -42,18 +42,23 @@ export class MusicListener implements Listener {
         socket.emit(MUSIC_LIKE, { id, isLiked })
     }
 
-    static async count(id: string) {
-        shouldIncreaseItems.push(id)
+    static async count(id?: string) {
+        id && shouldIncreaseItems.push(id)
 
         if (!socket.connected) {
             return
         }
 
-        while (shouldIncreaseItems.length > 0) {
-            const id = shouldIncreaseItems.pop()
-            await new Promise(resolve => setTimeout(resolve, 300))
-            socket.emit(MUSIC_COUNT, { id })
-        }
+        const items = shouldIncreaseItems.splice(0, shouldIncreaseItems.length)
+
+        Promise.all(items.map((id, idx) => {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    socket.emit(MUSIC_COUNT, { id })
+                    resolve(true)
+                }, idx * 500)
+            })
+        }))
     }
 
     disconnect() {
