@@ -273,19 +273,10 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     changeRepeatMode() {
-        if (this.state.repeatMode === 'none') {
-            this.set({
-                repeatMode: 'all'
-            })
-        } else if (this.state.repeatMode === 'all') {
-            this.set({
-                repeatMode: 'one'
-            })
-        } else if (this.state.repeatMode === 'one') {
-            this.set({
-                repeatMode: 'none'
-            })
-        }
+        const repeatRotate = ['none', 'all', 'one'] as const
+        const current = repeatRotate.indexOf(this.state.repeatMode)
+        const next = repeatRotate[(current + 1) % repeatRotate.length]
+        this.set({ repeatMode: next })
     }
 
     toggleShuffle() {

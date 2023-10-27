@@ -19,9 +19,9 @@ interface MusicListenerEventHandler {
     onCount: (data: Count) => void;
 }
 
-const shouldIncreaseItems: string[] = []
-
 export class MusicListener implements Listener {
+    static shouldIncreaseItems: string[] = []
+
     handler: MusicListenerEventHandler | null
 
     constructor() {
@@ -43,13 +43,13 @@ export class MusicListener implements Listener {
     }
 
     static async count(id?: string) {
-        id && shouldIncreaseItems.push(id)
+        id && this.shouldIncreaseItems.push(id)
 
         if (!socket.connected) {
             return
         }
 
-        const items = shouldIncreaseItems.splice(0, shouldIncreaseItems.length)
+        const items = this.shouldIncreaseItems.splice(0, this.shouldIncreaseItems.length)
 
         Promise.all(items.map((id, idx) => {
             return new Promise(resolve => {

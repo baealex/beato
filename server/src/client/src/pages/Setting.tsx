@@ -89,6 +89,25 @@ const Container = styled.div`
     }
 `
 
+const PLAY_MODES = [{
+    value: 'immediately',
+    label: 'Play immediately'
+}, {
+    value: 'later',
+    label: 'Play later'
+}] as const
+
+const INSERT_MODES = [{
+    value: 'first',
+    label: 'Add to the top of the queue'
+}, {
+    value: 'last',
+    label: 'Add to the bottom of the queue'
+}, {
+    value: 'after',
+    label: 'Add to the next of the current music'
+}] as const
+
 export default function Setting() {
     const [{ connectors }] = useStore(connectorStore)
     const [{ playMode, insertMode }] = useStore(queueStore)
@@ -148,53 +167,30 @@ export default function Setting() {
                 <h3>Play Mode</h3>
                 <p>When you add a music to the queue, It will...</p>
                 <div className="input-section">
-                    <label>
-                        <input
-                            type="radio"
-                            name="play-mode"
-                            value="immediately"
-                            defaultChecked={playMode === 'immediately'}
-                            onChange={() => queueStore.setPlayMode('immediately')} />
-                        Play immediately
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="play-mode"
-                            value="later"
-                            defaultChecked={playMode === 'later'}
-                            onChange={() => queueStore.setPlayMode('later')} />
-                        Play later
-                    </label>
+                    {PLAY_MODES.map(({ value, label }) => (
+                        <label key={value}>
+                            <input
+                                type="radio"
+                                name="play-mode"
+                                value={value}
+                                defaultChecked={playMode === value}
+                                onChange={() => queueStore.setPlayMode(value)} />
+                            {label}
+                        </label>
+                    ))}
                 </div>
                 <div className="input-section">
-                    <label>
-                        <input
-                            type="radio"
-                            name="insert-mode"
-                            value="first"
-                            defaultChecked={insertMode === 'first'}
-                            onChange={() => queueStore.setInsertMode('first')} />
-                        Add to the top of the queue
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="insert-mode"
-                            value="last"
-                            defaultChecked={insertMode === 'last'}
-                            onChange={() => queueStore.setInsertMode('last')} />
-                        Add to the bottom of the queue
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="insert-mode"
-                            value="after"
-                            defaultChecked={insertMode === 'after'}
-                            onChange={() => queueStore.setInsertMode('after')} />
-                        Add to the next of the current music
-                    </label>
+                    {INSERT_MODES.map(({ value, label }) => (
+                        <label key={value}>
+                            <input
+                                type="radio"
+                                name="insert-mode"
+                                value={value}
+                                defaultChecked={insertMode === value}
+                                onChange={() => queueStore.setInsertMode(value)} />
+                            {label}
+                        </label>
+                    ))}
                 </div>
             </section>
             <section>
