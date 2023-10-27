@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 import { useEffect, useState } from 'react'
 
-import { SecondaryButton } from '~/components'
+import { SecondaryButton, Select } from '~/components'
 
 import { ConnectorListener, socket } from '~/socket'
 
@@ -36,29 +36,6 @@ const Container = styled.div`
             font-size: 0.8rem;
             font-weight: 400;
             color: #ffffff;
-        }
-    }
-
-    .input-section {
-        display: flex;
-        gap: 1rem;
-        margin-top: 0.5rem;
-        flex-wrap: wrap;
-        padding: 1rem;
-        border: 1px solid #333;
-        border-radius: 0.5rem;
-
-        label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: #d0d0d0;
-
-            input {
-                margin: 0;
-            }
         }
     }
 
@@ -95,7 +72,7 @@ const PLAY_MODES = [{
 }, {
     value: 'later',
     label: 'Play later'
-}] as const
+}]
 
 const INSERT_MODES = [{
     value: 'first',
@@ -106,7 +83,7 @@ const INSERT_MODES = [{
 }, {
     value: 'after',
     label: 'Add to the next of the current music'
-}] as const
+}]
 
 export default function Setting() {
     const [{ connectors }] = useStore(connectorStore)
@@ -166,32 +143,16 @@ export default function Setting() {
             <section>
                 <h3>Play Mode</h3>
                 <p>When you add a music to the queue, It will...</p>
-                <div className="input-section">
-                    {PLAY_MODES.map(({ value, label }) => (
-                        <label key={value}>
-                            <input
-                                type="radio"
-                                name="play-mode"
-                                value={value}
-                                defaultChecked={playMode === value}
-                                onChange={() => queueStore.setPlayMode(value)} />
-                            {label}
-                        </label>
-                    ))}
-                </div>
-                <div className="input-section">
-                    {INSERT_MODES.map(({ value, label }) => (
-                        <label key={value}>
-                            <input
-                                type="radio"
-                                name="insert-mode"
-                                value={value}
-                                defaultChecked={insertMode === value}
-                                onChange={() => queueStore.setInsertMode(value)} />
-                            {label}
-                        </label>
-                    ))}
-                </div>
+                <Select
+                    selected={PLAY_MODES.find(({ value }) => value === playMode)}
+                    options={PLAY_MODES}
+                    onChange={(value) => queueStore.setPlayMode(value as typeof playMode)}
+                />
+                <Select
+                    selected={INSERT_MODES.find(({ value }) => value === insertMode)}
+                    options={INSERT_MODES}
+                    onChange={(value) => queueStore.setInsertMode(value as typeof insertMode)}
+                />
             </section>
             <section>
                 <h3>Connectors</h3>
