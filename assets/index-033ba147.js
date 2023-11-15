@@ -1031,11 +1031,37 @@ var Vs=Object.defineProperty;var Ks=(t,e,n)=>e in t?Vs(t,e,{enumerable:!0,config
 `;function Fl(){return a.jsxs($l,{children:[a.jsx(ql,{children:"(㇏(•̀ᵥᵥ•́)ノ)"}),a.jsx(Ul,{children:"why are you here?"}),a.jsx(q,{onClick:()=>location.assign("/"),children:"Go Home"})]})}const zl=_.div`
     height: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     padding: 1rem;
+    overflow-y: auto;
+    
+    .between {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+    }
+
+    .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .footer {
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+            color: #888;
+            transform: rotate(-90deg) translate(50%, -50%);
+        }
+    }
 
     .play,
     .mode,
@@ -1046,7 +1072,7 @@ var Vs=Object.defineProperty;var Ks=(t,e,n)=>e in t?Vs(t,e,{enumerable:!0,config
         position: relative;
         width: 3rem;
         height: 3rem;
-        border-radius: 0.25rem;
+        border-radius: .25rem;
         background-color: transparent;
         color: white;
         border: none;
@@ -1076,10 +1102,10 @@ var Vs=Object.defineProperty;var Ks=(t,e,n)=>e in t?Vs(t,e,{enumerable:!0,config
             position: absolute;
             display: block;
             top: 50%;
-            right: calc(50% - 0.5rem);
+            right: calc(50% - .5rem);
             transform: translate(-50%, -50%);
-            width: 0.1rem;
-            height: 0.75rem;
+            width: .1rem;
+            height: .75rem;
             background-color: #fff;
         }
     }
@@ -1176,15 +1202,16 @@ var Vs=Object.defineProperty;var Ks=(t,e,n)=>e in t?Vs(t,e,{enumerable:!0,config
         margin-top: 3rem;
         width: 500px;
         max-width: 100%;
+        text-align: center;
 
         .title {
             .name {
-                margin-bottom: 0.5rem;
+                margin-bottom: .5rem;
                 font-weight: bold;
             }
 
             .artist {
-                font-size: 0.875rem;
+                font-size: .875rem;
                 color: #888;
             }
         }
@@ -1196,7 +1223,7 @@ var Vs=Object.defineProperty;var Ks=(t,e,n)=>e in t?Vs(t,e,{enumerable:!0,config
         justify-content: space-between;
         width: 500px;
         max-width: 90%;
-        margin-bottom: 0.5rem;
+        margin-bottom: .5rem;
     }
 
     .progress {
@@ -1260,23 +1287,7 @@ var Vs=Object.defineProperty;var Ks=(t,e,n)=>e in t?Vs(t,e,{enumerable:!0,config
             }
         }
     }
-
-    .footer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: 1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        svg {
-            color: #888;
-            transform: rotate(-90deg) translate(50%, -50%);
-        }
-    }
-`;function Hl(){const t=Z(),[e]=R(C),[{musicMap:n}]=R(z),[r,s]=m.useState("50%"),i=e.selected!==null?n.get(e.items[e.selected]):null,o=d=>{const{width:u,left:c,right:h}=d.currentTarget.getBoundingClientRect();let y=d.touches?d.touches[0].clientX:d.clientX;y=y<c?c:y>h?h:y;const x=(y-c)/u,p=(i==null?void 0:i.duration)||1;C.seek(p*x)},l=d=>{var u;if(d.buttons===1){o(d);return}((u=d.touches)==null?void 0:u.length)===1&&o(d)};return m.useEffect(()=>{let d=null;if(!e.isPlaying){s("50%");return}const u=()=>{const c=()=>Math.floor(Math.random()*90+10)+"%";s(`${c()} ${c()} ${c()} ${c()}`),d=setTimeout(u,1e3)};return u(),()=>{d&&clearTimeout(d)}},[e.isPlaying]),a.jsxs(zl,{as:bn.div,animate:"in",exit:"out",initial:"out",variants:{in:{opacity:1,y:0},out:{opacity:0,y:50}},transition:{duration:.25},children:[a.jsxs("div",{className:"album-art",children:[a.jsx("img",{className:"background",style:{borderRadius:r},src:Fe(i==null?void 0:i.album.cover),alt:i==null?void 0:i.album.name}),a.jsx("div",{className:"foreground-wrapper",children:a.jsx("img",{className:"foreground",style:{borderRadius:r},src:Fe(i==null?void 0:i.album.cover.replace("/resized","")),alt:i==null?void 0:i.album.name})})]}),a.jsx("div",{className:"title-info",children:a.jsxs("button",{className:"clickable title",onClick:()=>i&&T.open({title:"Related to this music",content:a.jsx(ye,{id:i.id,onAlbumClick:()=>t(`/album/${i.album.id}`),onArtistClick:()=>t(`/artist/${i.artist.id}`)})}),children:[a.jsx("div",{className:"name",children:i==null?void 0:i.name}),a.jsx("div",{className:"artist",children:i==null?void 0:i.artist.name})]})}),a.jsxs("div",{className:"time-info",children:[a.jsx("div",{className:"current-time",children:en(e.currentTime)}),a.jsx("div",{className:"total-time",children:en((i==null?void 0:i.duration)||0)})]}),a.jsx("div",{className:"progress",role:"slider",tabIndex:0,"aria-valuenow":e.progress,"aria-valuemin":0,"aria-valuemax":100,onClick:o,onMouseMove:l,onTouchMove:l,children:a.jsx("div",{className:"bar",style:{transform:`translate(-${100-e.progress}%, 0)`}})}),a.jsxs("div",{className:"action",children:[a.jsxs("button",{className:"icon-button mode",onClick:()=>C.changeRepeatMode(),children:[e.repeatMode==="all"&&a.jsx(ns,{}),e.repeatMode==="one"&&a.jsx(Qr,{}),e.repeatMode==="none"&&a.jsx(rs,{})]}),a.jsxs("div",{className:"playback",children:[a.jsx("button",{className:"icon-button skip-back",onClick:()=>C.prev(),children:a.jsx(Y,{})}),a.jsx("button",{className:"icon-button",onClick:()=>e.isPlaying?C.pause():C.play(),children:e.isPlaying?a.jsx(ts,{}):a.jsx(Y,{})}),a.jsx("button",{className:"icon-button skip-forward",onClick:()=>C.next(),children:a.jsx(Y,{})})]}),a.jsx("button",{className:`icon-button shuffle ${e.shuffle?"active":""}`,onClick:()=>C.toggleShuffle(),children:a.jsx(ss,{})})]}),a.jsx("div",{className:"footer",children:a.jsx("button",{className:"icon-button",onClick:()=>history.back(),children:a.jsx(Zr,{})})})]})}const Wl=_.div`
+`;function Hl(){const t=Z(),[e]=R(C),[{musicMap:n}]=R(z),[r,s]=m.useState("50%"),i=e.selected!==null?n.get(e.items[e.selected]):null,o=d=>{const{width:u,left:c,right:h}=d.currentTarget.getBoundingClientRect();let y=d.touches?d.touches[0].clientX:d.clientX;y=y<c?c:y>h?h:y;const x=(y-c)/u,p=(i==null?void 0:i.duration)||1;C.seek(p*x)},l=d=>{var u;if(d.buttons===1){o(d);return}((u=d.touches)==null?void 0:u.length)===1&&o(d)};return m.useEffect(()=>{let d=null;if(!e.isPlaying){s("50%");return}const u=()=>{const c=()=>Math.floor(Math.random()*90+10)+"%";s(`${c()} ${c()} ${c()} ${c()}`),d=setTimeout(u,1e3)};return u(),()=>{d&&clearTimeout(d)}},[e.isPlaying]),a.jsx(zl,{as:bn.div,animate:"in",exit:"out",initial:"out",variants:{in:{opacity:1,y:0},out:{opacity:0,y:50}},transition:{duration:.25},children:a.jsxs("div",{className:"between",children:[a.jsxs("div",{className:"content",children:[a.jsxs("div",{className:"album-art",children:[a.jsx("img",{className:"background",style:{borderRadius:r},src:Fe(i==null?void 0:i.album.cover),alt:i==null?void 0:i.album.name}),a.jsx("div",{className:"foreground-wrapper",children:a.jsx("img",{className:"foreground",style:{borderRadius:r},src:Fe(i==null?void 0:i.album.cover.replace("/resized","")),alt:i==null?void 0:i.album.name})})]}),a.jsx("div",{className:"title-info",children:a.jsxs("button",{className:"clickable title",onClick:()=>i&&T.open({title:"Related to this music",content:a.jsx(ye,{id:i.id,onAlbumClick:()=>t(`/album/${i.album.id}`),onArtistClick:()=>t(`/artist/${i.artist.id}`)})}),children:[a.jsx("div",{className:"name",children:i==null?void 0:i.name}),a.jsx("div",{className:"artist",children:i==null?void 0:i.artist.name})]})}),a.jsxs("div",{className:"time-info",children:[a.jsx("div",{className:"current-time",children:en(e.currentTime)}),a.jsx("div",{className:"total-time",children:en((i==null?void 0:i.duration)||0)})]}),a.jsx("div",{className:"progress",role:"slider",tabIndex:0,"aria-valuenow":e.progress,"aria-valuemin":0,"aria-valuemax":100,onClick:o,onMouseMove:l,onTouchMove:l,children:a.jsx("div",{className:"bar",style:{transform:`translate(-${100-e.progress}%, 0)`}})}),a.jsxs("div",{className:"action",children:[a.jsxs("button",{className:"icon-button mode",onClick:()=>C.changeRepeatMode(),children:[e.repeatMode==="all"&&a.jsx(ns,{}),e.repeatMode==="one"&&a.jsx(Qr,{}),e.repeatMode==="none"&&a.jsx(rs,{})]}),a.jsxs("div",{className:"playback",children:[a.jsx("button",{className:"icon-button skip-back",onClick:()=>C.prev(),children:a.jsx(Y,{})}),a.jsx("button",{className:"icon-button",onClick:()=>e.isPlaying?C.pause():C.play(),children:e.isPlaying?a.jsx(ts,{}):a.jsx(Y,{})}),a.jsx("button",{className:"icon-button skip-forward",onClick:()=>C.next(),children:a.jsx(Y,{})})]}),a.jsx("button",{className:`icon-button shuffle ${e.shuffle?"active":""}`,onClick:()=>C.toggleShuffle(),children:a.jsx(ss,{})})]})]}),a.jsx("div",{className:"footer",children:a.jsx("button",{className:"icon-button",onClick:()=>history.back(),children:a.jsx(Zr,{})})})]})})}const Wl=_.div`
     display: flex;
     flex-direction: row;
     align-items: center;
