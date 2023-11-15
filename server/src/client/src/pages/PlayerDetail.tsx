@@ -17,11 +17,37 @@ import { queueStore } from '~/store/queue'
 const Container = styled.div<HTMLMotionProps<'div'>>`
     height: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     padding: 1rem;
+    overflow-y: auto;
+    
+    .between {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+    }
+
+    .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .footer {
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+            color: #888;
+            transform: rotate(-90deg) translate(50%, -50%);
+        }
+    }
 
     .play,
     .mode,
@@ -32,7 +58,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         position: relative;
         width: 3rem;
         height: 3rem;
-        border-radius: 0.25rem;
+        border-radius: .25rem;
         background-color: transparent;
         color: white;
         border: none;
@@ -62,10 +88,10 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
             position: absolute;
             display: block;
             top: 50%;
-            right: calc(50% - 0.5rem);
+            right: calc(50% - .5rem);
             transform: translate(-50%, -50%);
-            width: 0.1rem;
-            height: 0.75rem;
+            width: .1rem;
+            height: .75rem;
             background-color: #fff;
         }
     }
@@ -162,15 +188,16 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         margin-top: 3rem;
         width: 500px;
         max-width: 100%;
+        text-align: center;
 
         .title {
             .name {
-                margin-bottom: 0.5rem;
+                margin-bottom: .5rem;
                 font-weight: bold;
             }
 
             .artist {
-                font-size: 0.875rem;
+                font-size: .875rem;
                 color: #888;
             }
         }
@@ -182,7 +209,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         justify-content: space-between;
         width: 500px;
         max-width: 90%;
-        margin-bottom: 0.5rem;
+        margin-bottom: .5rem;
     }
 
     .progress {
@@ -244,22 +271,6 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
                     background-color: rgba(255, 255, 255, 0.2);
                 }
             }
-        }
-    }
-
-    .footer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: 1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        svg {
-            color: #888;
-            transform: rotate(-90deg) translate(50%, -50%);
         }
     }
 `
@@ -346,111 +357,113 @@ export default function PlayerDetail() {
                 duration: 0.25,
             }}
         >
-            <div
-                className="album-art"
-            >
-                <img
-                    className="background"
-                    style={{ borderRadius }}
-                    src={getImage(currentMusic?.album.cover)}
-                    alt={currentMusic?.album.name}
-                />
-                <div className="foreground-wrapper">
-                    <img
-                        className="foreground"
-                        style={{ borderRadius }}
-                        src={getImage(
-                            currentMusic?.album.cover.replace('/resized', '')
-                        )}
-                        alt={currentMusic?.album.name}
-                    />
-                </div>
-            </div>
-            <div className="title-info">
-                <button
-                    className="clickable title"
-                    onClick={() => currentMusic && panel.open({
-                        title: 'Related to this music',
-                        content: (
-                            <MusicActionPanelContent
-                                id={currentMusic.id}
-                                onAlbumClick={() => navigate(`/album/${currentMusic.album.id}`)}
-                                onArtistClick={() => navigate(`/artist/${currentMusic.artist.id}`)}
+            <div className="between">
+                <div className="content">
+                    <div className="album-art">
+                        <img
+                            className="background"
+                            style={{ borderRadius }}
+                            src={getImage(currentMusic?.album.cover)}
+                            alt={currentMusic?.album.name}
+                        />
+                        <div className="foreground-wrapper">
+                            <img
+                                className="foreground"
+                                style={{ borderRadius }}
+                                src={getImage(
+                                    currentMusic?.album.cover.replace('/resized', '')
+                                )}
+                                alt={currentMusic?.album.name}
                             />
-                        )
-                    })}
-                >
-                    <div className="name">
-                        {currentMusic?.name}
+                        </div>
                     </div>
-                    <div className="artist">
-                        {currentMusic?.artist.name}
+                    <div className="title-info">
+                        <button
+                            className="clickable title"
+                            onClick={() => currentMusic && panel.open({
+                                title: 'Related to this music',
+                                content: (
+                                    <MusicActionPanelContent
+                                        id={currentMusic.id}
+                                        onAlbumClick={() => navigate(`/album/${currentMusic.album.id}`)}
+                                        onArtistClick={() => navigate(`/artist/${currentMusic.artist.id}`)}
+                                    />
+                                )
+                            })}
+                        >
+                            <div className="name">
+                                {currentMusic?.name}
+                            </div>
+                            <div className="artist">
+                                {currentMusic?.artist.name}
+                            </div>
+                        </button>
                     </div>
-                </button>
-            </div>
-            <div className="time-info">
-                <div className="current-time">
-                    {makePlayTime(state.currentTime)}
-                </div>
-                <div className="total-time">
-                    {makePlayTime(currentMusic?.duration || 0)}
-                </div>
-            </div>
-            <div
-                className="progress"
-                role="slider"
-                tabIndex={0}
-                aria-valuenow={state.progress}
-                aria-valuemin={0}
-                aria-valuemax={100}
-                onClick={handleClickProgress}
-                onMouseMove={handleMoveProgress}
-                onTouchMove={handleMoveProgress}
-            >
-                <div
-                    className="bar"
-                    style={{
-                        transform: `translate(-${(100 - state.progress)}%, 0)`
-                    }}
-                />
-            </div>
-            <div className="action">
-                <button className="icon-button mode" onClick={() => queueStore.changeRepeatMode()}>
-                    {state.repeatMode === 'all' && <Icon.Repeat />}
-                    {state.repeatMode === 'one' && <Icon.Infinite />}
-                    {state.repeatMode === 'none' && <Icon.RightLeft />}
-                </button>
-                <div className="playback">
-                    <button
-                        className="icon-button skip-back"
-                        onClick={() => queueStore.prev()}
+                    <div className="time-info">
+                        <div className="current-time">
+                            {makePlayTime(state.currentTime)}
+                        </div>
+                        <div className="total-time">
+                            {makePlayTime(currentMusic?.duration || 0)}
+                        </div>
+                    </div>
+                    <div
+                        className="progress"
+                        role="slider"
+                        tabIndex={0}
+                        aria-valuenow={state.progress}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        onClick={handleClickProgress}
+                        onMouseMove={handleMoveProgress}
+                        onTouchMove={handleMoveProgress}
                     >
-                        <Icon.Play />
-                    </button>
-                    <button
-                        className="icon-button"
-                        onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}
-                    >
-                        {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
-                    </button>
-                    <button
-                        className="icon-button skip-forward"
-                        onClick={() => queueStore.next()}
-                    >
-                        <Icon.Play />
+                        <div
+                            className="bar"
+                            style={{
+                                transform: `translate(-${(100 - state.progress)}%, 0)`
+                            }}
+                        />
+                    </div>
+                    <div className="action">
+                        <button className="icon-button mode" onClick={() => queueStore.changeRepeatMode()}>
+                            {state.repeatMode === 'all' && <Icon.Repeat />}
+                            {state.repeatMode === 'one' && <Icon.Infinite />}
+                            {state.repeatMode === 'none' && <Icon.RightLeft />}
+                        </button>
+                        <div className="playback">
+                            <button
+                                className="icon-button skip-back"
+                                onClick={() => queueStore.prev()}
+                            >
+                                <Icon.Play />
+                            </button>
+                            <button
+                                className="icon-button"
+                                onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}
+                            >
+                                {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
+                            </button>
+                            <button
+                                className="icon-button skip-forward"
+                                onClick={() => queueStore.next()}
+                            >
+                                <Icon.Play />
+                            </button>
+                        </div>
+                        <button
+                            className={`icon-button shuffle ${state.shuffle ? 'active' : ''}`}
+                            onClick={() => queueStore.toggleShuffle()}
+                        >
+                            <Icon.Shuffle />
+                        </button>
+                    </div>
+                </div>
+                <div className="footer">
+                    <button className="icon-button" onClick={() => history.back()}>
+                        <Icon.Left />
                     </button>
                 </div>
-                <button
-                    className={`icon-button shuffle ${state.shuffle ? 'active' : ''}`}
-                    onClick={() => queueStore.toggleShuffle()}
-                >
-                    <Icon.Shuffle />
-                </button>
-            </div>
-            <div className="footer">
-                <button className="icon-button" onClick={() => history.back()}>
-                    <Icon.Left />
-                </button>
             </div>
         </Container>
     )
