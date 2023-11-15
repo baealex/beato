@@ -3,8 +3,8 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { MusicItem, MusicActionPanelContent, SecondaryButton, StickyHeader, Loading } from '~/components'
-import { Play } from '~/icon'
+import { MusicItem, MusicActionPanelContent, SecondaryButton, StickyHeader, Loading, ItemSortPanelContent } from '~/components'
+import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
 
@@ -46,9 +46,19 @@ export default function Music() {
                 <SecondaryButton style={{ width: '160px' }} onClick={handleSearch}>
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
-                <SecondaryButton onClick={() => queueStore.reset(filteredMusics.map(music => music.id))}>
-                    <Play /> Play
-                </SecondaryButton>
+                <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
+                    <SecondaryButton onClick={() => queueStore.reset(filteredMusics.map(music => music.id))}>
+                        <Icon.Play /> Play
+                    </SecondaryButton>
+                    <SecondaryButton onClick={() => panel.open({
+                        title: 'Music Sort',
+                        content: (
+                            <ItemSortPanelContent items={musicStore.sortItems} />
+                        )
+                    })}>
+                        <Icon.Sort /> Sort
+                    </SecondaryButton>
+                </div>
             </StickyHeader>
             {!loaded && (
                 <Loading />

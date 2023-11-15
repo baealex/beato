@@ -9,7 +9,7 @@ export interface Music {
     playCount: number;
     filePath: string;
     isLiked: boolean;
-    createdAt: string;
+    createdAt: number;
     artist: Artist;
     album: Album;
     genres: {
@@ -27,7 +27,7 @@ export interface Album {
         name: string;
     };
     musics: Pick<Music, 'id'>[];
-    createdAt: string;
+    createdAt: number;
 }
 
 export interface Artist {
@@ -38,7 +38,7 @@ export interface Artist {
     albumCount: number;
     musics: Pick<Music, 'id'>[];
     musicCount: number;
-    createdAt: string;
+    createdAt: number;
 }
 
 export interface Playlist {

@@ -3,7 +3,10 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { ArtistItem, Loading, SecondaryButton, StickyHeader } from '~/components'
+import { ArtistItem, ItemSortPanelContent, Loading, SecondaryButton, StickyHeader } from '~/components'
+import * as Icon from '~/icon'
+
+import { panel } from '~/modules/panel'
 
 import { artistStore } from '~/store/artist'
 
@@ -37,6 +40,14 @@ export default function ArtistList() {
             <StickyHeader>
                 <SecondaryButton style={{ width: '160px' }} onClick={handleSearch}>
                     {searchParams.get('q') || 'Search'}
+                </SecondaryButton>
+                <SecondaryButton onClick={() => panel.open({
+                    title: 'Music Sort',
+                    content: (
+                        <ItemSortPanelContent items={artistStore.sortItems} />
+                    )
+                })}>
+                    <Icon.Sort /> Sort
                 </SecondaryButton>
             </StickyHeader>
             {!loaded && (
