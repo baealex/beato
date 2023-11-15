@@ -42,7 +42,7 @@ export default function ArtistList() {
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
                 <SecondaryButton onClick={() => panel.open({
-                    title: 'Music Sort',
+                    title: 'Artist Sort',
                     content: (
                         <ItemSortPanelContent items={artistStore.sortItems} />
                     )

@@ -56,7 +56,7 @@ export default function Album() {
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
                 <SecondaryButton onClick={() => panel.open({
-                    title: 'Music Sort',
+                    title: 'Album Sort',
                     content: (
                         <ItemSortPanelContent items={albumStore.sortItems} />
                     )
