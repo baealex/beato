@@ -81,7 +81,8 @@ class MusicStore extends Store<MusicStoreState> {
             this.set({
                 loaded: true,
                 musics: data.allMusics,
-                musicMap: new Map(data.allMusics.map(music => [music.id, music]))
+                musicMap: new Map(data.allMusics.map(music => [music.id, music])),
+                sortedFrom: SORT_STATE.PLAY_COUNT_DESC
             })
         })
     }

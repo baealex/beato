@@ -52,6 +52,7 @@ class AlbumStore extends Store<AlbumStoreState> {
             this.set({
                 loaded: true,
                 albums: data.allAlbums,
+                sortedFrom: SORT_STATE.NAME
             })
         })
     }

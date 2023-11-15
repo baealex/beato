@@ -51,7 +51,8 @@ class ArtistStore extends Store<ArtistStoreState> {
         getArtists().then(({ data }) => {
             this.set({
                 loaded: true,
-                artists: data.allArtists
+                artists: data.allArtists,
+                sortedFrom: SORT_STATE.MUSIC_COUNT_DESC
             })
         })
     }
