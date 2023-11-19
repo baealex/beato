@@ -53,7 +53,7 @@ class MusicStore extends Store<MusicStoreState> {
             },
             onCount: ({ id, playCount }) => {
                 this.set((prevState) => {
-                    prevState.musics = prevState.musics.map((music) => {
+                    let nextMusics = prevState.musics.map((music) => {
                         if (music.id === id) {
                             music.playCount = playCount
                         }
@@ -61,12 +61,14 @@ class MusicStore extends Store<MusicStoreState> {
                     })
 
                     if (prevState.sortedFrom === SORT_STATE.PLAY_COUNT_DESC) {
-                        prevState.musics = sort.sortByPlayCount(prevState.musics)
+                        nextMusics = sort.sortByPlayCount(nextMusics)
                     } else if (prevState.sortedFrom === SORT_STATE.PLAY_COUNT) {
-                        prevState.musics = sort.sortByPlayCount(prevState.musics).reverse()
+                        nextMusics = sort.sortByPlayCount(nextMusics).reverse()
                     }
 
-                    return prevState
+                    return {
+                        musics: nextMusics,
+                    }
                 })
             },
         })
