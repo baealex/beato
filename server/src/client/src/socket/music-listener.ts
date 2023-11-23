@@ -56,7 +56,7 @@ export class MusicListener implements Listener {
                 break
             }
 
-            await new Promise(resolve => setTimeout(resolve, 500))
+            await new Promise(resolve => setTimeout(resolve, 1000))
             socket.emit(MUSIC_COUNT, { id: itemId })
         }
     }
