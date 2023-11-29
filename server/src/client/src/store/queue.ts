@@ -209,6 +209,17 @@ class QueueStore extends Store<QueueStoreState> {
             sourceItems: newSourceItems
         })
 
+        if (newItems.length === 0) {
+            this.audioChannel.stop()
+            this.set({
+                selected: null,
+                currentTime: 0,
+                progress: 0,
+                isPlaying: false
+            })
+            return
+        }
+
         if (prevSelectedItem) {
             if (!ids.includes(prevSelectedItem)) {
                 this.set({
