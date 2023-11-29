@@ -10,7 +10,7 @@ import {
     Favorite,
     MusicList,
     NotFound,
-    PlayerDetail,
+    Player,
     Playlist,
     PlaylistDetail,
     Queue,
@@ -85,7 +85,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/player',
-                element: <PlayerDetail />,
+                element: <Player />,
             },
         ],
     },

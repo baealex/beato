@@ -331,6 +331,7 @@ export default function PlayerDetail() {
         setRandomBorderRadius()
 
         return () => {
+            setBorderRadius('50%')
             if (timer) {
                 clearTimeout(timer)
             }
