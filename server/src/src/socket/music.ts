@@ -5,10 +5,12 @@ import models from '~/models';
 import { connectors } from './connectors';
 
 export const MUSIC_LIKE = 'music-like';
+export const MUSIC_HATE = 'music-hate';
 export const MUSIC_COUNT = 'music-count';
 
 export const musicListener = (socket: Socket) => {
     socket.on(MUSIC_LIKE, like);
+    socket.on(MUSIC_HATE, hate);
     socket.on(MUSIC_COUNT, count);
 };
 
@@ -51,6 +53,49 @@ export const like = async ({ id = '' }) => {
         connectors.broadcast(MUSIC_LIKE, {
             id: $music.id.toString(),
             isLiked,
+        });
+    }
+};
+
+export const hate = async ({ id = '' }) => {
+    if (!id) {
+        return;
+    }
+
+    let isHated = false;
+    const $music = await models.music.findUnique({
+        where: {
+            id: parseInt(id),
+        },
+    });
+
+    if ($music) {
+        const $hate = await models.musicHate.findFirst({
+            where: {
+                musicId: $music.id,
+            },
+        });
+
+        if ($hate) {
+            isHated = false;
+            await models.musicHate.delete({
+                where: {
+                    id: $hate.id,
+                },
+            });
+        } else {
+            isHated = true;
+            await models.musicHate.create({
+                data: {
+                    musicId: $music.id,
+                },
+            });
+        }
+
+        console.log('hate update', $music.name, isHated);
+        connectors.broadcast(MUSIC_HATE, {
+            id: $music.id.toString(),
+            isHated,
         });
     }
 };

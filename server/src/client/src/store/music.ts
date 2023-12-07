@@ -51,6 +51,19 @@ class MusicStore extends Store<MusicStoreState> {
                     }),
                 })
             },
+            onHate: ({ id, isHated }) => {
+                if (!isHated) {
+                    return
+                }
+                this.set({
+                    musics: this.state.musics.filter((music) => {
+                        if (music.id === id) {
+                            return false
+                        }
+                        return true
+                    }),
+                })
+            },
             onCount: ({ id, playCount }) => {
                 this.set((prevState) => {
                     let nextMusics = prevState.musics.map((music) => {

@@ -36,6 +36,7 @@ export const musicType = gql`
 export const musicQuery = gql`
     type Query {
         allMusics: [Music!]!
+        allHatedMusics: [Music!]!
         music(id: ID!): Music!
     }
 `;
@@ -50,6 +51,21 @@ export const musicResolvers: IResolvers = {
         allMusics: () => models.music.findMany({
             orderBy: {
                 playCount: 'desc',
+            },
+            where: {
+                MusicHate: {
+                    none: {},
+                },
+            },
+        }),
+        allHatedMusics: () => models.music.findMany({
+            orderBy: {
+                playCount: 'desc',
+            },
+            where: {
+                MusicHate: {
+                    some: {},
+                },
             },
         }),
         music: (_, { id }: Music) => models.music.findUnique({

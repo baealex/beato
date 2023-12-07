@@ -96,6 +96,11 @@ export default function MusicActionPanelContent({
                     }
                 },
                 {
+                    icon: <Icon.Cross />,
+                    text: 'Hate this music',
+                    onClick: () => MusicListener.hate(music.id),
+                },
+                {
                     icon: <Icon.Download />,
                     text: 'Download',
                     onClick: () => {

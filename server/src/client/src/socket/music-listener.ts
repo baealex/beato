@@ -2,11 +2,17 @@ import { socket } from './socket'
 import { Listener } from './listener'
 
 export const MUSIC_LIKE = 'music-like'
+export const MUSIC_HATE = 'music-hate'
 export const MUSIC_COUNT = 'music-count'
 
 interface Like {
     id: string;
     isLiked: boolean;
+}
+
+interface Hate {
+    id: string;
+    isHated: boolean;
 }
 
 interface Count {
@@ -16,6 +22,7 @@ interface Count {
 
 interface MusicListenerEventHandler {
     onLike: (data: Like) => void;
+    onHate: (data: Hate) => void;
     onCount: (data: Count) => void;
 }
 
@@ -35,11 +42,16 @@ export class MusicListener implements Listener {
         this.handler = handler
 
         socket.on(MUSIC_LIKE, this.handler.onLike)
+        socket.on(MUSIC_HATE, this.handler.onHate)
         socket.on(MUSIC_COUNT, this.handler.onCount)
     }
 
     static like(id: string, isLiked: boolean) {
         socket.emit(MUSIC_LIKE, { id, isLiked })
+    }
+
+    static hate(id: string) {
+        socket.emit(MUSIC_HATE, { id })
     }
 
     static async count(id?: string) {
@@ -65,6 +77,7 @@ export class MusicListener implements Listener {
         if (this.handler === null) return
 
         socket.off(MUSIC_LIKE, this.handler.onLike)
+        socket.off(MUSIC_HATE, this.handler.onHate)
         socket.off(MUSIC_COUNT, this.handler.onCount)
 
         this.handler = null
