@@ -145,6 +145,7 @@ function PlaylistDndMusicItem({
                     musicName={music.name}
                     musicCodec={music.codec}
                     isLiked={music.isLiked}
+                    isHated={music.isHated}
                     onClick={isSelectMode ? onSelect : onClick}
                     onLongPress={onLongPress}
                 />

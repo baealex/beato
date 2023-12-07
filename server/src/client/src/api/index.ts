@@ -41,6 +41,7 @@ export function getMusics() {
             'playCount',
             'trackNumber',
             'isLiked',
+            'isHated',
             'createdAt',
             createQuery<Artist>('artist', [
                 'id',

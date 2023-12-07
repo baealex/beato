@@ -17,6 +17,7 @@ export const musicType = gql`
         trackNumber: Int!
         filePath: String!
         isLiked: Boolean!
+        isHated: Boolean!
         createdAt: String!
         artist: Artist!
         album: Album!
@@ -52,21 +53,6 @@ export const musicResolvers: IResolvers = {
             orderBy: {
                 playCount: 'desc',
             },
-            where: {
-                MusicHate: {
-                    none: {},
-                },
-            },
-        }),
-        allHatedMusics: () => models.music.findMany({
-            orderBy: {
-                playCount: 'desc',
-            },
-            where: {
-                MusicHate: {
-                    some: {},
-                },
-            },
         }),
         music: (_, { id }: Music) => models.music.findUnique({
             where: {
@@ -99,5 +85,10 @@ export const musicResolvers: IResolvers = {
                 musicId: music.id,
             },
         }).then((like) => !!like),
+        isHated: (music: Music) => models.musicHate.findFirst({
+            where: {
+                musicId: music.id,
+            },
+        }).then((hate) => !!hate),
     },
 };

@@ -52,15 +52,12 @@ class MusicStore extends Store<MusicStoreState> {
                 })
             },
             onHate: ({ id, isHated }) => {
-                if (!isHated) {
-                    return
-                }
                 this.set({
-                    musics: this.state.musics.filter((music) => {
+                    musics: this.state.musics.map((music) => {
                         if (music.id === id) {
-                            return false
+                            music.isHated = isHated
                         }
-                        return true
+                        return music
                     }),
                 })
             },

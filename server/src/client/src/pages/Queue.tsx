@@ -213,6 +213,7 @@ const QueueDndItem = ({
                     albumName={music.album.name}
                     albumCover={music.album.cover}
                     isLiked={music.isLiked}
+                    isHated={music.isHated}
                     onClick={isSelectMode ? onSelect : onClick}
                     onLongPress={onLongPress}
                 />

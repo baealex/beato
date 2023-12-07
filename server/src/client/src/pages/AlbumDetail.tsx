@@ -141,6 +141,7 @@ export default function AlbumDetail() {
                             musicName={music.name}
                             musicCodec={music.codec}
                             isLiked={music.isLiked}
+                            isHated={music.isHated}
                             onClick={() => queueStore.add(music.id)}
                             onLongPress={() => panel.open({
                                 title: 'Related to this music',

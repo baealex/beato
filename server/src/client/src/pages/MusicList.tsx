@@ -34,9 +34,11 @@ export default function Music() {
 
     const filteredMusics = musics
         ?.filter(music =>
-            music.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
-            music.artist.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
-            music.album.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '')
+            !music.isHated && (
+                music.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
+                music.artist.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
+                music.album.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '')
+            )
         )
 
     return (
@@ -71,6 +73,7 @@ export default function Music() {
                     musicName={music.name}
                     musicCodec={music.codec}
                     isLiked={music.isLiked}
+                    isHated={music.isHated}
                     onClick={() => queueStore.add(music.id)}
                     onLongPress={() => panel.open({
                         title: 'Related to this music',

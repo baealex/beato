@@ -9,6 +9,7 @@ export interface Music {
     playCount: number;
     filePath: string;
     isLiked: boolean;
+    isHated: boolean;
     createdAt: number;
     artist: Artist;
     album: Album;

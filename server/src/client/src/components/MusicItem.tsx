@@ -12,6 +12,8 @@ interface MusicItemProps {
     musicName: string;
     musicCodec?: string;
     isLiked?: boolean;
+    isHated?: boolean;
+    isPlaying?: boolean;
     onClick?: () => void;
     onLongPress?: () => void;
 }
@@ -26,6 +28,10 @@ const Container = styled.button<{ hasAlbumCover: boolean, hasLongPress: boolean 
     align-items: center;
     gap: 0.75rem;
     width: 100%;
+
+    &.hated {
+        opacity: 0.5;
+    }
 
     @media (min-width: 1024px) {
         &:hover {
@@ -125,12 +131,14 @@ export default function MusicItem({
     musicName,
     musicCodec,
     isLiked,
+    isHated,
+    isPlaying,
     onClick,
     onLongPress,
 }: MusicItemProps) {
     return (
         <Container
-            className="clickable"
+            className={`clickable ${isHated ? 'hated' : ''} ${isPlaying ? 'playing' : ''}`}
             onClick={onClick}
             onContextMenu={(e) => {
                 e.preventDefault()

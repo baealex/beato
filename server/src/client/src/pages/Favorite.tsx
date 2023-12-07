@@ -33,7 +33,7 @@ export default function Music() {
 
     const filteredMusics = musics
         ?.filter(music =>
-            music.isLiked && (
+            !music.isHated && music.isLiked && (
                 music.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
                 music.artist.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
                 music.album.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '')
