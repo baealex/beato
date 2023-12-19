@@ -17,7 +17,8 @@ import { queueStore } from '~/store/queue'
 const Container = styled.div<HTMLMotionProps<'div'>>`
     height: 100%;
     display: flex;
-    padding: 1rem;
+    padding: 3rem 1rem;
+    position: relative;
     overflow-y: auto;
     
     .between {
@@ -25,7 +26,8 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         flex-direction: column;
         justify-content: space-between;
         width: 100%;
-        height: 100%;
+        min-height: 100%;
+        height: fit-content;
     }
 
     .content {
@@ -37,11 +39,11 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
     }
 
     .footer {
-        position: sticky;
+        position: fixed;
         bottom: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        left: 50%;
+        transform: translateX(-50%);
+        padding-bottom: 0.5rem;
 
         svg {
             color: #888;
