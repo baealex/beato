@@ -96,17 +96,17 @@ export default function MusicActionPanelContent({
                     }
                 },
                 {
-                    icon: <Icon.Cross />,
-                    text: 'Hate this music',
-                    onClick: () => MusicListener.hate(music.id),
-                },
-                {
                     icon: <Icon.Download />,
                     text: 'Download',
                     onClick: () => {
                         queueStore.download(music.id)
                         panel.close()
                     }
+                },
+                {
+                    icon: <Icon.Cross />,
+                    text: music.isHated ? 'Show again this music' : 'Hide this music',
+                    onClick: () => MusicListener.hate(music.id),
                 },
             ]}
             footer={(
