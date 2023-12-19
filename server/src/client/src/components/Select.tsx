@@ -34,7 +34,7 @@ const Styles = styled.div`
         align-items: center;
         gap: 1rem;
         padding: 0.8rem 1rem;
-        box-shadow: 0 0 8px 1px #333;
+        border: 1px solid #333;
         border-radius: 8px;
         cursor: pointer;
 
@@ -51,8 +51,11 @@ const Styles = styled.div`
         left: 0;
         right: 0;
         background-color: #000;
-        box-shadow: 0 0 8px 1px #333;
+        border: 1px solid #333;
         border-radius: 8px;
+        border-top: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
         display: none;
         z-index: 1;
 
@@ -68,7 +71,8 @@ const Styles = styled.div`
 
     &.open {
         .selected {
-            box-shadow: 0 0 0 0 transparent;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
         }
 
         .options {

@@ -96,7 +96,7 @@ export default function Playlist() {
             <StickyHeader>
                 <div />
                 <SecondaryButton onClick={handleCreate}>
-                    New Playlist
+                    Create
                 </SecondaryButton>
             </StickyHeader>
             <VerticalSortable items={playlists.map((playlist) => playlist.id)} onDragEnd={handleDragEnd}>
