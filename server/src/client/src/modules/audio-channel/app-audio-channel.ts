@@ -76,7 +76,7 @@ export class AppAudioChannel implements AudioChannel {
                 onEnded()
             }
             if (message.actionType === 'setPosition') {
-                onTimeUpdate(convertToSecond(message.position))
+                onTimeUpdate(convertToSecond(message.position), () => 0)
             }
         }
     }

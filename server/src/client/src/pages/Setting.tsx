@@ -85,9 +85,17 @@ const INSERT_MODES = [{
     label: 'Add to the next of the current music'
 }]
 
+const MIX_MODES = [{
+    value: 'none',
+    label: 'None'
+}, {
+    value: 'mix',
+    label: 'Mix (Fade in/out when music changes)'
+}]
+
 export default function Setting() {
     const [{ connectors }] = useStore(connectorStore)
-    const [{ playMode, insertMode }] = useStore(queueStore)
+    const [{ playMode, insertMode, mixMode }] = useStore(queueStore)
     const [progressMessage, setProgressMessage] = useState('')
 
     const handleClickSyncMusic = async (force: boolean) => {
@@ -171,6 +179,16 @@ export default function Setting() {
                         )}
                     </div>
                 ))}
+            </section>
+            <section>
+                <h3>Experimental</h3>
+                <p>Use experimental features. These features may not work properly. Use at your own risk. These features may be removed without notice.</p>
+                <p>Sound Effect</p>
+                <Select
+                    selected={MIX_MODES.find(({ value }) => value === mixMode)}
+                    options={MIX_MODES}
+                    onChange={(value) => queueStore.setMixMode(value as typeof mixMode)}
+                />
             </section>
             <section>
                 <h3>Have a problem?</h3>

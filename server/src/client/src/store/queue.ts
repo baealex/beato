@@ -19,6 +19,7 @@ interface QueueStoreState {
     insertMode: 'first' | 'last' | 'after'
     repeatMode: 'none' | 'one' | 'all'
     playMode: 'later' | 'immediately'
+    mixMode: 'none' | 'mix'
     currentTime: number
     progress: number
     items: string[]
@@ -45,6 +46,7 @@ class QueueStore extends Store<QueueStoreState> {
             insertMode: 'last',
             repeatMode: 'none',
             playMode: 'later',
+            mixMode: 'none',
             currentTime: 0,
             progress: 0,
             items: [],
@@ -83,7 +85,7 @@ class QueueStore extends Store<QueueStoreState> {
                     }
                 }
             },
-            onTimeUpdate: (time) => {
+            onTimeUpdate: (time, mix) => {
                 const music = getMusic(this.state.items[this.state.selected!])
                 const progress = Number((time / (music?.duration || 1) * 100).toFixed(2))
 
@@ -94,6 +96,10 @@ class QueueStore extends Store<QueueStoreState> {
                 if (this.shouldCount && Math.floor(progress) >= 80 && Math.floor(progress) < 90) {
                     this.shouldCount = false
                     MusicListener.count(this.state.items[this.state.selected!])
+                }
+
+                if (this.state.mixMode === 'mix') {
+                    mix()
                 }
 
                 this.set({
@@ -281,6 +287,10 @@ class QueueStore extends Store<QueueStoreState> {
 
     setInsertMode(mode: 'first' | 'last' | 'after') {
         this.set({ insertMode: mode })
+    }
+
+    setMixMode(mode: 'none' | 'mix') {
+        this.set({ mixMode: mode })
     }
 
     changeRepeatMode() {

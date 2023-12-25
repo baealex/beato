@@ -4,6 +4,7 @@ import type { Music } from '~/models/type'
 
 export class WebAudioChannel implements AudioChannel {
     private audio: HTMLAudioElement
+    private subAudio: HTMLAudioElement
 
     constructor({
         onPlay,
@@ -13,6 +14,7 @@ export class WebAudioChannel implements AudioChannel {
         onTimeUpdate,
     }: AudioChannelEventHandler) {
         this.audio = new Audio()
+        this.subAudio = new Audio()
 
         this.audio.addEventListener('play', () => {
             onPlay?.()
@@ -27,7 +29,27 @@ export class WebAudioChannel implements AudioChannel {
             onEnded()
         })
         this.audio.addEventListener('timeupdate', () => {
-            onTimeUpdate(this.audio.currentTime)
+            onTimeUpdate(this.audio.currentTime, () => {
+                const fadeTime = 20
+                if (this.audio.duration - this.audio.currentTime <= fadeTime) {
+                    this.subAudio.src = this.audio.src
+                    this.audio.volume = 0
+                    this.subAudio.volume = 1
+                    this.subAudio.currentTime = this.audio.currentTime
+                    this.subAudio.play()
+                    const interval = setInterval(() => {
+                        this.audio.volume += 0.1
+                        this.subAudio.volume -= 0.1
+
+                        if (this.audio.volume >= 1) {
+                            this.audio.volume = 1
+                            this.subAudio.volume = 0
+                            clearInterval(interval)
+                        }
+                    }, fadeTime * 1000 / 10)
+                    onEnded()
+                }
+            })
         })
     }
 

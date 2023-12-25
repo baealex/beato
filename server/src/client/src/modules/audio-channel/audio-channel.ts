@@ -5,7 +5,7 @@ export interface AudioChannelEventHandler {
     onPause?: () => void;
     onStop?: () => void;
     onEnded: () => void;
-    onTimeUpdate: (time: number) => void;
+    onTimeUpdate: (time: number, mix: () => void) => void;
     onSkipToNext?: () => void;
     onSkipToPrevious?: () => void;
 }
