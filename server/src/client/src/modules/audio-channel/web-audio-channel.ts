@@ -29,10 +29,12 @@ export class WebAudioChannel implements AudioChannel {
             onEnded()
         })
         this.audio.addEventListener('timeupdate', () => {
-            onTimeUpdate(this.audio.currentTime, () => {
-                const fadeTime = 20
-                if (this.audio.duration - this.audio.currentTime <= fadeTime) {
+            onTimeUpdate(this.audio.currentTime, (fadeTime: number, onMix: () => void) => {
+                if (this.audio.currentTime >= this.audio.duration - fadeTime - 5) {
                     this.subAudio.src = this.audio.src
+                }
+                if (this.audio.currentTime >= this.audio.duration - fadeTime) {
+                    onMix()
                     this.audio.volume = 0
                     this.subAudio.volume = 1
                     this.subAudio.currentTime = this.audio.currentTime
@@ -44,6 +46,7 @@ export class WebAudioChannel implements AudioChannel {
                         if (this.audio.volume >= 1) {
                             this.audio.volume = 1
                             this.subAudio.volume = 0
+                            this.subAudio.pause()
                             clearInterval(interval)
                         }
                     }, fadeTime * 1000 / 10)

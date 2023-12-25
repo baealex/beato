@@ -99,7 +99,12 @@ class QueueStore extends Store<QueueStoreState> {
                 }
 
                 if (this.state.mixMode === 'mix') {
-                    mix()
+                    mix(20, () => {
+                        if (this.shouldCount) {
+                            this.shouldCount = false
+                            MusicListener.count(this.state.items[this.state.selected!])
+                        }
+                    })
                 }
 
                 this.set({
