@@ -5,6 +5,7 @@ import type { Music } from '~/models/type'
 export class WebAudioChannel implements AudioChannel {
     private audio: HTMLAudioElement
     private subAudio: HTMLAudioElement
+    private mixInterval: ReturnType<typeof setInterval> | null
 
     constructor({
         onPlay,
@@ -15,6 +16,7 @@ export class WebAudioChannel implements AudioChannel {
     }: AudioChannelEventHandler) {
         this.audio = new Audio()
         this.subAudio = new Audio()
+        this.mixInterval = null
 
         this.audio.addEventListener('play', () => {
             onPlay?.()
@@ -30,24 +32,34 @@ export class WebAudioChannel implements AudioChannel {
         })
         this.audio.addEventListener('timeupdate', () => {
             onTimeUpdate(this.audio.currentTime, (fadeTime: number, onMix: () => void) => {
-                if (this.audio.currentTime >= this.audio.duration - fadeTime - 5) {
+                const isSameAudio = this.subAudio.src == this.audio.src
+                const shouldPrepare = this.audio.duration - this.audio.currentTime <= fadeTime + 5
+                const shouldMix = this.audio.duration - this.audio.currentTime <= fadeTime
+
+                if (!isSameAudio && shouldPrepare) {
+                    this.subAudio.volume = 0
                     this.subAudio.src = this.audio.src
-                }
-                if (this.audio.currentTime >= this.audio.duration - fadeTime) {
-                    onMix()
-                    this.audio.volume = 0
-                    this.subAudio.volume = 1
                     this.subAudio.currentTime = this.audio.currentTime
                     this.subAudio.play()
-                    const interval = setInterval(() => {
-                        this.audio.volume += 0.1
-                        this.subAudio.volume -= 0.1
+                }
+
+                if (!this.mixInterval && shouldMix) {
+                    onMix()
+
+                    this.subAudio.currentTime = this.audio.currentTime
+                    this.audio.volume = 0
+                    this.subAudio.volume = 1
+
+                    this.mixInterval = setInterval(() => {
+                        this.audio.volume = Math.round((this.audio.volume + 0.1) * 10) / 10
+                        this.subAudio.volume = Math.round((this.subAudio.volume - 0.1) * 10) / 10
 
                         if (this.audio.volume >= 1) {
                             this.audio.volume = 1
                             this.subAudio.volume = 0
                             this.subAudio.pause()
-                            clearInterval(interval)
+                            clearInterval(this.mixInterval!)
+                            this.mixInterval = null
                         }
                     }, fadeTime * 1000 / 10)
                     onEnded()
