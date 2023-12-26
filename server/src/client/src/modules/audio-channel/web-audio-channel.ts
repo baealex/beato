@@ -4,68 +4,69 @@ import type { Music } from '~/models/type'
 
 export class WebAudioChannel implements AudioChannel {
     private audio: HTMLAudioElement
-    private subAudio: HTMLAudioElement
+    private backgroundAudio: HTMLAudioElement
+    private handler: AudioChannelEventHandler
     private mixInterval: ReturnType<typeof setInterval> | null
 
-    constructor({
-        onPlay,
-        onPause,
-        onStop,
-        onEnded,
-        onTimeUpdate,
-    }: AudioChannelEventHandler) {
+    constructor(_handler: AudioChannelEventHandler) {
         this.audio = new Audio()
-        this.subAudio = new Audio()
+        this.backgroundAudio = new Audio()
         this.mixInterval = null
+        this.handler = {
+            onPlay: () => _handler.onPlay?.(),
+            onPause: () => _handler.onPause?.(),
+            onStop: () => _handler.onStop?.(),
+            onEnded: () => _handler.onEnded(),
+            onTimeUpdate: () => {
+                _handler.onTimeUpdate(this.audio.currentTime, (fadeTime: number, onMix: () => void) => {
+                    const shouldMix = this.audio.duration - this.audio.currentTime <= fadeTime
 
-        this.audio.addEventListener('play', () => {
-            onPlay?.()
-        })
-        this.audio.addEventListener('pause', () => {
-            onPause?.()
-        })
-        this.audio.addEventListener('abort', () => {
-            onStop?.()
-        })
-        this.audio.addEventListener('ended', () => {
-            onEnded()
-        })
-        this.audio.addEventListener('timeupdate', () => {
-            onTimeUpdate(this.audio.currentTime, (fadeTime: number, onMix: () => void) => {
-                const isSameAudio = this.subAudio.src == this.audio.src
-                const shouldPrepare = this.audio.duration - this.audio.currentTime <= fadeTime + 5
-                const shouldMix = this.audio.duration - this.audio.currentTime <= fadeTime
+                    if (!this.mixInterval && shouldMix) {
+                        onMix()
 
-                if (!isSameAudio && shouldPrepare) {
-                    this.subAudio.volume = 0
-                    this.subAudio.src = this.audio.src
-                    this.subAudio.currentTime = this.audio.currentTime
-                    this.subAudio.play()
-                }
+                        this.swapAudio()
+                        this.setNewAudio()
 
-                if (!this.mixInterval && shouldMix) {
-                    onMix()
+                        this.audio.volume = 0
+                        this.backgroundAudio.volume = 1
+    
+                        this.mixInterval = setInterval(() => {
+                            this.audio.volume = Math.round((this.audio.volume + 0.1) * 10) / 10
+                            this.backgroundAudio.volume = Math.round((this.backgroundAudio.volume - 0.1) * 10) / 10
+    
+                            if (this.audio.volume >= 1) {
+                                this.audio.volume = 1
+                                this.backgroundAudio.volume = 0
+                                this.backgroundAudio.pause()
+                                clearInterval(this.mixInterval!)
+                                this.mixInterval = null
+                            }
+                        }, fadeTime * 1000 / 10)
+                        _handler.onEnded()
+                    }
+                })
+            }
+        }
+        this.setNewAudio()
+    }
 
-                    this.subAudio.currentTime = this.audio.currentTime
-                    this.audio.volume = 0
-                    this.subAudio.volume = 1
+    setNewAudio() {
+        this.audio = new Audio()
+        this.audio.addEventListener('play', this.handler.onPlay!)
+        this.audio.addEventListener('pause', this.handler.onPause!)
+        this.audio.addEventListener('abort', this.handler.onStop!)
+        this.audio.addEventListener('ended', this.handler.onEnded!)
+        this.audio.addEventListener('timeupdate', this.handler.onTimeUpdate as () => void)
+    }
 
-                    this.mixInterval = setInterval(() => {
-                        this.audio.volume = Math.round((this.audio.volume + 0.1) * 10) / 10
-                        this.subAudio.volume = Math.round((this.subAudio.volume - 0.1) * 10) / 10
-
-                        if (this.audio.volume >= 1) {
-                            this.audio.volume = 1
-                            this.subAudio.volume = 0
-                            this.subAudio.pause()
-                            clearInterval(this.mixInterval!)
-                            this.mixInterval = null
-                        }
-                    }, fadeTime * 1000 / 10)
-                    onEnded()
-                }
-            })
-        })
+    swapAudio() {
+        const tempAudio = this.audio
+        tempAudio.removeEventListener('play', this.handler.onPlay!)
+        tempAudio.removeEventListener('pause', this.handler.onPause!)
+        tempAudio.removeEventListener('abort', this.handler.onStop!)
+        tempAudio.removeEventListener('ended', this.handler.onEnded!)
+        tempAudio.removeEventListener('timeupdate', this.handler.onTimeUpdate as () => void)
+        this.backgroundAudio = tempAudio
     }
 
     load(music: Music) {
