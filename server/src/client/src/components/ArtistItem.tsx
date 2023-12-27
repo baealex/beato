@@ -16,11 +16,11 @@ const Container = styled.button`
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.75rem;
+    gap: 16px;
 
     img {
-        width: 4rem;
-        height: 4rem;
+        width: 72px;
+        height: 72px;
         object-fit: cover;
         border-radius: 100%;
     }
@@ -28,13 +28,17 @@ const Container = styled.button`
     .info {
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 4px;
+    }
+
+    .name {
+        font-size: 14px;
     }
 
     .count {
         display: flex;
-        gap: 0.25rem;
-        font-size: 0.75rem;
+        gap: 6px;
+        font-size: 14px;
         color: rgba(255, 255, 255, 0.5);
     }
 
@@ -66,7 +70,7 @@ export default function ArtistItem({
                     <div className="album">
                         {albumCount} albums
                     </div>
-                    <span> / </span>
+                    <span>/</span>
                     <div className="music">
                         {musicCount} songs
                     </div>

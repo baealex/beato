@@ -10,7 +10,7 @@ import { musicStore } from '~/store/music'
 
 const Container = styled.button`
     color: #eee;
-    font-size: 0.8rem;
+    font-size: 14px;
     padding: 1rem;
     display: flex;
     align-items: center;

@@ -13,15 +13,15 @@ const Container = styled.button`
     display: flex;
     flex-direction: column;
     text-align: left;
-    gap: 0.25rem;
-    border-radius: 0.5rem;
+    gap: 4px;
+    border-radius: 16px;
     background-color: #111;
     transition: background-color 0.2s ease-in-out;
-    padding-bottom: 0.5rem;
+    padding: 4px 4px 8px;
 
     @media (min-width: 1024px) {
         &:hover {
-            background-color: #222222;
+            background-color: #222;
         }
     }
 
@@ -30,13 +30,13 @@ const Container = styled.button`
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 0.5rem;
-        padding-bottom: 0.5rem;
+        border-radius: 12px 12px 0 0;
+        padding-bottom: 8px;
     }
 
     .title,
     .artist {
-        padding: 0 0.5rem;
+        padding: 0 8px;
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -44,12 +44,14 @@ const Container = styled.button`
     }
 
     .title {
-        color: #eeeeee;
+        font-size: 14px;
         font-weight: bold;
+        color: #eee;
     }
 
     .artist {
-        color: #aaaaaa;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.65);
     }
 `
 
