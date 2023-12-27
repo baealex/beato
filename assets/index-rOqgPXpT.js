@@ -10,15 +10,15 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
     display: flex;
     flex-direction: column;
     text-align: left;
-    gap: 0.25rem;
-    border-radius: 0.5rem;
+    gap: 4px;
+    border-radius: 16px;
     background-color: #111;
     transition: background-color 0.2s ease-in-out;
-    padding-bottom: 0.5rem;
+    padding: 4px 4px 8px;
 
     @media (min-width: 1024px) {
         &:hover {
-            background-color: #222222;
+            background-color: #222;
         }
     }
 
@@ -27,13 +27,13 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 0.5rem;
-        padding-bottom: 0.5rem;
+        border-radius: 12px 12px 0 0;
+        padding-bottom: 8px;
     }
 
     .title,
     .artist {
-        padding: 0 0.5rem;
+        padding: 0 8px;
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -41,12 +41,14 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
     }
 
     .title {
-        color: #eeeeee;
+        font-size: 14px;
         font-weight: bold;
+        color: #eee;
     }
 
     .artist {
-        color: #aaaaaa;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.65);
     }
 `;function fr({albumCover:t,albumName:e,artistName:n,onClick:s}){return a.jsxs(Ho,{onClick:s,children:[a.jsx(pe,{className:"cover",src:t,alt:e}),a.jsx("span",{className:"title",children:e}),a.jsx("span",{className:"artist",children:n})]})}const zo=A.button`
     cursor: pointer;
@@ -54,11 +56,11 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.75rem;
+    gap: 16px;
 
     img {
-        width: 4rem;
-        height: 4rem;
+        width: 72px;
+        height: 72px;
         object-fit: cover;
         border-radius: 100%;
     }
@@ -66,13 +68,17 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
     .info {
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 4px;
+    }
+
+    .name {
+        font-size: 14px;
     }
 
     .count {
         display: flex;
-        gap: 0.25rem;
-        font-size: 0.75rem;
+        gap: 6px;
+        font-size: 14px;
         color: rgba(255, 255, 255, 0.5);
     }
 
@@ -81,7 +87,7 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
             background-color: rgba(255, 255, 255, 0.1);
         }
     }
-`;function Wo({artistName:t,artistCover:e,albumCount:n,musicCount:s,onClick:r}){return a.jsxs(zo,{className:"clickable linkable",onClick:r,children:[a.jsx(pe,{src:e,alt:t}),a.jsxs("div",{className:"info",children:[a.jsx("div",{className:"name",children:t}),a.jsxs("div",{className:"count",children:[a.jsxs("div",{className:"album",children:[n," albums"]}),a.jsx("span",{children:" / "}),a.jsxs("div",{className:"music",children:[s," songs"]})]})]})]})}const Vo=A.div`
+`;function Wo({artistName:t,artistCover:e,albumCount:n,musicCount:s,onClick:r}){return a.jsxs(zo,{className:"clickable linkable",onClick:r,children:[a.jsx(pe,{src:e,alt:t}),a.jsxs("div",{className:"info",children:[a.jsx("div",{className:"name",children:t}),a.jsxs("div",{className:"count",children:[a.jsxs("div",{className:"album",children:[n," albums"]}),a.jsx("span",{children:"/"}),a.jsxs("div",{className:"music",children:[s," songs"]})]})]})]})}const Vo=A.div`
     @keyframes fade-in {
         from {
             opacity: 0;
@@ -207,9 +213,9 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
 `+i.map(zs).join(`
 `):" "+zs(i[0]):"as no adapter specified";throw new k("There is no suitable adapter to dispatch the request "+o,"ERR_NOT_SUPPORT")}return s},adapters:Cn};function tn(t){if(t.cancelToken&&t.cancelToken.throwIfRequested(),t.signal&&t.signal.aborted)throw new nt(null,t)}function Ws(t){return tn(t),t.headers=he.from(t.headers),t.data=en.call(t,t.transformRequest),["post","put","patch"].indexOf(t.method)!==-1&&t.headers.setContentType("application/x-www-form-urlencoded",!1),si.getAdapter(t.adapter||es.adapter)(t).then(function(s){return tn(t),s.data=en.call(t,t.transformResponse,s),s.headers=he.from(s.headers),s},function(s){return ti(s)||(tn(t),s&&s.response&&(s.response.data=en.call(t,t.transformResponse,s.response),s.response.headers=he.from(s.response.headers))),Promise.reject(s)})}const Vs=t=>t instanceof he?t.toJSON():t;function Ne(t,e){e=e||{};const n={};function s(h,l,u){return f.isPlainObject(h)&&f.isPlainObject(l)?f.merge.call({caseless:u},h,l):f.isPlainObject(l)?f.merge({},l):f.isArray(l)?l.slice():l}function r(h,l,u){if(f.isUndefined(l)){if(!f.isUndefined(h))return s(void 0,h,u)}else return s(h,l,u)}function i(h,l){if(!f.isUndefined(l))return s(void 0,l)}function o(h,l){if(f.isUndefined(l)){if(!f.isUndefined(h))return s(void 0,h)}else return s(void 0,l)}function c(h,l,u){if(u in e)return s(h,l);if(u in t)return s(void 0,h)}const d={url:i,method:i,data:i,baseURL:o,transformRequest:o,transformResponse:o,paramsSerializer:o,timeout:o,timeoutMessage:o,withCredentials:o,withXSRFToken:o,adapter:o,responseType:o,xsrfCookieName:o,xsrfHeaderName:o,onUploadProgress:o,onDownloadProgress:o,decompress:o,maxContentLength:o,maxBodyLength:o,beforeRedirect:o,transport:o,httpAgent:o,httpsAgent:o,cancelToken:o,socketPath:o,responseEncoding:o,validateStatus:c,headers:(h,l)=>r(Vs(h),Vs(l),!0)};return f.forEach(Object.keys(Object.assign({},t,e)),function(l){const u=d[l]||r,y=u(t[l],e[l],l);f.isUndefined(y)&&u!==c||(n[l]=y)}),n}const ri="1.6.2",ts={};["object","boolean","number","function","string","symbol"].forEach((t,e)=>{ts[t]=function(s){return typeof s===t||"a"+(e<1?"n ":" ")+t}});const Ys={};ts.transitional=function(e,n,s){function r(i,o){return"[Axios v"+ri+"] Transitional option '"+i+"'"+o+(s?". "+s:"")}return(i,o,c)=>{if(e===!1)throw new k(r(o," has been removed"+(n?" in "+n:"")),k.ERR_DEPRECATED);return n&&!Ys[o]&&(Ys[o]=!0,console.warn(r(o," has been deprecated since v"+n+" and will be removed in the near future"))),e?e(i,o,c):!0}};function ul(t,e,n){if(typeof t!="object")throw new k("options must be an object",k.ERR_BAD_OPTION_VALUE);const s=Object.keys(t);let r=s.length;for(;r-- >0;){const i=s[r],o=e[i];if(o){const c=t[i],d=c===void 0||o(c,i,t);if(d!==!0)throw new k("option "+i+" must be "+d,k.ERR_BAD_OPTION_VALUE);continue}if(n!==!0)throw new k("Unknown option "+i,k.ERR_BAD_OPTION)}}const En={assertOptions:ul,validators:ts},fe=En.validators;class At{constructor(e){this.defaults=e,this.interceptors={request:new $s,response:new $s}}request(e,n){typeof e=="string"?(n=n||{},n.url=e):n=e||{},n=Ne(this.defaults,n);const{transitional:s,paramsSerializer:r,headers:i}=n;s!==void 0&&En.assertOptions(s,{silentJSONParsing:fe.transitional(fe.boolean),forcedJSONParsing:fe.transitional(fe.boolean),clarifyTimeoutError:fe.transitional(fe.boolean)},!1),r!=null&&(f.isFunction(r)?n.paramsSerializer={serialize:r}:En.assertOptions(r,{encode:fe.function,serialize:fe.function},!0)),n.method=(n.method||this.defaults.method||"get").toLowerCase();let o=i&&f.merge(i.common,i[n.method]);i&&f.forEach(["delete","get","head","post","put","patch","common"],g=>{delete i[g]}),n.headers=he.concat(o,i);const c=[];let d=!0;this.interceptors.request.forEach(function(p){typeof p.runWhen=="function"&&p.runWhen(n)===!1||(d=d&&p.synchronous,c.unshift(p.fulfilled,p.rejected))});const h=[];this.interceptors.response.forEach(function(p){h.push(p.fulfilled,p.rejected)});let l,u=0,y;if(!d){const g=[Ws.bind(this),void 0];for(g.unshift.apply(g,c),g.push.apply(g,h),y=g.length,l=Promise.resolve(n);u<y;)l=l.then(g[u++],g[u++]);return l}y=c.length;let w=n;for(u=0;u<y;){const g=c[u++],p=c[u++];try{w=g(w)}catch(x){p.call(this,x);break}}try{l=Ws.call(this,w)}catch(g){return Promise.reject(g)}for(u=0,y=h.length;u<y;)l=l.then(h[u++],h[u++]);return l}getUri(e){e=Ne(this.defaults,e);const n=ni(e.baseURL,e.url);return Gr(n,e.params,e.paramsSerializer)}}f.forEach(["delete","get","head","options"],function(e){At.prototype[e]=function(n,s){return this.request(Ne(s||{},{method:e,url:n,data:(s||{}).data}))}});f.forEach(["post","put","patch"],function(e){function n(s){return function(i,o,c){return this.request(Ne(c||{},{method:e,headers:s?{"Content-Type":"multipart/form-data"}:{},url:i,data:o}))}}At.prototype[e]=n(),At.prototype[e+"Form"]=n(!0)});const xt=At;class ns{constructor(e){if(typeof e!="function")throw new TypeError("executor must be a function.");let n;this.promise=new Promise(function(i){n=i});const s=this;this.promise.then(r=>{if(!s._listeners)return;let i=s._listeners.length;for(;i-- >0;)s._listeners[i](r);s._listeners=null}),this.promise.then=r=>{let i;const o=new Promise(c=>{s.subscribe(c),i=c}).then(r);return o.cancel=function(){s.unsubscribe(i)},o},e(function(i,o,c){s.reason||(s.reason=new nt(i,o,c),n(s.reason))})}throwIfRequested(){if(this.reason)throw this.reason}subscribe(e){if(this.reason){e(this.reason);return}this._listeners?this._listeners.push(e):this._listeners=[e]}unsubscribe(e){if(!this._listeners)return;const n=this._listeners.indexOf(e);n!==-1&&this._listeners.splice(n,1)}static source(){let e;return{token:new ns(function(r){e=r}),cancel:e}}}const hl=ns;function fl(t){return function(n){return t.apply(null,n)}}function ml(t){return f.isObject(t)&&t.isAxiosError===!0}const kn={Continue:100,SwitchingProtocols:101,Processing:102,EarlyHints:103,Ok:200,Created:201,Accepted:202,NonAuthoritativeInformation:203,NoContent:204,ResetContent:205,PartialContent:206,MultiStatus:207,AlreadyReported:208,ImUsed:226,MultipleChoices:300,MovedPermanently:301,Found:302,SeeOther:303,NotModified:304,UseProxy:305,Unused:306,TemporaryRedirect:307,PermanentRedirect:308,BadRequest:400,Unauthorized:401,PaymentRequired:402,Forbidden:403,NotFound:404,MethodNotAllowed:405,NotAcceptable:406,ProxyAuthenticationRequired:407,RequestTimeout:408,Conflict:409,Gone:410,LengthRequired:411,PreconditionFailed:412,PayloadTooLarge:413,UriTooLong:414,UnsupportedMediaType:415,RangeNotSatisfiable:416,ExpectationFailed:417,ImATeapot:418,MisdirectedRequest:421,UnprocessableEntity:422,Locked:423,FailedDependency:424,TooEarly:425,UpgradeRequired:426,PreconditionRequired:428,TooManyRequests:429,RequestHeaderFieldsTooLarge:431,UnavailableForLegalReasons:451,InternalServerError:500,NotImplemented:501,BadGateway:502,ServiceUnavailable:503,GatewayTimeout:504,HttpVersionNotSupported:505,VariantAlsoNegotiates:506,InsufficientStorage:507,LoopDetected:508,NotExtended:510,NetworkAuthenticationRequired:511};Object.entries(kn).forEach(([t,e])=>{kn[e]=t});const pl=kn;function ii(t){const e=new xt(t),n=Fr(xt.prototype.request,e);return f.extend(n,xt.prototype,e,{allOwnKeys:!0}),f.extend(n,e,null,{allOwnKeys:!0}),n.create=function(r){return ii(Ne(t,r))},n}const I=ii(es);I.Axios=xt;I.CanceledError=nt;I.CancelToken=hl;I.isCancel=ti;I.VERSION=ri;I.toFormData=Bt;I.AxiosError=k;I.Cancel=I.CanceledError;I.all=function(e){return Promise.all(e)};I.spread=fl;I.isAxiosError=ml;I.mergeConfig=Ne;I.AxiosHeaders=he;I.formToJSON=t=>ei(f.isHTMLForm(t)?new FormData(t):t);I.getAdapter=si.getAdapter;I.HttpStatusCode=pl;I.default=I;const gl=I;function xe(t,e){return t+" { "+e+" }"}function q(t,e){return t+" {"+e.join(" ")+"}"}async function we(t){const{data:e}=await gl.request({url:"/graphql",method:"POST",data:{query:t}});return e}function yl(){return we(xe("query",q("allMusics",["id","name","filePath","codec","duration","playCount","trackNumber","isLiked","isHated","createdAt",q("artist",["id","name"]),q("album",["id","name","cover","publishedYear"])])))}function bl(){return we(xe("query",q("allArtists",["id","name","createdAt","albumCount","musicCount",q("latestAlbum",["cover"])])))}function xl(t){return we(xe("query",q(`artist(id: "${t}")`,["id","name","albumCount","musicCount","createdAt",q("latestAlbum",["cover"]),q("albums",["id","name","cover","publishedYear"]),q("musics",["id"])])))}function wl(){return we(xe("query",q("allAlbums",["id","name","cover","publishedYear","createdAt",q("artist",["id","name"])])))}function vl(t){return we(xe("query",q(`album(id: "${t}")`,["id","name","cover","publishedYear",q("artist",["id","name"]),q("musics",["id"])])))}function Cl(){return we(xe("query",q("allPlaylist",["id","name","musicCount","createdAt","updatedAt",q("headerMusics",["id"])])))}function El(t){return we(xe("query",q(`playlist(id: "${t}")`,["id","name","musicCount","createdAt","updatedAt",q("musics",["id"])])))}const T={NAME:"name",NAME_DESC:"nameDesc",ARTIST_NAME:"artist",ARTIST_NAME_DESC:"artistDesc",ALBUM_NAME:"album",ALBUM_NAME_DESC:"albumDesc",PLAY_COUNT:"playCount",PLAY_COUNT_DESC:"playCountDesc",CREATED_AT:"createdAt",CREATED_AT_DESC:"createdAtDesc"};class kl extends be{constructor(){super();B(this,"init",!1);B(this,"listener");this.state={loaded:!1,sortedFrom:T.PLAY_COUNT_DESC,musics:[],musicMap:new Map},this.listener=new ye,this.listener.connect({onLike:({id:n,isLiked:s})=>{this.set({musics:this.state.musics.map(r=>(r.id===n&&(r.isLiked=s),r))})},onHate:({id:n,isHated:s})=>{this.set({musics:this.state.musics.map(r=>(r.id===n&&(r.isHated=s),r))})},onCount:({id:n,playCount:s})=>{this.set(r=>{let i=r.musics.map(o=>(o.id===n&&(o.playCount=s),o));return r.sortedFrom===T.PLAY_COUNT_DESC?i=dt(i):r.sortedFrom===T.PLAY_COUNT&&(i=dt(i).reverse()),{musics:i}})}})}get state(){return this.init||(this.init=!0,this.sync()),super.state}set state(n){super.state=n}async sync(){yl().then(({data:n})=>{this.set({loaded:!0,musics:n.allMusics,musicMap:new Map(n.allMusics.map(s=>[s.id,s])),sortedFrom:T.PLAY_COUNT_DESC})})}get sortItems(){return[{text:"Name (A-Z)",isActive:this.state.sortedFrom===T.NAME,onClick:()=>{this.set(n=>({musics:Se(n.musics),sortedFrom:T.NAME}))}},{text:"Name (Z-A)",isActive:this.state.sortedFrom===T.NAME_DESC,onClick:()=>{this.set(n=>({musics:Se(n.musics).reverse(),sortedFrom:T.NAME_DESC}))}},{text:"Artist Name (A to Z)",isActive:this.state.sortedFrom===T.ARTIST_NAME,onClick:()=>{this.set(n=>({musics:kt(n.musics),sortedFrom:T.ARTIST_NAME}))}},{text:"Artist Name (Z to A)",isActive:this.state.sortedFrom===T.ARTIST_NAME_DESC,onClick:()=>{this.set(n=>({musics:kt(n.musics).reverse(),sortedFrom:T.ARTIST_NAME_DESC}))}},{text:"Album Name (A to Z)",isActive:this.state.sortedFrom===T.ALBUM_NAME,onClick:()=>{this.set(n=>({musics:Ls(n.musics),sortedFrom:T.ALBUM_NAME}))}},{text:"Album Name (Z to A)",isActive:this.state.sortedFrom===T.ALBUM_NAME_DESC,onClick:()=>{this.set(n=>({musics:Ls(n.musics).reverse(),sortedFrom:T.ALBUM_NAME_DESC}))}},{text:"Play Count (High to Low)",isActive:this.state.sortedFrom===T.PLAY_COUNT_DESC,onClick:()=>{this.set(n=>({musics:dt(n.musics),sortedFrom:T.PLAY_COUNT_DESC}))}},{text:"Play Count (Low to High)",isActive:this.state.sortedFrom===T.PLAY_COUNT,onClick:()=>{this.set(n=>({musics:dt(n.musics).reverse(),sortedFrom:T.PLAY_COUNT}))}},{text:"Date Added (New to Old)",isActive:this.state.sortedFrom===T.CREATED_AT_DESC,onClick:()=>{this.set(n=>({musics:_e(n.musics),sortedFrom:T.CREATED_AT_DESC}))}},{text:"Date Added (Old to New)",isActive:this.state.sortedFrom===T.CREATED_AT,onClick:()=>{this.set(n=>({musics:_e(n.musics).reverse(),sortedFrom:T.CREATED_AT}))}}]}}const W=new kl,Ie=t=>JSON.stringify(t);class Al{constructor({onPlay:e,onPause:n,onStop:s,onEnded:r,onTimeUpdate:i,onSkipToNext:o,onSkipToPrevious:c}){window.AppChannel.receiveMessage=d=>{d.actionType==="play"&&(e==null||e()),d.actionType==="pause"&&(n==null||n()),d.actionType==="stop"&&(s==null||s()),d.actionType==="skipToNext"&&(o==null||o()),d.actionType==="skipToPrevious"&&(c==null||c()),d.actionType==="end"&&r(),d.actionType==="setPosition"&&i(ca(d.position),()=>0)}}load(e){window.AppChannel.postMessage(Ie({actionType:"setMediaItem",mediaItem:{id:location.origin+"/api/audio/"+e.id,album:e.album.name,title:e.name,artist:e.artist.name,duration:vs(e.duration),artUri:location.origin+Ke(e.album.cover)}}))}play(){window.AppChannel.postMessage(Ie({actionType:"play"}))}pause(){window.AppChannel.postMessage(Ie({actionType:"pause"}))}stop(){window.AppChannel.postMessage(Ie({actionType:"stop"}))}seek(e){window.AppChannel.postMessage(Ie({actionType:"setPosition",position:vs(e)}))}download(){H.toast("Not supported yet.")}}class Sl{constructor(e){B(this,"audio");B(this,"backgroundAudio");B(this,"handler");B(this,"mixInterval");this.audio=new Audio,this.backgroundAudio=new Audio,this.mixInterval=null,this.handler={onPlay:()=>{var n;return(n=e.onPlay)==null?void 0:n.call(e)},onPause:()=>{var n;return(n=e.onPause)==null?void 0:n.call(e)},onStop:()=>{var n;return(n=e.onStop)==null?void 0:n.call(e)},onEnded:()=>e.onEnded(),onTimeUpdate:()=>{e.onTimeUpdate(this.audio.currentTime,(n,s)=>{const r=this.audio.duration-this.audio.currentTime<=n;!this.mixInterval&&r&&(s(),this.swapAudio(),this.setNewAudio(),this.audio.volume=0,this.backgroundAudio.volume=1,this.mixInterval=setInterval(()=>{this.audio.volume=Math.round((this.audio.volume+.1)*10)/10,this.backgroundAudio.volume=Math.round((this.backgroundAudio.volume-.1)*10)/10,this.audio.volume>=1&&(this.audio.volume=1,this.backgroundAudio.volume=0,this.backgroundAudio.pause(),clearInterval(this.mixInterval),this.mixInterval=null)},n*1e3/10),e.onEnded())})}},this.setNewAudio()}setNewAudio(){this.audio=new Audio,this.audio.addEventListener("play",this.handler.onPlay),this.audio.addEventListener("pause",this.handler.onPause),this.audio.addEventListener("abort",this.handler.onStop),this.audio.addEventListener("ended",this.handler.onEnded),this.audio.addEventListener("timeupdate",this.handler.onTimeUpdate)}swapAudio(){const e=this.audio;e.removeEventListener("play",this.handler.onPlay),e.removeEventListener("pause",this.handler.onPause),e.removeEventListener("abort",this.handler.onStop),e.removeEventListener("ended",this.handler.onEnded),e.removeEventListener("timeupdate",this.handler.onTimeUpdate),this.backgroundAudio=e}load(e){const n="/api/audio/"+e.id;this.audio.pause(),this.audio.src=n,this.audio.currentTime=0,this.audio.load()}play(){this.audio.play()}pause(){this.audio.pause()}stop(){this.audio.pause(),this.audio.currentTime=0}seek(e){this.audio.currentTime=e}download(e){const n="/api/audio/"+e.id,s=document.createElement("a");s.href=n,s.download=e.filePath.split("/").pop(),s.click()}}const _l=t=>{const e=[...t];for(let n=e.length-1;n>0;n--){const s=Math.floor(Math.random()*(n+1));[e[n],e[s]]=[e[s],e[n]]}return e};let nn=null;const sn=t=>W.state.musicMap.get(t);class Nl extends be{constructor(){super();B(this,"shouldCount",!1);B(this,"audioChannel");this.state={selected:null,isPlaying:!1,shuffle:!1,insertMode:"last",repeatMode:"none",playMode:"later",mixMode:"none",currentTime:0,progress:0,items:[],sourceItems:[]};const n={onPlay:()=>{this.set({isPlaying:!0})},onPause:()=>{this.set({isPlaying:!1})},onStop:()=>{this.set({isPlaying:!1})},onEnded:()=>{if(this.state.selected!==null){if(this.state.repeatMode==="one"){this.select(this.state.selected);return}if(this.state.repeatMode==="all"){this.select((this.state.selected+1)%this.state.items.length),this.audioChannel.play();return}this.state.repeatMode==="none"&&(this.state.selected+1<this.state.items.length?(this.select(this.state.selected+1),this.audioChannel.play()):(this.audioChannel.stop(),this.set({isPlaying:!1})))}},onTimeUpdate:(r,i)=>{const o=sn(this.state.items[this.state.selected]),c=Number((r/((o==null?void 0:o.duration)||1)*100).toFixed(2));!this.shouldCount&&Math.floor(c)>=0&&Math.floor(c)<10&&(this.shouldCount=!0),this.shouldCount&&Math.floor(c)>=80&&Math.floor(c)<90&&(this.shouldCount=!1,ye.count(this.state.items[this.state.selected])),this.state.mixMode==="mix"&&i(20,()=>{this.shouldCount&&(this.shouldCount=!1,ye.count(this.state.items[this.state.selected]))}),this.set({currentTime:r,progress:c})},onSkipToNext:()=>{this.next()},onSkipToPrevious:()=>{this.prev()}};this.audioChannel=window.AppChannel?new Al(n):new Sl(n);const s=W.subscribe(async({loaded:r})=>{if(r){const i=localStorage.getItem("queue");if(i){const o=JSON.parse(i);await this.set(o),this.select(o.selected||0,!1)}W.unsubscribe(s)}});window.addEventListener("beforeunload",()=>{this.audioChannel.stop()})}async reset(n){this.state.items.length>0&&!await H.confirm("Are you sure to reset queue?")||(await this.set({items:n,sourceItems:[],shuffle:!1,selected:null,currentTime:0,progress:0,isPlaying:!1}),this.select(0))}async add(n){if(this.state.items.includes(n)){if(this.state.playMode==="immediately"){this.select(this.state.items.indexOf(n));return}H.toast("Already added to queue");return}if(this.state.shuffle&&this.set({sourceItems:[...this.state.items,n]}),this.state.insertMode==="first"&&this.set({items:[n,...this.state.items]}),this.state.insertMode==="last"&&this.set({items:[...this.state.items,n]}),this.state.insertMode==="after"&&(this.state.selected===null?this.set({items:[...this.state.items,n]}):this.set({items:[...this.state.items.slice(0,this.state.selected+1),n,...this.state.items.slice(this.state.selected+1)]})),H.toast("Added to queue"),this.state.playMode==="immediately"){this.select(this.state.items.indexOf(n));return}this.state.selected===null&&this.select(0)}async removeItems(n){const s=this.state.items.filter(c=>!n.includes(c)),r=this.state.sourceItems.filter(c=>!n.includes(c)),i=this.state.selected,o=s.length>0?this.state.items[i||0]:null;if(await this.set({items:s,sourceItems:r}),s.length===0){this.audioChannel.stop(),this.set({selected:null,currentTime:0,progress:0,isPlaying:!1});return}if(o){if(!n.includes(o)){this.set({selected:s.indexOf(o)});return}if(n.includes(o)){if(this.state.items.length>=i){this.select(i);return}if(this.state.items.length<i){this.select(this.state.items.length-1);return}}}}select(n,s=!0){this.set({selected:n,progress:0,currentTime:0,isPlaying:s});const r=sn(this.state.items[n]);r!==void 0&&(document.title=`${r.name} - ${r.artist.name}`,this.audioChannel.load(r),s&&this.audioChannel.play())}play(){this.state.selected!==null&&this.audioChannel.play()}pause(){this.audioChannel.pause()}stop(){this.audioChannel.stop()}seek(n){this.audioChannel.seek(n)}setPlayMode(n){this.set({playMode:n})}setInsertMode(n){this.set({insertMode:n})}setMixMode(n){this.set({mixMode:n})}changeRepeatMode(){const n=["none","all","one"],s=n.indexOf(this.state.repeatMode),r=n[(s+1)%n.length];this.set({repeatMode:r})}toggleShuffle(){const n=this.state.items[this.state.selected];if(this.state.shuffle){this.set({shuffle:!1,selected:this.state.sourceItems.indexOf(n),items:[...this.state.sourceItems],sourceItems:[]});return}const s=_l([...this.state.items]).filter(r=>r!==n);s.unshift(n),this.set({shuffle:!0,selected:0,items:s,sourceItems:[...this.state.items]})}next(){this.state.selected!==null&&(this.select((this.state.selected+1)%this.state.items.length),this.audioChannel.play())}prev(){if(this.state.selected!==null){if(this.state.currentTime>10){this.audioChannel.seek(0);return}this.select((this.state.selected-1+this.state.items.length)%this.state.items.length),this.audioChannel.play()}}download(n){this.audioChannel.download(sn(n))}afterStateChange(){nn||(nn=setTimeout(()=>{localStorage.setItem("queue",JSON.stringify({...this.state,isPlaying:!1,currentTime:0,progress:0})),nn=null},3e3))}}const C=new Nl;function ve({id:t,onArtistClick:e,onAlbumClick:n}){const[{musicMap:s}]=L(W),r=s.get(t);return r?a.jsx(Ut,{header:a.jsxs(a.Fragment,{children:[n&&a.jsxs("button",{className:"panel-album clickable linkable",onClick:()=>{R.close(),setTimeout(n,100)},children:[a.jsx(pe,{className:"cover",src:r.album.cover,alt:r.album.name}),a.jsxs("div",{children:[a.jsx("div",{className:"panel-sub-title",children:"Album"}),a.jsx("div",{className:"panel-sub-content",children:r.album.name})]})]}),e&&a.jsx("button",{className:"panel-artist clickable linkable",onClick:()=>{R.close(),setTimeout(e,100)},children:a.jsxs("div",{children:[a.jsx("div",{className:"panel-sub-title",children:"Artist"}),a.jsx("div",{className:"panel-sub-content",children:r.artist.name})]})})]}),items:[{icon:a.jsx(pr,{}),text:"Like",isActive:r.isLiked,onClick:()=>ye.like(r.id,!r.isLiked)},{icon:a.jsx(G,{}),text:"Add to Queue",onClick:()=>C.add(r.id)},{icon:a.jsx(Un,{}),text:"Add to Playlist",onClick:()=>{R.close(),R.open({title:"Add to Playlist",content:a.jsx(rs,{onClick:i=>{ce.addMusic(i,[r.id]),H.toast("Added to playlist")}})})}},{icon:a.jsx(Xo,{}),text:"Download",onClick:()=>{C.download(r.id),R.close()}},{icon:a.jsx(mr,{}),text:r.isHated?"Show again this music":"Hide this music",onClick:()=>ye.hate(r.id)}],footer:a.jsxs(a.Fragment,{children:[a.jsxs("span",{children:["listen: ",r.playCount," times"]})," /",a.jsxs("span",{children:["duration: ",fn(r.duration)]})," /",a.jsxs("span",{children:["codec: ",r.codec]})]})}):null}const jl=A.button`
     color: #eee;
-    font-size: 0.8rem;
+    font-size: 12px;
     cursor: pointer;
-    padding: 1rem;
+    padding: 16px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -227,9 +233,9 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
     }
 
     .album-art {
-        width: 45px;
-        height: 45px;
-        border-radius: 0.25rem;
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
         object-fit: cover;
     }
 
@@ -240,7 +246,7 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
         justify-content: space-between;
         flex: 1;
         width: 100%;
-        max-width: ${t=>t.hasAlbumCover?"calc(100% - 45px - 0.75rem)":"100%"};
+        max-width: ${t=>t.hasAlbumCover?"calc(100% - 50px - 0.75rem)":"100%"};
         gap: 0.75rem;
 
         .info {
@@ -260,12 +266,13 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
         }
 
         .artist {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.45);
         }
 
         .title {
-            font-size: 0.9rem;
+            font-size: 14px;
+            gap: 4px;
 
             .track-number {
                 margin-right: 0.25rem;
@@ -276,11 +283,10 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
             .codec {
                 border: 1px solid #333;
                 color: #eee;
-                margin-left: 0.25rem;
-                padding: 0.1rem 0.5rem;
-                border-radius: 0.5rem;
-                font-size: 0.6rem;
-                font-weight: 400;
+                margin-left: 4px;
+                padding: 1px 4px;
+                border-radius: 8px;
+                font-size: 8px;
             }
         }
 
@@ -541,7 +547,7 @@ var li=Object.defineProperty;var di=(t,e,n)=>e in t?li(t,e,{enumerable:!0,config
     }
 `;function Ut({header:t,items:e,footer:n}){return a.jsxs(Tl,{children:[t&&a.jsx("div",{className:"panel-content",children:t}),e&&a.jsx("div",{className:"items",children:e.map(({icon:s,text:r,isActive:i,onClick:o})=>a.jsxs("button",{className:`clickable item ${i?"active":""}`,onClick:o,children:[s,a.jsx("span",{className:"text",children:r})]},r))}),n&&a.jsx("div",{className:"detail-info",children:n})]})}function Ll({children:t}){const[{isOpen:e,title:n,content:s},r]=L(R);return a.jsxs(a.Fragment,{children:[t,a.jsx(Yo,{title:n,isOpen:e,onClose:()=>r({isOpen:!1}),children:s})]})}class Pl extends be{constructor(){super();B(this,"init",!1);B(this,"listener");this.state={loaded:!1,playlists:[]},this.listener=new ce,this.listener.connect({onCreate:n=>{this.set({playlists:[n,...this.state.playlists]})},onDelete:n=>{this.set({playlists:this.state.playlists.filter(s=>s.id!==n)})},onUpdate:({id:n,name:s})=>{this.set({playlists:this.state.playlists.map(r=>r.id===n?{...r,name:s}:r)})},onChangeOrder:n=>{this.set({playlists:this.state.playlists.sort((s,r)=>n.indexOf(s.id)-n.indexOf(r.id))})},onAddMusic:({id:n,musicCount:s,headerMusics:r})=>{this.set({playlists:this.state.playlists.map(i=>i.id===n?{...i,musicCount:s,headerMusics:r}:i)})},onMoveMusic:({fromId:n,formHeaderMusics:s,toId:r,toMusicCount:i,toHeaderMusics:o,musicIds:c})=>{this.set({playlists:this.state.playlists.map(d=>d.id===n?{...d,headerMusics:s,musicCount:d.musicCount-c.length}:d.id===r?{...d,musicCount:i,headerMusics:o}:d)})},onRemoveMusic:({id:n,headerMusics:s,musicIds:r})=>{this.set({playlists:this.state.playlists.map(i=>i.id===n?{...i,headerMusics:s,musicCount:i.musicCount-r.length}:i)})},onChangeMusicOrder:({id:n,headerMusics:s})=>{this.set({playlists:this.state.playlists.map(r=>r.id===n?{...r,headerMusics:s}:r)})}})}get state(){return this.init||(this.init=!0,this.sync()),super.state}set state(n){super.state=n}async sync(){Cl().then(({data:n})=>{this.set({loaded:!0,playlists:n.allPlaylist})})}}const ss=new Pl;function Ml({id:t,onPlaylistClick:e}){const[{musicMap:n}]=L(W),[{playlists:s}]=L(ss),r=s.find(i=>i.id===t);return r?a.jsx(Ut,{header:e&&a.jsxs("button",{className:"panel-album clickable linkable",onClick:()=>{R.close(),setTimeout(e,100)},children:[a.jsx(Bn,{className:"album-cover-grid",images:r.headerMusics.map(i=>{var o;return((o=n.get(i.id))==null?void 0:o.album.cover)??""})}),a.jsxs("div",{children:[a.jsxs("div",{className:"panel-sub-title",children:[r.musicCount," songs"]}),a.jsx("div",{className:"panel-sub-content",children:r.name})]})]}),items:[{icon:a.jsx(Go,{}),text:"Rename",onClick:async()=>{const i=await H.prompt("Rename playlist",r.name);i&&ce.update(t,i),R.close()}},{icon:a.jsx($n,{}),text:"Delete",onClick:async()=>{await H.confirm("Are you sure you want to delete this playlist?")&&(ce.delete(t),R.close())}}]}):null}const Dl=A.button`
     color: #eee;
-    font-size: 0.8rem;
+    font-size: 14px;
     padding: 1rem;
     display: flex;
     align-items: center;
