@@ -254,6 +254,11 @@ export const syncMusic = async (socket: Socket, force = false) => {
             if (!files.includes(music.filePath)) {
                 console.log(`delete music from db... ${music.name}`);
                 socket.emit('sync-music', `delete music from db... ${music.name}`);
+                await models.playlistMusic.deleteMany({
+                    where: {
+                        musicId: music.id,
+                    },
+                });
                 await models.musicLike.deleteMany({
                     where: {
                         musicId: music.id,
