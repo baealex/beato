@@ -259,6 +259,11 @@ export const syncMusic = async (socket: Socket, force = false) => {
                         musicId: music.id,
                     },
                 });
+                await models.musicHate.deleteMany({
+                    where: {
+                        musicId: music.id,
+                    },
+                });
                 await models.musicLike.deleteMany({
                     where: {
                         musicId: music.id,
