@@ -28,8 +28,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install
-      run: npm ci
+    - name: Install (Server)
+      run: npx pnpm i
       working-directory: server/src
     
     - name: Lint (Server)
@@ -43,6 +43,10 @@ jobs:
     - name: Build (Server)
       run: npm run build
       working-directory: server/src
+
+    - name: Install (Client)
+      run: npx pnpm i
+      working-directory: server/src/client
 
     - name: Lint (Client)
       run: npm run lint
