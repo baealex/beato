@@ -49,11 +49,14 @@ Self host music streaming platform
 
 Please place the 'music' folder at the 'server/src' of the project.
 
-```
+```bash
 git clone https://github.com/baealex/beato
-cd beato/server/src
-ln -s YOUR_MUSIC_PATH music
-npm i && npm run build:client && npm run start
+
+# LINK YOUR MUSIC
+ln -s {YOUR_MUSIC_PATH} beato/server/src/music
+
+# RUN
+./beato/start.sh
 ```
 
 you can connect to `http://localhost:4000`
