@@ -8,6 +8,10 @@ import type { Controller } from '~/types';
 export const audio: Controller = async (req, res) => {
     const { id } = req.params;
 
+    if (!id || !Number.isInteger(Number(id))) {
+        res.status(400).send('Bad Request').end();
+    }
+
     const $music = await models.music.findUnique({
         where: {
             id: Number(id),
@@ -30,11 +34,23 @@ export const audio: Controller = async (req, res) => {
         res.setHeader('Content-Type', 'audio/wav');
     }
 
+    if (!fs.existsSync(path.resolve('./music', $music.filePath))) {
+        res.status(404).send('Not Found').end();
+    }
+
     const { size } = fs.statSync(path.resolve('./music', $music.filePath));
 
     res.setHeader('Content-Length', size);
     res.setHeader('Accept-Ranges', 'bytes');
     res.setHeader('Cache-Control', 'max-age=604800');
 
-    fs.createReadStream(path.resolve('./music', $music.filePath)).pipe(res);
+    const stream = fs.createReadStream(path.resolve('./music', $music.filePath));
+
+    stream.on('open', () => {
+        stream.pipe(res);
+    });
+
+    stream.on('error', (err) => {
+        res.status(500).send(err).end();
+    });
 };
