@@ -81,7 +81,7 @@ export const syncMusic = async (socket: Socket, force = false) => {
             } = format;
             const {
                 title = file.split('/').pop().split('.').shift(),
-                albumartist = null,
+                albumartist: albumArtist = null,
                 artist = 'unknown',
                 album = 'unknown',
                 picture,
@@ -106,17 +106,17 @@ export const syncMusic = async (socket: Socket, force = false) => {
 
             let $albumArtist = null;
 
-            if (albumartist) {
+            if (albumArtist) {
                 $albumArtist = await models.artist.findFirst({
                     where: {
-                        name: albumartist,
+                        name: albumArtist,
                     },
                 });
 
                 if (!$albumArtist) {
                     $albumArtist = await models.artist.create({
                         data: {
-                            name: albumartist,
+                            name: albumArtist,
                         },
                     });
                 }
@@ -126,7 +126,7 @@ export const syncMusic = async (socket: Socket, force = false) => {
                 where: {
                     name: album,
                     Artist: {
-                        name: albumartist || artist,
+                        name: albumArtist || artist,
                     },
                 },
             });
@@ -139,7 +139,7 @@ export const syncMusic = async (socket: Socket, force = false) => {
                         publishedYear: year.toString(),
                         Artist: {
                             connect: {
-                                id: albumartist ? $albumArtist.id : $artist.id,
+                                id: albumArtist ? $albumArtist.id : $artist.id,
                             },
                         },
                     },
@@ -202,9 +202,16 @@ export const syncMusic = async (socket: Socket, force = false) => {
 
             const $music = await models.music.findFirst({
                 where: {
+                    codec,
+                    container,
+                    bitrate,
+                    sampleRate,
                     name: title,
-                    artistId: $artist.id,
+                    duration,
+                    trackNumber: track?.no || 1,
+                    filePath: file,
                     albumId: $album.id,
+                    artistId: $artist.id,
                 },
             });
 
@@ -217,7 +224,7 @@ export const syncMusic = async (socket: Socket, force = false) => {
                         sampleRate,
                         name: title,
                         duration,
-                        trackNumber: track?.no || 0,
+                        trackNumber: track?.no || 1,
                         filePath: file,
                         Album: {
                             connect: {
