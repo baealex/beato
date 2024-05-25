@@ -1,107 +1,14 @@
 import { useEffect } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
-import {
-    AlbumDetail,
-    AlbumList,
-    ArtistDetail,
-    ArtistList,
-    Favorite,
-    MusicList,
-    NotFound,
-    Player,
-    Playlist,
-    PlaylistDetail,
-    Queue,
-    Setting,
-} from './pages'
-import { PanelProvider, SiteLayout } from './components'
+import { RouterProvider } from 'react-router-dom'
 
 import { MusicListener, socket } from './socket'
+
+import router from './router'
 
 import { musicStore } from './store/music'
 import { artistStore } from './store/artist'
 import { albumStore } from './store/album'
-
-const client = new QueryClient({
-    defaultOptions: {
-        queries: {
-            refetchOnWindowFocus: false,
-            retry: false,
-            suspense: true,
-        },
-    },
-})
-
-const router = createBrowserRouter([
-    {
-        element: <SiteLayout />,
-        children: [
-            {
-                path: '/',
-                element: <MusicList />,
-            },
-            {
-                path: '/favorite',
-                element: <Favorite />,
-            },
-            {
-                path: '/album',
-                element: <AlbumList />,
-            },
-            {
-                path: '/artist',
-                element: <ArtistList />,
-            },
-            {
-                path: '/playlist',
-                element: <Playlist />,
-            },
-            {
-                path: '/setting',
-                element: <Setting />,
-            },
-        ],
-    },
-    {
-        element: <SiteLayout isSubPage animationDirection="RightToLeft" />,
-        children: [
-            {
-                path: '/album/:id',
-                element: <AlbumDetail />,
-            },
-            {
-                path: '/artist/:id',
-                element: <ArtistDetail />,
-            },
-            {
-                path: '/playlist/:id',
-                element: <PlaylistDetail />,
-            },
-        ],
-    },
-    {
-        children: [
-            {
-                path: '/player',
-                element: <Player />,
-            },
-        ],
-    },
-    {
-        children: [
-            {
-                path: '/queue',
-                element: <Queue />,
-            },
-        ]
-    },
-    {
-        element: <NotFound />,
-        path: '*',
-    },
-])
+import { Providers } from './components/app'
 
 export default function App() {
     useEffect(() => {
@@ -126,10 +33,8 @@ export default function App() {
     }, [])
 
     return (
-        <PanelProvider>
-            <QueryClientProvider client={client}>
-                <RouterProvider router={router} />
-            </QueryClientProvider>
-        </PanelProvider>
+        <Providers>
+            <RouterProvider router={router} />
+        </Providers>
     )
 }

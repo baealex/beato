@@ -11,7 +11,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@baejino/style": "^0.0.4",
+        "@baejino/handy": "^0.0.1",
+        "@baejino/style": "^0.0.5",
         "@baejino/ui": "^0.0.9",
         "@dnd-kit/core": "^6.1.0",
         "@dnd-kit/modifiers": "^7.0.0",

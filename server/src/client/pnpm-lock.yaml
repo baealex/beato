@@ -5,9 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@baejino/handy':
+    specifier: ^0.0.1
+    version: 0.0.1
   '@baejino/style':
-    specifier: ^0.0.4
-    version: 0.0.4
+    specifier: ^0.0.5
+    version: 0.0.5
   '@baejino/ui':
     specifier: ^0.0.9
     version: 0.0.9
@@ -312,8 +315,12 @@ packages:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  /@baejino/style@0.0.4:
-    resolution: {integrity: sha512-QU5uhG+9gFlBZPmduoD3+8eIGJPuZZ8298T7nobEcpe6izWiXeJeEZVwsNzu2xhD0y7TW6oUqCYJSAruCMs1Aw==}
+  /@baejino/handy@0.0.1:
+    resolution: {integrity: sha512-2Xm7vziolYhArMqFlTBoDB+sPDmCoqTd2R5T84Yi3ncRktKqordrTwXNVGvzfvHHwz3sY53+nqMP3oc1e/mxlg==}
+    dev: false
+
+  /@baejino/style@0.0.5:
+    resolution: {integrity: sha512-KCT1f9sqo0k5CoFMvYzKXMQlpzSo7r2xI3Z3Cn8GitrSGrTicmTGJrzvoxauKVTsA86YucAo1Nr5nfsbNIm7oQ==}
     dev: false
 
   /@baejino/ui@0.0.9:
