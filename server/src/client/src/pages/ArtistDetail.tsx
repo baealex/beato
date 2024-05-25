@@ -3,7 +3,9 @@ import { useStore } from 'badland-react'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { AlbumItem, Image, MusicActionPanelContent, MusicItem, SecondaryButton } from '~/components'
+import { AlbumListItem } from '~/components/album'
+import { MusicActionPanelContent, MusicListItem } from '~/components/music'
+import { Image, SecondaryButton } from '~/components/shared'
 import { Play } from '~/icon'
 
 import { getArtist } from '~/api'
@@ -109,7 +111,7 @@ export default function ArtistDetail() {
             </div>
             <div className="albums">
                 {artist.albums.map(album => (
-                    <AlbumItem
+                    <AlbumListItem
                         key={album.id}
                         albumCover={album.cover}
                         albumName={album.name}
@@ -132,7 +134,7 @@ export default function ArtistDetail() {
                     if (!music) return null
 
                     return (
-                        <MusicItem
+                        <MusicListItem
                             key={music.id}
                             artistName={music.album.name}
                             albumCover={music.album.cover}

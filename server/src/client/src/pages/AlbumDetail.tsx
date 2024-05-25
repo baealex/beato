@@ -3,7 +3,8 @@ import { useStore } from 'badland-react'
 import { useQuery } from 'react-query'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { Image, MusicActionPanelContent, MusicItem } from '~/components'
+import { Image } from '~/components/shared'
+import { MusicActionPanelContent, MusicListItem } from '~/components/music'
 import { Play } from '~/icon'
 
 import { getAlbum } from '~/api'
@@ -133,7 +134,7 @@ export default function AlbumDetail() {
                     }
 
                     return (
-                        <MusicItem
+                        <MusicListItem
                             key={music.id}
                             albumName={music.album.name}
                             artistName={music.artist.name}

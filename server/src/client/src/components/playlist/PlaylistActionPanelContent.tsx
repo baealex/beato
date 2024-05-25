@@ -1,7 +1,7 @@
 import { confirm, prompt } from '@baejino/ui'
 import { useStore } from 'badland-react'
 
-import { GridImage, PanelContent } from '~/components'
+import { GridImage, PanelContent } from '~/components/shared'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'

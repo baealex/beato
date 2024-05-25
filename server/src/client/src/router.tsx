@@ -14,7 +14,7 @@ import {
     Queue,
     Setting,
 } from './pages'
-import { SiteLayout } from './components'
+import { SiteLayout } from './components/layout'
 
 const router = createBrowserRouter([
     {

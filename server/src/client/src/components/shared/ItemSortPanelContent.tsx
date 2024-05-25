@@ -1,4 +1,4 @@
-import { PanelContent } from '~/components'
+import { PanelContent } from '~/components/shared'
 import * as Icon from '~/icon'
 import { panel } from '~/modules/panel'
 

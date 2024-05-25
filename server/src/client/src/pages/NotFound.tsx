@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { SecondaryButton } from '~/components'
+import { SecondaryButton } from '~/components/shared'
 
 const Container = styled.div`
     display: flex;

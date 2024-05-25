@@ -7,7 +7,8 @@ import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { Loading, PlaylistActionPanelContent, PlaylistItem, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
+import { Loading, SecondaryButton, StickyHeader, VerticalSortable } from '~/components/shared'
+import { PlaylistActionPanelContent, PlaylistItem } from '~/components/playlist'
 import { Menu } from '~/icon'
 
 import { Playlist as PlaylistModel } from '~/models/type'

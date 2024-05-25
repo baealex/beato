@@ -1,6 +1,8 @@
 import { useStore } from 'badland-react'
 
-import { PanelContent, PlaylistItem } from '~/components'
+import { PanelContent } from '~/components/shared'
+
+import PlaylistItem from './PlaylistItem'
 
 import { panel } from '~/modules/panel'
 

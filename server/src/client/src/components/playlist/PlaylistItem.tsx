@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 
-import GridImage from './GridImage'
+import GridImage from '../shared/GridImage'
 import { MoreVerticalFill } from '~/icon'
 
 import { Music } from '~/models/type'

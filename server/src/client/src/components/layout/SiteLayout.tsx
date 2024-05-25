@@ -3,10 +3,10 @@ import { Suspense, useEffect, useRef } from 'react'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
-import SiteHeader from './SiteHeader'
-import SubPageHeader from './SubPageHeader'
-import MusicPlayer from './MusicPlayer'
-import Loading from './Loading'
+import SiteHeader from '../shared/SiteHeader'
+import SubPageHeader from '../shared/SubPageHeader'
+import MusicPlayer from '../music/MusicPlayer'
+import Loading from '../shared/Loading'
 
 interface SiteLayoutProps {
     isSubPage?: boolean

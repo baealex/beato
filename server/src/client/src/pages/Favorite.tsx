@@ -3,7 +3,8 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { MusicItem, MusicActionPanelContent, SecondaryButton, StickyHeader, Loading, ItemSortPanelContent } from '~/components'
+import { SecondaryButton, StickyHeader, Loading, ItemSortPanelContent } from '~/components/shared'
+import { MusicListItem, MusicActionPanelContent } from '~/components/music'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -64,7 +65,7 @@ export default function Music() {
                 <Loading />
             )}
             {loaded && filteredMusics.slice(0, renderLimit).map((music) => (
-                <MusicItem
+                <MusicListItem
                     key={music.id}
                     albumName={music.album.name}
                     albumCover={music.album.cover}

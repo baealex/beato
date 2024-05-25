@@ -1,6 +1,6 @@
 import { useStore } from 'badland-react'
 
-import BottomPanel from '~/components/BottomPanel'
+import BottomPanel from '~/components/shared/BottomPanel'
 
 import { panel } from '~/modules/panel'
 

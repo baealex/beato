@@ -10,7 +10,9 @@ import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-import { MusicActionPanelContent, MusicItem, MusicSelector, PlaylistPanelContent, VerticalSortable } from '~/components'
+import { VerticalSortable } from '~/components/shared'
+import { MusicActionPanelContent, MusicListItem, MusicSelector } from '~/components/music'
+import { PlaylistPanelContent } from '~/components/playlist'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -206,7 +208,7 @@ const QueueDndItem = ({
                 </button>
             )}
             <div style={{ flex: 1, maxWidth: 'calc(100% - 4rem)' }}>
-                <MusicItem
+                <MusicListItem
                     key={music.id}
                     musicName={music.name}
                     artistName={music.artist.name}

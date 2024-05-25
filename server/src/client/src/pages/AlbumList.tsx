@@ -4,7 +4,8 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { AlbumItem, ItemSortPanelContent, Loading, SecondaryButton, StickyHeader } from '~/components'
+import { ItemSortPanelContent, Loading, SecondaryButton, StickyHeader } from '~/components/shared'
+import { AlbumListItem } from '~/components/album'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -69,7 +70,7 @@ export default function Album() {
             )}
             <Grid>
                 {loaded && filteredAlbums.slice(0, renderLimit).map((album) => (
-                    <AlbumItem
+                    <AlbumListItem
                         key={album.id}
                         albumName={album.name}
                         albumCover={album.cover}

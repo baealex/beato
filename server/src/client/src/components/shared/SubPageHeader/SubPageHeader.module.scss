@@ -1,8 +1,6 @@
-import styled from '@emotion/styled'
+@import '~/styles/var';
 
-import { Left } from '~/icon'
-
-const Container = styled.div`
+.SubPageHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,7 +12,7 @@ const Container = styled.div`
     font-weight: bold;
     border-bottom: 1px solid #333;
 
-    @media (min-width: 1024px) {
+    @media (min-width: $BREAKPOINT_DESKTOP) {
         height: 100%;
         border-right: 1px solid #222;
         border-bottom: none;
@@ -45,14 +43,4 @@ const Container = styled.div`
             height: 1.25rem;
         }
     }
-`
-
-export default function SubPageHeader() {
-    return (
-        <Container>
-            <button onClick={() => history.back()}>
-                <Left /> <span className="back-text">Back</span>
-            </button>
-        </Container>
-    )
 }

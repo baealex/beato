@@ -10,7 +10,9 @@ import { CSS } from '@dnd-kit/utilities'
 import { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, useSortable } from '@dnd-kit/sortable'
 
-import { GridImage, MusicActionPanelContent, MusicItem, MusicSelector, PlaylistPanelContent, SecondaryButton, StickyHeader, VerticalSortable } from '~/components'
+import { GridImage, SecondaryButton, StickyHeader, VerticalSortable } from '~/components/shared'
+import { MusicActionPanelContent, MusicListItem, MusicSelector } from '~/components/music'
+import { PlaylistPanelContent } from '~/components/playlist'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -102,7 +104,7 @@ const Container = styled.div`
 `
 
 
-function PlaylistDndMusicItem({
+function PlaylistDndMusicListItem({
     music,
     isSelectMode,
     isSelected,
@@ -138,7 +140,7 @@ function PlaylistDndMusicItem({
                 </div>
             )}
             <div style={{ flex: 1, maxWidth: 'calc(100% - 4rem)' }}>
-                <MusicItem
+                <MusicListItem
                     albumName={music.album.name}
                     albumCover={music.album.cover}
                     artistName={music.artist.name}
@@ -242,7 +244,7 @@ export default function PlaylistDetail() {
                         if (!music) return null
 
                         return (
-                            <PlaylistDndMusicItem
+                            <PlaylistDndMusicListItem
                                 key={music.id}
                                 music={music}
                                 isSelectMode={isSelectMode}

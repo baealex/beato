@@ -3,7 +3,9 @@ import { useStore } from 'badland-react'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { ArtistItem, ItemSortPanelContent, Loading, SecondaryButton, StickyHeader } from '~/components'
+import { ItemSortPanelContent, Loading, SecondaryButton, StickyHeader } from '~/components/shared'
+import { ArtistListItem } from '~/components/artist'
+
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'
@@ -54,7 +56,7 @@ export default function ArtistList() {
                 <Loading />
             )}
             {loaded && filteredArtists.slice(0, renderLimit).map((artist) => (
-                <ArtistItem
+                <ArtistListItem
                     key={artist.id}
                     artistName={artist.name}
                     artistCover={artist.latestAlbum?.cover || ''}

@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 import { useEffect, useState } from 'react'
 
-import { SecondaryButton, Select } from '~/components'
+import { SecondaryButton, Select } from '~/components/shared'
 
 import { ConnectorListener, socket } from '~/socket'
 

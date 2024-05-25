@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { useStore } from 'badland-react'
 import { HTMLMotionProps, motion } from 'framer-motion'
 
-import { MusicActionPanelContent } from '~/components'
+import { MusicActionPanelContent } from '~/components/music'
 import * as Icon from '~/icon'
 
 import { panel } from '~/modules/panel'

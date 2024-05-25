@@ -1,0 +1,120 @@
+@import '~/styles/var';
+
+.MusicListItem {
+    color: #eee;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+
+    &.isHated {
+        opacity: 0.5;
+    }
+
+    @media (min-width: $BREAKPOINT_DESKTOP) {
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .album-art {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+        width: 100%;
+        max-width: 100%;
+        gap: 0.75rem;
+
+        .hasAlbumCover {
+            max-width: calc(100% - 50px - 0.75rem);
+        }
+
+        .hasMenu {
+            .info {
+                max-width: calc(100% - 2.5rem - 0.75rem);
+            }
+        }
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+            max-width: 100%;
+            gap: 0.125rem;
+        }
+
+        .artist,
+        .title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .artist {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .title {
+            font-size: 14px;
+            gap: 4px;
+
+            .track-number {
+                margin-right: 0.25rem;
+                color: #666;
+                font-weight: 400;
+            }
+
+            .codec {
+                border: 1px solid #333;
+                color: #eee;
+                margin-left: 4px;
+                padding: 1px 4px;
+                border-radius: 8px;
+                font-size: 8px;
+            }
+        }
+
+        .icon-button {
+            color: #eee;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+
+            &.isLiked {
+                svg {
+                    fill: #a076f1;
+                    color: #a076f1;
+                }
+            }
+
+            @media (min-width: $BREAKPOINT_DESKTOP) {
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+            }
+        }
+    }
+}
