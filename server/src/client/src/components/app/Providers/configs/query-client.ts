@@ -1,4 +1,4 @@
-import { QueryClient } from 'react-query';
+import { QueryClient } from 'react-query'
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -7,6 +7,6 @@ const queryClient = new QueryClient({
             retry: false
         }
     }
-});
+})
 
-export default queryClient;
+export default queryClient
