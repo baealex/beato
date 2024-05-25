@@ -1,35 +1,35 @@
-import { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
-import { useQuery, useQueryClient } from 'react-query'
-import { useStore } from 'badland-react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { theme } from '@baejino/style'
-import { toast } from '@baejino/ui'
+import { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+import { useQuery, useQueryClient } from 'react-query';
+import { useStore } from 'badland-react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { theme } from '@baejino/style';
+import { toast } from '@baejino/ui';
 
-import { CSS } from '@dnd-kit/utilities'
-import { DragEndEvent } from '@dnd-kit/core'
-import { arrayMove, useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { arrayMove, useSortable } from '@dnd-kit/sortable';
 
-import { GridImage, SecondaryButton, StickyHeader, VerticalSortable } from '~/components/shared'
-import { MusicActionPanelContent, MusicListItem, MusicSelector } from '~/components/music'
-import { PlaylistPanelContent } from '~/components/playlist'
-import * as Icon from '~/icon'
+import { GridImage, SecondaryButton, StickyHeader, VerticalSortable } from '~/components/shared';
+import { MusicActionPanelContent, MusicListItem, MusicSelector } from '~/components/music';
+import { PlaylistPanelContent } from '~/components/playlist';
+import * as Icon from '~/icon';
 
-import { panel } from '~/modules/panel'
+import { panel } from '~/modules/panel';
 
-import { Music } from '~/models/type'
+import type { Music } from '~/models/type';
 
-import { getPlaylist } from '~/api'
+import { getPlaylist } from '~/api';
 import {
     PLAYLIST_CHANGE_MUSIC_ORDER,
     PLAYLIST_MOVE_MUSIC,
     PLAYLIST_REMOVE_MUSIC,
     PlaylistListener,
     socket
-} from '~/socket'
+} from '~/socket';
 
-import { musicStore } from '~/store/music'
-import { queueStore } from '~/store/queue'
+import { musicStore } from '~/store/music';
+import { queueStore } from '~/store/queue';
 
 const Item = styled.div`
     display: flex;
@@ -49,7 +49,7 @@ const Item = styled.div`
             fill: ${theme.COLOR_PURPLE_PROMINENT};
         }
     }
-`
+`;
 
 const Container = styled.div`
     display: flex;
@@ -101,8 +101,7 @@ const Container = styled.div`
             }
         }
     }
-`
-
+`;
 
 function PlaylistDndMusicListItem({
     music,
@@ -112,34 +111,45 @@ function PlaylistDndMusicListItem({
     onSelect,
     onLongPress,
 }: {
-    music: Music
-    isSelectMode: boolean
-    isSelected: boolean
-    onClick: () => void
-    onSelect: () => void
-    onLongPress: () => void
+    music: Music;
+    isSelectMode: boolean;
+    isSelected: boolean;
+    onClick: () => void;
+    onSelect: () => void;
+    onLongPress: () => void;
 }) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: music.id })
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: music.id
+    });
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-    }
+    };
 
     return (
         <Item ref={setNodeRef} style={style} {...attributes}>
             {isSelectMode ? (
                 <button
                     className={`icon-button checkbox ${isSelected ? 'active' : ''} `}
-                    onClick={onSelect}
-                >
+                    onClick={onSelect}>
                     <Icon.CheckBox />
                 </button>
             ) : (
-                <div className="icon-button checkbox" {...listeners} style={{ cursor: 'grab', touchAction: 'none' }}>
+                <div
+                    className="icon-button checkbox"
+                    {...listeners}
+                    style={{
+                        cursor: 'grab',
+                        touchAction: 'none'
+                    }}>
                     <Icon.Menu />
                 </div>
             )}
-            <div style={{ flex: 1, maxWidth: 'calc(100% - 4rem)' }}>
+            <div
+                style={{
+                    flex: 1,
+                    maxWidth: 'calc(100% - 4rem)'
+                }}>
                 <MusicListItem
                     albumName={music.album.name}
                     albumCover={music.album.cover}
@@ -153,65 +163,65 @@ function PlaylistDndMusicListItem({
                 />
             </div>
         </Item>
-    )
+    );
 }
 
 export default function PlaylistDetail() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const { id } = useParams<{ id: string }>()
+    const { id } = useParams<{ id: string }>();
 
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
 
     const { data: playlist } = useQuery(['playlist', id], () => getPlaylist(id!).then(res => res.data.playlist), {
         enabled: !!id,
-    })
+    });
 
-    const [{ musicMap }] = useStore(musicStore)
+    const [{ musicMap }] = useStore(musicStore);
 
-    const [isSelectMode, setIsSelectMode] = useState(false)
-    const [selectedItems, setSelectedItems] = useState<string[]>([])
+    const [isSelectMode, setIsSelectMode] = useState(false);
+    const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
     const handleDragEnd = (event: DragEndEvent) => {
-        const { active, over } = event
+        const { active, over } = event;
 
         if (playlist && over && active.id !== over.id) {
-            const oldIndex = playlist.musics.findIndex(({ id }) => id === active.id)
-            const newIndex = playlist.musics.findIndex(({ id }) => id === over.id)
-            const newMusics = arrayMove(playlist.musics, oldIndex, newIndex)
-            PlaylistListener.changeMusicOrder(playlist.id, newMusics.map(({ id }) => id))
+            const oldIndex = playlist.musics.findIndex(({ id }) => id === active.id);
+            const newIndex = playlist.musics.findIndex(({ id }) => id === over.id);
+            const newMusics = arrayMove(playlist.musics, oldIndex, newIndex);
+            PlaylistListener.changeMusicOrder(playlist.id, newMusics.map(({ id }) => id));
 
             queryClient.setQueryData(['playlist', id], () => {
                 return {
                     ...playlist,
                     musics: newMusics,
-                }
-            })
+                };
+            });
         }
-    }
+    };
 
     useEffect(() => {
         const invalidateQueries = () => {
-            queryClient.invalidateQueries(['playlist', id])
-        }
+            queryClient.invalidateQueries(['playlist', id]);
+        };
 
-        socket.on(PLAYLIST_MOVE_MUSIC, invalidateQueries)
-        socket.on(PLAYLIST_REMOVE_MUSIC, invalidateQueries)
-        socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, invalidateQueries)
+        socket.on(PLAYLIST_MOVE_MUSIC, invalidateQueries);
+        socket.on(PLAYLIST_REMOVE_MUSIC, invalidateQueries);
+        socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, invalidateQueries);
 
         return () => {
-            socket.off(PLAYLIST_MOVE_MUSIC, invalidateQueries)
-            socket.off(PLAYLIST_REMOVE_MUSIC, invalidateQueries)
-            socket.off(PLAYLIST_CHANGE_MUSIC_ORDER, invalidateQueries)
-        }
-    }, [id, queryClient])
+            socket.off(PLAYLIST_MOVE_MUSIC, invalidateQueries);
+            socket.off(PLAYLIST_REMOVE_MUSIC, invalidateQueries);
+            socket.off(PLAYLIST_CHANGE_MUSIC_ORDER, invalidateQueries);
+        };
+    }, [id, queryClient]);
 
     useEffect(() => {
-        setSelectedItems([])
-    }, [isSelectMode])
+        setSelectedItems([]);
+    }, [isSelectMode]);
 
     if (!playlist) {
-        return null
+        return null;
     }
 
     return (
@@ -224,7 +234,12 @@ export default function PlaylistDetail() {
                 <h1>{playlist.name}</h1>
             </div>
             <StickyHeader>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem'
+                    }}>
                     <MusicSelector
                         active={isSelectMode}
                         label={isSelectMode ? `${selectedItems.length} selected` : `${playlist.musics.length} musics`}
@@ -236,12 +251,15 @@ export default function PlaylistDetail() {
                     <Icon.Play /> Play
                 </SecondaryButton>
             </StickyHeader >
-            <div style={{ flex: 1 }}>
+            <div
+                style={{
+                    flex: 1
+                }}>
                 <VerticalSortable items={playlist.musics.map(({ id }) => id)} onDragEnd={handleDragEnd}>
                     {playlist.musics.map(({ id }) => {
-                        const music = musicMap.get(id)
+                        const music = musicMap.get(id);
 
-                        if (!music) return null
+                        if (!music) return null;
 
                         return (
                             <PlaylistDndMusicListItem
@@ -252,9 +270,9 @@ export default function PlaylistDetail() {
                                 onClick={() => queueStore.add(music.id)}
                                 onSelect={() => {
                                     if (selectedItems.includes(music.id)) {
-                                        setSelectedItems(selectedItems.filter(item => item !== music.id))
+                                        setSelectedItems(selectedItems.filter(item => item !== music.id));
                                     } else {
-                                        setSelectedItems([...selectedItems, music.id])
+                                        setSelectedItems([...selectedItems, music.id]);
                                     }
                                 }}
                                 onLongPress={() => panel.open({
@@ -267,41 +285,49 @@ export default function PlaylistDetail() {
                                     )
                                 })}
                             />
-                        )
+                        );
                     })}
                 </VerticalSortable>
             </div>
             {isSelectMode && selectedItems.length > 0 && (
                 <div className="select-actions">
-                    <button className="clickable" onClick={() => {
-                        selectedItems.forEach(id => queueStore.add(id))
-                        setIsSelectMode(false)
-                    }}>
+                    <button
+                        className="clickable"
+                        onClick={() => {
+                            selectedItems.forEach(id => queueStore.add(id));
+                            setIsSelectMode(false);
+                        }}>
                         <Icon.Play />
                         <span>Play</span>
                     </button>
-                    <button className="clickable" onClick={() => panel.open({
-                        title: 'Move to playlist',
-                        content: (
-                            <PlaylistPanelContent onClick={(id) => {
-                                PlaylistListener.moveMusic(playlist.id, id, selectedItems)
-                                toast('Moved to playlist')
-                                setIsSelectMode(false)
-                            }} />
-                        )
-                    })}>
+                    <button
+                        className="clickable"
+                        onClick={() => panel.open({
+                            title: 'Move to playlist',
+                            content: (
+                                <PlaylistPanelContent
+                                    onClick={(id) => {
+                                        PlaylistListener.moveMusic(playlist.id, id, selectedItems);
+                                        toast('Moved to playlist');
+                                        setIsSelectMode(false);
+                                    }}
+                                />
+                            )
+                        })}>
                         <Icon.Data />
                         <span>Move</span>
                     </button>
-                    <button className="clickable" onClick={async () => {
-                        PlaylistListener.removeMusic(playlist.id, selectedItems)
-                        setIsSelectMode(false)
-                    }}>
+                    <button
+                        className="clickable"
+                        onClick={async () => {
+                            PlaylistListener.removeMusic(playlist.id, selectedItems);
+                            setIsSelectMode(false);
+                        }}>
                         <Icon.TrashBin />
                         <span>Delete</span>
                     </button>
                 </div>
             )}
         </Container>
-    )
+    );
 }

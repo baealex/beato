@@ -1,17 +1,17 @@
-import styled from '@emotion/styled'
-import { useStore } from 'badland-react'
-import { useQuery } from 'react-query'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import styled from '@emotion/styled';
+import { useStore } from 'badland-react';
+import { useQuery } from 'react-query';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { Image } from '~/components/shared'
-import { MusicActionPanelContent, MusicListItem } from '~/components/music'
-import { Play } from '~/icon'
+import { Image } from '~/components/shared';
+import { MusicActionPanelContent, MusicListItem } from '~/components/music';
+import { Play } from '~/icon';
 
-import { getAlbum } from '~/api'
+import { getAlbum } from '~/api';
 
-import { musicStore } from '~/store/music'
-import { queueStore } from '~/store/queue'
-import { panel } from '~/modules/panel'
+import { musicStore } from '~/store/music';
+import { queueStore } from '~/store/queue';
+import { panel } from '~/modules/panel';
 
 const Container = styled.div`
     position: relative;
@@ -83,27 +83,27 @@ const Container = styled.div`
             }
         }
     }
-`
+`;
 
 const List = styled.ul`
     margin-top: 2rem;
     padding: 0;
     list-style: none;
-`
+`;
 
 export default function AlbumDetail() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const { id } = useParams<{ id: string }>()
+    const { id } = useParams<{ id: string }>();
 
     const { data: album } = useQuery(['album', id], () => getAlbum(id!).then(res => res.data.album), {
         enabled: !!id,
-    })
+    });
 
-    const [{ musicMap }] = useStore(musicStore)
+    const [{ musicMap }] = useStore(musicStore);
 
     if (!album) {
-        return null
+        return null;
     }
 
     return (
@@ -127,10 +127,10 @@ export default function AlbumDetail() {
 
             <List>
                 {album.musics.map(({ id }) => {
-                    const music = musicMap.get(id)
+                    const music = musicMap.get(id);
 
                     if (!music) {
-                        return null
+                        return null;
                     }
 
                     return (
@@ -154,9 +154,9 @@ export default function AlbumDetail() {
                                 )
                             })}
                         />
-                    )
+                    );
                 })}
             </List>
         </>
-    )
+    );
 }

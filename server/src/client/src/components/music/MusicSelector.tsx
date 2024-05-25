@@ -1,7 +1,7 @@
-import styled from '@emotion/styled'
-import { theme } from '@baejino/style'
+import styled from '@emotion/styled';
+import { theme } from '@baejino/style';
 
-import { CheckBox, DoubleCheck } from '~/icon'
+import { CheckBox, DoubleCheck } from '~/icon';
 
 const Button = styled.button`
     width: auto;
@@ -20,13 +20,13 @@ const Button = styled.button`
         width: 1rem;
         height: 1rem;
     }
-`
+`;
 
 interface MusicSelectorProps {
-    active: boolean
-    label: string
-    onClick: () => void
-    onSelectAll: () => void
+    active: boolean;
+    label: string;
+    onClick: () => void;
+    onSelectAll: () => void;
 }
 
 export default function MusicSelector({
@@ -39,20 +39,18 @@ export default function MusicSelector({
         <>
             <Button
                 className={`clickable ${active ? 'active' : ''}`}
-                onClick={onClick}
-            >
+                onClick={onClick}>
                 <CheckBox />
                 {label}
             </Button>
             {active && (
                 <Button
                     className="clickable"
-                    onClick={onSelectAll}
-                >
+                    onClick={onSelectAll}>
                     <DoubleCheck />
                     Select All
                 </Button>
             )}
         </>
-    )
+    );
 }

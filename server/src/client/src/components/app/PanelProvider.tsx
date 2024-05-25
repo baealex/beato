@@ -1,22 +1,27 @@
-import { useStore } from 'badland-react'
+import { useStore } from 'badland-react';
 
-import BottomPanel from '~/components/shared/BottomPanel'
+import BottomPanel from '~/components/shared/BottomPanel';
 
-import { panel } from '~/modules/panel'
+import { panel } from '~/modules/panel';
 
 interface PanelProviderProps {
-    children: React.ReactNode
+    children: React.ReactNode;
 }
 
 export default function PanelProvider({ children }: PanelProviderProps) {
-    const [{ isOpen, title, content }, setState] = useStore(panel)
+    const [{ isOpen, title, content }, setState] = useStore(panel);
 
     return (
         <>
             {children}
-            <BottomPanel title={title} isOpen={isOpen} onClose={() => setState({ isOpen: false })}>
+            <BottomPanel
+                title={title}
+                isOpen={isOpen}
+                onClose={() => setState({
+                    isOpen: false
+                })}>
                 {content}
             </BottomPanel>
         </>
-    )
+    );
 }

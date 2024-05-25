@@ -1,4 +1,4 @@
-import expressWinston, { LoggerOptions } from 'express-winston';
+import expressWinston, { type LoggerOptions } from 'express-winston';
 import winston from 'winston';
 
 export const loggerOptions: LoggerOptions = {

@@ -1,51 +1,51 @@
-import styles from './MusicPlayer.module.scss'
-import classNames from 'classnames/bind'
-const cx = classNames.bind(styles)
+import styles from './MusicPlayer.module.scss';
+import classNames from 'classnames/bind';
+const cx = classNames.bind(styles);
 
-import { useStore } from 'badland-react'
-import { useNavigate } from 'react-router-dom'
+import { useStore } from 'badland-react';
+import { useNavigate } from 'react-router-dom';
 
-import MusicListItem from '../MusicListItem'
-import * as Icon from '~/icon'
+import MusicListItem from '../MusicListItem';
+import * as Icon from '~/icon';
 
-import { musicStore } from '~/store/music'
-import { queueStore } from '~/store/queue'
+import { musicStore } from '~/store/music';
+import { queueStore } from '~/store/queue';
 
 const MusicPlayer = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const [state] = useStore(queueStore)
-    const [{ musicMap }] = useStore(musicStore)
+    const [state] = useStore(queueStore);
+    const [{ musicMap }] = useStore(musicStore);
 
     const currentMusic = state.selected !== null
         ? musicMap.get(state.items[state.selected])
-        : null
+        : null;
 
     // TODO: Fix type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleClickProgress = (e: any) => {
-        const { width, left, right } = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
+        const { width, left, right } = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
 
-        let x = e.touches ? e.touches[0].clientX : e.clientX
-        x = x < left ? left : x > right ? right : x
-        const percent = (x - left) / width
-        const duration = currentMusic?.duration || 1
+        let x = e.touches ? e.touches[0].clientX : e.clientX;
+        x = x < left ? left : x > right ? right : x;
+        const percent = (x - left) / width;
+        const duration = currentMusic?.duration || 1;
 
-        queueStore.seek(duration * percent)
-    }
+        queueStore.seek(duration * percent);
+    };
 
     // TODO: Fix type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleMoveProgress = (e: any) => {
         if (e.buttons === 1) {
-            handleClickProgress(e)
-            return
+            handleClickProgress(e);
+            return;
         }
 
         if (e.touches?.length === 1) {
-            handleClickProgress(e)
+            handleClickProgress(e);
         }
-    }
+    };
 
     return (
         <div className={cx('MusicPlayer')}>
@@ -57,11 +57,12 @@ const MusicPlayer = () => {
                 aria-valuemax={100}
                 onClick={handleClickProgress}
                 onMouseMove={handleMoveProgress}
-                onTouchMove={handleMoveProgress}
-            >
+                onTouchMove={handleMoveProgress}>
                 <div
                     className={cx('bar')}
-                    style={{ transform: `translate(-${(100 - state.progress)}%, 0)` }}
+                    style={{
+                        transform: `translate(-${(100 - state.progress)}%, 0)`
+                    }}
                 />
             </div>
             <div className={cx('player')}>
@@ -89,7 +90,11 @@ const MusicPlayer = () => {
                     <button className={cx('icon-button', 'skip-forward')} onClick={() => queueStore.next()}>
                         <Icon.Play />
                     </button>
-                    <button className={cx('icon-button', 'shuffle', { 'active': state.shuffle })} onClick={() => queueStore.toggleShuffle()}>
+                    <button
+                        className={cx('icon-button', 'shuffle', {
+                            'active': state.shuffle
+                        })}
+                        onClick={() => queueStore.toggleShuffle()}>
                         <Icon.Shuffle />
                     </button>
                     <button className={cx('icon-button', 'queue')} onClick={() => navigate('/queue')}>
@@ -98,7 +103,7 @@ const MusicPlayer = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default MusicPlayer
+export default MusicPlayer;

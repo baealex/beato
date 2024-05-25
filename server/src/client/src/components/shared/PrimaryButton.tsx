@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 
 const PrimaryButton = styled.button`
     padding: 0.5rem;
@@ -23,6 +23,6 @@ const PrimaryButton = styled.button`
             background-color: rgba(255, 255, 255, 0.1);
         }
     }
-`
+`;
 
-export default PrimaryButton
+export default PrimaryButton;

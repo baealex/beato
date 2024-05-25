@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
-import { useEffect, useRef, useState } from 'react'
-import { Menu } from '~/icon'
+import styled from '@emotion/styled';
+import { useEffect, useRef, useState } from 'react';
+import { Menu } from '~/icon';
 
 interface Option {
     value: string;
@@ -80,25 +80,25 @@ const Styles = styled.div`
             animation: slide-down 0.1s ease;
         }
     }
-`
+`;
 
 export default function Select({ selected, options, onChange }: SelectProps) {
-    const ref = useRef<HTMLDivElement>(null)
-    const [isOpen, setIsOpen] = useState(false)
+    const ref = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (ref.current && !ref.current.contains(event.target as Node)) {
-                setIsOpen(false)
+                setIsOpen(false);
             }
         }
 
-        document.addEventListener('mousedown', handleClickOutside)
+        document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-        }
-    }, [ref])
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [ref]);
 
     return (
         <Styles ref={ref} className={`${isOpen ? 'open' : ''}`}>
@@ -112,14 +112,16 @@ export default function Select({ selected, options, onChange }: SelectProps) {
             </div>
             <div className="options">
                 {options.map((option) => (
-                    <div key={option.value} onClick={() => {
-                        onChange(option.value)
-                        setIsOpen(false)
-                    }}>
+                    <div
+                        key={option.value}
+                        onClick={() => {
+                            onChange(option.value);
+                            setIsOpen(false);
+                        }}>
                         {option.label}
                     </div>
                 ))}
             </div>
         </Styles>
-    )
+    );
 }

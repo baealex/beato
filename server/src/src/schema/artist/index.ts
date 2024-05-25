@@ -1,6 +1,6 @@
-import { IResolvers } from '@graphql-tools/utils';
+import type { IResolvers } from '@graphql-tools/utils';
 
-import models, { Artist } from '~/models';
+import models, { type Artist } from '~/models';
 import { gql } from '~/modules/graphql';
 import { albumType } from '../album';
 import { musicType } from '../music';

@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
-import { useEffect, useRef } from 'react'
-import { LinkProps, Link as RouterLink, useLocation } from 'react-router-dom'
+import styled from '@emotion/styled';
+import { useEffect, useRef } from 'react';
+import { type LinkProps, Link as RouterLink, useLocation } from 'react-router-dom';
 
 const HEADER_ITEMS = [
     {
@@ -27,7 +27,7 @@ const HEADER_ITEMS = [
         name: 'Setting',
         path: '/setting',
     },
-]
+];
 
 const Header = styled.header`
     position: relative;
@@ -45,7 +45,7 @@ const Header = styled.header`
         border-right: 1px solid #222;
         border-bottom: none;
     }
-`
+`;
 
 const Nav = styled.nav`
     position: relative;
@@ -102,7 +102,7 @@ const Nav = styled.nav`
             font-weight: bold;
         }
     }
-`
+`;
 
 const Link = styled.a<LinkProps>`
     position: relative;
@@ -135,30 +135,30 @@ const Link = styled.a<LinkProps>`
             transform: scaleX(1);
         }
     }
-`
+`;
 
 export default function SiteHeader() {
-    const location = useLocation()
+    const location = useLocation();
 
-    const ref = useRef<HTMLDivElement>(null)
+    const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const el = ref.current
+        const el = ref.current;
 
         if (el) {
-            const activeItem = el.querySelector<HTMLAnchorElement>('a.active')
+            const activeItem = el.querySelector<HTMLAnchorElement>('a.active');
 
             if (activeItem) {
-                const { left, width } = activeItem.getBoundingClientRect()
-                const { width: navWidth } = ref.current.getBoundingClientRect()
-                const center = left + width / 2 - navWidth / 2
+                const { left, width } = activeItem.getBoundingClientRect();
+                const { width: navWidth } = ref.current.getBoundingClientRect();
+                const center = left + width / 2 - navWidth / 2;
                 ref.current.scrollBy({
                     left: center,
                     behavior: 'smooth',
-                })
+                });
             }
         }
-    }, [location.pathname])
+    }, [location.pathname]);
 
     return (
         <Header>
@@ -174,5 +174,5 @@ export default function SiteHeader() {
                 </ul>
             </Nav>
         </Header>
-    )
+    );
 }

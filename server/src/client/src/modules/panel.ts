@@ -1,4 +1,4 @@
-import Store from 'badland'
+import Store from 'badland';
 
 interface PanelStoreState {
     title: string;
@@ -8,12 +8,12 @@ interface PanelStoreState {
 
 class PanelStore extends Store<PanelStoreState> {
     constructor() {
-        super()
+        super();
         this.state = {
             title: '',
             isOpen: false,
             content: null,
-        }
+        };
     }
 
     open({ title, content }: { title?: string; content: React.ReactNode }) {
@@ -21,7 +21,7 @@ class PanelStore extends Store<PanelStoreState> {
             title: title || '',
             isOpen: true,
             content,
-        })
+        });
     }
 
     close() {
@@ -29,8 +29,8 @@ class PanelStore extends Store<PanelStoreState> {
             title: '',
             isOpen: false,
             content: null,
-        })
+        });
     }
 }
 
-export const panel = new PanelStore()
+export const panel = new PanelStore();

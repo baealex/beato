@@ -1,22 +1,22 @@
-import { toast } from '@baejino/ui'
-import { useStore } from 'badland-react'
+import { toast } from '@baejino/ui';
+import { useStore } from 'badland-react';
 
-import { Image, PanelContent } from '~/components/shared'
-import { PlaylistPanelContent } from '~/components/playlist'
+import { Image, PanelContent } from '~/components/shared';
+import { PlaylistPanelContent } from '~/components/playlist';
 
-import * as Icon from '~/icon'
+import * as Icon from '~/icon';
 
-import { panel } from '~/modules/panel'
-import { makePlayTime } from '~/modules/time'
-import { MusicListener, PlaylistListener } from '~/socket'
+import { panel } from '~/modules/panel';
+import { makePlayTime } from '~/modules/time';
+import { MusicListener, PlaylistListener } from '~/socket';
 
-import { musicStore } from '~/store/music'
-import { queueStore } from '~/store/queue'
+import { musicStore } from '~/store/music';
+import { queueStore } from '~/store/queue';
 
 interface MusicActionPanelContentProps {
-    id: string
-    onArtistClick?: () => void
-    onAlbumClick?: () => void
+    id: string;
+    onArtistClick?: () => void;
+    onAlbumClick?: () => void;
 }
 
 export default function MusicActionPanelContent({
@@ -24,12 +24,12 @@ export default function MusicActionPanelContent({
     onArtistClick,
     onAlbumClick,
 }: MusicActionPanelContentProps) {
-    const [{ musicMap }] = useStore(musicStore)
+    const [{ musicMap }] = useStore(musicStore);
 
-    const music = musicMap.get(id)
+    const music = musicMap.get(id);
 
     if (!music) {
-        return null
+        return null;
     }
 
     return (
@@ -37,10 +37,12 @@ export default function MusicActionPanelContent({
             header={(
                 <>
                     {onAlbumClick && (
-                        <button className="panel-album clickable linkable" onClick={() => {
-                            panel.close()
-                            setTimeout(onAlbumClick, 100)
-                        }}>
+                        <button
+                            className="panel-album clickable linkable"
+                            onClick={() => {
+                                panel.close();
+                                setTimeout(onAlbumClick, 100);
+                            }}>
                             <Image
                                 className="cover"
                                 src={music.album.cover}
@@ -55,10 +57,12 @@ export default function MusicActionPanelContent({
                         </button>
                     )}
                     {onArtistClick && (
-                        <button className="panel-artist clickable linkable" onClick={() => {
-                            panel.close()
-                            setTimeout(onArtistClick, 100)
-                        }}>
+                        <button
+                            className="panel-artist clickable linkable"
+                            onClick={() => {
+                                panel.close();
+                                setTimeout(onArtistClick, 100);
+                            }}>
                             <div>
                                 <div className="panel-sub-title">Artist</div>
                                 <div className="panel-sub-content">
@@ -85,24 +89,26 @@ export default function MusicActionPanelContent({
                     icon: <Icon.Data />,
                     text: 'Add to Playlist',
                     onClick: () => {
-                        panel.close()
+                        panel.close();
                         panel.open({
                             title: 'Add to Playlist',
                             content: (
-                                <PlaylistPanelContent onClick={(id) => {
-                                    PlaylistListener.addMusic(id, [music.id])
-                                    toast('Added to playlist')
-                                }} />
+                                <PlaylistPanelContent
+                                    onClick={(id) => {
+                                        PlaylistListener.addMusic(id, [music.id]);
+                                        toast('Added to playlist');
+                                    }}
+                                />
                             )
-                        })
+                        });
                     }
                 },
                 {
                     icon: <Icon.Download />,
                     text: 'Download',
                     onClick: () => {
-                        queueStore.download(music.id)
-                        panel.close()
+                        queueStore.download(music.id);
+                        panel.close();
                     }
                 },
                 {
@@ -119,5 +125,5 @@ export default function MusicActionPanelContent({
                 </>
             )}
         />
-    )
+    );
 }

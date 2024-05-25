@@ -1,1 +1,1 @@
-export { default } from './SubPageHeader'
+export { default } from './SubPageHeader';

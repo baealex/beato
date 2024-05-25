@@ -1,14 +1,14 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 
 interface PanelContentProps {
-    header?: React.ReactNode
+    header?: React.ReactNode;
     items?: {
-        icon: React.ReactNode
-        text: string
-        isActive?: boolean
-        onClick: () => void
-    }[]
-    footer?: React.ReactNode
+        icon: React.ReactNode;
+        text: string;
+        isActive?: boolean;
+        onClick: () => void;
+    }[];
+    footer?: React.ReactNode;
 }
 
 const Container = styled.div`
@@ -104,7 +104,7 @@ const Container = styled.div`
         flex-wrap: wrap;
         gap: 0.5rem;
     }
-`
+`;
 
 export default function PanelContent({ header, items, footer }: PanelContentProps) {
     return (
@@ -120,8 +120,7 @@ export default function PanelContent({ header, items, footer }: PanelContentProp
                         <button
                             key={text}
                             className={`clickable item ${isActive ? 'active' : ''}`}
-                            onClick={onClick}
-                        >
+                            onClick={onClick}>
                             {icon}
                             <span className="text">{text}</span>
                         </button>
@@ -134,5 +133,5 @@ export default function PanelContent({ header, items, footer }: PanelContentProp
                 </div>
             )}
         </Container>
-    )
+    );
 }

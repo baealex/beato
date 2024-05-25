@@ -1,6 +1,6 @@
-import { IResolvers } from '@graphql-tools/utils';
+import type { IResolvers } from '@graphql-tools/utils';
 
-import models, { Playlist } from '~/models';
+import models, { type Playlist } from '~/models';
 import { gql } from '~/modules/graphql';
 import { musicType } from '../music';
 
@@ -34,8 +34,12 @@ export const playlistResolvers: IResolvers = {
     Query: {
         allPlaylist: () => models.playlist.findMany({
             orderBy: [
-                { order: 'asc' },
-                { createdAt: 'desc' }
+                {
+                    order: 'asc'
+                },
+                {
+                    createdAt: 'desc'
+                }
             ]
         }),
         playlist: (_, { id }: Playlist) => models.playlist.findUnique({

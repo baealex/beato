@@ -1,8 +1,8 @@
-import React from 'react'
-import { QueryClientProvider } from 'react-query'
+import React from 'react';
+import { QueryClientProvider } from 'react-query';
 
-import queryClient from './configs/query-client'
-import PanelProvider from '../PanelProvider'
+import queryClient from './configs/query-client';
+import PanelProvider from '../PanelProvider';
 
 interface ProvidersProps {
     children?: React.ReactNode;
@@ -15,7 +15,7 @@ const Providers = ({ children }: ProvidersProps) => {
                 {children}
             </PanelProvider>
         </QueryClientProvider>
-    )
-}
+    );
+};
 
-export default Providers
+export default Providers;

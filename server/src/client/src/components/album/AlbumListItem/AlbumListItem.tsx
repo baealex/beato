@@ -1,8 +1,8 @@
-import styles from './AlbumListItem.module.scss'
-import classNames from 'classnames/bind'
-const cx = classNames.bind(styles)
+import styles from './AlbumListItem.module.scss';
+import classNames from 'classnames/bind';
+const cx = classNames.bind(styles);
 
-import { Image } from '~/components/shared'
+import { Image } from '~/components/shared';
 
 interface AlbumListItemProps {
     albumCover: string;
@@ -18,7 +18,7 @@ const AlbumListItem = ({ albumCover, albumName, artistName, onClick  }: AlbumLis
             <span className={cx('title')}>{albumName}</span>
             <span className={cx('artist')}>{artistName}</span>
         </div>
-    )
-}
+    );
+};
 
-export default AlbumListItem
+export default AlbumListItem;

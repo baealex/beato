@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 
-import Image from './Image'
+import Image from './Image';
 
 const Container = styled.div`
     display: grid;
@@ -30,18 +30,18 @@ const Container = styled.div`
         height: 100%;
         object-fit: cover;
     }
-`
+`;
 
 interface GridImageProps {
-    images: string[]
-    className?: string
+    images: string[];
+    className?: string;
 }
 
 export default function GridImage({
     images,
     className,
 }: GridImageProps) {
-    const col = images.length >= 16 ? 4 : images.length >= 9 ? 3 : images.length >= 4 ? 2 : 1
+    const col = images.length >= 16 ? 4 : images.length >= 9 ? 3 : images.length >= 4 ? 2 : 1;
 
     return (
         <Container className={`${className} col-${col}`}>
@@ -56,5 +56,5 @@ export default function GridImage({
                 />
             ))}
         </Container>
-    )
+    );
 }

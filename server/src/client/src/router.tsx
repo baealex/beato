@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom';
 
 import {
     AlbumDetail,
@@ -13,8 +13,8 @@ import {
     PlaylistDetail,
     Queue,
     Setting,
-} from './pages'
-import { SiteLayout } from './components/layout'
+} from './pages';
+import { SiteLayout } from './components/layout';
 
 const router = createBrowserRouter([
     {
@@ -83,6 +83,6 @@ const router = createBrowserRouter([
         element: <NotFound />,
         path: '*',
     },
-])
+]);
 
-export default router
+export default router;

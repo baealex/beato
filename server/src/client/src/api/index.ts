@@ -1,16 +1,16 @@
-import axios from 'axios'
-import type { Artist, Album, Music, Playlist } from '~/models/type'
+import axios from 'axios';
+import type { Artist, Album, Music, Playlist } from '~/models/type';
 
 type QueryName = 'query' | 'mutation';
 
 export function wrapper(queryName: QueryName, query: string): string {
-    return queryName + ' { ' + query + ' }'
+    return queryName + ' { ' + query + ' }';
 }
 
 type Properties<T> = (keyof T)[] | string[];
 
 export function createQuery<T>(itemName: string, itemProperties: Properties<T>): string {
-    return itemName + ' {' + itemProperties.join(' ') + '}'
+    return itemName + ' {' + itemProperties.join(' ') + '}';
 }
 
 interface GraphqlResponse<T extends string, K> {
@@ -26,8 +26,8 @@ export async function graphQLRequest<T extends string, K>(query: string): Promis
         data: {
             query,
         },
-    })
-    return data
+    });
+    return data;
 }
 
 export function getMusics() {
@@ -54,7 +54,7 @@ export function getMusics() {
                 'publishedYear'
             ])
         ])))
-    )
+    );
 }
 
 export function getArtists() {
@@ -69,7 +69,7 @@ export function getArtists() {
                 'cover'
             ])
         ]))
-    )
+    );
 }
 
 export function getArtist(id: string) {
@@ -93,7 +93,7 @@ export function getArtist(id: string) {
                 'id',
             ])
         ]))
-    )
+    );
 }
 
 export function getAlbums() {
@@ -109,7 +109,7 @@ export function getAlbums() {
                 'name'
             ])
         ]))
-    )
+    );
 }
 
 export function getAlbum(id: string) {
@@ -127,7 +127,7 @@ export function getAlbum(id: string) {
                 'id',
             ])
         ]))
-    )
+    );
 }
 
 export function getPlaylists() {
@@ -142,7 +142,7 @@ export function getPlaylists() {
                 'id',
             ])
         ]))
-    )
+    );
 }
 
 export function getPlaylist(id: string) {
@@ -157,7 +157,7 @@ export function getPlaylist(id: string) {
                 'id',
             ])
         ]))
-    )
+    );
 }
 
 export function getAudio(id: string) {
@@ -165,5 +165,5 @@ export function getAudio(id: string) {
         method: 'GET',
         url: `/api/audio/${id}`,
         responseType: 'blob',
-    })
+    });
 }

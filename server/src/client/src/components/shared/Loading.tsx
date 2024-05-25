@@ -1,5 +1,5 @@
-import styled from '@emotion/styled'
-import { useEffect, useState } from 'react'
+import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 const Container = styled.div`
     flex: 1;
@@ -85,18 +85,18 @@ const Container = styled.div`
         left: 55px;
         animation-delay: 1s;
     }
-`
+`;
 
 const Loading = () => {
-    const [shouldShow, setShouldShow] = useState(false)
+    const [shouldShow, setShouldShow] = useState(false);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setShouldShow(true)
-        }, 100)
+            setShouldShow(true);
+        }, 100);
 
-        return () => clearTimeout(timeout)
-    })
+        return () => clearTimeout(timeout);
+    });
 
     return (
         shouldShow && (
@@ -110,7 +110,7 @@ const Loading = () => {
                 </div>
             </Container>
         )
-    )
-}
+    );
+};
 
-export default Loading
+export default Loading;

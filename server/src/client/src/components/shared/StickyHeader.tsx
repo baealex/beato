@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 
 const StickyHeader = styled.div`
     padding: 1rem;
@@ -13,6 +13,6 @@ const StickyHeader = styled.div`
             rgba(0, 0, 0, 1) 75%,
             rgba(0, 0, 0, 0) 100%);
     z-index: 1;
-`
+`;
 
-export default StickyHeader
+export default StickyHeader;

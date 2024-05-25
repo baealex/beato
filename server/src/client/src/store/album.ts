@@ -1,10 +1,10 @@
-import Store from 'badland'
+import Store from 'badland';
 
-import type { Album } from '~/models/type'
+import type { Album } from '~/models/type';
 
-import * as sort from '~/modules/sort'
+import * as sort from '~/modules/sort';
 
-import { getAlbums } from '~/api'
+import { getAlbums } from '~/api';
 
 const SORT_STATE = {
     NAME: 'name',
@@ -15,36 +15,36 @@ const SORT_STATE = {
     PUBLISHED_YEAR_DESC: 'publishedYearDesc',
     CREATED_AT: 'createdAt',
     CREATED_AT_DESC: 'createdAtDesc',
-} as const
+} as const;
 
 interface AlbumStoreState {
-    loaded: boolean
-    albums: Album[]
-    sortedFrom: typeof SORT_STATE[keyof typeof SORT_STATE]
+    loaded: boolean;
+    albums: Album[];
+    sortedFrom: typeof SORT_STATE[keyof typeof SORT_STATE];
 }
 
 class AlbumStore extends Store<AlbumStoreState> {
-    init = false
+    init = false;
 
     constructor() {
-        super()
+        super();
         this.state = {
             loaded: false,
             albums: [],
             sortedFrom: SORT_STATE.NAME,
-        }
+        };
     }
 
     get state() {
         if (!this.init) {
-            this.init = true
-            this.sync()
+            this.init = true;
+            this.sync();
         }
-        return super.state
+        return super.state;
     }
 
     set state(state) {
-        super.state = state
+        super.state = state;
     }
 
     async sync() {
@@ -53,8 +53,8 @@ class AlbumStore extends Store<AlbumStoreState> {
                 loaded: true,
                 albums: data.allAlbums,
                 sortedFrom: SORT_STATE.NAME
-            })
-        })
+            });
+        });
     }
 
     get sortItems() {
@@ -65,7 +65,7 @@ class AlbumStore extends Store<AlbumStoreState> {
                 this.set((prevState) => ({
                     albums: sort.sortByName(prevState.albums),
                     sortedFrom: SORT_STATE.NAME
-                }))
+                }));
             }
         },
         {
@@ -75,7 +75,7 @@ class AlbumStore extends Store<AlbumStoreState> {
                 this.set((prevState) => ({
                     albums: sort.sortByName(prevState.albums).reverse(),
                     sortedFrom: SORT_STATE.NAME_DESC
-                }))
+                }));
             }
         },
         {
@@ -85,7 +85,7 @@ class AlbumStore extends Store<AlbumStoreState> {
                 this.set((prevState) => ({
                     albums: sort.sortByArtistName(prevState.albums),
                     sortedFrom: SORT_STATE.ARTIST_NAME
-                }))
+                }));
             }
         },
         {
@@ -95,7 +95,7 @@ class AlbumStore extends Store<AlbumStoreState> {
                 this.set((prevState) => ({
                     albums: sort.sortByArtistName(prevState.albums).reverse(),
                     sortedFrom: SORT_STATE.ARTIST_NAME_DESC
-                }))
+                }));
             }
         },
         {
@@ -105,7 +105,7 @@ class AlbumStore extends Store<AlbumStoreState> {
                 this.set((prevState) => ({
                     albums: sort.sortByPublishedYear(prevState.albums),
                     sortedFrom: SORT_STATE.PUBLISHED_YEAR
-                }))
+                }));
             }
         },
         {
@@ -115,7 +115,7 @@ class AlbumStore extends Store<AlbumStoreState> {
                 this.set((prevState) => ({
                     albums: sort.sortByPublishedYear(prevState.albums).reverse(),
                     sortedFrom: SORT_STATE.PUBLISHED_YEAR_DESC
-                }))
+                }));
             }
         },
         {
@@ -125,7 +125,7 @@ class AlbumStore extends Store<AlbumStoreState> {
                 this.set((prevState) => ({
                     albums: sort.sortByCreatedAt(prevState.albums),
                     sortedFrom: SORT_STATE.CREATED_AT_DESC
-                }))
+                }));
             }
         },
         {
@@ -135,10 +135,10 @@ class AlbumStore extends Store<AlbumStoreState> {
                 this.set((prevState) => ({
                     albums: sort.sortByCreatedAt(prevState.albums).reverse(),
                     sortedFrom: SORT_STATE.CREATED_AT
-                }))
+                }));
             }
-        }]
+        }];
     }
 }
 
-export const albumStore = new AlbumStore()
+export const albumStore = new AlbumStore();

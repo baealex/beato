@@ -1,4 +1,4 @@
-import type { Music } from '~/models/type'
+import type { Music } from '~/models/type';
 
 export interface AudioChannelEventHandler {
     onPlay?: () => void;

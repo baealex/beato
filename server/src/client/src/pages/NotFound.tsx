@@ -1,5 +1,5 @@
-import styled from '@emotion/styled'
-import { SecondaryButton } from '~/components/shared'
+import styled from '@emotion/styled';
+import { SecondaryButton } from '~/components/shared';
 
 const Container = styled.div`
     display: flex;
@@ -8,7 +8,7 @@ const Container = styled.div`
     align-items: center;
     height: 100%;
     gap: 1rem;
-`
+`;
 
 const Dance = styled.div`
     animation: dance 1.25s infinite ease-in;
@@ -32,13 +32,13 @@ const Dance = styled.div`
             transform: rotate(0deg);
         }
     }
-`
+`;
 
 const Text = styled.div`
     color: #666;
     font-size: 1.25rem;
     margin-top: 1rem;
-`
+`;
 
 export default function NotFound() {
     return (
@@ -53,5 +53,5 @@ export default function NotFound() {
                 Go Home
             </SecondaryButton>
         </Container>
-    )
+    );
 }

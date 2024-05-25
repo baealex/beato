@@ -1,11 +1,11 @@
-import Store from 'badland'
+import Store from 'badland';
 
-import type { Music } from '~/models/type'
+import type { Music } from '~/models/type';
 
-import * as sort from '~/modules/sort'
+import * as sort from '~/modules/sort';
 
-import { getMusics } from '~/api'
-import { MusicListener } from '~/socket'
+import { getMusics } from '~/api';
+import { MusicListener } from '~/socket';
 
 const SORT_STATE = {
     NAME: 'name',
@@ -18,82 +18,82 @@ const SORT_STATE = {
     PLAY_COUNT_DESC: 'playCountDesc',
     CREATED_AT: 'createdAt',
     CREATED_AT_DESC: 'createdAtDesc',
-} as const
+} as const;
 
 interface MusicStoreState {
-    loaded: boolean
-    musics: Music[]
-    musicMap: Map<string, Music>
-    sortedFrom: typeof SORT_STATE[keyof typeof SORT_STATE]
+    loaded: boolean;
+    musics: Music[];
+    musicMap: Map<string, Music>;
+    sortedFrom: typeof SORT_STATE[keyof typeof SORT_STATE];
 }
 
 class MusicStore extends Store<MusicStoreState> {
-    init = false
-    listener: MusicListener
+    init = false;
+    listener: MusicListener;
 
     constructor() {
-        super()
+        super();
         this.state = {
             loaded: false,
             sortedFrom: SORT_STATE.PLAY_COUNT_DESC,
             musics: [],
             musicMap: new Map(),
-        }
-        this.listener = new MusicListener()
+        };
+        this.listener = new MusicListener();
         this.listener.connect({
             onLike: ({ id, isLiked }) => {
                 this.set({
                     musics: this.state.musics.map((music) => {
                         if (music.id === id) {
-                            music.isLiked = isLiked
+                            music.isLiked = isLiked;
                         }
-                        return music
+                        return music;
                     }),
-                })
+                });
             },
             onHate: ({ id, isHated }) => {
                 this.set({
                     musics: this.state.musics.map((music) => {
                         if (music.id === id) {
-                            music.isHated = isHated
+                            music.isHated = isHated;
                         }
-                        return music
+                        return music;
                     }),
-                })
+                });
             },
             onCount: ({ id, playCount }) => {
                 this.set((prevState) => {
                     let nextMusics = prevState.musics.map((music) => {
                         if (music.id === id) {
-                            music.playCount = playCount
+                            music.playCount = playCount;
                         }
-                        return music
-                    })
+                        return music;
+                    });
 
                     if (prevState.sortedFrom === SORT_STATE.PLAY_COUNT_DESC) {
-                        nextMusics = sort.sortByPlayCount(nextMusics)
+                        nextMusics = sort.sortByPlayCount(nextMusics);
                     } else if (prevState.sortedFrom === SORT_STATE.PLAY_COUNT) {
-                        nextMusics = sort.sortByPlayCount(nextMusics).reverse()
+                        nextMusics = sort.sortByPlayCount(nextMusics).reverse();
                     }
 
                     return {
                         musics: nextMusics,
-                    }
-                })
+                    };
+                });
             },
-        })
+        });
     }
 
     get state() {
         if (!this.init) {
-            this.init = true
-            this.sync()
+            this.init = true;
+            this.sync();
         }
-        return super.state
+        return super.state;
     }
 
     set state(state) {
-        super.state = state
+        super.state = state;
     }
 
     async sync() {
@@ -103,8 +103,8 @@ class MusicStore extends Store<MusicStoreState> {
                 musics: data.allMusics,
                 musicMap: new Map(data.allMusics.map(music => [music.id, music])),
                 sortedFrom: SORT_STATE.PLAY_COUNT_DESC
-            })
-        })
+            });
+        });
     }
 
     get sortItems() {
@@ -115,7 +115,7 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByName(prevState.musics),
                     sortedFrom: SORT_STATE.NAME
-                }))
+                }));
             }
         }, {
             text: 'Name (Z-A)',
@@ -124,7 +124,7 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByName(prevState.musics).reverse(),
                     sortedFrom: SORT_STATE.NAME_DESC
-                }))
+                }));
             }
         }, {
             text: 'Artist Name (A to Z)',
@@ -133,7 +133,7 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByArtistName(prevState.musics),
                     sortedFrom: SORT_STATE.ARTIST_NAME
-                }))
+                }));
             }
         }, {
             text: 'Artist Name (Z to A)',
@@ -142,7 +142,7 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByArtistName(prevState.musics).reverse(),
                     sortedFrom: SORT_STATE.ARTIST_NAME_DESC
-                }))
+                }));
             }
         }, {
             text: 'Album Name (A to Z)',
@@ -151,7 +151,7 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByAlbumName(prevState.musics),
                     sortedFrom: SORT_STATE.ALBUM_NAME
-                }))
+                }));
             }
         }, {
             text: 'Album Name (Z to A)',
@@ -160,7 +160,7 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByAlbumName(prevState.musics).reverse(),
                     sortedFrom: SORT_STATE.ALBUM_NAME_DESC
-                }))
+                }));
             }
         }, {
             text: 'Play Count (High to Low)',
@@ -169,7 +169,7 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByPlayCount(prevState.musics),
                     sortedFrom: SORT_STATE.PLAY_COUNT_DESC
-                }))
+                }));
             }
         }, {
             text: 'Play Count (Low to High)',
@@ -178,7 +178,7 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByPlayCount(prevState.musics).reverse(),
                     sortedFrom: SORT_STATE.PLAY_COUNT
-                }))
+                }));
             }
         }, {
             text: 'Date Added (New to Old)',
@@ -187,7 +187,7 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByCreatedAt(prevState.musics),
                     sortedFrom: SORT_STATE.CREATED_AT_DESC
-                }))
+                }));
             }
         }, {
             text: 'Date Added (Old to New)',
@@ -196,10 +196,10 @@ class MusicStore extends Store<MusicStoreState> {
                 this.set((prevState) => ({
                     musics: sort.sortByCreatedAt(prevState.musics).reverse(),
                     sortedFrom: SORT_STATE.CREATED_AT
-                }))
+                }));
             }
-        }]
+        }];
     }
 }
 
-export const musicStore = new MusicStore()
+export const musicStore = new MusicStore();

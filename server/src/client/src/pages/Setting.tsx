@@ -1,14 +1,14 @@
-import { confirm, toast } from '@baejino/ui'
-import styled from '@emotion/styled'
-import { useStore } from 'badland-react'
-import { useEffect, useState } from 'react'
+import { confirm, toast } from '@baejino/ui';
+import styled from '@emotion/styled';
+import { useStore } from 'badland-react';
+import { useEffect, useState } from 'react';
 
-import { SecondaryButton, Select } from '~/components/shared'
+import { SecondaryButton, Select } from '~/components/shared';
 
-import { ConnectorListener, socket } from '~/socket'
+import { ConnectorListener, socket } from '~/socket';
 
-import { connectorStore } from '~/store/connector'
-import { queueStore } from '~/store/queue'
+import { connectorStore } from '~/store/connector';
+import { queueStore } from '~/store/queue';
 
 const Container = styled.div`
     padding: 1rem;
@@ -64,7 +64,7 @@ const Container = styled.div`
             background-color: #333;
         }
     }
-`
+`;
 
 const PLAY_MODES = [{
     value: 'immediately',
@@ -72,7 +72,7 @@ const PLAY_MODES = [{
 }, {
     value: 'later',
     label: 'Play later'
-}]
+}];
 
 const INSERT_MODES = [{
     value: 'first',
@@ -83,7 +83,7 @@ const INSERT_MODES = [{
 }, {
     value: 'after',
     label: 'Add to the next of the current music'
-}]
+}];
 
 const MIX_MODES = [{
     value: 'none',
@@ -91,12 +91,12 @@ const MIX_MODES = [{
 }, {
     value: 'mix',
     label: 'Mix (Fade in/out when music changes)'
-}]
+}];
 
 export default function Setting() {
-    const [{ connectors }] = useStore(connectorStore)
-    const [{ playMode, insertMode, mixMode }] = useStore(queueStore)
-    const [progressMessage, setProgressMessage] = useState('')
+    const [{ connectors }] = useStore(connectorStore);
+    const [{ playMode, insertMode, mixMode }] = useStore(queueStore);
+    const [progressMessage, setProgressMessage] = useState('');
 
     const handleClickSyncMusic = async (force: boolean) => {
         if (
@@ -105,31 +105,33 @@ export default function Setting() {
                 'Please only proceed with the update if it is recommended by the developer. Are you sure you want to proceed?'
             ))
         ) {
-            return
+            return;
         }
-        socket.emit('sync-music', { force })
-    }
+        socket.emit('sync-music', {
+            force
+        });
+    };
 
     useEffect(() => {
         socket.on('sync-music', (serverMessage: string | 'done' | 'error') => {
             if (serverMessage === 'done' || serverMessage === 'error') {
                 if (serverMessage === 'done') {
-                    toast('Completed sync music')
+                    toast('Completed sync music');
                 } else if (serverMessage === 'error') {
-                    toast('Error while sync music')
+                    toast('Error while sync music');
                 }
 
                 setTimeout(() => {
-                    setProgressMessage('')
-                }, 1000)
+                    setProgressMessage('');
+                }, 1000);
             }
-            setProgressMessage(serverMessage)
-        })
+            setProgressMessage(serverMessage);
+        });
 
         return () => {
-            socket.off('sync-music')
-        }
-    }, [])
+            socket.off('sync-music');
+        };
+    }, []);
 
     return (
         <Container>
@@ -139,7 +141,11 @@ export default function Setting() {
                 {progressMessage && (
                     <p className="progress-text">{progressMessage}</p>
                 )}
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '1rem'
+                    }}>
                     <SecondaryButton onClick={() => handleClickSyncMusic(false)}>
                         Sync
                     </SecondaryButton>
@@ -192,12 +198,16 @@ export default function Setting() {
             </section>
             <section>
                 <h3>Have a problem?</h3>
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '1rem'
+                    }}>
                     <SecondaryButton onClick={() => window.location.reload()}>
                         Try Refresh
                     </SecondaryButton>
                 </div>
             </section>
         </Container >
-    )
+    );
 }

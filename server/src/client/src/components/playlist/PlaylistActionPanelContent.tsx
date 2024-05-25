@@ -1,41 +1,43 @@
-import { confirm, prompt } from '@baejino/ui'
-import { useStore } from 'badland-react'
+import { confirm, prompt } from '@baejino/ui';
+import { useStore } from 'badland-react';
 
-import { GridImage, PanelContent } from '~/components/shared'
-import * as Icon from '~/icon'
+import { GridImage, PanelContent } from '~/components/shared';
+import * as Icon from '~/icon';
 
-import { panel } from '~/modules/panel'
+import { panel } from '~/modules/panel';
 
-import { PlaylistListener } from '~/socket'
+import { PlaylistListener } from '~/socket';
 
-import { musicStore } from '~/store/music'
-import { playlistStore } from '~/store/playlist'
+import { musicStore } from '~/store/music';
+import { playlistStore } from '~/store/playlist';
 
 interface PlaylistActionPanelContentProps {
-    id: string
-    onPlaylistClick?: () => void
+    id: string;
+    onPlaylistClick?: () => void;
 }
 
 export default function PlaylistActionPanelContent({
     id,
     onPlaylistClick,
 }: PlaylistActionPanelContentProps) {
-    const [{ musicMap }] = useStore(musicStore)
-    const [{ playlists }] = useStore(playlistStore)
+    const [{ musicMap }] = useStore(musicStore);
+    const [{ playlists }] = useStore(playlistStore);
 
-    const playlist = playlists.find(playlist => playlist.id === id)
+    const playlist = playlists.find(playlist => playlist.id === id);
 
     if (!playlist) {
-        return null
+        return null;
     }
 
     return (
         <PanelContent
             header={onPlaylistClick && (
-                <button className="panel-album clickable linkable" onClick={() => {
-                    panel.close()
-                    setTimeout(onPlaylistClick, 100)
-                }}>
+                <button
+                    className="panel-album clickable linkable"
+                    onClick={() => {
+                        panel.close();
+                        setTimeout(onPlaylistClick, 100);
+                    }}>
                     <GridImage
                         className="album-cover-grid"
                         images={playlist.headerMusics.map(music => musicMap.get(music.id)?.album.cover ?? '')}
@@ -56,11 +58,11 @@ export default function PlaylistActionPanelContent({
                     icon: <Icon.Pencil />,
                     text: 'Rename',
                     onClick: async () => {
-                        const name = await prompt('Rename playlist', playlist.name)
+                        const name = await prompt('Rename playlist', playlist.name);
                         if (name) {
-                            PlaylistListener.update(id, name)
+                            PlaylistListener.update(id, name);
                         }
-                        panel.close()
+                        panel.close();
                     },
                 },
                 {
@@ -68,13 +70,13 @@ export default function PlaylistActionPanelContent({
                     text: 'Delete',
                     onClick: async () => {
                         if (!(await confirm('Are you sure you want to delete this playlist?'))) {
-                            return
+                            return;
                         }
-                        PlaylistListener.delete(id)
-                        panel.close()
+                        PlaylistListener.delete(id);
+                        panel.close();
                     },
                 },
             ]}
         />
-    )
+    );
 }

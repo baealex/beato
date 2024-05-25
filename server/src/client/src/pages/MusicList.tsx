@@ -1,37 +1,41 @@
-import { prompt } from '@baejino/ui'
-import { useStore } from 'badland-react'
-import { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { prompt } from '@baejino/ui';
+import { useStore } from 'badland-react';
+import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { SecondaryButton, StickyHeader, ItemSortPanelContent, Loading } from '~/components/shared'
-import { MusicListItem, MusicActionPanelContent } from '~/components/music'
-import * as Icon from '~/icon'
+import { SecondaryButton, StickyHeader, ItemSortPanelContent, Loading } from '~/components/shared';
+import { MusicListItem, MusicActionPanelContent } from '~/components/music';
+import * as Icon from '~/icon';
 
-import { panel } from '~/modules/panel'
+import { panel } from '~/modules/panel';
 
-import { musicStore } from '~/store/music'
-import { queueStore } from '~/store/queue'
+import { musicStore } from '~/store/music';
+import { queueStore } from '~/store/queue';
 
-const RENDER_LIMIT = 200
+const RENDER_LIMIT = 200;
 
 export default function Music() {
-    const navigate = useNavigate()
-    const [searchParams, setSearchParams] = useSearchParams()
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const [{ musics, loaded }] = useStore(musicStore)
-    const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT)
+    const [{ musics, loaded }] = useStore(musicStore);
+    const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT);
 
     const handleSearch = async () => {
-        const query = await prompt('Search keyword', searchParams.get('q') || '')
-        searchParams.set('q', query)
-        setSearchParams(searchParams, { replace: true })
-    }
+        const query = await prompt('Search keyword', searchParams.get('q') || '');
+        searchParams.set('q', query);
+        setSearchParams(searchParams, {
+            replace: true
+        });
+    };
 
     const handleReadMore = () => {
-        setRenderLimit(renderLimit + RENDER_LIMIT)
-        searchParams.set('l', (renderLimit + RENDER_LIMIT).toString())
-        setSearchParams(searchParams, { replace: true })
-    }
+        setRenderLimit(renderLimit + RENDER_LIMIT);
+        searchParams.set('l', (renderLimit + RENDER_LIMIT).toString());
+        setSearchParams(searchParams, {
+            replace: true
+        });
+    };
 
     const filteredMusics = musics
         ?.filter(music =>
@@ -40,24 +44,34 @@ export default function Music() {
                 music.artist.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
                 music.album.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '')
             )
-        )
+        );
 
     return (
         <>
             <StickyHeader>
-                <SecondaryButton style={{ width: '160px' }} onClick={handleSearch}>
+                <SecondaryButton
+                    style={{
+                        width: '160px'
+                    }}
+                    onClick={handleSearch}>
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '8px'
+                    }}>
                     <SecondaryButton onClick={() => queueStore.reset(filteredMusics.map(music => music.id))}>
                         <Icon.Play /> Play
                     </SecondaryButton>
-                    <SecondaryButton onClick={() => panel.open({
-                        title: 'Music Sort',
-                        content: (
-                            <ItemSortPanelContent items={musicStore.sortItems} />
-                        )
-                    })}>
+                    <SecondaryButton
+                        onClick={() => panel.open({
+                            title: 'Music Sort',
+                            content: (
+                                <ItemSortPanelContent items={musicStore.sortItems} />
+                            )
+                        })}>
                         <Icon.Sort /> Sort
                     </SecondaryButton>
                 </div>
@@ -89,12 +103,20 @@ export default function Music() {
                 />
             ))}
             {loaded && filteredMusics.length > renderLimit && (
-                <div style={{ padding: '0 16px 16px' }}>
-                    <SecondaryButton style={{ width: '100%', justifyContent: 'center' }} onClick={handleReadMore}>
+                <div
+                    style={{
+                        padding: '0 16px 16px'
+                    }}>
+                    <SecondaryButton
+                        style={{
+                            width: '100%',
+                            justifyContent: 'center'
+                        }}
+                        onClick={handleReadMore}>
                         Load More
                     </SecondaryButton>
                 </div>
             )}
         </>
-    )
+    );
 }

@@ -1,8 +1,8 @@
-import styles from './SubPageHeader.module.scss'
-import classNames from 'classnames/bind'
-const cx = classNames.bind(styles)
+import styles from './SubPageHeader.module.scss';
+import classNames from 'classnames/bind';
+const cx = classNames.bind(styles);
 
-import { Left } from '~/icon'
+import { Left } from '~/icon';
 
 const SubPageHeader = () => {
     return (
@@ -11,7 +11,7 @@ const SubPageHeader = () => {
                 <Left /> <span className={cx('back-text')}>Back</span>
             </button>
         </div>
-    )
-}
+    );
+};
 
-export default SubPageHeader
+export default SubPageHeader;

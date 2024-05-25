@@ -1,18 +1,18 @@
-import styled from '@emotion/styled'
-import { useStore } from 'badland-react'
-import { useQuery } from 'react-query'
-import { useNavigate, useParams } from 'react-router-dom'
+import styled from '@emotion/styled';
+import { useStore } from 'badland-react';
+import { useQuery } from 'react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { AlbumListItem } from '~/components/album'
-import { MusicActionPanelContent, MusicListItem } from '~/components/music'
-import { Image, SecondaryButton } from '~/components/shared'
-import { Play } from '~/icon'
+import { AlbumListItem } from '~/components/album';
+import { MusicActionPanelContent, MusicListItem } from '~/components/music';
+import { Image, SecondaryButton } from '~/components/shared';
+import { Play } from '~/icon';
 
-import { getArtist } from '~/api'
+import { getArtist } from '~/api';
 
-import { musicStore } from '~/store/music'
-import { queueStore } from '~/store/queue'
-import { panel } from '~/modules/panel'
+import { musicStore } from '~/store/music';
+import { queueStore } from '~/store/queue';
+import { panel } from '~/modules/panel';
 
 const Container = styled.section`
     .artist-name {
@@ -74,24 +74,24 @@ const Container = styled.section`
         padding: 0;
         list-style: none;
     }
-`
+`;
 
 export default function ArtistDetail() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const { id } = useParams<{ id: string }>()
+    const { id } = useParams<{ id: string }>();
 
     const { data: artist } = useQuery(['artist', id], () => getArtist(id!).then(res => res.data.artist), {
         enabled: !!id,
-    })
+    });
 
-    const [{ musicMap }] = useStore(musicStore)
+    const [{ musicMap }] = useStore(musicStore);
 
     if (!artist) {
-        return null
+        return null;
     }
 
-    const listenedCount = artist.musics.reduce((acc, { id }) => acc += musicMap.get(id)?.playCount || 0, 0)
+    const listenedCount = artist.musics.reduce((acc, { id }) => acc += musicMap.get(id)?.playCount || 0, 0);
 
     return (
         <Container>
@@ -129,9 +129,9 @@ export default function ArtistDetail() {
             </div>
             <div className="musics">
                 {artist.musics.map(({ id }) => {
-                    const music = musicMap.get(id)
+                    const music = musicMap.get(id);
 
-                    if (!music) return null
+                    if (!music) return null;
 
                     return (
                         <MusicListItem
@@ -154,9 +154,9 @@ export default function ArtistDetail() {
                                 )
                             })}
                         />
-                    )
+                    );
                 })}
             </div>
         </Container>
-    )
+    );
 }

@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { getImage } from '~/modules/image'
+import { useEffect, useRef } from 'react';
+import { getImage } from '~/modules/image';
 
 interface ImageProps {
     src?: string;
@@ -16,27 +16,27 @@ export default function Image({
     loading = 'lazy',
     className,
 }: ImageProps) {
-    const ref = useRef<HTMLImageElement>(null)
+    const ref = useRef<HTMLImageElement>(null);
 
     useEffect(() => {
         if (!ref.current || loading !== 'lazy') {
-            return
+            return;
         }
 
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
-                const img = entry.target as HTMLImageElement
-                img.src = getImage(src)
-                observer.unobserve(img)
+                const img = entry.target as HTMLImageElement;
+                img.src = getImage(src);
+                observer.unobserve(img);
             }
-        })
+        });
 
-        observer.observe(ref.current)
+        observer.observe(ref.current);
 
         return () => {
-            observer.disconnect()
-        }
-    }, [loading, src])
+            observer.disconnect();
+        };
+    }, [loading, src]);
 
     return (
         <>
@@ -52,5 +52,5 @@ export default function Image({
                 />
             )}
         </>
-    )
+    );
 }

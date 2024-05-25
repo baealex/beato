@@ -1,35 +1,39 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react';
 
 interface ObserverProps {
-    onIntersect: () => void
+    onIntersect: () => void;
 }
 
-export default function Observer({
-    onIntersect,
-}: ObserverProps) {
-    const ref = useRef<HTMLDivElement>(null)
+export default function Observer({ onIntersect, }: ObserverProps) {
+    const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
-                onIntersect()
+                onIntersect();
             }
-        })
+        });
 
-        const { current } = ref
+        const { current } = ref;
 
         if (current) {
-            observer.observe(current)
+            observer.observe(current);
         }
 
         return () => {
             if (current) {
-                observer.unobserve(current)
+                observer.unobserve(current);
             }
-        }
-    }, [ref, onIntersect])
+        };
+    }, [ref, onIntersect]);
 
     return (
-        <div ref={ref} style={{ minHeight: '1px', minWidth: '1px' }} />
-    )
+        <div
+            ref={ref}
+            style={{
+                minHeight: '1px',
+                minWidth: '1px'
+            }}
+        />
+    );
 }

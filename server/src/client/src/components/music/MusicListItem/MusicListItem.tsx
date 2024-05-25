@@ -1,9 +1,9 @@
-import styles from './MusicListItem.module.scss'
-import classNames from 'classnames/bind'
-const cx = classNames.bind(styles)
+import styles from './MusicListItem.module.scss';
+import classNames from 'classnames/bind';
+const cx = classNames.bind(styles);
 
-import { Image } from '~/components/shared' 
-import { Heart, MoreVerticalFill } from '~/icon'
+import { Image } from '~/components/shared';
+import { Heart, MoreVerticalFill } from '~/icon';
 
 interface MusicListItemProps {
     id?: number;
@@ -35,14 +35,20 @@ const MusicListItem = ({
         <div
             className={cx(
                 'MusicListItem',
-                { isHated },
-                { hasMenu: typeof onLongPress === 'function' },
-                { hasAlbumCover: typeof onLongPress === 'function' },
+                {
+                    isHated
+                },
+                {
+                    hasMenu: typeof onLongPress === 'function'
+                },
+                {
+                    hasAlbumCover: typeof onLongPress === 'function'
+                },
             )}
             onClick={onClick}
             onContextMenu={(e) => {
-                e.preventDefault()
-                onLongPress?.()
+                e.preventDefault();
+                onLongPress?.();
             }}>
             {typeof albumCover === 'string' && (
                 <Image className={cx('album-art')} src={albumCover} alt={albumName} />
@@ -64,10 +70,12 @@ const MusicListItem = ({
                 </div>
                 {onLongPress && (
                     <button
-                        className={cx('icon-button', { isLiked })}
+                        className={cx('icon-button', {
+                            isLiked
+                        })}
                         onClick={(e) => {
-                            e.stopPropagation()
-                            onLongPress?.()
+                            e.stopPropagation();
+                            onLongPress?.();
                         }}>
                         {isLiked ? (
                             <Heart />
@@ -78,7 +86,7 @@ const MusicListItem = ({
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default MusicListItem
+export default MusicListItem;

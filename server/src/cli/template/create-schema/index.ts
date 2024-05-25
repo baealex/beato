@@ -1,6 +1,6 @@
-import { IResolvers } from '@graphql-tools/utils';
+import type { IResolvers } from '@graphql-tools/utils';
 
-import models, { __NAME__UPPER__ } from '~/models';
+import models, { type __NAME__UPPER__ } from '~/models';
 import { gql } from '~/modules/graphql';
 
 export const __NAME__Type = gql`

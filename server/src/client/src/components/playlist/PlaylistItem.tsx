@@ -1,12 +1,12 @@
-import styled from '@emotion/styled'
-import { useStore } from 'badland-react'
+import styled from '@emotion/styled';
+import { useStore } from 'badland-react';
 
-import GridImage from '../shared/GridImage'
-import { MoreVerticalFill } from '~/icon'
+import GridImage from '../shared/GridImage';
+import { MoreVerticalFill } from '~/icon';
 
-import { Music } from '~/models/type'
+import type { Music } from '~/models/type';
 
-import { musicStore } from '~/store/music'
+import { musicStore } from '~/store/music';
 
 const Container = styled.button`
     color: #eee;
@@ -57,7 +57,7 @@ const Container = styled.button`
         width: 60px;
         height: 60px;
     }
-`
+`;
 
 interface PlaylistItemProps {
     name: string;
@@ -74,17 +74,16 @@ export default function PlaylistItem({
     onClick,
     onLongPress,
 }: PlaylistItemProps) {
-    const [{ musicMap }] = useStore(musicStore)
+    const [{ musicMap }] = useStore(musicStore);
 
     return (
         <Container
             className="clickable"
             onClick={onClick}
             onContextMenu={(e) => {
-                e.preventDefault()
-                onLongPress?.()
-            }}
-        >
+                e.preventDefault();
+                onLongPress?.();
+            }}>
             <GridImage
                 className="cover"
                 images={headerMusics.map((music) => musicMap.get(music.id)?.album.cover ?? '')}
@@ -94,13 +93,15 @@ export default function PlaylistItem({
                 <div className="song-count">{musicCount} songs</div>
             </div>
             {onLongPress && (
-                <button className="icon-button" onClick={(e) => {
-                    e.stopPropagation()
-                    onLongPress()
-                }}>
+                <button
+                    className="icon-button"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onLongPress();
+                    }}>
                     <MoreVerticalFill />
                 </button>
             )}
         </Container>
-    )
+    );
 }

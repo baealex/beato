@@ -1,8 +1,8 @@
-import styles from './ArtistListItem.module.scss'
-import classNames from 'classnames/bind'
-const cx = classNames.bind(styles)
+import styles from './ArtistListItem.module.scss';
+import classNames from 'classnames/bind';
+const cx = classNames.bind(styles);
 
-import Image from '~/components/shared/Image'
+import Image from '~/components/shared/Image';
 
 interface ArtistListItemProps {
     artistName: string;
@@ -40,7 +40,7 @@ const ArtistListItem = ({
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ArtistListItem
+export default ArtistListItem;

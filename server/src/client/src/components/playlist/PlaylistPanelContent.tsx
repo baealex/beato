@@ -1,21 +1,19 @@
-import { useStore } from 'badland-react'
+import { useStore } from 'badland-react';
 
-import { PanelContent } from '~/components/shared'
+import { PanelContent } from '~/components/shared';
 
-import PlaylistItem from './PlaylistItem'
+import PlaylistItem from './PlaylistItem';
 
-import { panel } from '~/modules/panel'
+import { panel } from '~/modules/panel';
 
-import { playlistStore } from '~/store/playlist'
+import { playlistStore } from '~/store/playlist';
 
 interface PlaylistPanelContentProps {
-    onClick: (id: string) => void
+    onClick: (id: string) => void;
 }
 
-export default function PlaylistPanelContent({
-    onClick,
-}: PlaylistPanelContentProps) {
-    const [{ playlists }] = useStore(playlistStore)
+export default function PlaylistPanelContent({ onClick, }: PlaylistPanelContentProps) {
+    const [{ playlists }] = useStore(playlistStore);
 
     return (
         <PanelContent
@@ -26,13 +24,13 @@ export default function PlaylistPanelContent({
                             key={playlist.id}
                             {...playlist}
                             onClick={() => {
-                                onClick(playlist.id)
-                                panel.close()
+                                onClick(playlist.id);
+                                panel.close();
                             }}
                         />
                     ))}
                 </>
             )}
         />
-    )
+    );
 }

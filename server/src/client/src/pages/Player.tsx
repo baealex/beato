@@ -1,18 +1,19 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import styled from '@emotion/styled'
-import { useStore } from 'badland-react'
-import { HTMLMotionProps, motion } from 'framer-motion'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from '@emotion/styled';
+import { useStore } from 'badland-react';
+import type { HTMLMotionProps } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-import { MusicActionPanelContent } from '~/components/music'
-import * as Icon from '~/icon'
+import { MusicActionPanelContent } from '~/components/music';
+import * as Icon from '~/icon';
 
-import { panel } from '~/modules/panel'
-import { getImage } from '~/modules/image'
-import { makePlayTime } from '~/modules/time'
+import { panel } from '~/modules/panel';
+import { getImage } from '~/modules/image';
+import { makePlayTime } from '~/modules/time';
 
-import { musicStore } from '~/store/music'
-import { queueStore } from '~/store/queue'
+import { musicStore } from '~/store/music';
+import { queueStore } from '~/store/queue';
 
 const Container = styled.div<HTMLMotionProps<'div'>>`
     height: 100%;
@@ -275,70 +276,70 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
             }
         }
     }
-`
+`;
 
 export default function PlayerDetail() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const [state] = useStore(queueStore)
-    const [{ musicMap }] = useStore(musicStore)
+    const [state] = useStore(queueStore);
+    const [{ musicMap }] = useStore(musicStore);
 
-    const [borderRadius, setBorderRadius] = useState('50%')
+    const [borderRadius, setBorderRadius] = useState('50%');
 
     const currentMusic = state.selected !== null
         ? musicMap.get(state.items[state.selected])
-        : null
+        : null;
 
     // TODO: Fix type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleClickProgress = (e: any) => {
-        const { width, left, right } = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
+        const { width, left, right } = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
 
-        let x = e.touches ? e.touches[0].clientX : e.clientX
-        x = x < left ? left : x > right ? right : x
-        const percent = (x - left) / width
-        const duration = currentMusic?.duration || 1
+        let x = e.touches ? e.touches[0].clientX : e.clientX;
+        x = x < left ? left : x > right ? right : x;
+        const percent = (x - left) / width;
+        const duration = currentMusic?.duration || 1;
 
-        queueStore.seek(duration * percent)
-    }
+        queueStore.seek(duration * percent);
+    };
 
     // TODO: Fix type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleMoveProgress = (e: any) => {
         if (e.buttons === 1) {
-            handleClickProgress(e)
-            return
+            handleClickProgress(e);
+            return;
         }
 
         if (e.touches?.length === 1) {
-            handleClickProgress(e)
+            handleClickProgress(e);
         }
-    }
+    };
 
     useEffect(() => {
-        let timer: ReturnType<typeof setTimeout> | null = null
+        let timer: ReturnType<typeof setTimeout> | null = null;
 
         if (!state.isPlaying) {
-            setBorderRadius('50%')
-            return
+            setBorderRadius('50%');
+            return;
         }
 
         const setRandomBorderRadius = () => {
             const makeRandom = () => {
-                return Math.floor(Math.random() * 90 + 10) + '%'
-            }
-            setBorderRadius(`${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`)
-            timer = setTimeout(setRandomBorderRadius, 1000)
-        }
-        setRandomBorderRadius()
+                return Math.floor(Math.random() * 90 + 10) + '%';
+            };
+            setBorderRadius(`${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`);
+            timer = setTimeout(setRandomBorderRadius, 1000);
+        };
+        setRandomBorderRadius();
 
         return () => {
-            setBorderRadius('50%')
+            setBorderRadius('50%');
             if (timer) {
-                clearTimeout(timer)
+                clearTimeout(timer);
             }
-        }
-    }, [state.isPlaying])
+        };
+    }, [state.isPlaying]);
 
     return (
         <Container
@@ -358,21 +359,24 @@ export default function PlayerDetail() {
             }}
             transition={{
                 duration: 0.25,
-            }}
-        >
+            }}>
             <div className="between">
                 <div className="content">
                     <div className="album-art">
                         <img
                             className="background"
-                            style={{ borderRadius }}
+                            style={{
+                                borderRadius
+                            }}
                             src={getImage(currentMusic?.album.cover)}
                             alt={currentMusic?.album.name}
                         />
                         <div className="foreground-wrapper">
                             <img
                                 className="foreground"
-                                style={{ borderRadius }}
+                                style={{
+                                    borderRadius
+                                }}
                                 src={getImage(
                                     currentMusic?.album.cover.replace('/resized', '')
                                 )}
@@ -392,8 +396,7 @@ export default function PlayerDetail() {
                                         onArtistClick={() => navigate(`/artist/${currentMusic.artist.id}`)}
                                     />
                                 )
-                            })}
-                        >
+                            })}>
                             <div className="name">
                                 {currentMusic?.name}
                             </div>
@@ -419,8 +422,7 @@ export default function PlayerDetail() {
                         aria-valuemax={100}
                         onClick={handleClickProgress}
                         onMouseMove={handleMoveProgress}
-                        onTouchMove={handleMoveProgress}
-                    >
+                        onTouchMove={handleMoveProgress}>
                         <div
                             className="bar"
                             style={{
@@ -437,27 +439,23 @@ export default function PlayerDetail() {
                         <div className="playback">
                             <button
                                 className="icon-button skip-back"
-                                onClick={() => queueStore.prev()}
-                            >
+                                onClick={() => queueStore.prev()}>
                                 <Icon.Play />
                             </button>
                             <button
                                 className="icon-button"
-                                onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}
-                            >
+                                onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
                                 {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
                             </button>
                             <button
                                 className="icon-button skip-forward"
-                                onClick={() => queueStore.next()}
-                            >
+                                onClick={() => queueStore.next()}>
                                 <Icon.Play />
                             </button>
                         </div>
                         <button
                             className={`icon-button shuffle ${state.shuffle ? 'active' : ''}`}
-                            onClick={() => queueStore.toggleShuffle()}
-                        >
+                            onClick={() => queueStore.toggleShuffle()}>
                             <Icon.Shuffle />
                         </button>
                     </div>
@@ -469,5 +467,5 @@ export default function PlayerDetail() {
                 </div>
             </div>
         </Container>
-    )
+    );
 }

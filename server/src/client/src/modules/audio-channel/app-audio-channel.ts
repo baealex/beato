@@ -1,10 +1,10 @@
-import type { AudioChannel, AudioChannelEventHandler } from './audio-channel'
+import type { AudioChannel, AudioChannelEventHandler } from './audio-channel';
 
-import { getImage } from '~/modules/image'
-import { convertToMillisecond, convertToSecond } from '~/modules/time'
+import { getImage } from '~/modules/image';
+import { convertToMillisecond, convertToSecond } from '~/modules/time';
 
-import type { Music } from '~/models/type'
-import { toast } from '@baejino/ui'
+import type { Music } from '~/models/type';
+import { toast } from '@baejino/ui';
 
 interface SetMediaItemAction {
     actionType: 'setMediaItem';
@@ -37,14 +37,14 @@ interface SeekAction {
 
 export const PostMessageWrapper = (
     action:
-        | SetMediaItemAction
-        | PlayAction
-        | PauseAction
-        | StopAction
-        | SeekAction
+    | SetMediaItemAction
+    | PlayAction
+    | PauseAction
+    | StopAction
+    | SeekAction
 ) => {
-    return JSON.stringify(action)
-}
+    return JSON.stringify(action);
+};
 
 export class AppAudioChannel implements AudioChannel {
     constructor({
@@ -58,27 +58,27 @@ export class AppAudioChannel implements AudioChannel {
     }: AudioChannelEventHandler) {
         window.AppChannel.receiveMessage = (message) => {
             if (message.actionType === 'play') {
-                onPlay?.()
+                onPlay?.();
             }
             if (message.actionType === 'pause') {
-                onPause?.()
+                onPause?.();
             }
             if (message.actionType === 'stop') {
-                onStop?.()
+                onStop?.();
             }
             if (message.actionType === 'skipToNext') {
-                onSkipToNext?.()
+                onSkipToNext?.();
             }
             if (message.actionType === 'skipToPrevious') {
-                onSkipToPrevious?.()
+                onSkipToPrevious?.();
             }
             if (message.actionType === 'end') {
-                onEnded()
+                onEnded();
             }
             if (message.actionType === 'setPosition') {
-                onTimeUpdate(convertToSecond(message.position), () => 0)
+                onTimeUpdate(convertToSecond(message.position), () => 0);
             }
-        }
+        };
     }
 
     load(music: Music) {
@@ -94,7 +94,7 @@ export class AppAudioChannel implements AudioChannel {
                     artUri: location.origin + getImage(music.album.cover),
                 },
             })
-        )
+        );
     }
 
     play() {
@@ -102,7 +102,7 @@ export class AppAudioChannel implements AudioChannel {
             PostMessageWrapper({
                 actionType: 'play',
             })
-        )
+        );
     }
 
     pause() {
@@ -110,7 +110,7 @@ export class AppAudioChannel implements AudioChannel {
             PostMessageWrapper({
                 actionType: 'pause',
             })
-        )
+        );
     }
 
     stop() {
@@ -118,7 +118,7 @@ export class AppAudioChannel implements AudioChannel {
             PostMessageWrapper({
                 actionType: 'stop',
             })
-        )
+        );
     }
 
     seek(time: number) {
@@ -127,10 +127,10 @@ export class AppAudioChannel implements AudioChannel {
                 actionType: 'setPosition',
                 position: convertToMillisecond(time),
             })
-        )
+        );
     }
 
     download() {
-        toast('Not supported yet.')
+        toast('Not supported yet.');
     }
 }

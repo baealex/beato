@@ -1,10 +1,10 @@
-import Store from 'badland'
+import Store from 'badland';
 
-import type { Artist } from '~/models/type'
+import type { Artist } from '~/models/type';
 
-import * as sort from '~/modules/sort'
+import * as sort from '~/modules/sort';
 
-import { getArtists } from '~/api'
+import { getArtists } from '~/api';
 
 const SORT_STATE = {
     NAME: 'name',
@@ -15,36 +15,36 @@ const SORT_STATE = {
     MUSIC_COUNT_DESC: 'musicCountDesc',
     CREATED_AT: 'createdAt',
     CREATED_AT_DESC: 'createdAtDesc',
-} as const
+} as const;
 
 interface ArtistStoreState {
-    loaded: boolean
-    artists: Artist[]
-    sortedFrom: typeof SORT_STATE[keyof typeof SORT_STATE]
+    loaded: boolean;
+    artists: Artist[];
+    sortedFrom: typeof SORT_STATE[keyof typeof SORT_STATE];
 }
 
 class ArtistStore extends Store<ArtistStoreState> {
-    init = false
+    init = false;
 
     constructor() {
-        super()
+        super();
         this.state = {
             loaded: false,
             artists: [],
             sortedFrom: SORT_STATE.MUSIC_COUNT_DESC,
-        }
+        };
     }
 
     get state() {
         if (!this.init) {
-            this.init = true
-            this.sync()
+            this.init = true;
+            this.sync();
         }
-        return super.state
+        return super.state;
     }
 
     set state(state) {
-        super.state = state
+        super.state = state;
     }
 
     async sync() {
@@ -53,8 +53,8 @@ class ArtistStore extends Store<ArtistStoreState> {
                 loaded: true,
                 artists: data.allArtists,
                 sortedFrom: SORT_STATE.MUSIC_COUNT_DESC
-            })
-        })
+            });
+        });
     }
 
     get sortItems() {
@@ -65,7 +65,7 @@ class ArtistStore extends Store<ArtistStoreState> {
                 this.set({
                     artists: sort.sortByName(this.state.artists),
                     sortedFrom: SORT_STATE.NAME
-                })
+                });
             }
         }, {
             text: 'Name (Z-A)',
@@ -74,7 +74,7 @@ class ArtistStore extends Store<ArtistStoreState> {
                 this.set({
                     artists: sort.sortByName(this.state.artists).reverse(),
                     sortedFrom: SORT_STATE.NAME_DESC
-                })
+                });
             }
         }, {
             text: 'Album Count (High to Low)',
@@ -83,7 +83,7 @@ class ArtistStore extends Store<ArtistStoreState> {
                 this.set({
                     artists: sort.sortByAlbumCount(this.state.artists),
                     sortedFrom: SORT_STATE.ALBUM_COUNT_DESC
-                })
+                });
             }
         }, {
             text: 'Album Count (Low to High)',
@@ -92,7 +92,7 @@ class ArtistStore extends Store<ArtistStoreState> {
                 this.set({
                     artists: sort.sortByAlbumCount(this.state.artists).reverse(),
                     sortedFrom: SORT_STATE.ALBUM_COUNT
-                })
+                });
             }
         }, {
             text: 'Music Count (High to Low)',
@@ -101,7 +101,7 @@ class ArtistStore extends Store<ArtistStoreState> {
                 this.set({
                     artists: sort.sortByMusicCount(this.state.artists),
                     sortedFrom: SORT_STATE.MUSIC_COUNT_DESC
-                })
+                });
             }
         }, {
             text: 'Music Count (Low to High)',
@@ -110,7 +110,7 @@ class ArtistStore extends Store<ArtistStoreState> {
                 this.set({
                     artists: sort.sortByMusicCount(this.state.artists).reverse(),
                     sortedFrom: SORT_STATE.MUSIC_COUNT
-                })
+                });
             }
         }, {
             text: 'Created At (New to Old)',
@@ -119,7 +119,7 @@ class ArtistStore extends Store<ArtistStoreState> {
                 this.set({
                     artists: sort.sortByCreatedAt(this.state.artists),
                     sortedFrom: SORT_STATE.CREATED_AT_DESC
-                })
+                });
             }
         }, {
             text: 'Created At (Old to New)',
@@ -128,10 +128,10 @@ class ArtistStore extends Store<ArtistStoreState> {
                 this.set({
                     artists: sort.sortByCreatedAt(this.state.artists).reverse(),
                     sortedFrom: SORT_STATE.CREATED_AT
-                })
+                });
             }
-        }]
+        }];
     }
 }
 
-export const artistStore = new ArtistStore()
+export const artistStore = new ArtistStore();

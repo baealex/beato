@@ -1,44 +1,45 @@
-import Store from 'badland'
-import { Connector, ConnectorListener, socket } from '~/socket'
+import Store from 'badland';
+import type { Connector } from '~/socket';
+import { ConnectorListener, socket } from '~/socket';
 
 interface ConnectorStoreState {
-    connectors: Connector[]
+    connectors: Connector[];
 }
 
 class ConnectorStore extends Store<ConnectorStoreState> {
-    init = false
-    listener: ConnectorListener
+    init = false;
+    listener: ConnectorListener;
 
     constructor() {
-        super()
+        super();
         this.state = {
             connectors: [],
-        }
-        this.listener = new ConnectorListener()
+        };
+        this.listener = new ConnectorListener();
         this.listener.connect({
             onConnectors: (connectors) => {
                 this.set({
                     connectors,
-                })
+                });
             }
-        })
+        });
     }
 
     get state() {
         if (!this.init) {
-            this.init = true
-            this.sync()
+            this.init = true;
+            this.sync();
         }
-        return super.state
+        return super.state;
     }
 
     set state(state) {
-        super.state = state
+        super.state = state;
     }
 
     async sync() {
-        socket.emit('get-connectors')
+        socket.emit('get-connectors');
     }
 }
 
-export const connectorStore = new ConnectorStore()
+export const connectorStore = new ConnectorStore();

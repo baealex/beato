@@ -1,9 +1,9 @@
-import {
+import type {
     Request,
     Response,
     NextFunction,
 } from 'express';
-import { Controller } from '~/types';
+import type { Controller } from '~/types';
 
 export default function useAsync(callback: Controller) {
     return function (req: Request, res: Response, next: NextFunction) {

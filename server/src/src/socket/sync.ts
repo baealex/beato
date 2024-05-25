@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Socket } from 'socket.io';
+import type { Socket } from 'socket.io';
 import { parseBuffer } from 'music-metadata';
 import sharp from 'sharp';
 
@@ -304,8 +304,10 @@ export const syncMusic = async (socket: Socket, force = false) => {
 
         const $existArtists = await models.artist.findMany({
             include: {
-                Album: {},
-                Music: {},
+                Album: {
+                },
+                Music: {
+                },
             },
         });
 

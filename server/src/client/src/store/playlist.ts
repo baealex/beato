@@ -1,30 +1,34 @@
-import Store from 'badland'
-import { getPlaylists } from '~/api'
-import { Playlist } from '~/models/type'
-import { PlaylistListener } from '~/socket'
+import Store from 'badland';
+import { getPlaylists } from '~/api';
+import type { Playlist } from '~/models/type';
+import { PlaylistListener } from '~/socket';
 
 interface PlaylistStoreState {
-    loaded: boolean
-    playlists: Playlist[]
+    loaded: boolean;
+    playlists: Playlist[];
 }
 
 class PlaylistStore extends Store<PlaylistStoreState> {
-    init = false
-    listener: PlaylistListener
+    init = false;
+    listener: PlaylistListener;
 
     constructor() {
-        super()
+        super();
         this.state = {
             loaded: false,
             playlists: []
-        }
-        this.listener = new PlaylistListener()
+        };
+        this.listener = new PlaylistListener();
         this.listener.connect({
             onCreate: (playlist) => {
-                this.set({ playlists: [playlist, ...this.state.playlists] })
+                this.set({
+                    playlists: [playlist, ...this.state.playlists]
+                });
             },
             onDelete: (id) => {
-                this.set({ playlists: this.state.playlists.filter((playlist) => playlist.id !== id) })
+                this.set({
+                    playlists: this.state.playlists.filter((playlist) => playlist.id !== id)
+                });
             },
             onUpdate: ({ id, name }) => {
                 this.set({
@@ -32,10 +36,12 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                         ...playlist,
                         name
                     } : playlist)
-                })
+                });
             },
             onChangeOrder: (ids) => {
-                this.set({ playlists: this.state.playlists.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id)) })
+                this.set({
+                    playlists: this.state.playlists.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id))
+                });
             },
             onAddMusic: ({ id, musicCount, headerMusics }) => {
                 this.set({
@@ -44,7 +50,7 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                         musicCount,
                         headerMusics,
                     } : playlist)
-                })
+                });
             },
             onMoveMusic: ({ fromId, formHeaderMusics, toId, toMusicCount, toHeaderMusics, musicIds }) => {
                 this.set({
@@ -54,18 +60,18 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                                 ...playlist,
                                 headerMusics: formHeaderMusics,
                                 musicCount: playlist.musicCount - musicIds.length
-                            }
+                            };
                         }
                         if (playlist.id === toId) {
                             return {
                                 ...playlist,
                                 musicCount: toMusicCount,
                                 headerMusics: toHeaderMusics,
-                            }
+                            };
                         }
-                        return playlist
+                        return playlist;
                     })
-                })
+                });
             },
             onRemoveMusic: ({ id, headerMusics, musicIds }) => {
                 this.set({
@@ -74,7 +80,7 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                         headerMusics,
                         musicCount: playlist.musicCount - musicIds.length
                     } : playlist)
-                })
+                });
             },
             onChangeMusicOrder: ({ id, headerMusics }) => {
                 this.set({
@@ -82,21 +88,21 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                         ...playlist,
                         headerMusics,
                     } : playlist)
-                })
+                });
             },
-        })
+        });
     }
 
     get state() {
         if (!this.init) {
-            this.init = true
-            this.sync()
+            this.init = true;
+            this.sync();
         }
-        return super.state
+        return super.state;
     }
 
     set state(state) {
-        super.state = state
+        super.state = state;
     }
 
     async sync() {
@@ -104,9 +110,9 @@ class PlaylistStore extends Store<PlaylistStoreState> {
             this.set({
                 loaded: true,
                 playlists: data.allPlaylist
-            })
-        })
+            });
+        });
     }
 }
 
-export const playlistStore = new PlaylistStore()
+export const playlistStore = new PlaylistStore();

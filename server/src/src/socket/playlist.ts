@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io';
+import type { Socket } from 'socket.io';
 
 import models from '~/models';
 
@@ -135,7 +135,10 @@ const updatePlaylist = async ({
             name,
         },
     });
-    connectors.broadcast(PLAYLIST_UPDATE, { id, name });
+    connectors.broadcast(PLAYLIST_UPDATE, {
+        id,
+        name
+    });
 };
 
 const addMusicToPlaylist = async ({
