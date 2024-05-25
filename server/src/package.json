@@ -10,7 +10,9 @@
         "build": "tsc",
         "build:client": "npm run build --prefix client",
         "lint": "eslint src",
-        "test": "DATABASE_URL=file:./test.sqlite3 ts-node script/_test.ts"
+        "test": "DATABASE_URL=file:./test.sqlite3 ts-node script/_test.ts",
+        "create-schema": "ts-node cli/create-schema.ts",
+        "create-component": "ts-node cli/create-component.ts"
     },
     "repository": {
         "type": "git",
