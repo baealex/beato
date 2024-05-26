@@ -1,0 +1,12 @@
+.PlaylistSummary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .cover {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 1rem;
+    }
+}

@@ -1,0 +1,29 @@
+.AlbumSummary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+
+    .cover {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .artist {
+        font-size: 0.875rem;
+        color: #aaa;
+    }
+
+    .year {
+        font-size: 0.875rem;
+        color: #555;
+    }
+}

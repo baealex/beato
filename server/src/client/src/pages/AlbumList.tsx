@@ -1,28 +1,21 @@
 import { prompt } from '@baejino/ui';
-import styled from '@emotion/styled';
 import { useStore } from 'badland-react';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { ItemSortPanelContent, Loading, SecondaryButton, StickyHeader } from '~/components/shared';
+import {
+    Grid,
+    ItemSortPanelContent,
+    Loading,
+    SecondaryButton,
+    StickyHeader
+} from '~/components/shared';
 import { AlbumListItem } from '~/components/album';
 import * as Icon from '~/icon';
 
 import { panel } from '~/modules/panel';
 
 import { albumStore } from '~/store/album';
-
-const Grid = styled.div`
-    display: grid;
-    grid-gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    padding: 1rem;
-    list-style: none;
-
-    @media (max-width: 600px) {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-`;
 
 const RENDER_LIMIT = 100;
 

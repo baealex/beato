@@ -6,18 +6,21 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { theme } from '@baejino/style';
 import { toast } from '@baejino/ui';
 
-import { CSS } from '@dnd-kit/utilities';
 import type { DragEndEvent } from '@dnd-kit/core';
-import { arrayMove, useSortable } from '@dnd-kit/sortable';
+import { arrayMove } from '@dnd-kit/sortable';
 
-import { GridImage, SecondaryButton, StickyHeader, VerticalSortable } from '~/components/shared';
+import {
+    ActionBar,
+    SecondaryButton,
+    SortableItem,
+    StickyHeader,
+    VerticalSortable
+} from '~/components/shared';
 import { MusicActionPanelContent, MusicListItem, MusicSelector } from '~/components/music';
-import { PlaylistPanelContent } from '~/components/playlist';
+import { PlaylistPanelContent, PlaylistSummary } from '~/components/playlist';
 import * as Icon from '~/icon';
 
 import { panel } from '~/modules/panel';
-
-import type { Music } from '~/models/type';
 
 import { getPlaylist } from '~/api';
 import {
@@ -30,6 +33,7 @@ import {
 
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
+import { TwoToneLayout } from '~/components/layout';
 
 const Item = styled.div`
     display: flex;
@@ -50,121 +54,6 @@ const Item = styled.div`
         }
     }
 `;
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        background-color: #111;
-        padding: 3rem 1rem;
-
-        .cover {
-            width: 300px;
-            height: 300px;
-            margin-bottom: 1rem;
-        }
-
-        h1 {
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-    }
-
-    .select-actions {
-        position: sticky;
-        bottom: 0;
-        left: 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.5rem 0;
-        background-color: ${theme.COLOR_PURPLE_PROMINENT};
-
-        button {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            gap: 0.25rem;
-
-            svg {
-                width: 1.25rem;
-                height: 1.25rem;
-            }
-        }
-    }
-`;
-
-function PlaylistDndMusicListItem({
-    music,
-    isSelectMode,
-    isSelected,
-    onClick,
-    onSelect,
-    onLongPress
-}: {
-    music: Music;
-    isSelectMode: boolean;
-    isSelected: boolean;
-    onClick: () => void;
-    onSelect: () => void;
-    onLongPress: () => void;
-}) {
-    const {
-        attributes, listeners, setNodeRef, transform, transition
-    } = useSortable({ id: music.id });
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition
-    };
-
-    return (
-        <Item ref={setNodeRef} style={style} {...attributes}>
-            {isSelectMode ? (
-                <button
-                    className={`icon-button checkbox ${isSelected ? 'active' : ''} `}
-                    onClick={onSelect}>
-                    <Icon.CheckBox />
-                </button>
-            ) : (
-                <div
-                    className="icon-button checkbox"
-                    {...listeners}
-                    style={{
-                        cursor: 'grab',
-                        touchAction: 'none'
-                    }}>
-                    <Icon.Menu />
-                </div>
-            )}
-            <div
-                style={{
-                    flex: 1,
-                    maxWidth: 'calc(100% - 4rem)'
-                }}>
-                <MusicListItem
-                    albumName={music.album.name}
-                    albumCover={music.album.cover}
-                    artistName={music.artist.name}
-                    musicName={music.name}
-                    musicCodec={music.codec}
-                    isLiked={music.isLiked}
-                    isHated={music.isHated}
-                    onClick={isSelectMode ? onSelect : onClick}
-                    onLongPress={onLongPress}
-                />
-            </div>
-        </Item>
-    );
-}
 
 export default function PlaylistDetail() {
     const navigate = useNavigate();
@@ -223,14 +112,10 @@ export default function PlaylistDetail() {
     }
 
     return (
-        <Container>
-            <div className="header">
-                <GridImage
-                    className="cover"
-                    images={playlist.musics.slice(0, 16).map((music) => musicMap.get(music.id)?.album.cover ?? '')}
-                />
-                <h1>{playlist.name}</h1>
-            </div>
+        <TwoToneLayout
+            header={(
+                <PlaylistSummary {...playlist} />
+            )}>
             <StickyHeader>
                 <div
                     style={{
@@ -249,44 +134,90 @@ export default function PlaylistDetail() {
                     <Icon.Play /> Play
                 </SecondaryButton>
             </StickyHeader >
-            <div
-                style={{ flex: 1 }}>
+            <div style={{ flex: 1 }}>
                 <VerticalSortable items={playlist.musics.map(({ id }) => id)} onDragEnd={handleDragEnd}>
                     {playlist.musics.map(({ id }) => {
                         const music = musicMap.get(id);
 
                         if (!music) return null;
 
+                        const isSelected = selectedItems.includes(music.id);
+
+                        const onClick = () => {
+                            queueStore.add(music.id);
+                        };
+
+                        const onSelect = () => {
+                            if (selectedItems.includes(music.id)) {
+                                setSelectedItems(selectedItems.filter(item => item !== music.id));
+                            } else {
+                                setSelectedItems([...selectedItems, music.id]);
+                            }
+                        };
+
                         return (
-                            <PlaylistDndMusicListItem
+                            <SortableItem
+                                id={music.id}
                                 key={music.id}
-                                music={music}
-                                isSelectMode={isSelectMode}
-                                isSelected={selectedItems.includes(music.id)}
-                                onClick={() => queueStore.add(music.id)}
-                                onSelect={() => {
-                                    if (selectedItems.includes(music.id)) {
-                                        setSelectedItems(selectedItems.filter(item => item !== music.id));
-                                    } else {
-                                        setSelectedItems([...selectedItems, music.id]);
-                                    }
-                                }}
-                                onLongPress={() => panel.open({
-                                    content: (
-                                        <MusicActionPanelContent
-                                            id={music.id}
-                                            onAlbumClick={() => navigate(`/album/${music.album.id}`)}
-                                            onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
-                                        />
-                                    )
-                                })}
+                                render={({ listeners }) => (
+                                    <Item>
+                                        {isSelectMode ? (
+                                            <button
+                                                className={`icon-button checkbox ${isSelected ? 'active' : ''} `}
+                                                onClick={() => {
+                                                    if (selectedItems.includes(music.id)) {
+                                                        setSelectedItems(selectedItems.filter(item => item !== music.id));
+                                                    } else {
+                                                        setSelectedItems([...selectedItems, music.id]);
+                                                    }
+                                                }}>
+                                                <Icon.CheckBox />
+                                            </button>
+                                        ) : (
+                                            <div
+                                                className="icon-button checkbox"
+                                                {...listeners}
+                                                style={{
+                                                    cursor: 'grab',
+                                                    touchAction: 'none'
+                                                }}>
+                                                <Icon.Menu />
+                                            </div>
+                                        )}
+                                        <div
+                                            style={{
+                                                flex: 1,
+                                                maxWidth: 'calc(100% - 4rem)'
+                                            }}>
+                                            <MusicListItem
+                                                albumName={music.album.name}
+                                                albumCover={music.album.cover}
+                                                artistName={music.artist.name}
+                                                musicName={music.name}
+                                                musicCodec={music.codec}
+                                                isLiked={music.isLiked}
+                                                isHated={music.isHated}
+                                                onClick={isSelectMode ? onSelect : onClick}
+                                                onLongPress={() => panel.open({
+                                                    content: (
+                                                        <MusicActionPanelContent
+                                                            id={music.id}
+                                                            onAlbumClick={() => navigate(`/album/${music.album.id}`)}
+                                                            onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
+                                                        />
+                                                    )
+                                                })}
+                                            />
+                                        </div>
+                                    </Item>
+                                )}
                             />
                         );
                     })}
                 </VerticalSortable>
             </div>
             {isSelectMode && selectedItems.length > 0 && (
-                <div className="select-actions">
+                <ActionBar>
                     <button
                         className="clickable"
                         onClick={() => {
@@ -322,8 +253,8 @@ export default function PlaylistDetail() {
                         <Icon.TrashBin />
                         <span>Delete</span>
                     </button>
-                </div>
+                </ActionBar>
             )}
-        </Container>
+        </TwoToneLayout>
     );
 }
