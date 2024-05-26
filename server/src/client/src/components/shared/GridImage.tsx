@@ -39,7 +39,7 @@ interface GridImageProps {
 
 export default function GridImage({
     images,
-    className,
+    className
 }: GridImageProps) {
     const col = images.length >= 16 ? 4 : images.length >= 9 ? 3 : images.length >= 4 ? 2 : 1;
 

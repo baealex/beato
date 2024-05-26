@@ -35,32 +35,14 @@ export const albumTypeDefs = `
 
 export const albumResolvers: IResolvers = {
     Query: {
-        allAlbums: () => models.album.findMany({
-            orderBy: {
-                name: 'asc',
-            },
-        }),
-        album: (_, { id }: Album) => models.album.findUnique({
-            where: {
-                id: Number(id),
-            },
-        }),
+        allAlbums: () => models.album.findMany({ orderBy: { name: 'asc' } }),
+        album: (_, { id }: Album) => models.album.findUnique({ where: { id: Number(id) } })
     },
     Album: {
-        artist: (album: Album) => models.artist.findUnique({
-            where: {
-                id: album.artistId,
-            },
-        }),
+        artist: (album: Album) => models.artist.findUnique({ where: { id: album.artistId } }),
         musics: (album: Album) => models.music.findMany({
-            where: {
-                Album: {
-                    id: album.id,
-                },
-            },
-            orderBy: {
-                trackNumber: 'asc',
-            },
-        }),
-    },
+            where: { Album: { id: album.id } },
+            orderBy: { trackNumber: 'asc' }
+        })
+    }
 };

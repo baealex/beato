@@ -14,7 +14,7 @@ const SORT_STATE = {
     MUSIC_COUNT: 'musicCount',
     MUSIC_COUNT_DESC: 'musicCountDesc',
     CREATED_AT: 'createdAt',
-    CREATED_AT_DESC: 'createdAtDesc',
+    CREATED_AT_DESC: 'createdAtDesc'
 } as const;
 
 interface ArtistStoreState {
@@ -31,7 +31,7 @@ class ArtistStore extends Store<ArtistStoreState> {
         this.state = {
             loaded: false,
             artists: [],
-            sortedFrom: SORT_STATE.MUSIC_COUNT_DESC,
+            sortedFrom: SORT_STATE.MUSIC_COUNT_DESC
         };
     }
 

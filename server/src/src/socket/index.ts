@@ -9,12 +9,12 @@ export const socketManager = (socket: Socket) => {
     console.log(`${socket.id} : a user connected`);
     connectors.append(Object.assign(socket, {
         userAgent: socket.handshake.headers['user-agent'],
-        connectedAt: Date.now(),
+        connectedAt: Date.now()
     }));
     connectors.broadcast('get-connectors', connectors.get().map((c) => ({
         id: c.id,
         userAgent: c.userAgent,
-        connectedAt: c.connectedAt,
+        connectedAt: c.connectedAt
     })));
 
     syncListener(socket);
@@ -25,7 +25,7 @@ export const socketManager = (socket: Socket) => {
         socket.emit('get-connectors', connectors.get().map((c) => ({
             id: c.id,
             userAgent: c.userAgent,
-            connectedAt: c.connectedAt,
+            connectedAt: c.connectedAt
         })));
     });
 
@@ -44,7 +44,7 @@ export const socketManager = (socket: Socket) => {
         connectors.broadcast('get-connectors', connectors.get().map((c) => ({
             id: c.id,
             userAgent: c.userAgent,
-            connectedAt: c.connectedAt,
+            connectedAt: c.connectedAt
         })));
     });
 };

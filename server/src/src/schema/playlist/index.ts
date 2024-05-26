@@ -34,58 +34,30 @@ export const playlistResolvers: IResolvers = {
     Query: {
         allPlaylist: () => models.playlist.findMany({
             orderBy: [
-                {
-                    order: 'asc'
-                },
-                {
-                    createdAt: 'desc'
-                }
+                { order: 'asc' },
+                { createdAt: 'desc' }
             ]
         }),
-        playlist: (_, { id }: Playlist) => models.playlist.findUnique({
-            where: {
-                id: Number(id),
-            },
-        }),
+        playlist: (_, { id }: Playlist) => models.playlist.findUnique({ where: { id: Number(id) } })
     },
     Playlist: {
         musics: async (playlist: Playlist) => {
             const musics = await models.playlistMusic.findMany({
-                where: {
-                    playlistId: playlist.id,
-                },
-                orderBy: {
-                    order: 'asc',
-                },
-                include: {
-                    Music: true,
-                },
+                where: { playlistId: playlist.id },
+                orderBy: { order: 'asc' },
+                include: { Music: true }
             });
             return musics.map((playlistMusic) => playlistMusic.Music);
         },
         headerMusics: async (playlist: Playlist) => {
             const musics = await models.playlistMusic.findMany({
-                where: {
-                    playlistId: playlist.id,
-                },
-                orderBy: {
-                    order: 'asc',
-                },
-                include: {
-                    Music: true,
-                },
-                take: 4,
+                where: { playlistId: playlist.id },
+                orderBy: { order: 'asc' },
+                include: { Music: true },
+                take: 4
             });
             return musics.map((playlistMusic) => playlistMusic.Music);
         },
-        musicCount: (playlist: Playlist) => models.music.count({
-            where: {
-                PlaylistMusic: {
-                    some: {
-                        playlistId: playlist.id,
-                    },
-                }
-            }
-        }),
-    },
+        musicCount: (playlist: Playlist) => models.music.count({ where: { PlaylistMusic: { some: { playlistId: playlist.id } } } })
+    }
 };

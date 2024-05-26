@@ -1,7 +1,7 @@
 import type {
     Request,
     Response,
-    NextFunction,
+    NextFunction
 } from 'express';
 import type { Controller } from '~/types';
 

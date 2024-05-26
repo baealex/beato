@@ -96,9 +96,10 @@ export default function AlbumDetail() {
 
     const { id } = useParams<{ id: string }>();
 
-    const { data: album } = useQuery(['album', id], () => getAlbum(id!).then(res => res.data.album), {
-        enabled: !!id,
-    });
+    const { data: album } = useQuery(['album', id], async () => {
+        const { data } = await getAlbum(id!);
+        return data.album;
+    }, { enabled: !!id });
 
     const [{ musicMap }] = useStore(musicStore);
 

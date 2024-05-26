@@ -12,11 +12,7 @@ export const audio: Controller = async (req, res) => {
         res.status(400).send('Bad Request').end();
     }
 
-    const $music = await models.music.findUnique({
-        where: {
-            id: Number(id),
-        },
-    });
+    const $music = await models.music.findUnique({ where: { id: Number(id) } });
 
     if (!fs.existsSync(path.resolve('./music', $music.filePath))) {
         res.status(404).send('Not Found').end();

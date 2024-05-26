@@ -18,7 +18,7 @@ interface PlaylistActionPanelContentProps {
 
 export default function PlaylistActionPanelContent({
     id,
-    onPlaylistClick,
+    onPlaylistClick
 }: PlaylistActionPanelContentProps) {
     const [{ musicMap }] = useStore(musicStore);
     const [{ playlists }] = useStore(playlistStore);
@@ -63,7 +63,7 @@ export default function PlaylistActionPanelContent({
                             PlaylistListener.update(id, name);
                         }
                         panel.close();
-                    },
+                    }
                 },
                 {
                     icon: <Icon.TrashBin />,
@@ -74,8 +74,8 @@ export default function PlaylistActionPanelContent({
                         }
                         PlaylistListener.delete(id);
                         panel.close();
-                    },
-                },
+                    }
+                }
             ]}
         />
     );

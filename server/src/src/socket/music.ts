@@ -20,39 +20,23 @@ export const like = async ({ id = '' }) => {
     }
 
     let isLiked = false;
-    const $music = await models.music.findUnique({
-        where: {
-            id: parseInt(id),
-        },
-    });
+    const $music = await models.music.findUnique({ where: { id: parseInt(id) } });
 
     if ($music) {
-        const $like = await models.musicLike.findFirst({
-            where: {
-                musicId: $music.id,
-            },
-        });
+        const $like = await models.musicLike.findFirst({ where: { musicId: $music.id } });
 
         if ($like) {
             isLiked = false;
-            await models.musicLike.delete({
-                where: {
-                    id: $like.id,
-                },
-            });
+            await models.musicLike.delete({ where: { id: $like.id } });
         } else {
             isLiked = true;
-            await models.musicLike.create({
-                data: {
-                    musicId: $music.id,
-                },
-            });
+            await models.musicLike.create({ data: { musicId: $music.id } });
         }
 
         console.log('like update', $music.name, isLiked);
         connectors.broadcast(MUSIC_LIKE, {
             id: $music.id.toString(),
-            isLiked,
+            isLiked
         });
     }
 };
@@ -63,39 +47,23 @@ export const hate = async ({ id = '' }) => {
     }
 
     let isHated = false;
-    const $music = await models.music.findUnique({
-        where: {
-            id: parseInt(id),
-        },
-    });
+    const $music = await models.music.findUnique({ where: { id: parseInt(id) } });
 
     if ($music) {
-        const $hate = await models.musicHate.findFirst({
-            where: {
-                musicId: $music.id,
-            },
-        });
+        const $hate = await models.musicHate.findFirst({ where: { musicId: $music.id } });
 
         if ($hate) {
             isHated = false;
-            await models.musicHate.delete({
-                where: {
-                    id: $hate.id,
-                },
-            });
+            await models.musicHate.delete({ where: { id: $hate.id } });
         } else {
             isHated = true;
-            await models.musicHate.create({
-                data: {
-                    musicId: $music.id,
-                },
-            });
+            await models.musicHate.create({ data: { musicId: $music.id } });
         }
 
         console.log('hate update', $music.name, isHated);
         connectors.broadcast(MUSIC_HATE, {
             id: $music.id.toString(),
-            isHated,
+            isHated
         });
     }
 };
@@ -105,25 +73,17 @@ export const count = async ({ id = '' }) => {
         return;
     }
 
-    const $music = await models.music.findUnique({
-        where: {
-            id: parseInt(id),
-        },
-    });
+    const $music = await models.music.findUnique({ where: { id: parseInt(id) } });
 
     if ($music) {
         console.log('count update', $music.name, $music.playCount + 1);
         await models.music.update({
-            where: {
-                id: parseInt(id),
-            },
-            data: {
-                playCount: $music.playCount + 1,
-            },
+            where: { id: parseInt(id) },
+            data: { playCount: $music.playCount + 1 }
         });
         connectors.broadcast(MUSIC_COUNT, {
             id: $music.id.toString(),
-            playCount: $music.playCount + 1,
+            playCount: $music.playCount + 1
         });
     }
 };

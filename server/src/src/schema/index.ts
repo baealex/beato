@@ -9,14 +9,14 @@ const schema = makeExecutableSchema({
         albumTypeDefs,
         artistTypeDefs,
         musicTypeDefs,
-        playlistTypeDefs,
+        playlistTypeDefs
     ],
     resolvers: [
         albumResolvers,
         artistResolvers,
         musicResolvers,
-        playlistResolvers,
-    ],
+        playlistResolvers
+    ]
 });
 
 export default schema;

@@ -12,15 +12,11 @@ class ConnectorStore extends Store<ConnectorStoreState> {
 
     constructor() {
         super();
-        this.state = {
-            connectors: [],
-        };
+        this.state = { connectors: [] };
         this.listener = new ConnectorListener();
         this.listener.connect({
             onConnectors: (connectors) => {
-                this.set({
-                    connectors,
-                });
+                this.set({ connectors });
             }
         });
     }

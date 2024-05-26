@@ -80,9 +80,7 @@ export class PlaylistListener implements Listener {
     }
 
     static create(name: string) {
-        socket.emit(PLAYLIST_CREATE, {
-            name
-        });
+        socket.emit(PLAYLIST_CREATE, { name });
     }
 
     static update(id: string, name: string) {
@@ -93,15 +91,11 @@ export class PlaylistListener implements Listener {
     }
 
     static delete(id: string) {
-        socket.emit(PLAYLIST_DELETE, {
-            id
-        });
+        socket.emit(PLAYLIST_DELETE, { id });
     }
 
     static changeOrder(ids: string[]) {
-        socket.emit(PLAYLIST_CHANGE_ORDER, {
-            ids
-        });
+        socket.emit(PLAYLIST_CHANGE_ORDER, { ids });
     }
 
     static addMusic(id: string, musicIds: string[]) {

@@ -14,7 +14,7 @@ export default function Image({
     alt,
     style,
     loading = 'lazy',
-    className,
+    className
 }: ImageProps) {
     const ref = useRef<HTMLImageElement>(null);
 

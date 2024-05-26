@@ -14,7 +14,7 @@ const SORT_STATE = {
     PUBLISHED_YEAR: 'publishedYear',
     PUBLISHED_YEAR_DESC: 'publishedYearDesc',
     CREATED_AT: 'createdAt',
-    CREATED_AT_DESC: 'createdAtDesc',
+    CREATED_AT_DESC: 'createdAtDesc'
 } as const;
 
 interface AlbumStoreState {
@@ -31,7 +31,7 @@ class AlbumStore extends Store<AlbumStoreState> {
         this.state = {
             loaded: false,
             albums: [],
-            sortedFrom: SORT_STATE.NAME,
+            sortedFrom: SORT_STATE.NAME
         };
     }
 

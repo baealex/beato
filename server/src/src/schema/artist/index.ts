@@ -36,53 +36,23 @@ export const artistTypeDefs = `
 
 export const artistResolvers: IResolvers = {
     Query: {
-        allArtists: () => models.artist.findMany({
-            orderBy: {
-                Music: {
-                    _count: 'desc',
-                },
-            },
-        }),
-        artist: (_, { id }: Artist) => models.artist.findUnique({
-            where: {
-                id: Number(id),
-            },
-        }),
+        allArtists: () => models.artist.findMany({ orderBy: { Music: { _count: 'desc' } } }),
+        artist: (_, { id }: Artist) => models.artist.findUnique({ where: { id: Number(id) } })
     },
     Artist: {
         latestAlbum: (artist: Artist) => models.album.findFirst({
-            where: {
-                artistId: artist.id,
-            },
-            orderBy: {
-                publishedYear: 'desc',
-            },
+            where: { artistId: artist.id },
+            orderBy: { publishedYear: 'desc' }
         }),
         albums: (artist: Artist) => models.album.findMany({
-            where: {
-                artistId: artist.id,
-            },
-            orderBy: {
-                publishedYear: 'desc',
-            },
+            where: { artistId: artist.id },
+            orderBy: { publishedYear: 'desc' }
         }),
         musics: (artist: Artist) => models.music.findMany({
-            where: {
-                artistId: artist.id,
-            },
-            orderBy: {
-                playCount: 'desc',
-            },
+            where: { artistId: artist.id },
+            orderBy: { playCount: 'desc' }
         }),
-        albumCount: (artist: Artist) => models.album.count({
-            where: {
-                artistId: artist.id,
-            }
-        }),
-        musicCount: (artist: Artist) => models.music.count({
-            where: {
-                artistId: artist.id,
-            }
-        }),
-    },
+        albumCount: (artist: Artist) => models.album.count({ where: { artistId: artist.id } }),
+        musicCount: (artist: Artist) => models.music.count({ where: { artistId: artist.id } })
+    }
 };

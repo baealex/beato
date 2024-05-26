@@ -109,7 +109,7 @@ function PlaylistDndMusicListItem({
     isSelected,
     onClick,
     onSelect,
-    onLongPress,
+    onLongPress
 }: {
     music: Music;
     isSelectMode: boolean;
@@ -118,12 +118,12 @@ function PlaylistDndMusicListItem({
     onSelect: () => void;
     onLongPress: () => void;
 }) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-        id: music.id
-    });
+    const {
+        attributes, listeners, setNodeRef, transform, transition
+    } = useSortable({ id: music.id });
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition,
+        transition
     };
 
     return (
@@ -173,9 +173,7 @@ export default function PlaylistDetail() {
 
     const queryClient = useQueryClient();
 
-    const { data: playlist } = useQuery(['playlist', id], () => getPlaylist(id!).then(res => res.data.playlist), {
-        enabled: !!id,
-    });
+    const { data: playlist } = useQuery(['playlist', id], () => getPlaylist(id!).then(res => res.data.playlist), { enabled: !!id });
 
     const [{ musicMap }] = useStore(musicStore);
 
@@ -194,7 +192,7 @@ export default function PlaylistDetail() {
             queryClient.setQueryData(['playlist', id], () => {
                 return {
                     ...playlist,
-                    musics: newMusics,
+                    musics: newMusics
                 };
             });
         }
@@ -252,9 +250,7 @@ export default function PlaylistDetail() {
                 </SecondaryButton>
             </StickyHeader >
             <div
-                style={{
-                    flex: 1
-                }}>
+                style={{ flex: 1 }}>
                 <VerticalSortable items={playlist.musics.map(({ id }) => id)} onDragEnd={handleDragEnd}>
                     {playlist.musics.map(({ id }) => {
                         const music = musicMap.get(id);

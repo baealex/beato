@@ -174,7 +174,7 @@ const QueueDndItem = ({
     isSelected,
     onSelect,
     onClick,
-    onLongPress,
+    onLongPress
 }: {
     music: Music;
     isCurrentMusic: boolean;
@@ -184,12 +184,12 @@ const QueueDndItem = ({
     onClick: () => void;
     onLongPress: () => void;
 }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-        id: music.id
-    });
+    const {
+        attributes, listeners, setNodeRef, transform, transition
+    } = useSortable({ id: music.id });
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition,
+        transition
     };
 
     return (
@@ -285,7 +285,7 @@ export default function Queue() {
 
             ref.current.scrollTo({
                 top: targetElement.offsetTop - 60,
-                behavior: 'smooth',
+                behavior: 'smooth'
             });
         }
     }, [ref, selected]);
@@ -299,16 +299,14 @@ export default function Queue() {
             variants={{
                 in: {
                     opacity: 1,
-                    y: 0,
+                    y: 0
                 },
                 out: {
                     opacity: 0,
-                    y: 50,
-                },
+                    y: 50
+                }
             }}
-            transition={{
-                duration: 0.25,
-            }}>
+            transition={{ duration: 0.25 }}>
             <div className="header">
                 <div
                     style={{

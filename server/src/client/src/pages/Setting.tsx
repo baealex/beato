@@ -107,9 +107,7 @@ export default function Setting() {
         ) {
             return;
         }
-        socket.emit('sync-music', {
-            force
-        });
+        socket.emit('sync-music', { force });
     };
 
     useEffect(() => {

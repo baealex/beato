@@ -22,7 +22,7 @@ interface MusicActionPanelContentProps {
 export default function MusicActionPanelContent({
     id,
     onArtistClick,
-    onAlbumClick,
+    onAlbumClick
 }: MusicActionPanelContentProps) {
     const [{ musicMap }] = useStore(musicStore);
 
@@ -78,12 +78,12 @@ export default function MusicActionPanelContent({
                     icon: <Icon.Heart />,
                     text: 'Like',
                     isActive: music.isLiked,
-                    onClick: () => MusicListener.like(music.id, !music.isLiked),
+                    onClick: () => MusicListener.like(music.id, !music.isLiked)
                 },
                 {
                     icon: <Icon.Play />,
                     text: 'Add to Queue',
-                    onClick: () => queueStore.add(music.id),
+                    onClick: () => queueStore.add(music.id)
                 },
                 {
                     icon: <Icon.Data />,
@@ -114,8 +114,8 @@ export default function MusicActionPanelContent({
                 {
                     icon: <Icon.Cross />,
                     text: music.isHated ? 'Show again this music' : 'Hide this music',
-                    onClick: () => MusicListener.hate(music.id),
-                },
+                    onClick: () => MusicListener.hate(music.id)
+                }
             ]}
             footer={(
                 <>

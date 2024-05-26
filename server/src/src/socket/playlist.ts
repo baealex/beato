@@ -35,34 +35,24 @@ const createPlaylist = async ({ name = '', musics = [] }) => {
             PlaylistMusic: {
                 create: musics.map((musicId, index) => ({
                     order: index,
-                    musicId: Number(musicId),
-                })),
-            },
-        },
+                    musicId: Number(musicId)
+                }))
+            }
+        }
     });
 
     connectors.broadcast(PLAYLIST_CREATE, {
         ...playlist,
         id: playlist.id.toString(),
         musicCount: musics.length,
-        headerMusics: musics.slice(0, 4).map((musicId) => ({
-            id: musicId.toString(),
-        })),
+        headerMusics: musics.slice(0, 4).map((musicId) => ({ id: musicId.toString() }))
     });
 };
 
 const deletePlaylist = async ({ id = '' }) => {
     try {
-        await models.playlistMusic.deleteMany({
-            where: {
-                playlistId: Number(id),
-            },
-        });
-        await models.playlist.delete({
-            where: {
-                id: Number(id),
-            },
-        });
+        await models.playlistMusic.deleteMany({ where: { playlistId: Number(id) } });
+        await models.playlist.delete({ where: { id: Number(id) } });
         connectors.broadcast(PLAYLIST_DELETE, id);
     } catch (e) {
         console.error(e);
@@ -75,12 +65,8 @@ const changePlaylistMusicOrder = async ({ id = '', musicIds = [] }) => {
     }
 
     const playlistMusics = await models.playlistMusic.findMany({
-        where: {
-            playlistId: Number(id),
-        },
-        orderBy: {
-            order: 'asc',
-        },
+        where: { playlistId: Number(id) },
+        orderBy: { order: 'asc' }
     });
 
     for (const playlistMusic of playlistMusics) {
@@ -91,49 +77,35 @@ const changePlaylistMusicOrder = async ({ id = '', musicIds = [] }) => {
         }
 
         await models.playlistMusic.update({
-            where: {
-                id: playlistMusic.id,
-            },
-            data: {
-                order: order,
-            },
+            where: { id: playlistMusic.id },
+            data: { order: order }
         });
     }
 
     const headerMusics = await models.playlistMusic.findMany({
-        where: {
-            playlistId: Number(id),
-        },
+        where: { playlistId: Number(id) },
         take: 4,
-        orderBy: {
-            order: 'asc',
-        },
+        orderBy: { order: 'asc' }
     });
 
     connectors.broadcast(PLAYLIST_CHANGE_MUSIC_ORDER, {
         id,
         musicIds,
-        headerMusics: headerMusics.map((music) => ({
-            id: music.musicId.toString(),
-        })),
+        headerMusics: headerMusics.map((music) => ({ id: music.musicId.toString() }))
     });
 };
 
 const updatePlaylist = async ({
     id = '',
-    name = '',
+    name = ''
 }) => {
     if (!id || !name) {
         return;
     }
 
     await models.playlist.update({
-        where: {
-            id: Number(id),
-        },
-        data: {
-            name,
-        },
+        where: { id: Number(id) },
+        data: { name }
     });
     connectors.broadcast(PLAYLIST_UPDATE, {
         id,
@@ -143,27 +115,23 @@ const updatePlaylist = async ({
 
 const addMusicToPlaylist = async ({
     id = '',
-    musicIds = [],
+    musicIds = []
 }) => {
     if (!id || !musicIds.length) {
         return;
     }
 
     const lastOrder = await models.playlistMusic.findFirst({
-        where: {
-            playlistId: Number(id),
-        },
-        orderBy: {
-            order: 'desc',
-        },
+        where: { playlistId: Number(id) },
+        orderBy: { order: 'desc' }
     });
 
     for (const [index, musicId] of musicIds.entries()) {
         if (await models.playlistMusic.findFirst({
             where: {
                 playlistId: Number(id),
-                musicId: Number(musicId),
-            },
+                musicId: Number(musicId)
+            }
         })) {
             continue;
         }
@@ -171,41 +139,31 @@ const addMusicToPlaylist = async ({
             data: {
                 order: lastOrder ? lastOrder.order + index + 1 : index,
                 playlistId: Number(id),
-                musicId: Number(musicId),
-            },
+                musicId: Number(musicId)
+            }
         });
     }
 
-    const musicCount = await models.playlistMusic.count({
-        where: {
-            playlistId: Number(id),
-        },
-    });
+    const musicCount = await models.playlistMusic.count({ where: { playlistId: Number(id) } });
 
     const headerMusics = await models.playlistMusic.findMany({
-        where: {
-            playlistId: Number(id),
-        },
+        where: { playlistId: Number(id) },
         take: 4,
-        orderBy: {
-            order: 'asc',
-        },
+        orderBy: { order: 'asc' }
     });
 
     connectors.broadcast(PLAYLIST_ADD_MUSIC, {
         id,
         musicCount,
-        headerMusics: headerMusics.map((music) => ({
-            id: music.musicId.toString(),
-        })),
-        musicIds,
+        headerMusics: headerMusics.map((music) => ({ id: music.musicId.toString() })),
+        musicIds
     });
 };
 
 const moveMusicToPlaylist = async ({
     toId = '',
     fromId = '',
-    musicIds = [],
+    musicIds = []
 }) => {
     if (!toId || !fromId || !musicIds.length) {
         return;
@@ -214,27 +172,21 @@ const moveMusicToPlaylist = async ({
     await models.playlistMusic.deleteMany({
         where: {
             playlistId: Number(fromId),
-            musicId: {
-                in: musicIds.map((musicId) => Number(musicId)),
-            },
-        },
+            musicId: { in: musicIds.map((musicId) => Number(musicId)) }
+        }
     });
 
     const lastOrder = await models.playlistMusic.findFirst({
-        where: {
-            playlistId: Number(toId),
-        },
-        orderBy: {
-            order: 'desc',
-        },
+        where: { playlistId: Number(toId) },
+        orderBy: { order: 'desc' }
     });
 
     for (const [index, musicId] of musicIds.entries()) {
         if (await models.playlistMusic.findFirst({
             where: {
                 playlistId: Number(toId),
-                musicId: Number(musicId),
-            },
+                musicId: Number(musicId)
+            }
         })) {
             continue;
         }
@@ -242,54 +194,38 @@ const moveMusicToPlaylist = async ({
             data: {
                 order: lastOrder ? lastOrder.order + index + 1 : index,
                 playlistId: Number(toId),
-                musicId: Number(musicId),
-            },
+                musicId: Number(musicId)
+            }
         });
     }
 
     const fromHeaderMusics = await models.playlistMusic.findMany({
-        where: {
-            playlistId: Number(fromId),
-        },
+        where: { playlistId: Number(fromId) },
         take: 4,
-        orderBy: {
-            order: 'asc',
-        },
+        orderBy: { order: 'asc' }
     });
 
-    const toMusicCount = await models.playlistMusic.count({
-        where: {
-            playlistId: Number(toId),
-        },
-    });
+    const toMusicCount = await models.playlistMusic.count({ where: { playlistId: Number(toId) } });
 
     const toHeaderMusics = await models.playlistMusic.findMany({
-        where: {
-            playlistId: Number(toId),
-        },
+        where: { playlistId: Number(toId) },
         take: 4,
-        orderBy: {
-            order: 'asc',
-        },
+        orderBy: { order: 'asc' }
     });
 
     connectors.broadcast(PLAYLIST_MOVE_MUSIC, {
         fromId,
-        formHeaderMusics: fromHeaderMusics.map((music) => ({
-            id: music.musicId.toString(),
-        })),
+        formHeaderMusics: fromHeaderMusics.map((music) => ({ id: music.musicId.toString() })),
         toId,
         toMusicCount,
-        toHeaderMusics: toHeaderMusics.map((music) => ({
-            id: music.musicId.toString(),
-        })),
-        musicIds,
+        toHeaderMusics: toHeaderMusics.map((music) => ({ id: music.musicId.toString() })),
+        musicIds
     });
 };
 
 const removeMusicFromPlaylist = async ({
     id = '',
-    musicIds = [],
+    musicIds = []
 }) => {
     if (!id || !musicIds.length) {
         return;
@@ -297,26 +233,18 @@ const removeMusicFromPlaylist = async ({
     await models.playlistMusic.deleteMany({
         where: {
             playlistId: Number(id),
-            musicId: {
-                in: musicIds.map((musicId) => Number(musicId)),
-            },
-        },
+            musicId: { in: musicIds.map((musicId) => Number(musicId)) }
+        }
     });
     const headerMusics = await models.playlistMusic.findMany({
-        where: {
-            playlistId: Number(id),
-        },
+        where: { playlistId: Number(id) },
         take: 4,
-        orderBy: {
-            order: 'asc',
-        },
+        orderBy: { order: 'asc' }
     });
     connectors.broadcast(PLAYLIST_REMOVE_MUSIC, {
         id,
         musicIds,
-        headerMusics: headerMusics.map((music) => ({
-            id: music.musicId.toString(),
-        })),
+        headerMusics: headerMusics.map((music) => ({ id: music.musicId.toString() }))
     });
 };
 
@@ -325,13 +253,7 @@ const changePlaylistOrder = async ({ ids = [] }) => {
         return;
     }
 
-    const playlists = await models.playlist.findMany({
-        where: {
-            id: {
-                in: ids.map((id) => Number(id)),
-            },
-        },
-    });
+    const playlists = await models.playlist.findMany({ where: { id: { in: ids.map((id) => Number(id)) } } });
 
     for (const playlist of playlists) {
         const order = ids.indexOf(playlist.id.toString());
@@ -341,12 +263,8 @@ const changePlaylistOrder = async ({ ids = [] }) => {
         }
 
         await models.playlist.update({
-            where: {
-                id: playlist.id,
-            },
-            data: {
-                order: order,
-            },
+            where: { id: playlist.id },
+            data: { order: order }
         });
     }
 

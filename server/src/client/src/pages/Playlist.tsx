@@ -36,18 +36,18 @@ const Item = styled.div`
 function PlaylistDndItem({
     playlist,
     onClick,
-    onLongPress,
+    onLongPress
 }: {
     playlist: PlaylistModel;
     onClick: () => void;
     onLongPress: () => void;
 }) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-        id: playlist.id
-    });
+    const {
+        attributes, listeners, setNodeRef, transform, transition
+    } = useSortable({ id: playlist.id });
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition,
+        transition
     };
 
     return (
@@ -98,7 +98,7 @@ export default function Playlist() {
 
             setState((state) => ({
                 ...state,
-                playlists: newPlaylists,
+                playlists: newPlaylists
             }));
         }
     };

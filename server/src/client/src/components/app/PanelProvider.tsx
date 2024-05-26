@@ -17,9 +17,7 @@ export default function PanelProvider({ children }: PanelProviderProps) {
             <BottomPanel
                 title={title}
                 isOpen={isOpen}
-                onClose={() => setState({
-                    isOpen: false
-                })}>
+                onClose={() => setState({ isOpen: false })}>
                 {content}
             </BottomPanel>
         </>

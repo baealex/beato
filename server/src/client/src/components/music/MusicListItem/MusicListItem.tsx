@@ -29,21 +29,15 @@ const MusicListItem = ({
     isLiked,
     isHated,
     onClick,
-    onLongPress,
+    onLongPress
 }: MusicListItemProps) => {
     return (
         <div
             className={cx(
                 'MusicListItem',
-                {
-                    isHated
-                },
-                {
-                    hasMenu: typeof onLongPress === 'function'
-                },
-                {
-                    hasAlbumCover: typeof onLongPress === 'function'
-                },
+                { isHated },
+                { hasMenu: typeof onLongPress === 'function' },
+                { hasAlbumCover: typeof onLongPress === 'function' }
             )}
             onClick={onClick}
             onContextMenu={(e) => {
@@ -70,9 +64,7 @@ const MusicListItem = ({
                 </div>
                 {onLongPress && (
                     <button
-                        className={cx('icon-button', {
-                            isLiked
-                        })}
+                        className={cx('icon-button', { isLiked })}
                         onClick={(e) => {
                             e.stopPropagation();
                             onLongPress?.();

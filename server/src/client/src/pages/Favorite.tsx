@@ -23,17 +23,13 @@ export default function Music() {
 
     const handleSearch = async () => {
         const q = await prompt('Search keyword', searchParams.get('q') || '');
-        setSearchParams({
-            q
-        });
+        setSearchParams({ q });
     };
 
     const handleReadMore = () => {
         setRenderLimit(renderLimit + RENDER_LIMIT);
         searchParams.set('l', (renderLimit + RENDER_LIMIT).toString());
-        setSearchParams(searchParams, {
-            replace: true
-        });
+        setSearchParams(searchParams, { replace: true });
     };
 
     const filteredMusics = musics
@@ -49,9 +45,7 @@ export default function Music() {
         <>
             <StickyHeader>
                 <SecondaryButton
-                    style={{
-                        width: '160px'
-                    }}
+                    style={{ width: '160px' }}
                     onClick={handleSearch}>
                     {searchParams.get('q') || 'Search'}
                 </SecondaryButton>
@@ -102,9 +96,7 @@ export default function Music() {
             ))}
             {loaded && filteredMusics.length > renderLimit && (
                 <div
-                    style={{
-                        padding: '0 16px 16px'
-                    }}>
+                    style={{ padding: '0 16px 16px' }}>
                     <SecondaryButton
                         style={{
                             width: '100%',

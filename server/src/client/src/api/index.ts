@@ -23,9 +23,7 @@ export async function graphQLRequest<T extends string, K>(query: string): Promis
     const { data } = await axios.request<GraphqlResponse<T, K>>({
         url: '/graphql',
         method: 'POST',
-        data: {
-            query,
-        },
+        data: { query }
     });
     return data;
 }
@@ -90,7 +88,7 @@ export function getArtist(id: string) {
                 'publishedYear'
             ]),
             createQuery<Music>('musics', [
-                'id',
+                'id'
             ])
         ]))
     );
@@ -124,7 +122,7 @@ export function getAlbum(id: string) {
                 'name'
             ]),
             createQuery<Music>('musics', [
-                'id',
+                'id'
             ])
         ]))
     );
@@ -139,7 +137,7 @@ export function getPlaylists() {
             'createdAt',
             'updatedAt',
             createQuery<Music>('headerMusics', [
-                'id',
+                'id'
             ])
         ]))
     );
@@ -154,7 +152,7 @@ export function getPlaylist(id: string) {
             'createdAt',
             'updatedAt',
             createQuery<Music>('musics', [
-                'id',
+                'id'
             ])
         ]))
     );
@@ -164,6 +162,6 @@ export function getAudio(id: string) {
     return axios.request({
         method: 'GET',
         url: `/api/audio/${id}`,
-        responseType: 'blob',
+        responseType: 'blob'
     });
 }

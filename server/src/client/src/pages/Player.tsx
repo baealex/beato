@@ -350,33 +350,27 @@ export default function PlayerDetail() {
             variants={{
                 in: {
                     opacity: 1,
-                    y: 0,
+                    y: 0
                 },
                 out: {
                     opacity: 0,
-                    y: 50,
-                },
+                    y: 50
+                }
             }}
-            transition={{
-                duration: 0.25,
-            }}>
+            transition={{ duration: 0.25 }}>
             <div className="between">
                 <div className="content">
                     <div className="album-art">
                         <img
                             className="background"
-                            style={{
-                                borderRadius
-                            }}
+                            style={{ borderRadius }}
                             src={getImage(currentMusic?.album.cover)}
                             alt={currentMusic?.album.name}
                         />
                         <div className="foreground-wrapper">
                             <img
                                 className="foreground"
-                                style={{
-                                    borderRadius
-                                }}
+                                style={{ borderRadius }}
                                 src={getImage(
                                     currentMusic?.album.cover.replace('/resized', '')
                                 )}
@@ -425,9 +419,7 @@ export default function PlayerDetail() {
                         onTouchMove={handleMoveProgress}>
                         <div
                             className="bar"
-                            style={{
-                                transform: `translate(-${(100 - state.progress)}%, 0)`
-                            }}
+                            style={{ transform: `translate(-${(100 - state.progress)}%, 0)` }}
                         />
                     </div>
                     <div className="action">

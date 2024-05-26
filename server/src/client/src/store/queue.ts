@@ -50,24 +50,18 @@ class QueueStore extends Store<QueueStoreState> {
             currentTime: 0,
             progress: 0,
             items: [],
-            sourceItems: [],
+            sourceItems: []
         };
 
         const audioChannelEventHandler: AudioChannelEventHandler = {
             onPlay: () => {
-                this.set({
-                    isPlaying: true
-                });
+                this.set({ isPlaying: true });
             },
             onPause: () => {
-                this.set({
-                    isPlaying: false
-                });
+                this.set({ isPlaying: false });
             },
             onStop: () => {
-                this.set({
-                    isPlaying: false
-                });
+                this.set({ isPlaying: false });
             },
             onEnded: () => {
                 if (this.state.selected === null) return;
@@ -87,9 +81,7 @@ class QueueStore extends Store<QueueStoreState> {
                         this.audioChannel.play();
                     } else {
                         this.audioChannel.stop();
-                        this.set({
-                            isPlaying: false
-                        });
+                        this.set({ isPlaying: false });
                     }
                 }
             },
@@ -117,7 +109,7 @@ class QueueStore extends Store<QueueStoreState> {
 
                 this.set({
                     currentTime: time,
-                    progress,
+                    progress
                 });
             },
             onSkipToNext: () => {
@@ -175,25 +167,17 @@ class QueueStore extends Store<QueueStoreState> {
             return;
         }
         if (this.state.shuffle) {
-            this.set({
-                sourceItems: [...this.state.items, id]
-            });
+            this.set({ sourceItems: [...this.state.items, id] });
         }
         if (this.state.insertMode === 'first') {
-            this.set({
-                items: [id, ...this.state.items]
-            });
+            this.set({ items: [id, ...this.state.items] });
         }
         if (this.state.insertMode === 'last') {
-            this.set({
-                items: [...this.state.items, id]
-            });
+            this.set({ items: [...this.state.items, id] });
         }
         if (this.state.insertMode === 'after') {
             if (this.state.selected === null) {
-                this.set({
-                    items: [...this.state.items, id]
-                });
+                this.set({ items: [...this.state.items, id] });
             } else {
                 this.set({
                     items: [
@@ -241,9 +225,7 @@ class QueueStore extends Store<QueueStoreState> {
 
         if (prevSelectedItem) {
             if (!ids.includes(prevSelectedItem)) {
-                this.set({
-                    selected: newItems.indexOf(prevSelectedItem)
-                });
+                this.set({ selected: newItems.indexOf(prevSelectedItem) });
                 return;
             }
             if (ids.includes(prevSelectedItem)) {
@@ -295,30 +277,22 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     setPlayMode(mode: 'later' | 'immediately') {
-        this.set({
-            playMode: mode
-        });
+        this.set({ playMode: mode });
     }
 
     setInsertMode(mode: 'first' | 'last' | 'after') {
-        this.set({
-            insertMode: mode
-        });
+        this.set({ insertMode: mode });
     }
 
     setMixMode(mode: 'none' | 'mix') {
-        this.set({
-            mixMode: mode
-        });
+        this.set({ mixMode: mode });
     }
 
     changeRepeatMode() {
         const repeatRotate = ['none', 'all', 'one'] as const;
         const current = repeatRotate.indexOf(this.state.repeatMode);
         const next = repeatRotate[(current + 1) % repeatRotate.length];
-        this.set({
-            repeatMode: next
-        });
+        this.set({ repeatMode: next });
     }
 
     toggleShuffle() {
@@ -343,7 +317,7 @@ class QueueStore extends Store<QueueStoreState> {
             shuffle: true,
             selected: 0,
             items: newItems,
-            sourceItems: [...this.state.items],
+            sourceItems: [...this.state.items]
         });
     }
 

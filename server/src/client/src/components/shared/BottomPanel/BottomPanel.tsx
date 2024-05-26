@@ -48,14 +48,10 @@ const BottomPanel = ({
 
     return (
         <div
-            className={cx('BottomPanel', {
-                'open': isOpen
-            })}>
+            className={cx('BottomPanel', { 'open': isOpen })}>
             <button className={cx('clickable', 'backdrop')} onClick={onClose} />
             <div
-                className={cx('bottom-panel', {
-                    'open': isOpen
-                })}>
+                className={cx('bottom-panel', { 'open': isOpen })}>
                 {title && <div className={cx('panel-title')}>{title}</div>}
                 {children}
             </div>

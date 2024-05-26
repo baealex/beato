@@ -17,7 +17,7 @@ const SORT_STATE = {
     PLAY_COUNT: 'playCount',
     PLAY_COUNT_DESC: 'playCountDesc',
     CREATED_AT: 'createdAt',
-    CREATED_AT_DESC: 'createdAtDesc',
+    CREATED_AT_DESC: 'createdAtDesc'
 } as const;
 
 interface MusicStoreState {
@@ -37,7 +37,7 @@ class MusicStore extends Store<MusicStoreState> {
             loaded: false,
             sortedFrom: SORT_STATE.PLAY_COUNT_DESC,
             musics: [],
-            musicMap: new Map(),
+            musicMap: new Map()
         };
         this.listener = new MusicListener();
         this.listener.connect({
@@ -48,7 +48,7 @@ class MusicStore extends Store<MusicStoreState> {
                             music.isLiked = isLiked;
                         }
                         return music;
-                    }),
+                    })
                 });
             },
             onHate: ({ id, isHated }) => {
@@ -58,7 +58,7 @@ class MusicStore extends Store<MusicStoreState> {
                             music.isHated = isHated;
                         }
                         return music;
-                    }),
+                    })
                 });
             },
             onCount: ({ id, playCount }) => {
@@ -76,11 +76,9 @@ class MusicStore extends Store<MusicStoreState> {
                         nextMusics = sort.sortByPlayCount(nextMusics).reverse();
                     }
 
-                    return {
-                        musics: nextMusics,
-                    };
+                    return { musics: nextMusics };
                 });
-            },
+            }
         });
     }
 

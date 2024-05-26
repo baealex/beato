@@ -54,7 +54,7 @@ export class AppAudioChannel implements AudioChannel {
         onEnded,
         onTimeUpdate,
         onSkipToNext,
-        onSkipToPrevious,
+        onSkipToPrevious
     }: AudioChannelEventHandler) {
         window.AppChannel.receiveMessage = (message) => {
             if (message.actionType === 'play') {
@@ -91,33 +91,27 @@ export class AppAudioChannel implements AudioChannel {
                     title: music.name,
                     artist: music.artist.name,
                     duration: convertToMillisecond(music.duration),
-                    artUri: location.origin + getImage(music.album.cover),
-                },
+                    artUri: location.origin + getImage(music.album.cover)
+                }
             })
         );
     }
 
     play() {
         window.AppChannel.postMessage(
-            PostMessageWrapper({
-                actionType: 'play',
-            })
+            PostMessageWrapper({ actionType: 'play' })
         );
     }
 
     pause() {
         window.AppChannel.postMessage(
-            PostMessageWrapper({
-                actionType: 'pause',
-            })
+            PostMessageWrapper({ actionType: 'pause' })
         );
     }
 
     stop() {
         window.AppChannel.postMessage(
-            PostMessageWrapper({
-                actionType: 'stop',
-            })
+            PostMessageWrapper({ actionType: 'stop' })
         );
     }
 
@@ -125,7 +119,7 @@ export class AppAudioChannel implements AudioChannel {
         window.AppChannel.postMessage(
             PostMessageWrapper({
                 actionType: 'setPosition',
-                position: convertToMillisecond(time),
+                position: convertToMillisecond(time)
             })
         );
     }

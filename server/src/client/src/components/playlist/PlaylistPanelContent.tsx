@@ -12,7 +12,7 @@ interface PlaylistPanelContentProps {
     onClick: (id: string) => void;
 }
 
-export default function PlaylistPanelContent({ onClick, }: PlaylistPanelContentProps) {
+export default function PlaylistPanelContent({ onClick }: PlaylistPanelContentProps) {
     const [{ playlists }] = useStore(playlistStore);
 
     return (

@@ -16,7 +16,7 @@ interface SiteLayoutProps {
 export default function SiteLayout({
     isSubPage,
     disablePlayer = false,
-    animationDirection = 'None',
+    animationDirection = 'None'
 }: SiteLayoutProps) {
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -27,13 +27,13 @@ export default function SiteLayout({
         in: {
             opacity: 1,
             x: 0,
-            y: 0,
+            y: 0
         },
         out: {
             opacity: 0,
             x: animationDirection === 'RightToLeft' ? 50 : 0,
-            y: animationDirection === 'BottomToTop' ? 50 : 0,
-        },
+            y: animationDirection === 'BottomToTop' ? 50 : 0
+        }
     };
 
     useEffect(() => {
@@ -60,9 +60,7 @@ export default function SiteLayout({
 
             timer = setTimeout(() => {
                 searchParams.set('py', containerRef.current?.scrollTop.toString() || '0');
-                setSearchParams(searchParams, {
-                    replace: true
-                });
+                setSearchParams(searchParams, { replace: true });
             }, 50);
         };
 
@@ -87,16 +85,12 @@ export default function SiteLayout({
                 exit="out"
                 initial="out"
                 variants={animationVariants}
-                transition={{
-                    duration: 0.25,
-                }}>
+                transition={{ duration: 0.25 }}>
                 <Suspense fallback={<Loading />}>
                     <Outlet />
                 </Suspense>
             </motion.div>
-            {!disablePlayer &&
-                <MusicPlayer />
-            }
+            {!disablePlayer && <MusicPlayer />}
         </main>
     );
 }

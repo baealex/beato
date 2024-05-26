@@ -7,13 +7,9 @@ import path from 'path';
 export default defineConfig({
     plugins: [
         react(),
-        svgr(),
+        svgr()
     ],
-    resolve: {
-        alias: {
-            '~': path.resolve(__dirname, './src'),
-        },
-    },
+    resolve: { alias: { '~': path.resolve(__dirname, './src') } },
     build: {
         sourcemap: false,
         rollupOptions: {
@@ -26,15 +22,11 @@ export default defineConfig({
                         'react-router',
                         'react-query',
                         'react-query/devtools',
-                    ],
-                    motion: [
                         'framer-motion',
-                    ],
-                    sortable: [
                         '@dnd-kit/core',
                         '@dnd-kit/sortable',
                         '@dnd-kit/modifiers',
-                        '@dnd-kit/utilities',
+                        '@dnd-kit/utilities'
                     ]
                 }
             }
@@ -43,22 +35,16 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         proxy: {
-            '/api': {
-                target: 'http://localhost:4000',
-            },
-            '/cache': {
-                target: 'http://localhost:4000',
-            },
-            '/graphql': {
-                target: 'http://localhost:4000',
-            },
+            '/api': { target: 'http://localhost:4000' },
+            '/cache': { target: 'http://localhost:4000' },
+            '/graphql': { target: 'http://localhost:4000' },
             '/socket.io': {
                 target: 'http://localhost:4000',
                 ws: true,
                 onProxyReqWs: (proxyReq) => {
                     proxyReq.setHeader('Origin', 'http://localhost:4000');
-                },
-            },
+                }
+            }
         }
     }
 });

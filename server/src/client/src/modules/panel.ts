@@ -12,7 +12,7 @@ class PanelStore extends Store<PanelStoreState> {
         this.state = {
             title: '',
             isOpen: false,
-            content: null,
+            content: null
         };
     }
 
@@ -20,7 +20,7 @@ class PanelStore extends Store<PanelStoreState> {
         this.set({
             title: title || '',
             isOpen: true,
-            content,
+            content
         });
     }
 
@@ -28,7 +28,7 @@ class PanelStore extends Store<PanelStoreState> {
         this.set({
             title: '',
             isOpen: false,
-            content: null,
+            content: null
         });
     }
 }

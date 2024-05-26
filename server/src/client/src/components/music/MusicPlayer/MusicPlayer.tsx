@@ -60,9 +60,7 @@ const MusicPlayer = () => {
                 onTouchMove={handleMoveProgress}>
                 <div
                     className={cx('bar')}
-                    style={{
-                        transform: `translate(-${(100 - state.progress)}%, 0)`
-                    }}
+                    style={{ transform: `translate(-${(100 - state.progress)}%, 0)` }}
                 />
             </div>
             <div className={cx('player')}>
@@ -91,9 +89,7 @@ const MusicPlayer = () => {
                         <Icon.Play />
                     </button>
                     <button
-                        className={cx('icon-button', 'shuffle', {
-                            'active': state.shuffle
-                        })}
+                        className={cx('icon-button', 'shuffle', { 'active': state.shuffle })}
                         onClick={() => queueStore.toggleShuffle()}>
                         <Icon.Shuffle />
                     </button>

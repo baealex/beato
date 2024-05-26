@@ -49,46 +49,14 @@ export const musicTypeDefs = `
 
 export const musicResolvers: IResolvers = {
     Query: {
-        allMusics: () => models.music.findMany({
-            orderBy: {
-                playCount: 'desc',
-            },
-        }),
-        music: (_, { id }: Music) => models.music.findUnique({
-            where: {
-                id: Number(id),
-            },
-        }),
+        allMusics: () => models.music.findMany({ orderBy: { playCount: 'desc' } }),
+        music: (_, { id }: Music) => models.music.findUnique({ where: { id: Number(id) } })
     },
     Music: {
-        artist: (music: Music) => models.artist.findUnique({
-            where: {
-                id: music.artistId,
-            },
-        }),
-        album: (music: Music) => models.album.findUnique({
-            where: {
-                id: music.albumId,
-            },
-        }),
-        genres: (music: Music) => models.genre.findMany({
-            where: {
-                Music: {
-                    some: {
-                        id: music.id,
-                    },
-                },
-            },
-        }),
-        isLiked: (music: Music) => models.musicLike.findFirst({
-            where: {
-                musicId: music.id,
-            },
-        }).then((like) => !!like),
-        isHated: (music: Music) => models.musicHate.findFirst({
-            where: {
-                musicId: music.id,
-            },
-        }).then((hate) => !!hate),
-    },
+        artist: (music: Music) => models.artist.findUnique({ where: { id: music.artistId } }),
+        album: (music: Music) => models.album.findUnique({ where: { id: music.albumId } }),
+        genres: (music: Music) => models.genre.findMany({ where: { Music: { some: { id: music.id } } } }),
+        isLiked: (music: Music) => models.musicLike.findFirst({ where: { musicId: music.id } }).then((like) => !!like),
+        isHated: (music: Music) => models.musicHate.findFirst({ where: { musicId: music.id } }).then((hate) => !!hate)
+    }
 };

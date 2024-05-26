@@ -54,9 +54,7 @@ export class MusicListener implements Listener {
     }
 
     static hate(id: string) {
-        socket.emit(MUSIC_HATE, {
-            id
-        });
+        socket.emit(MUSIC_HATE, { id });
     }
 
     static async count(id?: string) {
@@ -74,9 +72,7 @@ export class MusicListener implements Listener {
             }
 
             await new Promise(resolve => setTimeout(resolve, 1000));
-            socket.emit(MUSIC_COUNT, {
-                id: itemId
-            });
+            socket.emit(MUSIC_COUNT, { id: itemId });
         }
     }
 

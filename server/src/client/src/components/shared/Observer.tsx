@@ -4,7 +4,7 @@ interface ObserverProps {
     onIntersect: () => void;
 }
 
-export default function Observer({ onIntersect, }: ObserverProps) {
+export default function Observer({ onIntersect }: ObserverProps) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {

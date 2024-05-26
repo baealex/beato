@@ -72,7 +72,7 @@ export default function PlaylistItem({
     headerMusics,
     musicCount,
     onClick,
-    onLongPress,
+    onLongPress
 }: PlaylistItemProps) {
     const [{ musicMap }] = useStore(musicStore);
 

@@ -17,7 +17,7 @@ const ArtistListItem = ({
     artistCover,
     albumCount,
     musicCount,
-    onClick,
+    onClick
 }: ArtistListItemProps) => {
     return (
         <div className={cx('ArtistListItem', 'clickable', 'linkable')} onClick={onClick}>

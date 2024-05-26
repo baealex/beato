@@ -77,7 +77,7 @@ export const syncMusic = async (socket: Socket, force = false) => {
                 codec = '',
                 bitrate = 0,
                 duration = 0,
-                sampleRate = 0,
+                sampleRate = 0
             } = format;
             const {
                 title = file.split('/').pop().split('.').shift(),
@@ -87,48 +87,30 @@ export const syncMusic = async (socket: Socket, force = false) => {
                 picture,
                 genre,
                 year = (new Date()).getFullYear(),
-                track,
+                track
             } = common;
 
-            let $artist = await models.artist.findFirst({
-                where: {
-                    name: artist,
-                },
-            });
+            let $artist = await models.artist.findFirst({ where: { name: artist } });
 
             if (!$artist) {
-                $artist = await models.artist.create({
-                    data: {
-                        name: artist,
-                    },
-                });
+                $artist = await models.artist.create({ data: { name: artist } });
             }
 
             let $albumArtist = null;
 
             if (albumArtist) {
-                $albumArtist = await models.artist.findFirst({
-                    where: {
-                        name: albumArtist,
-                    },
-                });
+                $albumArtist = await models.artist.findFirst({ where: { name: albumArtist } });
 
                 if (!$albumArtist) {
-                    $albumArtist = await models.artist.create({
-                        data: {
-                            name: albumArtist,
-                        },
-                    });
+                    $albumArtist = await models.artist.create({ data: { name: albumArtist } });
                 }
             }
 
             let $album = await models.album.findFirst({
                 where: {
                     name: album,
-                    Artist: {
-                        name: albumArtist || artist,
-                    },
-                },
+                    Artist: { name: albumArtist || artist }
+                }
             });
 
             if (!$album) {
@@ -137,12 +119,8 @@ export const syncMusic = async (socket: Socket, force = false) => {
                         name: album,
                         cover: '',
                         publishedYear: year.toString(),
-                        Artist: {
-                            connect: {
-                                id: albumArtist ? $albumArtist.id : $artist.id,
-                            },
-                        },
-                    },
+                        Artist: { connect: { id: albumArtist ? $albumArtist.id : $artist.id } }
+                    }
                 });
             }
 
@@ -171,28 +149,16 @@ export const syncMusic = async (socket: Socket, force = false) => {
 
             if (coverPath && $album.cover !== coverPath) {
                 $album = await models.album.update({
-                    where: {
-                        id: $album.id,
-                    },
-                    data: {
-                        cover: coverPath,
-                    },
+                    where: { id: $album.id },
+                    data: { cover: coverPath }
                 });
             }
 
             const promises = genre?.map(async (name) => {
-                const $genre = await models.genre.findUnique({
-                    where: {
-                        name,
-                    },
-                });
+                const $genre = await models.genre.findUnique({ where: { name } });
 
                 if (!$genre) {
-                    return await models.genre.create({
-                        data: {
-                            name,
-                        },
-                    });
+                    return await models.genre.create({ data: { name } });
                 }
 
                 return $genre;
@@ -211,8 +177,8 @@ export const syncMusic = async (socket: Socket, force = false) => {
                     trackNumber: track?.no || 1,
                     filePath: file,
                     albumId: $album.id,
-                    artistId: $artist.id,
-                },
+                    artistId: $artist.id
+                }
             });
 
             if (!$music) {
@@ -226,31 +192,15 @@ export const syncMusic = async (socket: Socket, force = false) => {
                         duration,
                         trackNumber: track?.no || 1,
                         filePath: file,
-                        Album: {
-                            connect: {
-                                id: $album.id,
-                            },
-                        },
-                        Artist: {
-                            connect: {
-                                id: $artist.id,
-                            },
-                        },
-                        Genre: {
-                            connect: $genres.map((genre) => ({
-                                id: genre.id,
-                            })),
-                        }
-                    },
+                        Album: { connect: { id: $album.id } },
+                        Artist: { connect: { id: $artist.id } },
+                        Genre: { connect: $genres.map((genre) => ({ id: genre.id })) }
+                    }
                 });
             } else if ($music.filePath !== file) {
                 await models.music.update({
-                    where: {
-                        id: $music.id,
-                    },
-                    data: {
-                        filePath: file,
-                    },
+                    where: { id: $music.id },
+                    data: { filePath: file }
                 });
             }
         }
@@ -261,65 +211,35 @@ export const syncMusic = async (socket: Socket, force = false) => {
             if (!files.includes(music.filePath)) {
                 console.log(`delete music from db... ${music.name}`);
                 socket.emit('sync-music', `delete music from db... ${music.name}`);
-                await models.playlistMusic.deleteMany({
-                    where: {
-                        musicId: music.id,
-                    },
-                });
-                await models.musicHate.deleteMany({
-                    where: {
-                        musicId: music.id,
-                    },
-                });
-                await models.musicLike.deleteMany({
-                    where: {
-                        musicId: music.id,
-                    },
-                });
-                await models.music.delete({
-                    where: {
-                        id: music.id,
-                    },
-                });
+                await models.playlistMusic.deleteMany({ where: { musicId: music.id } });
+                await models.musicHate.deleteMany({ where: { musicId: music.id } });
+                await models.musicLike.deleteMany({ where: { musicId: music.id } });
+                await models.music.delete({ where: { id: music.id } });
             }
         }
 
-        const $existAlbums = await models.album.findMany({
-            include: {
-                Music: true,
-            },
-        });
+        const $existAlbums = await models.album.findMany({ include: { Music: true } });
 
         for (const album of $existAlbums) {
             if (album.Music.length === 0) {
                 console.log(`delete album from db... ${album.name}`);
                 socket.emit('sync-music', `delete album from db... ${album.name}`);
-                await models.album.delete({
-                    where: {
-                        id: album.id,
-                    },
-                });
+                await models.album.delete({ where: { id: album.id } });
             }
         }
 
         const $existArtists = await models.artist.findMany({
             include: {
-                Album: {
-                },
-                Music: {
-                },
-            },
+                Album: {},
+                Music: {}
+            }
         });
 
         for (const artist of $existArtists) {
             if (artist.Album.length === 0 && artist.Music.length === 0) {
                 console.log(`delete artist from db... ${artist.name}`);
                 socket.emit('sync-music', `delete artist from db... ${artist.name}`);
-                await models.artist.delete({
-                    where: {
-                        id: artist.id,
-                    },
-                });
+                await models.artist.delete({ where: { id: artist.id } });
             }
         }
     } catch (error) {

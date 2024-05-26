@@ -21,14 +21,10 @@ class PlaylistStore extends Store<PlaylistStoreState> {
         this.listener = new PlaylistListener();
         this.listener.connect({
             onCreate: (playlist) => {
-                this.set({
-                    playlists: [playlist, ...this.state.playlists]
-                });
+                this.set({ playlists: [playlist, ...this.state.playlists] });
             },
             onDelete: (id) => {
-                this.set({
-                    playlists: this.state.playlists.filter((playlist) => playlist.id !== id)
-                });
+                this.set({ playlists: this.state.playlists.filter((playlist) => playlist.id !== id) });
             },
             onUpdate: ({ id, name }) => {
                 this.set({
@@ -39,20 +35,20 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                 });
             },
             onChangeOrder: (ids) => {
-                this.set({
-                    playlists: this.state.playlists.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id))
-                });
+                this.set({ playlists: this.state.playlists.sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id)) });
             },
             onAddMusic: ({ id, musicCount, headerMusics }) => {
                 this.set({
                     playlists: this.state.playlists.map((playlist) => playlist.id === id ? {
                         ...playlist,
                         musicCount,
-                        headerMusics,
+                        headerMusics
                     } : playlist)
                 });
             },
-            onMoveMusic: ({ fromId, formHeaderMusics, toId, toMusicCount, toHeaderMusics, musicIds }) => {
+            onMoveMusic: ({
+                fromId, formHeaderMusics, toId, toMusicCount, toHeaderMusics, musicIds
+            }) => {
                 this.set({
                     playlists: this.state.playlists.map((playlist) => {
                         if (playlist.id === fromId) {
@@ -66,7 +62,7 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                             return {
                                 ...playlist,
                                 musicCount: toMusicCount,
-                                headerMusics: toHeaderMusics,
+                                headerMusics: toHeaderMusics
                             };
                         }
                         return playlist;
@@ -86,10 +82,10 @@ class PlaylistStore extends Store<PlaylistStoreState> {
                 this.set({
                     playlists: this.state.playlists.map((playlist) => playlist.id === id ? {
                         ...playlist,
-                        headerMusics,
+                        headerMusics
                     } : playlist)
                 });
-            },
+            }
         });
     }
 

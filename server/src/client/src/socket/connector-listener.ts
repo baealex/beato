@@ -31,9 +31,7 @@ export class ConnectorListener implements Listener {
     }
 
     static remove(id: string) {
-        socket.emit(REMOVE_CONNECTOR, {
-            id
-        });
+        socket.emit(REMOVE_CONNECTOR, { id });
     }
 
     disconnect() {

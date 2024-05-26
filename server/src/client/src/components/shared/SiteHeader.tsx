@@ -5,28 +5,28 @@ import { type LinkProps, Link as RouterLink, useLocation } from 'react-router-do
 const HEADER_ITEMS = [
     {
         name: 'Music',
-        path: '/',
+        path: '/'
     },
     {
         name: 'Favorite',
-        path: '/favorite',
+        path: '/favorite'
     },
     {
         name: 'Album',
-        path: '/album',
+        path: '/album'
     },
     {
         name: 'Artist',
-        path: '/artist',
+        path: '/artist'
     },
     {
         name: 'Playlist',
-        path: '/playlist',
+        path: '/playlist'
     },
     {
         name: 'Setting',
-        path: '/setting',
-    },
+        path: '/setting'
+    }
 ];
 
 const Header = styled.header`
@@ -154,7 +154,7 @@ export default function SiteHeader() {
                 const center = left + width / 2 - navWidth / 2;
                 ref.current.scrollBy({
                     left: center,
-                    behavior: 'smooth',
+                    behavior: 'smooth'
                 });
             }
         }

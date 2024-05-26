@@ -12,7 +12,7 @@ import {
     Playlist,
     PlaylistDetail,
     Queue,
-    Setting,
+    Setting
 } from './pages';
 import { SiteLayout } from './components/layout';
 
@@ -22,67 +22,67 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <MusicList />,
+                element: <MusicList />
             },
             {
                 path: '/favorite',
-                element: <Favorite />,
+                element: <Favorite />
             },
             {
                 path: '/album',
-                element: <AlbumList />,
+                element: <AlbumList />
             },
             {
                 path: '/artist',
-                element: <ArtistList />,
+                element: <ArtistList />
             },
             {
                 path: '/playlist',
-                element: <Playlist />,
+                element: <Playlist />
             },
             {
                 path: '/setting',
-                element: <Setting />,
-            },
-        ],
+                element: <Setting />
+            }
+        ]
     },
     {
         element: <SiteLayout isSubPage animationDirection="RightToLeft" />,
         children: [
             {
                 path: '/album/:id',
-                element: <AlbumDetail />,
+                element: <AlbumDetail />
             },
             {
                 path: '/artist/:id',
-                element: <ArtistDetail />,
+                element: <ArtistDetail />
             },
             {
                 path: '/playlist/:id',
-                element: <PlaylistDetail />,
-            },
-        ],
+                element: <PlaylistDetail />
+            }
+        ]
     },
     {
         children: [
             {
                 path: '/player',
-                element: <Player />,
-            },
-        ],
+                element: <Player />
+            }
+        ]
     },
     {
         children: [
             {
                 path: '/queue',
-                element: <Queue />,
-            },
+                element: <Queue />
+            }
         ]
     },
     {
         element: <NotFound />,
-        path: '*',
-    },
+        path: '*'
+    }
 ]);
 
 export default router;
