@@ -35,9 +35,7 @@ const MusicListItem = ({
         <div
             className={cx(
                 'MusicListItem',
-                { isHated },
-                { hasMenu: typeof onLongPress === 'function' },
-                { hasAlbumCover: typeof onLongPress === 'function' }
+                { isHated }
             )}
             onClick={onClick}
             onContextMenu={(e) => {
@@ -47,8 +45,16 @@ const MusicListItem = ({
             {typeof albumCover === 'string' && (
                 <Image className={cx('album-art')} src={albumCover} alt={albumName} />
             )}
-            <div className={cx('row')}>
-                <div className={cx('info')}>
+            <div
+                className={cx(
+                    'row',
+                    { hasAlbumCover: typeof onLongPress === 'function' }
+                )}>
+                <div
+                    className={cx(
+                        'info',
+                        { hasMenu: typeof onLongPress === 'function' }
+                    )}>
                     <div className={cx('title')}>
                         {!!trackNumber && (
                             <span className={cx('track-number')}>{trackNumber}.</span>
