@@ -11,9 +11,9 @@
 
 <br>
 
-# beato
+# Beato
 
-Self host music streaming platform
+Beato is desktop and mobile friendly and offers its own mobile app so you can focus on listening to music, regardless of your environment. Focus on what you love. Don't worry about the rest.
 
 ![1](https://github.com/baealex/beato/assets/35596687/fcffe497-26f3-4ff0-9b3f-abfde64501ce)
 
