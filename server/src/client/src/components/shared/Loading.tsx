@@ -102,11 +102,11 @@ const Loading = () => {
         shouldShow && (
             <Container>
                 <div className="sound-wave">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+                    <div />
+                    <div />
+                    <div />
+                    <div />
+                    <div />
                 </div>
             </Container>
         )
