@@ -1,4 +1,4 @@
-@import '~/styles/var';
+@use '~/styles/var';
 
 .ActionBar {
     position: sticky;
@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem 0;
-    background-color: $COLOR_PURPLE_PROMINENT;
+    background-color: var.$COLOR_PURPLE_PROMINENT;
 
     button {
         display: flex;

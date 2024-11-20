@@ -9,6 +9,7 @@ export default defineConfig({
         react(),
         svgr()
     ],
+    css: { preprocessorOptions: { scss: { api: 'modern' } } },
     resolve: { alias: { '~': path.resolve(__dirname, './src') } },
     build: {
         sourcemap: false,

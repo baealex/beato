@@ -1,7 +1,5 @@
-@import '@baejino/style/scss/reset.scss';
-@import '@baejino/ui/css/main.css';
-@import '@baejino/style/scss/var.scss';
-@import '@baejino/style/scss/mixin.scss';
+@use '@baejino/style/scss/reset';
+@use '@baejino/ui/css/main';
 
 @font-face {
     font-family: 'Spoqa Han Sans Neo';

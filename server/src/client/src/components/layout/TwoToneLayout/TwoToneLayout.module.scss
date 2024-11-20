@@ -1,9 +1,9 @@
-@import '~/styles/var';
+@use '~/styles/var';
 
 .TwoToneLayout {
     .header {
         position: relative;
-        padding: $SPACING_SIZE_7 $SPACING_SIZE_3;
+        padding: var.$SPACING_SIZE_7 var.$SPACING_SIZE_3;
         background-color: #111;
         border-radius: 0.5rem;
     }
@@ -31,7 +31,7 @@
                 height: 1.5rem;
             }
     
-            @media (min-width: $BREAKPOINT_DESKTOP) {
+            @media (min-width: var.$BREAKPOINT_DESKTOP) {
                 &:hover {
                     background-color: #2a2a2a;
                 }
@@ -41,7 +41,7 @@
 
     &.hasPrimaryAction {
         .content {
-            margin-top: $SPACING_SIZE_5;
+            margin-top: var.$SPACING_SIZE_5;
         }
     }
 

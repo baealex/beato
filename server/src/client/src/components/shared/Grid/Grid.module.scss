@@ -1,4 +1,4 @@
-@import '~/styles/var';
+@use '~/styles/var';
 
 .Grid {
     display: grid;
@@ -7,7 +7,7 @@
     padding: 1rem;
     list-style: none;
 
-    @media (max-width: $BREAKPOINT_TABLET) {
+    @media (max-width: var.$BREAKPOINT_TABLET) {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }

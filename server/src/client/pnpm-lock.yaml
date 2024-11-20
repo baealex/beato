@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.0.3
     version: 0.0.3
   '@baejino/style':
-    specifier: ^0.0.5
-    version: 0.0.5
+    specifier: ^0.0.6
+    version: 0.0.6
   '@baejino/ui':
     specifier: ^0.0.9
     version: 0.0.9
@@ -295,8 +295,8 @@ packages:
     resolution: {integrity: sha512-eCbIJzQTSdUsIrnrllncunp6xDjilSBst0JEhdMCMRuWO4qCmLtm/fj32PvjANEGO/vAPVop9ZsvFESorwLy0g==}
     dev: false
 
-  /@baejino/style@0.0.5:
-    resolution: {integrity: sha512-KCT1f9sqo0k5CoFMvYzKXMQlpzSo7r2xI3Z3Cn8GitrSGrTicmTGJrzvoxauKVTsA86YucAo1Nr5nfsbNIm7oQ==}
+  /@baejino/style@0.0.6:
+    resolution: {integrity: sha512-H1nSQ0/hDCznvt8wsbN8PA+IlfjOTiFszrHBsFN2dD7ozXqYv7VW9xpbKlzLkNd/aN6n27j0jVdMGLI5PX4vIA==}
     dev: false
 
   /@baejino/ui@0.0.9:

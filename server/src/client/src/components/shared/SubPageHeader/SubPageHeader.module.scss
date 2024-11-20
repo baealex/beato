@@ -1,4 +1,4 @@
-@import '~/styles/var';
+@use '~/styles/var';
 
 .SubPageHeader {
     display: flex;
@@ -12,7 +12,7 @@
     font-weight: bold;
     border-bottom: 1px solid #333;
 
-    @media (min-width: $BREAKPOINT_DESKTOP) {
+    @media (min-width: var.$BREAKPOINT_DESKTOP) {
         height: 100%;
         border-right: 1px solid #222;
         border-bottom: none;
