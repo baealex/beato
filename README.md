@@ -1,37 +1,20 @@
+# beato
 
-<p align="center">
-    <a href="https://github.com/baealex/Cally/">
-        <img width="200px" src="https://github.com/baealex/beato/assets/35596687/c96552c6-8a32-416c-a7be-274ee83a176d">
-    </a>
-</p>
+Beato is a revolutionary self-hosted music streaming web application designed for music lovers who want complete control over their audio experience. With Beato, you can create your own personal music library and stream your favorite tracks anytime, anywhere. Start your musical journey today!
 
-<p align="center">
-    <strong>Focus on what you love</strong>
-</p>
-
-<br>
-
-# Beato
-
-Beato is desktop and mobile friendly and offers its own mobile app so you can focus on listening to music, regardless of your environment. Focus on what you love. Don't worry about the rest.
-
-![1](https://github.com/baealex/beato/assets/35596687/fcffe497-26f3-4ff0-9b3f-abfde64501ce)
-
-![4](https://github.com/baealex/beato/assets/35596687/f697c8ff-d796-49e5-ace0-b660d13c1494)
-
-![2](https://github.com/baealex/beato/assets/35596687/7673578a-51a9-41d3-a514-9a63520d2671)
-
-![3](https://github.com/baealex/beato/assets/35596687/526e4069-2e80-4f1e-823a-34e31680f7c5)
+![](https://github.com/user-attachments/assets/d23e162e-0cd9-406b-9bc3-23b7b30d8d6a)
 
 <br>
 
 ## Features
 
-- [x] Organize information about music (Supported mp3, acc, wav, ogg, flac)
-- [x] Count the number of times music is listened to
-- [x] Make your own playlist
-- [x] Background playable mobile apps available (Download for [Android](https://www.dropbox.com/scl/fo/0mjqlwcj44p7uz999868e/h?rlkey=wyush6qcvbkoss72b18q8gqjg&dl=0))
-- [ ] Audio transcoding
+- [x] Sync your music (Supported mp3, acc, wav, ogg, flac)
+- [x] Categorize your favorite music.
+- [x] Sort your music by the number of times you've listened to it.
+- [x] Create your playlists.
+- [x] Play music in the background on your smartphone. (Download for [Android](https://www.dropbox.com/scl/fo/0mjqlwcj44p7uz999868e/h?rlkey=wyush6qcvbkoss72b18q8gqjg&dl=0))
+- [x] Use track mix-in effects (only on the web).
+- [ ] Transcode audio.
 
 <br>
 
