@@ -8,7 +8,7 @@ Beato is a revolutionary self-hosted music streaming web application designed fo
 
 ## Features
 
-- [x] Sync your music (Supported mp3, acc, wav, ogg, flac)
+- [x] Sync your music (supported mp3, acc, wav, ogg, flac).
 - [x] Categorize your favorite music.
 - [x] Sort your music by the number of times you've listened to it.
 - [x] Create your playlists.
@@ -24,7 +24,7 @@ Beato is a revolutionary self-hosted music streaming web application designed fo
 
 <br>
 
-## Self-host
+## Setup
 
 ⚠️ **Warning** This application under development may be unstable.
 
