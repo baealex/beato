@@ -49,7 +49,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         padding-bottom: 0.5rem;
 
         svg {
-            color: #888;
+            opacity: 0.7;
             transform: rotate(-90deg) translate(50%, -50%);
         }
     }
@@ -65,7 +65,6 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         height: 3rem;
         border-radius: .25rem;
         background-color: transparent;
-        color: white;
         border: none;
         cursor: pointer;
         font-weight: bold;
@@ -97,7 +96,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
             transform: translate(-50%, -50%);
             width: .1rem;
             height: .75rem;
-            background-color: #fff;
+            background-color: var(--b-color-text);
         }
     }
 
@@ -203,7 +202,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
 
             .artist {
                 font-size: .875rem;
-                color: #888;
+                opacity: 0.6;
             }
         }
     }
@@ -221,7 +220,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         width: 500px;
         max-width: 90%;
         height: 20px;
-        background-color: #333;
+        background-color: var(--b-color-background-over-layer);
         border-radius: 5px;
         overflow: hidden;
 
@@ -229,7 +228,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
             width: 100%;
             height: 100%;
             transform: translateX(-100%);
-            background-color: #a076f1;
+            background-color: var(--b-color-point);
             animation: progress 3s infinite ease-in-out;
         }
     }
@@ -250,7 +249,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
 
         .shuffle.active {
             svg {
-                color: #a076f1;
+                color: var(--b-color-point);
             }
         }
 

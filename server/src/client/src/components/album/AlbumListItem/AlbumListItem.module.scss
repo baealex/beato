@@ -8,13 +8,12 @@
     gap: 4px;
     border-radius: 16px;
     background: var.$COLOR_BACKGROUND_OVER_LAYER;
-    border: 2px solid var.$COLOR_BORDER;
     transition: background 0.2s ease-in-out;
     padding: 0 0 8px;
 
     @media (min-width: 1024px) {
         &:hover {
-            filter: brightness(1.15);
+            filter: brightness(0.8);
         }
     }
 
@@ -39,11 +38,10 @@
     .title {
         font-size: 14px;
         font-weight: bold;
-        color: #eee;
     }
 
     .artist {
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.65);
+        opacity: var.$OPACITY_SUB_TEXT;
     }
 }

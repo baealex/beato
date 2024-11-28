@@ -3,13 +3,13 @@
 @use '@baejino/style/scss/var' as common;
 
 /* COLOR */
-$COLOR_BACKGROUND: #0e0e0e;
-$COLOR_BACKGROUND_OVER_LAYER: #181818;
-$COLOR_TEXT: #eee;
-$COLOR_POINT: common.$COLOR_PURPLE_PROMINENT;
-$COLOR_BORDER: #333;
-$COLOR_PRIMARY_BUTTON: common.$COLOR_PURPLE_PROMINENT;
-$COLOR_SECONDARY_BUTTON: #222;
+$COLOR_BACKGROUND: var(--b-color-background);
+$COLOR_BACKGROUND_OVER_LAYER: var(--b-color-background-over-layer);
+$COLOR_TEXT: var(--b-color-text);
+$COLOR_POINT: var(--b-color-point);
+$COLOR_BORDER: var(--b-color-border);
+$COLOR_PRIMARY_BUTTON: var(--b-color-primary-button);
+$COLOR_SECONDARY_BUTTON: var(--b-color-secondary-button);
 
 /* OPACITY */
 $OPACITY_SUB_TEXT: 0.7;

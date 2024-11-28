@@ -7,11 +7,11 @@
     gap: 5rem;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid var.$COLOR_BORDER;
 
     @media (min-width: 1024px) {
         height: 100%;
-        border-right: 1px solid #222;
+        border-right: 1px solid var.$COLOR_BORDER;
         border-bottom: none;
     }
 }
@@ -30,26 +30,6 @@
 
     &::-webkit-scrollbar {
         display: none;
-    }
-
-    &::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 50px;
-        height: 59px;
-        background: linear-gradient(
-            to left,
-            rgba(0, 0, 0, 0.5) 0%,
-            rgba(0, 0, 0, 0) 100%
-        );
-        z-index: 1;
-        pointer-events: none;
-
-        @media (min-width: 1024px) {
-            display: none;
-        }
     }
 
     ul {

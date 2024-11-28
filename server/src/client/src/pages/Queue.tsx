@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { HTMLMotionProps } from 'framer-motion';
 import { motion } from 'framer-motion';
-import { theme } from '@baejino/style';
 import { toast } from '@baejino/ui';
 
 import type { DragEndEvent } from '@dnd-kit/core';
@@ -37,7 +36,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         justify-content: space-between;
         height: 60px;
         padding: 0 1rem;
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid var(--b-color-border);
 
         button {
             width: auto;
@@ -45,7 +44,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            color: #eee;
+            color: var(--b-color-text);
             font-size: 0.8rem;
 
             .link {
@@ -58,7 +57,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
             }
 
             &.active {
-                color: ${theme.COLOR_PURPLE_PROMINENT};
+                color: var(--b-color-point);
             }
 
             svg {
@@ -77,7 +76,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         .button {
             border: none;
             background: none;
-            color: #a076f1;
+            color: var(--b-color-point);
             font-size: 1rem;
             font-weight: 600;
             padding: 0.5rem;
@@ -93,7 +92,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         align-items: center;
         justify-content: space-between;
         padding: 0.5rem 0;
-        background-color: ${theme.COLOR_PURPLE_PROMINENT};
+        background-color: var(--b-color-point);
 
         button {
             display: flex;
@@ -134,8 +133,8 @@ const Item = styled.li`
 
         &.active {
             svg {
-                color: #ccc;
-                fill: ${theme.COLOR_PURPLE_PROMINENT};
+                color: var(--b-color-text);
+                fill: var(--b-color-point);
             }
         }
     }
@@ -160,7 +159,7 @@ const Item = styled.li`
             top: 0;
             right: 0;
             bottom: 0;
-            background-color: #735af2;
+            background-color: var(--b-color-point);
             animation: breathing 3s ease infinite;
             z-index: -1;
             pointer-events: none;

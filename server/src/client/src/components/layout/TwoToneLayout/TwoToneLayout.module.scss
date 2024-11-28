@@ -23,7 +23,7 @@
             justify-content: center;
             background: var.$COLOR_BACKGROUND_OVER_LAYER;
             border: 4px solid var.$COLOR_BACKGROUND;
-            color: #ccc;
+            color: var.$COLOR_TEXT;
             transition: background-color 0.2s;
 
             svg {

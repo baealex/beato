@@ -7,14 +7,13 @@
     padding: 0 1rem;
     height: 60px;
     background-color: var.$COLOR_BACKGROUND_OVER_LAYER;
-    color: #fff;
     font-size: 1.2rem;
     font-weight: bold;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var.$COLOR_BORDER;
 
     @media (min-width: var.$BREAKPOINT_DESKTOP) {
         height: 100%;
-        border-right: 1px solid #222;
+        border-right: 1px solid var.$COLOR_BORDER;
         border-bottom: none;
         background-color: transparent;
     }

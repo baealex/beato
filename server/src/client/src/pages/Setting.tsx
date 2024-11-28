@@ -9,6 +9,7 @@ import { ConnectorListener, socket } from '~/socket';
 
 import { connectorStore } from '~/store/connector';
 import { queueStore } from '~/store/queue';
+import { themeStore } from '~/store/theme';
 
 const Container = styled.div`
     padding: 1rem;
@@ -16,26 +17,19 @@ const Container = styled.div`
     section {
         display: flex;
         flex-direction: column;
-        border-bottom: 1px solid #222;
+        border-bottom: 1px solid var(--b-color-border);
         padding: 2.5rem 0;
         gap: 1rem;
 
         h3 {
             font-size: 1rem;
             font-weight: 600;
-            color: #656565;
         }
 
         p {
             font-size: 0.8rem;
             font-weight: 400;
-            color: #d0d0d0;
-        }
-
-        .progress-text {
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: #ffffff;
+            opacity: 0.5;
         }
     }
 
@@ -48,20 +42,20 @@ const Container = styled.div`
 
         .date {
             font-size: 0.825rem;
-            color: #999;
+            opacity: 0.5;
         }
 
         .this-device, .kick {
             padding: 0.125rem 0.5rem;
             border-radius: 0.5rem;
-            background-color: #3d3493;
+            background-color: var(--b-color-primary-button);
             font-size: 0.75rem;
-            color: #eee;
         }
 
         .kick {
             cursor: pointer;
-            background-color: #333;
+            color: var(--b-color-text);
+            background-color: var(--b-color-secondary-button);
         }
     }
 `;
@@ -93,9 +87,22 @@ const MIX_MODES = [{
     label: 'Mix (Fade in/out when music changes)'
 }];
 
+const THEMES = [{
+    value: '',
+    label: 'Beato'
+}, {
+    value: 'rosy',
+    label: 'Rosy'
+}, {
+    value: 'breeze',
+    label: 'Breeze'
+}];
+
 export default function Setting() {
     const [{ connectors }] = useStore(connectorStore);
     const [{ playMode, insertMode, mixMode }] = useStore(queueStore);
+    const [{ theme }] = useStore(themeStore);
+
     const [progressMessage, setProgressMessage] = useState('');
 
     const handleClickSyncMusic = async (force: boolean) => {
@@ -137,7 +144,7 @@ export default function Setting() {
                 <h3>Synchronization</h3>
                 <p>Sync from your server</p>
                 {progressMessage && (
-                    <p className="progress-text">{progressMessage}</p>
+                    <p>{progressMessage}</p>
                 )}
                 <div
                     style={{
@@ -192,6 +199,12 @@ export default function Setting() {
                     selected={MIX_MODES.find(({ value }) => value === mixMode)}
                     options={MIX_MODES}
                     onChange={(value) => queueStore.setMixMode(value as typeof mixMode)}
+                />
+                <p>Theme</p>
+                <Select
+                    selected={THEMES.find(({ value }) => value === theme)}
+                    options={THEMES}
+                    onChange={(value) => themeStore.setTheme(value)}
                 />
             </section>
             <section>

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Button } from '~/components/shared';
+import { useBack } from '~/hooks';
 
 const Container = styled.div`
     display: flex;
@@ -35,22 +36,24 @@ const Dance = styled.div`
 `;
 
 const Text = styled.div`
-    color: #666;
+    opacity: 0.6;
     font-size: 1.25rem;
     margin-top: 1rem;
 `;
 
 export default function NotFound() {
+    const back = useBack();
+
     return (
         <Container>
             <Dance>
                 {'(㇏(•̀ᵥᵥ•́)ノ)'}
             </Dance>
             <Text>
-                why are you here?
+                Why are you here, huh?
             </Text>
-            <Button onClick={() => location.assign('/')}>
-                Go Home
+            <Button onClick={back}>
+                Take you back
             </Button>
         </Container>
     );

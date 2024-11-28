@@ -5,7 +5,7 @@
     border: none;
     background-color: #111;
     border-radius: 0.5rem;
-    color: #eee;
+    color: var.$COLOR_TEXT;
     font-size: 0.75rem;
     font-weight: 600;
     display: flex;
@@ -28,7 +28,7 @@
 
     @media (min-width: 1024px) {
         &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            filter: brightness(0.8);
         }
     }
 }

@@ -34,7 +34,7 @@ const Styles = styled.div`
         align-items: center;
         gap: 1rem;
         padding: 0.8rem 1rem;
-        border: 1px solid #333;
+        border: 1px solid var(--b-color-border);
         border-radius: 8px;
         cursor: pointer;
 
@@ -50,8 +50,8 @@ const Styles = styled.div`
         top: 100%;
         left: 0;
         right: 0;
-        background-color: #000;
-        border: 1px solid #333;
+        background-color: var(--b-color-background);
+        border: 1px solid var(--b-color-border);
         border-radius: 8px;
         border-top: none;
         border-top-left-radius: 0;
@@ -64,7 +64,7 @@ const Styles = styled.div`
             cursor: pointer;
 
             &:hover {
-                background-color: #333;
+                background-color: var(--b-color-background-over-layer);
             }
         }
     }
