@@ -15,6 +15,7 @@ import { makePlayTime } from '~/modules/time';
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 import { Image } from '~/components/shared';
+import { useBack } from '~/hooks';
 
 const Container = styled.div<HTMLMotionProps<'div'>>`
     height: 100%;
@@ -280,6 +281,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
 `;
 
 export default function PlayerDetail() {
+    const back = useBack();
     const navigate = useNavigate();
 
     const [state] = useStore(queueStore);
@@ -454,7 +456,7 @@ export default function PlayerDetail() {
                     </div>
                 </div>
                 <div className="footer">
-                    <button className="icon-button" onClick={() => history.back()}>
+                    <button className="icon-button" onClick={back}>
                         <Icon.Left />
                     </button>
                 </div>

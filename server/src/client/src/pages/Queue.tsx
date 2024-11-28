@@ -24,6 +24,7 @@ import { PlaylistListener } from '~/socket';
 
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
+import { useBack } from '~/hooks';
 
 const Container = styled.div<HTMLMotionProps<'div'>>`
     display: flex;
@@ -233,6 +234,7 @@ const QueueDndItem = ({
 };
 
 export default function Queue() {
+    const back = useBack();
     const navigate = useNavigate();
 
     const [{ items, selected }, setState] = useStore(queueStore);
@@ -394,7 +396,7 @@ export default function Queue() {
             )}
             <div className="footer">
                 <div />
-                <button className="icon-button" onClick={() => history.back()}>
+                <button className="icon-button" onClick={back}>
                     <Icon.Cross />
                 </button>
             </div>
