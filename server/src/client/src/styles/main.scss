@@ -1,6 +1,8 @@
 @use '@baejino/style/scss/reset';
 @use '@baejino/ui/css/main';
 
+@use './var';
+
 @font-face {
     font-family: 'Spoqa Han Sans Neo';
     font-weight: 700;
@@ -54,14 +56,14 @@ main {
 }
 
 body {
-    background: #000;
+    background: var.$COLOR_BACKGROUND;
     font-family: 'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 16px;
     font-weight: 400;
     word-wrap: break-word;
     word-break: keep-all;
     overflow-wrap: anywhere;
-    color: #eee;
+    color: var.$COLOR_TEXT;
 }
 
 button {
@@ -100,7 +102,7 @@ button {
     height: 3rem;
     border-radius: 0.25rem;
     background-color: transparent;
-    color: white;
+    color: var.$COLOR_TEXT;
     border: none;
     cursor: pointer;
     font-weight: bold;

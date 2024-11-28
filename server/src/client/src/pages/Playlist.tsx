@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+
 import { prompt } from '@baejino/ui';
 import { useStore } from 'badland-react';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,13 @@ import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-import { Loading, SecondaryButton, StickyHeader, VerticalSortable } from '~/components/shared';
+import {
+    Loading,
+    Button,
+    StickyHeader,
+    VerticalSortable,
+    Flex
+} from '~/components/shared';
 import { PlaylistActionPanelContent, PlaylistItem } from '~/components/playlist';
 import { Menu } from '~/icon';
 
@@ -17,21 +23,6 @@ import { PlaylistListener } from '~/socket';
 
 import { playlistStore } from '~/store/playlist';
 import { panel } from '~/modules/panel';
-
-const Item = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    .icon-button {
-        margin-left: 1rem;
-
-        svg {
-            width: 1rem;
-            height: 1rem;
-        }
-    }
-`;
 
 function PlaylistDndItem({
     playlist,
@@ -51,7 +42,12 @@ function PlaylistDndItem({
     };
 
     return (
-        <Item ref={setNodeRef} style={style} {...attributes}>
+        <Flex
+            ref={setNodeRef}
+            direction="row"
+            align="center"
+            style={style}
+            {...attributes}>
             <div
                 className="icon-button"
                 {...listeners}
@@ -59,7 +55,7 @@ function PlaylistDndItem({
                     cursor: 'grab',
                     touchAction: 'none'
                 }}>
-                <Menu />
+                <Menu style={{ width: '16px' }} />
             </div>
             <div
                 style={{
@@ -73,7 +69,7 @@ function PlaylistDndItem({
                     onLongPress={onLongPress}
                 />
             </div>
-        </Item>
+        </Flex>
     );
 }
 
@@ -107,9 +103,9 @@ export default function Playlist() {
         <>
             <StickyHeader>
                 <div />
-                <SecondaryButton onClick={handleCreate}>
+                <Button onClick={handleCreate}>
                     Create
-                </SecondaryButton>
+                </Button>
             </StickyHeader>
             <VerticalSortable items={playlists.map((playlist) => playlist.id)} onDragEnd={handleDragEnd}>
                 {!loaded && (

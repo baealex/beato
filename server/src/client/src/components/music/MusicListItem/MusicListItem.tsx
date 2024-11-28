@@ -48,7 +48,7 @@ const MusicListItem = ({
             <div
                 className={cx(
                     'row',
-                    { hasAlbumCover: typeof onLongPress === 'function' }
+                    { hasAlbumCover: !!albumCover }
                 )}>
                 <div
                     className={cx(

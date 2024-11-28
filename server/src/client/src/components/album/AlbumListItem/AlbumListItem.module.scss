@@ -1,3 +1,5 @@
+@use '~/styles/var';
+
 .AlbumListItem {
     cursor: pointer;
     display: flex;
@@ -5,13 +7,14 @@
     text-align: left;
     gap: 4px;
     border-radius: 16px;
-    background-color: #111;
-    transition: background-color 0.2s ease-in-out;
-    padding: 4px 4px 8px;
+    background: var.$COLOR_BACKGROUND_OVER_LAYER;
+    border: 2px solid var.$COLOR_BORDER;
+    transition: background 0.2s ease-in-out;
+    padding: 0 0 8px;
 
     @media (min-width: 1024px) {
         &:hover {
-            background-color: #222;
+            filter: brightness(1.15);
         }
     }
 
@@ -26,7 +29,7 @@
 
     .title,
     .artist {
-        padding: 0 8px;
+        padding: 0 12px;
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -42,49 +45,5 @@
     .artist {
         font-size: 14px;
         color: rgba(255, 255, 255, 0.65);
-    }
-
-    .title {
-        font-size: 14px;
-        gap: 4px;
-
-        .track-number {
-            margin-right: 0.25rem;
-            color: #666;
-            font-weight: 400;
-        }
-
-        .codec {
-            border: 1px solid #333;
-            color: #eee;
-            margin-left: 4px;
-            padding: 1px 4px;
-            border-radius: 8px;
-            font-size: 8px;
-        }
-    }
-
-    .icon-button {
-        color: #eee;
-        width: 2.5rem;
-        height: 2.5rem;
-
-        svg {
-            width: 1.125rem;
-            height: 1.125rem;
-        }
-
-        &.isLiked {
-            svg {
-                fill: #a076f1;
-                color: #a076f1;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.1);
-            }
-        }
     }
 }

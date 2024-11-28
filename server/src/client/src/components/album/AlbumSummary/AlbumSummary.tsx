@@ -18,7 +18,11 @@ const AlbumSummary = ({
 }: AlbumSummaryProps) => {
     return (
         <div className={cx('AlbumSummary')}>
-            <Image className={cx('cover')} src={cover.replace('/resized', '') || ''} alt={name} />
+            <div className={cx('cover')}>
+                <div>
+                    <Image src={cover.replace('/resized', '') || ''} alt={artist.name} />
+                </div>
+            </div>
             <SummaryTitle as="h1">
                 {name}
             </SummaryTitle>

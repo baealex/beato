@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useStore } from 'badland-react';
 import { useEffect, useState } from 'react';
 
-import { SecondaryButton, Select } from '~/components/shared';
+import { Button, Select } from '~/components/shared';
 
 import { ConnectorListener, socket } from '~/socket';
 
@@ -144,12 +144,12 @@ export default function Setting() {
                         display: 'flex',
                         gap: '1rem'
                     }}>
-                    <SecondaryButton onClick={() => handleClickSyncMusic(false)}>
+                    <Button onClick={() => handleClickSyncMusic(false)}>
                         Sync
-                    </SecondaryButton>
-                    <SecondaryButton onClick={() => handleClickSyncMusic(true)}>
+                    </Button>
+                    <Button onClick={() => handleClickSyncMusic(true)}>
                         Force Sync
-                    </SecondaryButton>
+                    </Button>
                 </div>
             </section>
             <section>
@@ -201,9 +201,9 @@ export default function Setting() {
                         display: 'flex',
                         gap: '1rem'
                     }}>
-                    <SecondaryButton onClick={() => window.location.reload()}>
+                    <Button onClick={() => window.location.reload()}>
                         Try Refresh
-                    </SecondaryButton>
+                    </Button>
                 </div>
             </section>
         </Container >

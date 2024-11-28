@@ -1,0 +1,33 @@
+.PlaylistItem {
+    color: #eee;
+    font-size: 14px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+
+    @media (min-width: 1024px) {
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .title {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .count {
+        font-size: 0.875rem;
+        color: #aaa;
+    }
+
+    .cover {
+        width: 60px;
+        height: 60px;
+    }
+}

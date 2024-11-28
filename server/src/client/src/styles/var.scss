@@ -1,1 +1,16 @@
 @forward '@baejino/style/scss/var';
+
+@use '@baejino/style/scss/var' as common;
+
+/* COLOR */
+$COLOR_BACKGROUND: #0e0e0e;
+$COLOR_BACKGROUND_OVER_LAYER: #181818;
+$COLOR_TEXT: #eee;
+$COLOR_POINT: common.$COLOR_PURPLE_PROMINENT;
+$COLOR_BORDER: #333;
+$COLOR_PRIMARY_BUTTON: common.$COLOR_PURPLE_PROMINENT;
+$COLOR_SECONDARY_BUTTON: #222;
+
+/* OPACITY */
+$OPACITY_SUB_TEXT: 0.7;
+$OPACITY_TERTIARY_TEXT: 0.5;

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { AlbumListItem } from '~/components/album';
 import { MusicActionPanelContent, MusicListItem } from '~/components/music';
-import { Grid, Image, SecondaryButton } from '~/components/shared';
+import { Grid, Image, Button } from '~/components/shared';
 import { Play } from '~/icon';
 
 import { getArtist } from '~/api';
@@ -106,9 +106,9 @@ export default function ArtistDetail() {
 
             <div className="section-title">
                 Songs ({artist.musics.length})
-                <SecondaryButton onClick={() => queueStore.reset(artist.musics.map(music => music.id))}>
+                <Button onClick={() => queueStore.reset(artist.musics.map(music => music.id))}>
                     <Play /> Play
-                </SecondaryButton>
+                </Button>
             </div>
             {artist.musics.map(({ id }) => {
                 const music = musicMap.get(id);

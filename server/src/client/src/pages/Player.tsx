@@ -14,6 +14,7 @@ import { makePlayTime } from '~/modules/time';
 
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
+import { Image } from '~/components/shared';
 
 const Container = styled.div<HTMLMotionProps<'div'>>`
     height: 100%;
@@ -368,7 +369,7 @@ export default function PlayerDetail() {
                             alt={currentMusic?.album.name}
                         />
                         <div className="foreground-wrapper">
-                            <img
+                            <Image
                                 className="foreground"
                                 style={{ borderRadius }}
                                 src={getImage(

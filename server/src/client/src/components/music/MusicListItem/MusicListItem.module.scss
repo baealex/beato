@@ -1,14 +1,19 @@
 @use '~/styles/var';
 
+$SIZE_ALBUM_ART: 50px;
+$SIZE_ICON: 40px;
+
+$GAP_ITEM_INNER: 16px;
+
 .MusicListItem {
-    color: #eee;
+    color: var.$COLOR_TEXT;
     font-size: 12px;
     cursor: pointer;
     padding: 16px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.75rem;
+    gap: $GAP_ITEM_INNER;
     width: 100%;
 
     &.isHated {
@@ -22,9 +27,9 @@
     }
 
     .album-art {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
+        width: $SIZE_ALBUM_ART;
+        height: $SIZE_ALBUM_ART;
+        border-radius: 16px;
         object-fit: cover;
     }
 
@@ -36,10 +41,10 @@
         flex: 1;
         width: 100%;
         max-width: 100%;
-        gap: 0.75rem;
+        gap: 12px;
 
         &.hasAlbumCover {
-            max-width: calc(100% - 50px - 0.75rem);
+            max-width: calc(100% - $SIZE_ALBUM_ART - $GAP_ITEM_INNER);
         }
 
         .info {
@@ -51,7 +56,7 @@
             gap: 0.125rem;
 
             &.hasMenu {
-                max-width: calc(100% - 2.5rem - 0.75rem);
+                max-width: calc(100% - $SIZE_ICON - $GAP_ITEM_INNER);
             }
         }
 
@@ -64,7 +69,7 @@
 
         .artist {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.45);
+            opacity: var.$OPACITY_TERTIARY_TEXT;
         }
 
         .title {
@@ -73,7 +78,7 @@
 
             .track-number {
                 margin-right: 0.25rem;
-                color: #666;
+                opacity: 0.3;
                 font-weight: 400;
             }
 
@@ -88,9 +93,9 @@
         }
 
         .icon-button {
-            color: #eee;
-            width: 2.5rem;
-            height: 2.5rem;
+            color: var.$COLOR_TEXT;
+            width: $SIZE_ICON;
+            height: $SIZE_ICON;
             background: none;
             display: flex;
             align-items: center;
@@ -103,8 +108,8 @@
 
             &.isLiked {
                 svg {
-                    fill: #a076f1;
-                    color: #a076f1;
+                    fill: var.$COLOR_POINT;
+                    color: var.$COLOR_POINT;
                 }
             }
 

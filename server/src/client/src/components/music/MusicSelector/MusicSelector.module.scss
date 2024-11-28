@@ -1,0 +1,19 @@
+@use '~/styles/var';
+
+.MusicSelector {
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+
+    &.active {
+        color: var.$COLOR_PURPLE_PROMINENT;
+    }
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+    }
+}

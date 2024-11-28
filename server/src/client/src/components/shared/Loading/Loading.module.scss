@@ -1,7 +1,4 @@
-import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
-
-const Container = styled.div`
+.Loading {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -85,32 +82,4 @@ const Container = styled.div`
         left: 55px;
         animation-delay: 1s;
     }
-`;
-
-const Loading = () => {
-    const [shouldShow, setShouldShow] = useState(false);
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setShouldShow(true);
-        }, 100);
-
-        return () => clearTimeout(timeout);
-    });
-
-    return (
-        shouldShow && (
-            <Container>
-                <div className="sound-wave">
-                    <div />
-                    <div />
-                    <div />
-                    <div />
-                    <div />
-                </div>
-            </Container>
-        )
-    );
-};
-
-export default Loading;
+}

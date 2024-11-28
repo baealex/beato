@@ -1,0 +1,14 @@
+@use '~/styles/var';
+
+.StickyHeader {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: var.$COLOR_BACKGROUND;
+    z-index: 1;
+}

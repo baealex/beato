@@ -11,7 +11,7 @@ import { arrayMove } from '@dnd-kit/sortable';
 
 import {
     ActionBar,
-    SecondaryButton,
+    Button,
     SortableItem,
     StickyHeader,
     VerticalSortable
@@ -130,9 +130,9 @@ export default function PlaylistDetail() {
                         onSelectAll={() => setSelectedItems(playlist.musics.map(({ id }) => id))}
                     />
                 </div>
-                <SecondaryButton onClick={() => queueStore.reset(playlist.musics.map(({ id }) => id))}>
+                <Button onClick={() => queueStore.reset(playlist.musics.map(({ id }) => id))}>
                     <Icon.Play /> Play
-                </SecondaryButton>
+                </Button>
             </StickyHeader >
             <div style={{ flex: 1 }}>
                 <VerticalSortable items={playlist.musics.map(({ id }) => id)} onDragEnd={handleDragEnd}>

@@ -3,7 +3,7 @@ import { useStore } from 'badland-react';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { ItemSortPanelContent, Loading, SecondaryButton, StickyHeader } from '~/components/shared';
+import { ItemSortPanelContent, Loading, Button, StickyHeader } from '~/components/shared';
 import { ArtistListItem } from '~/components/artist';
 
 import * as Icon from '~/icon';
@@ -40,10 +40,10 @@ export default function ArtistList() {
     return (
         <>
             <StickyHeader>
-                <SecondaryButton style={{ width: '160px' }} onClick={handleSearch}>
+                <Button style={{ width: '160px' }} onClick={handleSearch}>
                     {searchParams.get('q') || 'Search'}
-                </SecondaryButton>
-                <SecondaryButton
+                </Button>
+                <Button
                     onClick={() => panel.open({
                         title: 'Artist Sort',
                         content: (
@@ -51,7 +51,7 @@ export default function ArtistList() {
                         )
                     })}>
                     <Icon.Sort /> Sort
-                </SecondaryButton>
+                </Button>
             </StickyHeader>
             {!loaded && (
                 <Loading />
@@ -69,14 +69,14 @@ export default function ArtistList() {
             {loaded && filteredArtists.length > renderLimit && (
                 <div
                     style={{ padding: '0 16px 16px' }}>
-                    <SecondaryButton
+                    <Button
                         style={{
                             width: '100%',
                             justifyContent: 'center'
                         }}
                         onClick={handleReadMore}>
                         Load More
-                    </SecondaryButton>
+                    </Button>
                 </div>
             )}
         </>

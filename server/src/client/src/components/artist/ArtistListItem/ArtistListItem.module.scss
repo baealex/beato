@@ -29,7 +29,7 @@
         display: flex;
         gap: 6px;
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.5);
+        opacity: var.$OPACITY_TERTIARY_TEXT;
     }
 
     @media (min-width: var.$BREAKPOINT_DESKTOP) {

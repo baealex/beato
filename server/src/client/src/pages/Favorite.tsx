@@ -3,7 +3,7 @@ import { useStore } from 'badland-react';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { SecondaryButton, StickyHeader, Loading, ItemSortPanelContent } from '~/components/shared';
+import { Button, StickyHeader, Loading, ItemSortPanelContent } from '~/components/shared';
 import { MusicListItem, MusicActionPanelContent } from '~/components/music';
 import * as Icon from '~/icon';
 
@@ -44,21 +44,21 @@ export default function Music() {
     return (
         <>
             <StickyHeader>
-                <SecondaryButton
+                <Button
                     style={{ width: '160px' }}
                     onClick={handleSearch}>
                     {searchParams.get('q') || 'Search'}
-                </SecondaryButton>
+                </Button>
                 <div
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
                         gap: '8px'
                     }}>
-                    <SecondaryButton onClick={() => queueStore.reset(filteredMusics.map(music => music.id))}>
+                    <Button onClick={() => queueStore.reset(filteredMusics.map(music => music.id))}>
                         <Icon.Play /> Play
-                    </SecondaryButton>
-                    <SecondaryButton
+                    </Button>
+                    <Button
                         onClick={() => panel.open({
                             title: 'Music Sort',
                             content: (
@@ -66,7 +66,7 @@ export default function Music() {
                             )
                         })}>
                         <Icon.Sort /> Sort
-                    </SecondaryButton>
+                    </Button>
                 </div>
             </StickyHeader>
             {!loaded && (
@@ -97,14 +97,14 @@ export default function Music() {
             {loaded && filteredMusics.length > renderLimit && (
                 <div
                     style={{ padding: '0 16px 16px' }}>
-                    <SecondaryButton
+                    <Button
                         style={{
                             width: '100%',
                             justifyContent: 'center'
                         }}
                         onClick={handleReadMore}>
                         Load More
-                    </SecondaryButton>
+                    </Button>
                 </div>
             )}
         </>

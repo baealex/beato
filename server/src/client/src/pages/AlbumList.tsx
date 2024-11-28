@@ -7,7 +7,7 @@ import {
     Grid,
     ItemSortPanelContent,
     Loading,
-    SecondaryButton,
+    Button,
     StickyHeader
 } from '~/components/shared';
 import { AlbumListItem } from '~/components/album';
@@ -46,12 +46,12 @@ export default function Album() {
     return (
         <>
             <StickyHeader>
-                <SecondaryButton
+                <Button
                     style={{ width: '160px' }}
                     onClick={handleSearch}>
                     {searchParams.get('q') || 'Search'}
-                </SecondaryButton>
-                <SecondaryButton
+                </Button>
+                <Button
                     onClick={() => panel.open({
                         title: 'Album Sort',
                         content: (
@@ -59,7 +59,7 @@ export default function Album() {
                         )
                     })}>
                     <Icon.Sort /> Sort
-                </SecondaryButton>
+                </Button>
             </StickyHeader>
             {!loaded && (
                 <Loading />
@@ -77,14 +77,14 @@ export default function Album() {
             </Grid>
             {loaded && filteredAlbums.length > renderLimit && (
                 <div style={{ padding: '0 16px 16px' }}>
-                    <SecondaryButton
+                    <Button
                         style={{
                             width: '100%',
                             justifyContent: 'center'
                         }}
                         onClick={handleReadMore}>
                         Load More
-                    </SecondaryButton>
+                    </Button>
                 </div>
             )}
         </>

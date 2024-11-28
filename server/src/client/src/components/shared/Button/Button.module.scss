@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
+@use '~/styles/var';
 
-const SecondaryButton = styled.button`
+.Button {
     padding: 0.5rem;
     border: none;
-    background-color: #222;
+    background-color: #111;
     border-radius: 0.5rem;
     color: #eee;
     font-size: 0.75rem;
@@ -18,11 +18,17 @@ const SecondaryButton = styled.button`
         height: 1rem;
     }
 
+    &.primary {
+        background-color: var.$COLOR_PRIMARY_BUTTON;
+    }
+
+    &.secondary {
+        background-color: var.$COLOR_SECONDARY_BUTTON;
+    }
+
     @media (min-width: 1024px) {
         &:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
     }
-`;
-
-export default SecondaryButton;
+}

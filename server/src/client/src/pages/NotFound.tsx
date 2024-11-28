@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { SecondaryButton } from '~/components/shared';
+import { Button } from '~/components/shared';
 
 const Container = styled.div`
     display: flex;
@@ -49,9 +49,9 @@ export default function NotFound() {
             <Text>
                 why are you here?
             </Text>
-            <SecondaryButton onClick={() => location.assign('/')}>
+            <Button onClick={() => location.assign('/')}>
                 Go Home
-            </SecondaryButton>
+            </Button>
         </Container>
     );
 }
