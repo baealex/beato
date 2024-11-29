@@ -26,19 +26,19 @@ interface QueueStoreState {
     sourceItems: string[];
 }
 
-let saveTimer: ReturnType<typeof setTimeout> | null = null;
-
 const getMusic = (id: string) => {
     const musicMap = musicStore.state.musicMap;
     return musicMap.get(id);
 };
 
 class QueueStore extends Store<QueueStoreState> {
+    saveTimer: ReturnType<typeof setTimeout> | null = null;
     shouldCount = false;
     audioChannel: AudioChannel;
 
     constructor() {
         super();
+        this.saveTimer = null;
         this.state = {
             selected: null,
             isPlaying: false,
@@ -344,18 +344,18 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     afterStateChange() {
-        if (saveTimer) {
+        if (this.saveTimer) {
             return;
         }
 
-        saveTimer = setTimeout(() => {
+        this.saveTimer = setTimeout(() => {
             localStorage.setItem('queue', JSON.stringify({
                 ...this.state,
                 isPlaying: false,
                 currentTime: 0,
                 progress: 0
             }));
-            saveTimer = null;
+            this.saveTimer = null;
         }, 3000);
     }
 }

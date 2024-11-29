@@ -1,3 +1,4 @@
+import { eqStore } from '~/store/audioEq';
 import type { AudioChannel, AudioChannelEventHandler } from './audio-channel';
 
 import type { Music } from '~/models/type';
@@ -7,6 +8,15 @@ export class WebAudioChannel implements AudioChannel {
     private backgroundAudio: HTMLAudioElement;
     private handler: AudioChannelEventHandler;
     private mixInterval: ReturnType<typeof setInterval> | null;
+    private audioContext: AudioContext;
+    private audioSource: MediaElementAudioSourceNode | null;
+    private audioFilters: {
+        bass: BiquadFilterNode;
+        lowMid: BiquadFilterNode;
+        mid: BiquadFilterNode;
+        highMid: BiquadFilterNode;
+        treble: BiquadFilterNode;
+    };
 
     constructor(_handler: AudioChannelEventHandler) {
         this.audio = new Audio();
@@ -47,6 +57,26 @@ export class WebAudioChannel implements AudioChannel {
                 });
             }
         };
+
+        this.audioContext = new AudioContext();
+        this.audioSource = null;
+        this.audioFilters = {
+            bass: this.audioContext.createBiquadFilter(),
+            lowMid: this.audioContext.createBiquadFilter(),
+            mid: this.audioContext.createBiquadFilter(),
+            highMid: this.audioContext.createBiquadFilter(),
+            treble: this.audioContext.createBiquadFilter()
+        };
+        this.createAudioEQ();
+
+        eqStore.subscribe((state) => {
+            this.audioFilters.bass.gain.setValueAtTime(state.bass, this.audioContext.currentTime);
+            this.audioFilters.lowMid.gain.setValueAtTime(state.lowMid, this.audioContext.currentTime);
+            this.audioFilters.mid.gain.setValueAtTime(state.mid, this.audioContext.currentTime);
+            this.audioFilters.highMid.gain.setValueAtTime(state.highMid, this.audioContext.currentTime);
+            this.audioFilters.treble.gain.setValueAtTime(state.treble, this.audioContext.currentTime);
+        });
+
         this.setNewAudio();
     }
 
@@ -57,6 +87,7 @@ export class WebAudioChannel implements AudioChannel {
         this.audio.addEventListener('abort', this.handler.onStop!);
         this.audio.addEventListener('ended', this.handler.onEnded!);
         this.audio.addEventListener('timeupdate', this.handler.onTimeUpdate as () => void);
+        this.connectAudioEQ();
     }
 
     swapAudio() {
@@ -67,6 +98,29 @@ export class WebAudioChannel implements AudioChannel {
         tempAudio.removeEventListener('ended', this.handler.onEnded!);
         tempAudio.removeEventListener('timeupdate', this.handler.onTimeUpdate as () => void);
         this.backgroundAudio = tempAudio;
+    }
+
+    createAudioEQ() {
+        this.audioFilters.bass.type = 'lowshelf';
+        this.audioFilters.bass.frequency.setValueAtTime(60, this.audioContext.currentTime);
+        this.audioFilters.lowMid.type = 'peaking';
+        this.audioFilters.lowMid.frequency.setValueAtTime(250, this.audioContext.currentTime);
+        this.audioFilters.mid.type = 'peaking';
+        this.audioFilters.mid.frequency.setValueAtTime(1000, this.audioContext.currentTime);
+        this.audioFilters.highMid.type = 'peaking';
+        this.audioFilters.highMid.frequency.setValueAtTime(4000, this.audioContext.currentTime);
+        this.audioFilters.treble.type = 'highshelf';
+        this.audioFilters.treble.frequency.setValueAtTime(12000, this.audioContext.currentTime);
+    }
+
+    connectAudioEQ() {
+        this.audioSource = this.audioContext.createMediaElementSource(this.audio);
+        this.audioSource.connect(this.audioFilters.bass);
+        this.audioFilters.bass.connect(this.audioFilters.lowMid);
+        this.audioFilters.lowMid.connect(this.audioFilters.mid);
+        this.audioFilters.mid.connect(this.audioFilters.highMid);
+        this.audioFilters.highMid.connect(this.audioFilters.treble);
+        this.audioFilters.treble.connect(this.audioContext.destination);
     }
 
     load(music: Music) {

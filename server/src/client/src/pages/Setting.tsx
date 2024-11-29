@@ -8,6 +8,7 @@ import { Button, Select } from '~/components/shared';
 import { ConnectorListener, socket } from '~/socket';
 
 import { connectorStore } from '~/store/connector';
+import { eqStore } from '~/store/audioEq';
 import { queueStore } from '~/store/queue';
 import { themeStore } from '~/store/theme';
 
@@ -56,6 +57,16 @@ const Container = styled.div`
             cursor: pointer;
             color: var(--b-color-text);
             background-color: var(--b-color-secondary-button);
+        }
+    }
+
+    .slider {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        label {
+            width: 140px;
         }
     }
 `;
@@ -110,6 +121,7 @@ export default function Setting() {
     const [{ connectors }] = useStore(connectorStore);
     const [{ playMode, insertMode, mixMode }] = useStore(queueStore);
     const [{ colorTone, playerAlbumArtStyle }] = useStore(themeStore);
+    const [eqState, setEqState] = useStore(eqStore);
 
     const [progressMessage, setProgressMessage] = useState('');
 
@@ -217,12 +229,83 @@ export default function Setting() {
             <section>
                 <h3>Experimental</h3>
                 <p>Use experimental features. These features may not work properly. Use at your own risk. These features may be removed without notice.</p>
-                <p>Sound Effect</p>
+                <p>Sound Effect (Web only)</p>
                 <Select
                     selected={MIX_MODES.find(({ value }) => value === mixMode)}
                     options={MIX_MODES}
                     onChange={(value) => queueStore.setMixMode(value as typeof mixMode)}
                 />
+                <p>EQ (Web only)</p>
+                <div className="slider">
+                    <label htmlFor="bass">Bass (60Hz):</label>
+                    <input
+                        type="range"
+                        name="bass"
+                        min="-30"
+                        max="30"
+                        value={eqState.bass}
+                        onChange={(e) => setEqState((state) => ({
+                            ...state,
+                            [e.target.name]: Number(e.target.value)
+                        }))}
+                    />
+                </div>
+                <div className="slider">
+                    <label htmlFor="lowMid">Low Mid (250Hz):</label>
+                    <input
+                        type="range"
+                        name="lowMid"
+                        min="-30"
+                        max="30"
+                        value={eqState.lowMid}
+                        onChange={(e) => setEqState((state) => ({
+                            ...state,
+                            [e.target.name]: Number(e.target.value)
+                        }))}
+                    />
+                </div>
+                <div className="slider">
+                    <label htmlFor="mid">Mid (1kHz):</label>
+                    <input
+                        type="range"
+                        name="mid"
+                        min="-30"
+                        max="30"
+                        value={eqState.mid}
+                        onChange={(e) => setEqState((state) => ({
+                            ...state,
+                            [e.target.name]: Number(e.target.value)
+                        }))}
+                    />
+                </div>
+                <div className="slider">
+                    <label htmlFor="highMid">High Mid (4kHz):</label>
+                    <input
+                        type="range"
+                        name="highMid"
+                        min="-30"
+                        max="30"
+                        value={eqState.highMid}
+                        onChange={(e) => setEqState((state) => ({
+                            ...state,
+                            [e.target.name]: Number(e.target.value)
+                        }))}
+                    />
+                </div>
+                <div className="slider">
+                    <label htmlFor="treble">Treble (12kHz):</label>
+                    <input
+                        type="range"
+                        name="treble"
+                        min="-30"
+                        max="30"
+                        value={eqState.treble}
+                        onChange={(e) => setEqState((state) => ({
+                            ...state,
+                            [e.target.name]: Number(e.target.value)
+                        }))}
+                    />
+                </div>
             </section>
             <section>
                 <h3>Have a problem?</h3>
