@@ -38,7 +38,7 @@ export default function SiteHeader() {
         const el = ref.current;
 
         if (el) {
-            const activeItem = el.querySelector<HTMLAnchorElement>('a.active');
+            const activeItem = el.querySelector<HTMLAnchorElement>(`a.${styles.active}`);
 
             if (activeItem) {
                 const { left, width } = activeItem.getBoundingClientRect();
