@@ -62,10 +62,6 @@ const Styles = styled.div`
         div {
             padding: 0.825rem 1rem;
             cursor: pointer;
-
-            &:hover {
-                background-color: var(--b-color-background-over-layer);
-            }
         }
     }
 

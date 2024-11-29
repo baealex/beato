@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useStore } from 'badland-react';
-import type { HTMLMotionProps } from 'framer-motion';
-import { motion } from 'framer-motion';
 
 import { MusicActionPanelContent } from '~/components/music';
 import * as Icon from '~/icon';
@@ -17,7 +15,7 @@ import { queueStore } from '~/store/queue';
 import { Image } from '~/components/shared';
 import { useBack } from '~/hooks';
 
-const Container = styled.div<HTMLMotionProps<'div'>>`
+const Container = styled.div`
     height: 100%;
     display: flex;
     padding: 3rem 1rem;
@@ -220,7 +218,7 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
         width: 500px;
         max-width: 90%;
         height: 20px;
-        background-color: var(--b-color-background-over-layer);
+        background-color: var(--b-color-background-layer-1);
         border-radius: 5px;
         overflow: hidden;
 
@@ -269,12 +267,6 @@ const Container = styled.div<HTMLMotionProps<'div'>>`
             border: none;
             cursor: pointer;
             transition: background-color 0.25s ease-in-out;
-
-            @media (min-width: 1024px) {
-                &:hover {
-                    background-color: rgba(255, 255, 255, 0.2);
-                }
-            }
         }
     }
 `;
@@ -344,22 +336,7 @@ export default function PlayerDetail() {
     }, [state.isPlaying]);
 
     return (
-        <Container
-            as={motion.div}
-            animate="in"
-            exit="out"
-            initial="out"
-            variants={{
-                in: {
-                    opacity: 1,
-                    y: 0
-                },
-                out: {
-                    opacity: 0,
-                    y: 50
-                }
-            }}
-            transition={{ duration: 0.25 }}>
+        <Container>
             <div className="between">
                 <div className="content">
                     <div className="album-art">

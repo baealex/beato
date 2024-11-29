@@ -2,8 +2,6 @@ import styled from '@emotion/styled';
 import { useStore } from 'badland-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { HTMLMotionProps } from 'framer-motion';
-import { motion } from 'framer-motion';
 import { toast } from '@baejino/ui';
 
 import type { DragEndEvent } from '@dnd-kit/core';
@@ -25,7 +23,7 @@ import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 import { useBack } from '~/hooks';
 
-const Container = styled.div<HTMLMotionProps<'div'>>`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -292,22 +290,7 @@ export default function Queue() {
     }, [ref, selected]);
 
     return (
-        <Container
-            as={motion.div}
-            animate="in"
-            exit="out"
-            initial="out"
-            variants={{
-                in: {
-                    opacity: 1,
-                    y: 0
-                },
-                out: {
-                    opacity: 0,
-                    y: 50
-                }
-            }}
-            transition={{ duration: 0.25 }}>
+        <Container>
             <div className="header">
                 <div
                     style={{

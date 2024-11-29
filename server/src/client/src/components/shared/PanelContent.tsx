@@ -18,7 +18,7 @@ const Container = styled.div`
         gap: 1.5rem;
         margin-top: 1.5rem;
         padding-bottom: 1.5rem;
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid var(--b-color-border);
     }
 
     .panel-album {
@@ -64,7 +64,7 @@ const Container = styled.div`
         list-style: none;
         display: flex;
         flex-direction: column;
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid var(--b-color-border);
         padding: 1rem 0;
 
         .item {
@@ -74,12 +74,6 @@ const Container = styled.div`
             padding: 1rem 0;
             border-radius: 0.5rem;
 
-            @media (min-width: 1024px) {
-                &:hover {
-                    background-color: #333;
-                }
-            }
-
             svg {
                 width: 1.125rem;
                 height: 1.125rem;
@@ -87,8 +81,8 @@ const Container = styled.div`
 
             &.active {
                 svg {
-                    fill: #a076f1;
-                    color: #a076f1;
+                    fill: var(--b-color-point);
+                    color: var(--b-color-point);
                 }
             }
         }

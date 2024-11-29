@@ -31,10 +31,4 @@
         font-size: 14px;
         opacity: var.$OPACITY_TERTIARY_TEXT;
     }
-
-    @media (min-width: var.$BREAKPOINT_DESKTOP) {
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-    }
 }

@@ -25,10 +25,4 @@
     &.secondary {
         background-color: var.$COLOR_SECONDARY_BUTTON;
     }
-
-    @media (min-width: 1024px) {
-        &:hover {
-            filter: brightness(0.8);
-        }
-    }
 }

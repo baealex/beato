@@ -23,7 +23,6 @@ export default defineConfig({
                         'react-router',
                         'react-query',
                         'react-query/devtools',
-                        'framer-motion',
                         '@dnd-kit/core',
                         '@dnd-kit/sortable',
                         '@dnd-kit/modifiers',

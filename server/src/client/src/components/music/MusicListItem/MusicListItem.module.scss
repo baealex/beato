@@ -20,12 +20,6 @@ $GAP_ITEM_INNER: 16px;
         opacity: 0.5;
     }
 
-    @media (min-width: var.$BREAKPOINT_DESKTOP) {
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-    }
-
     .album-art {
         width: $SIZE_ALBUM_ART;
         height: $SIZE_ALBUM_ART;
@@ -110,12 +104,6 @@ $GAP_ITEM_INNER: 16px;
                 svg {
                     fill: var.$COLOR_POINT;
                     color: var.$COLOR_POINT;
-                }
-            }
-
-            @media (min-width: var.$BREAKPOINT_DESKTOP) {
-                &:hover {
-                    background-color: rgba(255, 255, 255, 0.1);
                 }
             }
         }

@@ -28,7 +28,8 @@
     flex-direction: column;
     z-index: 110;
     pointer-events: none;
-    background: rgba(0, 0, 0, 0.88);
+    background: var(--b-color-panel-background);
+    backdrop-filter: var(--b-backdrop-filter-panel-background);
 
     &.open {
         pointer-events: all;
@@ -66,6 +67,6 @@
 
     .panel-title {
         font-size: 0.875rem;
-        color: #888;
+        opacity: 0.5;
     }
 }

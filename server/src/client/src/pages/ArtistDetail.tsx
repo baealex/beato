@@ -29,7 +29,7 @@ const Container = styled.section`
             font-weight: normal;
             text-align: center;
             margin-top: 0.5rem;
-            color: #888;
+            opacity: 0.5;
         }
 
         .cover {
@@ -51,7 +51,7 @@ const Container = styled.section`
         padding: 1rem;
         font-size: 1.25rem;
         font-weight: bold;
-        border-bottom: 1px solid #222;
+        border-bottom: 1px solid var(--b-color-border);
         display: flex;
         align-items: center;
         justify-content: space-between;

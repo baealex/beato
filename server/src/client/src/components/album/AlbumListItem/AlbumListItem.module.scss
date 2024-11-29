@@ -7,15 +7,10 @@
     text-align: left;
     gap: 4px;
     border-radius: 16px;
-    background: var.$COLOR_BACKGROUND_OVER_LAYER;
+    background: var.$COLOR_BACKGROUND_LAYER_1;
     transition: background 0.2s ease-in-out;
     padding: 0 0 8px;
-
-    @media (min-width: 1024px) {
-        &:hover {
-            filter: brightness(0.8);
-        }
-    }
+    box-shadow: var(--b-card-shadow-sub);
 
     .cover {
         flex: 1;

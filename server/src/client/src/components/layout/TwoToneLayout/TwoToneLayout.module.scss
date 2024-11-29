@@ -4,8 +4,7 @@
     .header {
         position: relative;
         padding: var.$SPACING_SIZE_7 var.$SPACING_SIZE_3;
-        background: var.$COLOR_BACKGROUND_OVER_LAYER;
-        border-radius: 0.5rem;
+        background: var.$COLOR_BACKGROUND_LAYER_1;
     }
 
     .primaryAction {
@@ -21,7 +20,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var.$COLOR_BACKGROUND_OVER_LAYER;
+            background: var.$COLOR_BACKGROUND_LAYER_1;
             border: 4px solid var.$COLOR_BACKGROUND;
             color: var.$COLOR_TEXT;
             transition: background-color 0.2s;
@@ -29,12 +28,6 @@
             svg {
                 width: 1.5rem;
                 height: 1.5rem;
-            }
-    
-            @media (min-width: var.$BREAKPOINT_DESKTOP) {
-                &:hover {
-                    background-color: var.$COLOR_BACKGROUND;
-                }
             }
         }
     }

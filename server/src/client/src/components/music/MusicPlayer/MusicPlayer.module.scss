@@ -3,7 +3,7 @@
 .MusicPlayer {
     display: flex;
     flex-direction: column;
-    background-color: var.$COLOR_BACKGROUND_OVER_LAYER;
+    background-color: var.$COLOR_BACKGROUND_LAYER_2;
     transition: transform 0.25s ease-in-out;
 
     @media (min-width: var.$BREAKPOINT_DESKTOP) {
@@ -60,7 +60,7 @@
     .progress {
         width: 100%;
         height: 0.25rem;
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: var(--b-color-background-layer-1);
         transition: height 0.25s ease-in-out;
 
         @media (min-width: 1024px) {

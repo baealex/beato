@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         ]
     },
     {
-        element: <SiteLayout isSubPage animationDirection="RightToLeft" />,
+        element: <SiteLayout isSubPage />,
         children: [
             {
                 path: '/album/:id',

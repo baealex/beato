@@ -1,29 +1,43 @@
 :root {
     --b-color-background: #0e0e0e;
-    --b-color-background-over-layer: #181818;
+    --b-color-background-layer-1: #181818;
+    --b-color-background-layer-2: #181818;
+    --b-color-panel-background: rgba(0, 0, 0, .8);
     --b-color-text: #ccc;
     --b-color-point: #a076f1;
     --b-color-border: #333;
     --b-color-primary-button: #a076f1;
     --b-color-secondary-button: #222;
+    --b-backdrop-filter-panel-background: none;
+    --b-card-shadow-main: none;
+    --b-card-shadow-sub: none;
 }
 
 .rosy {
     --b-color-background: #e9e1e1;
-    --b-color-background-over-layer: #e9c8c8;
+    --b-color-background-layer-1: #ecc8c8;
+    --b-color-background-layer-2: #ff9090;
     --b-color-text: #1d0101;
     --b-color-point: #e44141;
     --b-color-border: #bca4a4;
     --b-color-primary-button: #e44141;
-    --b-color-secondary-button: #e9c8c8;
+    --b-color-secondary-button: #ecc8c8;
+    --b-backdrop-filter-panel-background: blur(10px);
+    --b-card-shadow-main: 2px 2px 16px rgba(0, 0, 0, 0.15);
+    --b-card-shadow-sub: 2px 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .breeze {
-    --b-color-background: #f4f4f4;
-    --b-color-background-over-layer: #ebe8e8;
+    --b-color-background: #f5f5f5;
+    --b-color-background-layer-1: #ffffff;
+    --b-color-background-layer-2: #ccdffa;
+    --b-color-panel-background: rgba(106, 108, 121, 0.8);
     --b-color-text: #2b2b2b;
-    --b-color-point: #a076f1;
+    --b-color-point: #5e99e2;
     --b-color-border: #d1d1d1;
-    --b-color-primary-button: #a076f1;
-    --b-color-secondary-button: #e0e0e0;
+    --b-color-primary-button: #5e99e2;
+    --b-color-secondary-button: #d6e5fa;
+    --b-backdrop-filter-panel-background: blur(6px);
+    --b-card-shadow-main: 2px 2px 16px rgba(0, 0, 0, 0.15);
+    --b-card-shadow-sub: 2px 2px 8px rgba(0, 0, 0, 0.15);
 }
