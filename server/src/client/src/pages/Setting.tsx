@@ -87,6 +87,14 @@ const MIX_MODES = [{
     label: 'Mix (Fade in/out when music changes)'
 }];
 
+const PLAYER_ALBUM_ART_STYLES = [{
+    value: '',
+    label: 'Puffy Effect'
+}, {
+    value: 'disk',
+    label: 'CD Player'
+}];
+
 const THEMES = [{
     value: '',
     label: 'Beato'
@@ -101,7 +109,7 @@ const THEMES = [{
 export default function Setting() {
     const [{ connectors }] = useStore(connectorStore);
     const [{ playMode, insertMode, mixMode }] = useStore(queueStore);
-    const [{ theme }] = useStore(themeStore);
+    const [{ colorTone, playerAlbumArtStyle }] = useStore(themeStore);
 
     const [progressMessage, setProgressMessage] = useState('');
 
@@ -174,6 +182,21 @@ export default function Setting() {
                 />
             </section>
             <section>
+                <h3>Theme</h3>
+                <p>Color Tone</p>
+                <Select
+                    selected={THEMES.find(({ value }) => value === colorTone)}
+                    options={THEMES}
+                    onChange={(value) => themeStore.setColorTone(value)}
+                />
+                <p>Player album art</p>
+                <Select
+                    selected={PLAYER_ALBUM_ART_STYLES.find(({ value }) => value === playerAlbumArtStyle)}
+                    options={PLAYER_ALBUM_ART_STYLES}
+                    onChange={(value) => themeStore.setPlayerAlbumArtStyle(value)}
+                />
+            </section>
+            <section>
                 <h3>Connectors</h3>
                 {connectors.map((connector) => (
                     <div key={connector.id} className="connector">
@@ -199,12 +222,6 @@ export default function Setting() {
                     selected={MIX_MODES.find(({ value }) => value === mixMode)}
                     options={MIX_MODES}
                     onChange={(value) => queueStore.setMixMode(value as typeof mixMode)}
-                />
-                <p>Theme</p>
-                <Select
-                    selected={THEMES.find(({ value }) => value === theme)}
-                    options={THEMES}
-                    onChange={(value) => themeStore.setTheme(value)}
                 />
             </section>
             <section>

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useStore } from 'badland-react';
 
-import { MusicActionPanelContent } from '~/components/music';
+import { MusicActionPanelContent, MusicPlayerDiskStyle, MusicPlayerFluffyStyle } from '~/components/music';
 import * as Icon from '~/icon';
+
+import { useBack } from '~/hooks';
 
 import { panel } from '~/modules/panel';
 import { getImage } from '~/modules/image';
@@ -12,8 +13,7 @@ import { makePlayTime } from '~/modules/time';
 
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
-import { Image } from '~/components/shared';
-import { useBack } from '~/hooks';
+import { themeStore } from '~/store/theme';
 
 const Container = styled.div`
     height: 100%;
@@ -111,79 +111,6 @@ const Container = styled.div`
         @media (max-width: 332px) {
             height: calc(100vw - 2rem);
         }
-
-        &.cd-shape {
-            box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.18);
-            border-radius: 50%;
-
-            &::before,
-            &::after {
-                content: "";
-                position: absolute;
-                z-index: 1;
-                top: 50%;
-                left: 50%;
-                border-radius: 50%;
-                transform: translate(-50%, -50%);
-                width: 48px;
-                height: 48px;
-                background-color: rgba(255, 255, 255, 0.18);
-            }
-
-            &::after {
-                width: 32px;
-                height: 32px;
-                background-color: #000000;
-            }
-        }
-
-        .foreground-wrapper {
-            overflow: hidden;
-            aspect-ratio: 1/1;
-        }
-
-        .foreground {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            transition: border-radius 1s
-                cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-            @keyframes rotate {
-                0% {
-                    transform: rotate(0deg);
-                }
-                100% {
-                    transform: rotate(360deg);
-                }
-            }
-
-            &.rotate {
-                animation: rotate 3s linear infinite;
-                animation-play-state: paused;
-            }
-
-            &.rotate.playing {
-                animation-play-state: running;
-            }
-        }
-
-        .background {
-            position: absolute;
-            top: 48px;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transform: scale(0.88);
-            object-fit: cover;
-            border-radius: 50%;
-            opacity: 0.5;
-            z-index: -1;
-            filter: blur(48px);
-            transition: border-radius 1s
-                cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
     }
 
     .title-info {
@@ -276,9 +203,8 @@ export default function PlayerDetail() {
     const navigate = useNavigate();
 
     const [state] = useStore(queueStore);
+    const [{ playerAlbumArtStyle }] = useStore(themeStore);
     const [{ musicMap }] = useStore(musicStore);
-
-    const [borderRadius, setBorderRadius] = useState('50%');
 
     const currentMusic = state.selected !== null
         ? musicMap.get(state.items[state.selected])
@@ -310,52 +236,25 @@ export default function PlayerDetail() {
         }
     };
 
-    useEffect(() => {
-        let timer: ReturnType<typeof setTimeout> | null = null;
-
-        if (!state.isPlaying) {
-            setBorderRadius('50%');
-            return;
-        }
-
-        const setRandomBorderRadius = () => {
-            const makeRandom = () => {
-                return Math.floor(Math.random() * 90 + 10) + '%';
-            };
-            setBorderRadius(`${makeRandom()} ${makeRandom()} ${makeRandom()} ${makeRandom()}`);
-            timer = setTimeout(setRandomBorderRadius, 1000);
-        };
-        setRandomBorderRadius();
-
-        return () => {
-            setBorderRadius('50%');
-            if (timer) {
-                clearTimeout(timer);
-            }
-        };
-    }, [state.isPlaying]);
-
     return (
         <Container>
             <div className="between">
                 <div className="content">
                     <div className="album-art">
-                        <img
-                            className="background"
-                            style={{ borderRadius }}
-                            src={getImage(currentMusic?.album.cover)}
-                            alt={currentMusic?.album.name}
-                        />
-                        <div className="foreground-wrapper">
-                            <Image
-                                className="foreground"
-                                style={{ borderRadius }}
-                                src={getImage(
-                                    currentMusic?.album.cover.replace('/resized', '')
-                                )}
-                                alt={currentMusic?.album.name}
+                        {playerAlbumArtStyle === '' && (
+                            <MusicPlayerFluffyStyle
+                                isPlaying={state.isPlaying}
+                                src={getImage(currentMusic?.album.cover)}
+                                alt={currentMusic?.album.name || ''}
                             />
-                        </div>
+                        )}
+                        {playerAlbumArtStyle === 'disk' && (
+                            <MusicPlayerDiskStyle
+                                isPlaying={state.isPlaying}
+                                src={getImage(currentMusic?.album.cover)}
+                                alt={currentMusic?.album.name || ''}
+                            />
+                        )}
                     </div>
                     <div className="title-info">
                         <button

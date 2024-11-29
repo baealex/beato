@@ -1,20 +1,29 @@
 import Store from 'badland';
 
 interface ThemeState {
-    theme: string;
+    colorTone: string;
+    playerAlbumArtStyle: string;
 }
 
 class ThemeStore extends Store<ThemeState> {
     constructor() {
         super();
-        this.state = { theme: '' };
-        this.setTheme(localStorage.getItem('theme') || '');
+        this.state = {
+            colorTone: '',
+            playerAlbumArtStyle: localStorage.getItem('theme:playerAlbumArtStyle') || ''
+        };
+        this.setColorTone(localStorage.getItem('theme:colorTone') || '');
     }
 
-    setTheme(theme: string) {
-        this.set({ theme });
-        document.body.className = theme;
-        localStorage.setItem('theme', theme);
+    setColorTone(colorTone: string) {
+        this.set({ colorTone });
+        document.body.className = colorTone;
+        localStorage.setItem('theme:colorTone', colorTone);
+    }
+
+    setPlayerAlbumArtStyle(playerAlbumArtStyle: string) {
+        this.set({ playerAlbumArtStyle });
+        localStorage.setItem('theme:playerAlbumArtStyle', playerAlbumArtStyle);
     }
 }
 
