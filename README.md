@@ -13,7 +13,9 @@ Beato is a revolutionary self-hosted music streaming web application designed fo
 - [x] Sort your music by the number of times you've listened to it.
 - [x] Create your playlists.
 - [x] Play music in the background on your smartphone. (Download for [Android](https://www.dropbox.com/scl/fo/0mjqlwcj44p7uz999868e/h?rlkey=wyush6qcvbkoss72b18q8gqjg&dl=0))
-- [x] Use track mix-in effects (only on the web).
+- [x] Use audio mix-in effects (web only).
+- [x] Use audio equalizer (web only).
+- [x] Use audio visualizer (web only).
 - [ ] Transcode audio.
 
 <br>
