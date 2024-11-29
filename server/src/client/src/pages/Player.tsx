@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useStore } from 'badland-react';
 
-import { MusicActionPanelContent, MusicPlayerDiskStyle, MusicPlayerFluffyStyle } from '~/components/music';
+import { MusicActionPanelContent, MusicPlayerDiskStyle, MusicPlayerFluffyStyle, MusicPlayerPulseStyle } from '~/components/music';
 import * as Icon from '~/icon';
 
 import { useBack } from '~/hooks';
@@ -250,6 +250,13 @@ export default function PlayerDetail() {
                         )}
                         {playerAlbumArtStyle === 'disk' && (
                             <MusicPlayerDiskStyle
+                                isPlaying={state.isPlaying}
+                                src={getImage(currentMusic?.album.cover)}
+                                alt={currentMusic?.album.name || ''}
+                            />
+                        )}
+                        {playerAlbumArtStyle === 'visualizer' && (
+                            <MusicPlayerPulseStyle
                                 isPlaying={state.isPlaying}
                                 src={getImage(currentMusic?.album.cover)}
                                 alt={currentMusic?.album.name || ''}

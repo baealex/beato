@@ -104,6 +104,9 @@ const PLAYER_ALBUM_ART_STYLES = [{
 }, {
     value: 'disk',
     label: 'CD Player'
+}, {
+    value: 'visualizer',
+    label: 'Music Visualizer (Only web)'
 }];
 
 const THEMES = [{
@@ -241,8 +244,8 @@ export default function Setting() {
                     <input
                         type="range"
                         name="bass"
-                        min="-30"
-                        max="30"
+                        min="-10"
+                        max="10"
                         value={eqState.bass}
                         onChange={(e) => setEqState((state) => ({
                             ...state,
@@ -255,8 +258,8 @@ export default function Setting() {
                     <input
                         type="range"
                         name="lowMid"
-                        min="-30"
-                        max="30"
+                        min="-10"
+                        max="10"
                         value={eqState.lowMid}
                         onChange={(e) => setEqState((state) => ({
                             ...state,
@@ -269,8 +272,8 @@ export default function Setting() {
                     <input
                         type="range"
                         name="mid"
-                        min="-30"
-                        max="30"
+                        min="-10"
+                        max="10"
                         value={eqState.mid}
                         onChange={(e) => setEqState((state) => ({
                             ...state,
@@ -283,8 +286,8 @@ export default function Setting() {
                     <input
                         type="range"
                         name="highMid"
-                        min="-30"
-                        max="30"
+                        min="-10"
+                        max="10"
                         value={eqState.highMid}
                         onChange={(e) => setEqState((state) => ({
                             ...state,
@@ -297,8 +300,8 @@ export default function Setting() {
                     <input
                         type="range"
                         name="treble"
-                        min="-30"
-                        max="30"
+                        min="-10"
+                        max="10"
                         value={eqState.treble}
                         onChange={(e) => setEqState((state) => ({
                             ...state,
