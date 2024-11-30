@@ -1,20 +1,20 @@
-import styles from './MusicPlayerPulseStyle.module.scss';
+import styles from './MusicPlayerVisualizerStyle.module.scss';
 import classNames from 'classnames/bind';
 import { useEffect, useMemo, useRef } from 'react';
 const cx = classNames.bind(styles);
 
 import { Image } from '~/components/shared';
 import { webAudioContext } from '~/modules/web-audio-context';
-import { blur, grid, pulse, round } from './visualizer';
+import { ring, digital, line, round } from './visualizer';
 
-interface MusicPlayerPulseStyleProps {
+interface MusicPlayerVisualizerStyleProps {
     type: string;
     isPlaying: boolean;
     src: string;
     alt: string;
 }
 
-const MusicPlayerPulseStyle = ({ type, isPlaying, src, alt }: MusicPlayerPulseStyleProps) => {
+const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt }: MusicPlayerVisualizerStyleProps) => {
     const ref = useRef<HTMLCanvasElement>(null);
     const bufferLength = 144;
     const dataArray = useMemo(() => new Uint8Array(bufferLength), []);
@@ -26,14 +26,14 @@ const MusicPlayerPulseStyle = ({ type, isPlaying, src, alt }: MusicPlayerPulseSt
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         webAudioContext.getAnalyser()?.getByteFrequencyData(dataArray);
 
-        if (type === 'pulse') {
-            pulse(canvas, ctx, bufferLength, dataArray);
-        } else if (type === 'round') {
-            round(canvas, ctx, bufferLength, dataArray);
-        } else if (type === 'grid') {
-            grid(canvas, ctx, bufferLength, dataArray);
+        if (type === 'line') {
+            line(canvas, ctx, bufferLength, dataArray);
+        } else if (type === 'ring') {
+            ring(canvas, ctx, bufferLength, dataArray);
+        } else if (type === 'digital') {
+            digital(canvas, ctx, bufferLength, dataArray);
         } else {
-            blur(canvas, ctx, bufferLength, dataArray);
+            round(canvas, ctx, bufferLength, dataArray);
         }
     };
 
@@ -59,7 +59,7 @@ const MusicPlayerPulseStyle = ({ type, isPlaying, src, alt }: MusicPlayerPulseSt
     }, [dataArray]);
 
     return (
-        <div className={cx('MusicPlayerPulseStyle')}>
+        <div className={cx('MusicPlayerVisualizerStyle')}>
             <div className={cx('foreground-wrapper')}>
                 <Image
                     className={cx('foreground', { isPlaying })}
@@ -72,4 +72,4 @@ const MusicPlayerPulseStyle = ({ type, isPlaying, src, alt }: MusicPlayerPulseSt
     );
 };
 
-export default MusicPlayerPulseStyle;
+export default MusicPlayerVisualizerStyle;

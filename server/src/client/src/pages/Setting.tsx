@@ -108,16 +108,16 @@ const PLAYER_ALBUM_ART_STYLES = [{
 
 const PLAYER_VISUALIZER_TYPE = [{
     value: 'visualizer',
-    label: 'Blur'
-}, {
-    value: 'visualizer:grid',
-    label: 'Gird'
-}, {
-    value: 'visualizer:round',
     label: 'Round'
 }, {
-    value: 'visualizer:pulse',
-    label: 'Pulse'
+    value: 'visualizer:line',
+    label: 'Line'
+}, {
+    value: 'visualizer:ring',
+    label: 'Ring'
+}, {
+    value: 'visualizer:digital',
+    label: 'Digital'
 }];
 
 const THEMES = [{
