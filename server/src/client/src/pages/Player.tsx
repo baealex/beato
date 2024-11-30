@@ -255,8 +255,9 @@ export default function PlayerDetail() {
                                 alt={currentMusic?.album.name || ''}
                             />
                         )}
-                        {playerAlbumArtStyle === 'visualizer' && (
+                        {playerAlbumArtStyle.includes('visualizer') && (
                             <MusicPlayerPulseStyle
+                                type={playerAlbumArtStyle.split(':')[1]}
                                 isPlaying={state.isPlaying}
                                 src={getImage(currentMusic?.album.cover)}
                                 alt={currentMusic?.album.name || ''}

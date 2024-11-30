@@ -5,17 +5,20 @@ const cx = classNames.bind(styles);
 
 import { Image } from '~/components/shared';
 import { webAudioContext } from '~/modules/web-audio-context';
+import { blur, grid, pulse, round } from './visualizer';
 
 interface MusicPlayerPulseStyleProps {
+    type: string;
     isPlaying: boolean;
     src: string;
     alt: string;
 }
 
-const MusicPlayerPulseStyle = ({ isPlaying, src, alt }: MusicPlayerPulseStyleProps) => {
+const MusicPlayerPulseStyle = ({ type, isPlaying, src, alt }: MusicPlayerPulseStyleProps) => {
     const ref = useRef<HTMLCanvasElement>(null);
-    const bufferLength = 256;
+    const bufferLength = 144;
     const dataArray = useMemo(() => new Uint8Array(bufferLength), []);
+    console.log(type);
 
     const draw = (ctx: CanvasRenderingContext2D) => {
         if (!ref.current) return;
@@ -24,25 +27,14 @@ const MusicPlayerPulseStyle = ({ isPlaying, src, alt }: MusicPlayerPulseStylePro
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         webAudioContext.getAnalyser()?.getByteFrequencyData(dataArray);
 
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-        const barCount = bufferLength;
-        const maxRadius = 500;
-
-        for (let i = 0; i < barCount; i++) {
-            const amplitude = dataArray[i];
-            const angle = (i / barCount) * (2 * Math.PI);
-            const radius = (amplitude / 255) * maxRadius;
-
-            const hue = (i * 360 / barCount + (Date.now() / 50)) % 360;
-            ctx.fillStyle = `hsl(${hue}, 80%, 60%)`;
-
-            const x = centerX + Math.cos(angle) * radius;
-            const y = centerY + Math.sin(angle) * radius;
-
-            ctx.beginPath();
-            ctx.arc(x, y, 24, 0, Math.PI * 2);
-            ctx.fill();
+        if (type === 'pulse') {
+            pulse(canvas, ctx, bufferLength, dataArray);
+        } else if (type === 'round') {
+            round(canvas, ctx, bufferLength, dataArray);
+        } else if (type === 'grid') {
+            grid(canvas, ctx, bufferLength, dataArray);
+        } else {
+            blur(canvas, ctx, bufferLength, dataArray);
         }
     };
 

@@ -104,9 +104,20 @@ const PLAYER_ALBUM_ART_STYLES = [{
 }, {
     value: 'disk',
     label: 'CD Player'
-}, {
+}];
+
+const PLAYER_VISUALIZER_TYPE = [{
     value: 'visualizer',
-    label: 'Music Visualizer (Only web)'
+    label: 'Blur'
+}, {
+    value: 'visualizer:grid',
+    label: 'Gird'
+}, {
+    value: 'visualizer:round',
+    label: 'Round'
+}, {
+    value: 'visualizer:pulse',
+    label: 'Pulse'
 }];
 
 const THEMES = [{
@@ -238,7 +249,13 @@ export default function Setting() {
                     options={MIX_MODES}
                     onChange={(value) => queueStore.setMixMode(value as typeof mixMode)}
                 />
-                <p>EQ (Web only)</p>
+                <p>Visualizer (Web only)</p>
+                <Select
+                    selected={PLAYER_VISUALIZER_TYPE.find(({ value }) => value === playerAlbumArtStyle)}
+                    options={PLAYER_VISUALIZER_TYPE}
+                    onChange={(value) => themeStore.setPlayerAlbumArtStyle(value)}
+                />
+                <p>Equalizer (Web only)</p>
                 <div className="slider">
                     <label htmlFor="bass">Bass (60Hz):</label>
                     <input
