@@ -18,7 +18,6 @@ const MusicPlayerPulseStyle = ({ type, isPlaying, src, alt }: MusicPlayerPulseSt
     const ref = useRef<HTMLCanvasElement>(null);
     const bufferLength = 144;
     const dataArray = useMemo(() => new Uint8Array(bufferLength), []);
-    console.log(type);
 
     const draw = (ctx: CanvasRenderingContext2D) => {
         if (!ref.current) return;
