@@ -243,89 +243,101 @@ export default function Setting() {
             <section>
                 <h3>Experimental</h3>
                 <p>Use experimental features. These features may not work properly. Use at your own risk. These features may be removed without notice.</p>
-                <p>Sound Effect (Web only)</p>
-                <Select
-                    selected={MIX_MODES.find(({ value }) => value === mixMode)}
-                    options={MIX_MODES}
-                    onChange={(value) => queueStore.setMixMode(value as typeof mixMode)}
-                />
-                <p>Visualizer (Web only)</p>
-                <Select
-                    selected={PLAYER_VISUALIZER_TYPE.find(({ value }) => value === playerAlbumArtStyle)}
-                    options={PLAYER_VISUALIZER_TYPE}
-                    onChange={(value) => themeStore.setPlayerAlbumArtStyle(value)}
-                />
-                <p>Equalizer (Web only)</p>
-                <div className="slider">
-                    <label htmlFor="bass">Bass (60Hz):</label>
-                    <input
-                        type="range"
-                        name="bass"
-                        min="-10"
-                        max="10"
-                        value={eqState.bass}
-                        onChange={(e) => setEqState((state) => ({
-                            ...state,
-                            [e.target.name]: Number(e.target.value)
-                        }))}
-                    />
-                </div>
-                <div className="slider">
-                    <label htmlFor="lowMid">Low Mid (250Hz):</label>
-                    <input
-                        type="range"
-                        name="lowMid"
-                        min="-10"
-                        max="10"
-                        value={eqState.lowMid}
-                        onChange={(e) => setEqState((state) => ({
-                            ...state,
-                            [e.target.name]: Number(e.target.value)
-                        }))}
-                    />
-                </div>
-                <div className="slider">
-                    <label htmlFor="mid">Mid (1kHz):</label>
-                    <input
-                        type="range"
-                        name="mid"
-                        min="-10"
-                        max="10"
-                        value={eqState.mid}
-                        onChange={(e) => setEqState((state) => ({
-                            ...state,
-                            [e.target.name]: Number(e.target.value)
-                        }))}
-                    />
-                </div>
-                <div className="slider">
-                    <label htmlFor="highMid">High Mid (4kHz):</label>
-                    <input
-                        type="range"
-                        name="highMid"
-                        min="-10"
-                        max="10"
-                        value={eqState.highMid}
-                        onChange={(e) => setEqState((state) => ({
-                            ...state,
-                            [e.target.name]: Number(e.target.value)
-                        }))}
-                    />
-                </div>
-                <div className="slider">
-                    <label htmlFor="treble">Treble (12kHz):</label>
-                    <input
-                        type="range"
-                        name="treble"
-                        min="-10"
-                        max="10"
-                        value={eqState.treble}
-                        onChange={(e) => setEqState((state) => ({
-                            ...state,
-                            [e.target.name]: Number(e.target.value)
-                        }))}
-                    />
-                </div>
+                {!window.AppChannel && (
+                    <>
+                        <p>Sound Effect</p>
+                        <Select
+                            selected={MIX_MODES.find(({ value }) => value === mixMode)}
+                            options={MIX_MODES}
+                            onChange={(value) => queueStore.setMixMode(value as typeof mixMode)}
+                        />
+                    </>
+                )}
+                {!window.AppChannel && (
+                    <>
+                        <p>Visualizer</p>
+                        <Select
+                            selected={PLAYER_VISUALIZER_TYPE.find(({ value }) => value === playerAlbumArtStyle)}
+                            options={PLAYER_VISUALIZER_TYPE}
+                            onChange={(value) => themeStore.setPlayerAlbumArtStyle(value)}
+                        />
+                    </>
+                )}
+                {!window.AppChannel && (
+                    <>
+                        <p>Equalizer</p>
+                        <div className="slider">
+                            <label htmlFor="bass">Bass (60Hz):</label>
+                            <input
+                                type="range"
+                                name="bass"
+                                min="-10"
+                                max="10"
+                                value={eqState.bass}
+                                onChange={(e) => setEqState((state) => ({
+                                    ...state,
+                                    [e.target.name]: Number(e.target.value)
+                                }))}
+                            />
+                        </div>
+                        <div className="slider">
+                            <label htmlFor="lowMid">Low Mid (250Hz):</label>
+                            <input
+                                type="range"
+                                name="lowMid"
+                                min="-10"
+                                max="10"
+                                value={eqState.lowMid}
+                                onChange={(e) => setEqState((state) => ({
+                                    ...state,
+                                    [e.target.name]: Number(e.target.value)
+                                }))}
+                            />
+                        </div>
+                        <div className="slider">
+                            <label htmlFor="mid">Mid (1kHz):</label>
+                            <input
+                                type="range"
+                                name="mid"
+                                min="-10"
+                                max="10"
+                                value={eqState.mid}
+                                onChange={(e) => setEqState((state) => ({
+                                    ...state,
+                                    [e.target.name]: Number(e.target.value)
+                                }))}
+                            />
+                        </div>
+                        <div className="slider">
+                            <label htmlFor="highMid">High Mid (4kHz):</label>
+                            <input
+                                type="range"
+                                name="highMid"
+                                min="-10"
+                                max="10"
+                                value={eqState.highMid}
+                                onChange={(e) => setEqState((state) => ({
+                                    ...state,
+                                    [e.target.name]: Number(e.target.value)
+                                }))}
+                            />
+                        </div>
+                        <div className="slider">
+                            <label htmlFor="treble">Treble (12kHz):</label>
+                            <input
+                                type="range"
+                                name="treble"
+                                min="-10"
+                                max="10"
+                                value={eqState.treble}
+                                onChange={(e) => setEqState((state) => ({
+                                    ...state,
+                                    [e.target.name]: Number(e.target.value)
+                                }))}
+                            />
+                        </div>
+                    </>
+                )}
             </section>
             <section>
                 <h3>Have a problem?</h3>
