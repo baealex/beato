@@ -2,13 +2,13 @@ import { confirm, toast } from '@baejino/ui';
 import styled from '@emotion/styled';
 import { useStore } from 'badland-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
-import { Button, Select } from '~/components/shared';
+import { Button, Select, Toggle } from '~/components/shared';
 
 import { ConnectorListener, socket } from '~/socket';
 
 import { connectorStore } from '~/store/connector';
-import { eqStore } from '~/store/audioEq';
 import { queueStore } from '~/store/queue';
 import { themeStore } from '~/store/theme';
 
@@ -57,16 +57,6 @@ const Container = styled.div`
             cursor: pointer;
             color: var(--b-color-text);
             background-color: var(--b-color-secondary-button);
-        }
-    }
-
-    .slider {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-
-        label {
-            width: 140px;
         }
     }
 `;
@@ -132,10 +122,12 @@ const THEMES = [{
 }];
 
 export default function Setting() {
+    const navigate = useNavigate();
     const [{ connectors }] = useStore(connectorStore);
     const [{ playMode, insertMode, mixMode }] = useStore(queueStore);
     const [{ colorTone, playerAlbumArtStyle }] = useStore(themeStore);
-    const [eqState, setEqState] = useStore(eqStore);
+
+    const [isStabilityModeEnabled] = useState(Boolean(localStorage.getItem('stability-mode::on')));
 
     const [progressMessage, setProgressMessage] = useState('');
 
@@ -149,6 +141,16 @@ export default function Setting() {
             return;
         }
         socket.emit('sync-music', { force });
+    };
+
+    const handleChangeStabilityMode = () => {
+        if (isStabilityModeEnabled) {
+            localStorage.removeItem('stability-mode::on');
+            themeStore.setPlayerAlbumArtStyle('');
+        } else {
+            localStorage.setItem('stability-mode::on', 'true');
+        }
+        window.location.reload();
     };
 
     useEffect(() => {
@@ -207,6 +209,14 @@ export default function Setting() {
                     onChange={(value) => queueStore.setInsertMode(value as typeof insertMode)}
                 />
             </section>
+            {!window.AppChannel && (
+                <section>
+                    <h3>Stability Mode</h3>
+                    <p>Activate this to stop using the audio context feature.</p>
+                    <p>Please note that with Stability Mode enabled, the equalizer and visualizer will not be available.</p>
+                    <Toggle value={isStabilityModeEnabled} onChange={handleChangeStabilityMode} />
+                </section>
+            )}
             <section>
                 <h3>Theme</h3>
                 <p>Color Tone</p>
@@ -253,7 +263,7 @@ export default function Setting() {
                         />
                     </>
                 )}
-                {!window.AppChannel && (
+                {(!window.AppChannel && !isStabilityModeEnabled) && (
                     <>
                         <p>Visualizer</p>
                         <Select
@@ -263,78 +273,11 @@ export default function Setting() {
                         />
                     </>
                 )}
-                {!window.AppChannel && (
+                {(!window.AppChannel && !isStabilityModeEnabled) && (
                     <>
                         <p>Equalizer</p>
-                        <div className="slider">
-                            <label htmlFor="bass">Bass (60Hz):</label>
-                            <input
-                                type="range"
-                                name="bass"
-                                min="-10"
-                                max="10"
-                                value={eqState.bass}
-                                onChange={(e) => setEqState((state) => ({
-                                    ...state,
-                                    [e.target.name]: Number(e.target.value)
-                                }))}
-                            />
-                        </div>
-                        <div className="slider">
-                            <label htmlFor="lowMid">Low Mid (250Hz):</label>
-                            <input
-                                type="range"
-                                name="lowMid"
-                                min="-10"
-                                max="10"
-                                value={eqState.lowMid}
-                                onChange={(e) => setEqState((state) => ({
-                                    ...state,
-                                    [e.target.name]: Number(e.target.value)
-                                }))}
-                            />
-                        </div>
-                        <div className="slider">
-                            <label htmlFor="mid">Mid (1kHz):</label>
-                            <input
-                                type="range"
-                                name="mid"
-                                min="-10"
-                                max="10"
-                                value={eqState.mid}
-                                onChange={(e) => setEqState((state) => ({
-                                    ...state,
-                                    [e.target.name]: Number(e.target.value)
-                                }))}
-                            />
-                        </div>
-                        <div className="slider">
-                            <label htmlFor="highMid">High Mid (4kHz):</label>
-                            <input
-                                type="range"
-                                name="highMid"
-                                min="-10"
-                                max="10"
-                                value={eqState.highMid}
-                                onChange={(e) => setEqState((state) => ({
-                                    ...state,
-                                    [e.target.name]: Number(e.target.value)
-                                }))}
-                            />
-                        </div>
-                        <div className="slider">
-                            <label htmlFor="treble">Treble (12kHz):</label>
-                            <input
-                                type="range"
-                                name="treble"
-                                min="-10"
-                                max="10"
-                                value={eqState.treble}
-                                onChange={(e) => setEqState((state) => ({
-                                    ...state,
-                                    [e.target.name]: Number(e.target.value)
-                                }))}
-                            />
+                        <div>
+                            <Button onClick={() => navigate('/equalizer')}>Move to page</Button>
                         </div>
                     </>
                 )}

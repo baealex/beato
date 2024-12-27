@@ -1,6 +1,6 @@
 import Store from 'badland';
 
-interface AudioEQState {
+interface EqualizerState {
     bass: number;
     lowMid: number;
     mid: number;
@@ -8,7 +8,7 @@ interface AudioEQState {
     treble: number;
 }
 
-class AudioEQStore extends Store<AudioEQState> {
+class EqualizerStore extends Store<EqualizerState> {
     saveTimer: ReturnType<typeof setTimeout> | null;
 
     constructor() {
@@ -33,6 +33,16 @@ class AudioEQStore extends Store<AudioEQState> {
         }, 0);
     }
 
+    reset() {
+        this.state = {
+            bass: 0,
+            lowMid: 0,
+            mid: 0,
+            highMid: 0,
+            treble: 0
+        };
+    }
+
     afterStateChange() {
         if (this.saveTimer) {
             clearTimeout(this.saveTimer);
@@ -48,4 +58,4 @@ class AudioEQStore extends Store<AudioEQState> {
     }
 }
 
-export const eqStore = new AudioEQStore();
+export const equalizerStore = new EqualizerStore();

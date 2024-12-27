@@ -1,8 +1,10 @@
-import { eqStore } from '~/store/audioEq';
+import { equalizerStore } from '~/store/equalizer';
 
 const audioNodes = new Map();
 
 const createWebAudioContext = () => {
+    const isStabilityModeEnabled = Boolean(localStorage.getItem('stability-mode::on'));
+
     let context: AudioContext | undefined;
 
     let source: MediaElementAudioSourceNode | undefined;
@@ -40,7 +42,7 @@ const createWebAudioContext = () => {
             filters.treble.type = 'highshelf';
             filters.treble.frequency.setValueAtTime(12000, context.currentTime);
 
-            eqStore.subscribe((state) => {
+            equalizerStore.subscribe((state) => {
                 if (!context || !filters) {
                     return;
                 }
@@ -61,6 +63,9 @@ const createWebAudioContext = () => {
     };
 
     const init = () => {
+        if (isStabilityModeEnabled) {
+            return;
+        }
         if (hasInit) {
             return;
         }
@@ -76,6 +81,10 @@ const createWebAudioContext = () => {
             return hasInit;
         },
         connect: (audio: HTMLAudioElement) => {
+            if (isStabilityModeEnabled) {
+                return;
+            }
+
             if (!hasInit) {
                 init();
             }
@@ -99,11 +108,18 @@ const createWebAudioContext = () => {
             filters.treble.connect(context.destination);
         },
         disconnect: (audio: HTMLAudioElement) => {
+            if (isStabilityModeEnabled) {
+                return;
+            }
+
             if (audioNodes.has(audio)) {
                 const source = audioNodes.get(audio);
                 source.disconnect();
                 audioNodes.delete(audio);
             }
+        },
+        getContext: () => {
+            return context;
         },
         getSource: () => {
             return source;

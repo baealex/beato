@@ -14,5 +14,6 @@ export { default as SiteHeader } from './SiteHeader';
 export { default as SortableItem } from './SortableItem';
 export { default as StickyHeader } from './StickyHeader';
 export { default as SubPageHeader } from './SubPageHeader';
+export { default as Toggle } from './Toggle';
 export { default as SummaryTitle } from './SummaryTitle';
 export { default as VerticalSortable } from './VerticalSortable';

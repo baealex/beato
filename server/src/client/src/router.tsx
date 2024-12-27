@@ -5,6 +5,7 @@ import {
     AlbumList,
     ArtistDetail,
     ArtistList,
+    Equalizer,
     Favorite,
     MusicList,
     NotFound,
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
             {
                 path: '/playlist/:id',
                 element: <PlaylistDetail />
+            },
+            {
+                path: '/equalizer',
+                element: <Equalizer />
             }
         ]
     },
