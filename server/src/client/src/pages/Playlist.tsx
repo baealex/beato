@@ -53,14 +53,15 @@ function PlaylistDndItem({
                 {...listeners}
                 style={{
                     cursor: 'grab',
-                    touchAction: 'none'
+                    touchAction: 'none',
+                    marginLeft: '16px'
                 }}>
                 <Menu style={{ width: '16px' }} />
             </div>
             <div
                 style={{
                     flex: 1,
-                    maxWidth: 'calc(100% - 4rem)'
+                    maxWidth: 'calc(100% - 64px)'
                 }}>
                 <PlaylistItem
                     key={playlist.id}

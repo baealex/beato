@@ -43,7 +43,7 @@ export default function PlaylistItem({
             </div>
             {onLongPress && (
                 <button
-                    className="icon-button"
+                    className={styles['icon-button']}
                     onClick={(e) => {
                         e.stopPropagation();
                         onLongPress();

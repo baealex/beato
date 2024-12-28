@@ -1,7 +1,11 @@
+@use '~/styles/var';
+
+$SIZE_ICON: 40px;
+
 .PlaylistItem {
     color: #eee;
     font-size: 14px;
-    padding: 1rem;
+    padding: 16px;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -29,5 +33,20 @@
     .cover {
         width: 60px;
         height: 60px;
+    }
+
+    .icon-button {
+        color: var.$COLOR_TEXT;
+        width: $SIZE_ICON;
+        height: $SIZE_ICON;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
     }
 }
