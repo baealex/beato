@@ -11,13 +11,10 @@ class AudioSettingsStore extends Store<AudioSettings> {
         super();
 
         let savedSettings: AudioSettings | null = null;
-        try {
-            const savedSettingsJson = localStorage.getItem('audio-settings');
-            if (savedSettingsJson) {
-                savedSettings = JSON.parse(savedSettingsJson);
-            }
-        } catch (e) {
-            console.error('Failed to load audio settings from localStorage', e);
+
+        const savedSettingsJson = localStorage.getItem('audio-settings');
+        if (savedSettingsJson) {
+            savedSettings = JSON.parse(savedSettingsJson);
         }
 
         this.state = savedSettings || {
@@ -28,11 +25,7 @@ class AudioSettingsStore extends Store<AudioSettings> {
     }
 
     private saveSettings() {
-        try {
-            localStorage.setItem('audio-settings', JSON.stringify(this.state));
-        } catch (e) {
-            console.error('Failed to save audio settings to localStorage', e);
-        }
+        localStorage.setItem('audio-settings', JSON.stringify(this.state));
     }
 
     setFormat(format: AudioSettings['format']) {
