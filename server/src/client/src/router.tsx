@@ -13,7 +13,7 @@ import {
     Playlist,
     PlaylistDetail,
     Queue,
-    Setting,
+    Setting
 } from './pages';
 import { SiteLayout } from './components/layout';
 
