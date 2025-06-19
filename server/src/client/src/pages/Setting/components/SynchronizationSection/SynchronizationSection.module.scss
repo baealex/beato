@@ -1,0 +1,58 @@
+.buttonContainer {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.settingItem {
+    margin-bottom: 24px;
+    
+    p {
+        margin: 0;
+        line-height: 1.5;
+    }
+    
+    .description {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+        margin-top: 4px;
+        margin-bottom: 16px;
+    }
+}
+
+.progressContainer {
+    margin: 16px 0;
+    
+    .progressBar {
+        height: 6px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-bottom: 8px;
+    }
+    
+    .progressIndicator {
+        height: 100%;
+        width: 30%;
+        background: linear-gradient(90deg, #4a6cf7, #6a8df9);
+        border-radius: 3px;
+        
+        &.animating {
+            animation: progress 1.5s ease-in-out infinite;
+        }
+    }
+    
+    .progressMessage {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+}
+
+@keyframes progress {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(300%);
+    }
+}

@@ -78,18 +78,4 @@
     &.w-reverse {
         flex-wrap: wrap-reverse;
     }
-
-    @each $key, $value in var.$spacingSizes {
-        &.g-#{$key} {
-            gap: $value;
-        }
-
-        &.rg-#{$key} {
-            row-gap: $value;
-        }
-
-        &.cg-#{$key} {
-            column-gap: $value;
-        }
-    }
 }

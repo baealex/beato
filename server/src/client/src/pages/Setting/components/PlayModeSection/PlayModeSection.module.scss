@@ -1,0 +1,27 @@
+.settingItem {
+  margin-bottom: 24px;
+  
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  .description {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+}
+
+.selectGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 24px;
+  }
+}
