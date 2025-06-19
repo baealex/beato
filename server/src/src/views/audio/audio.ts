@@ -54,8 +54,7 @@ export const audio: Controller = async (req, res) => {
 
         const contentTypeMap = {
             'mp3': 'audio/mpeg',
-            'aac': 'audio/aac',
-            'ogg': 'audio/ogg'
+            'aac': 'audio/aac'
         };
 
         const noTranscode = req.query.notranscode === 'true';
@@ -116,10 +115,6 @@ export const audio: Controller = async (req, res) => {
                     .outputOptions([
                         '-strict', 'experimental'
                     ]);
-            } else { // ogg
-                command
-                    .format('ogg')
-                    .audioCodec('libvorbis');
             }
 
             command.output(tempFilePath);
