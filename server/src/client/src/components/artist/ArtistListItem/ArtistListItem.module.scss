@@ -2,7 +2,7 @@
 
 .ArtistListItem {
     cursor: pointer;
-    padding: var.$SPACING_SIZE_3;
+    padding: var.$SPACING_1X var.$SPACING_2X;
     display: flex;
     flex-direction: row;
     align-items: center;

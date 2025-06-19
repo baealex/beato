@@ -3,7 +3,7 @@
 .TwoToneLayout {
     .header {
         position: relative;
-        padding: var.$SPACING_SIZE_7 var.$SPACING_SIZE_3;
+        padding: var.$SPACING_1X var.$SPACING_2X;
         background: var.$COLOR_BACKGROUND_LAYER_1;
     }
 
@@ -34,7 +34,7 @@
 
     &.hasPrimaryAction {
         .content {
-            margin-top: var.$SPACING_SIZE_5;
+            margin-top: var.$SPACING_2X;
         }
     }
 

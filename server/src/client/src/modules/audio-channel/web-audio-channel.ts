@@ -1,7 +1,8 @@
 import { webAudioContext } from '../web-audio-context';
 import type { AudioChannel, AudioChannelEventHandler } from './audio-channel';
-
 import type { Music } from '~/models/type';
+
+import { audioSettingsStore } from '~/store/audio-settings';
 
 export class WebAudioChannel implements AudioChannel {
     private audio: HTMLAudioElement;
@@ -73,7 +74,16 @@ export class WebAudioChannel implements AudioChannel {
     }
 
     load(music: Music) {
-        const audioResource = '/api/audio/' + music.id;
+        let audioResource: string;
+
+        const { format, bitrate, useOriginal } = audioSettingsStore.state;
+
+        if (useOriginal) {
+            audioResource = `/api/audio/${music.id}?notranscode=true`;
+        } else {
+            audioResource = `/api/audio/${music.id}?format=${format}&bitrate=${bitrate}`;
+        }
+
         this.audio.pause();
         this.audio.src = audioResource;
         this.audio.currentTime = 0;
@@ -102,7 +112,7 @@ export class WebAudioChannel implements AudioChannel {
     }
 
     download(music: Music) {
-        const audioResource = '/api/audio/' + music.id;
+        const audioResource = `/api/audio/${music.id}?notranscode=true`;
         const a = document.createElement('a');
         a.href = audioResource;
         a.download = music.filePath.split('/').pop()!;
