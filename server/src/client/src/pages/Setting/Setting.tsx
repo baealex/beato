@@ -160,11 +160,6 @@ export default function Setting() {
             label: 'Play Mode',
             icon: <PlayIcon />
         },
-        ...(!isAppChannel ? [{
-            id: 'stability',
-            label: 'Stability Mode',
-            icon: <ShieldIcon />
-        }] : []),
         {
             id: 'audio',
             label: 'Audio Settings',
@@ -180,6 +175,11 @@ export default function Setting() {
             label: 'Devices',
             icon: <DevicesIcon />
         },
+        ...(!isAppChannel ? [{
+            id: 'stability',
+            label: 'Stability Mode',
+            icon: <ShieldIcon />
+        }] : []),
         {
             id: 'experimental',
             label: 'Experimental',
@@ -238,7 +238,7 @@ export default function Setting() {
         <div className={styles.container}>
             <div className={styles.settingsHeader}>
                 <h1>Settings</h1>
-                <p>Customize your Beato experience</p>
+                <p>Customize your listening experience</p>
             </div>
 
             <div className={styles.settingsGrid}>
@@ -272,27 +272,18 @@ export default function Setting() {
                         <PlayModeSection />
                     </div>
 
-                    {!isAppChannel && (
-                        <div
-                            id="section-stability"
-                            ref={(el) => (sectionRefs.current.stability = el)}
-                            className={styles.settingSection}>
-                            <StabilityModeSection isAppChannel={isAppChannel} />
-                        </div>
-                    )}
-
                     <div
                         id="section-audio"
                         ref={(el) => (sectionRefs.current.audio = el)}
                         className={styles.settingSection}>
-                        <AudioSettingsSection />
+                        <AudioSettingsSection shouldStable={isAppChannel || isStabilityModeEnabled} />
                     </div>
 
                     <div
                         id="section-theme"
                         ref={(el) => (sectionRefs.current.theme = el)}
                         className={styles.settingSection}>
-                        <ThemeSection />
+                        <ThemeSection shouldStable={isAppChannel || isStabilityModeEnabled} />
                     </div>
 
                     <div
@@ -302,14 +293,20 @@ export default function Setting() {
                         <ConnectorsSection />
                     </div>
 
+                    {!isAppChannel && (
+                        <div
+                            id="section-stability"
+                            ref={(el) => (sectionRefs.current.stability = el)}
+                            className={styles.settingSection}>
+                            <StabilityModeSection />
+                        </div>
+                    )}
+
                     <div
                         id="section-experimental"
                         ref={(el) => (sectionRefs.current.experimental = el)}
                         className={styles.settingSection}>
-                        <ExperimentalSection
-                            isAppChannel={isAppChannel}
-                            isStabilityModeEnabled={isStabilityModeEnabled}
-                        />
+                        <ExperimentalSection />
                     </div>
 
                     <div

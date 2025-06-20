@@ -1,82 +1,36 @@
-import { useStore } from 'badland-react';
-import { useNavigate } from 'react-router';
+import { SettingSection, SettingItem, InfoBox } from '~/components/shared';
 
-import { Button, Select } from '~/components/shared';
-import { queueStore } from '~/store/queue';
-import { themeStore } from '~/store/theme';
+const LabIcon = () => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round">
+        <path d="M10 2v7.31" />
+        <path d="M14 9.3V2" />
+        <path d="M8.5 2h7" />
+        <path d="M14 9.3a6 6 0 1 1-4 0" />
+    </svg>
+);
 
-const MIX_MODES = [
-    {
-        value: 'none',
-        label: 'None'
-    },
-    {
-        value: 'mix',
-        label: 'Mix (Fade in/out when music changes)'
-    }
-];
-
-const PLAYER_VISUALIZER_TYPE = [
-    {
-        value: 'visualizer',
-        label: 'Round'
-    },
-    {
-        value: 'visualizer:line',
-        label: 'Line'
-    },
-    {
-        value: 'visualizer:ring',
-        label: 'Ring'
-    },
-    {
-        value: 'visualizer:digital',
-        label: 'Digital'
-    }
-];
-
-export interface ExperimentalSectionProps {
-    isAppChannel: boolean;
-    isStabilityModeEnabled: boolean;
-}
-
-export const ExperimentalSection = ({ isAppChannel, isStabilityModeEnabled }: ExperimentalSectionProps) => {
-    const navigate = useNavigate();
-    const [{ mixMode }] = useStore(queueStore);
-    const [{ playerAlbumArtStyle }] = useStore(themeStore);
+export const ExperimentalSection = () => {
 
     return (
-        <section>
-            <h3>Experimental</h3>
-            <p>Use experimental features. These features may not work properly. Use at your own risk. These features may be removed without notice.</p>
-            {!isAppChannel && (
-                <>
-                    <p>Sound Effect</p>
-                    <Select
-                        selected={MIX_MODES.find(({ value }) => value === mixMode)}
-                        options={MIX_MODES}
-                        onChange={(value) => queueStore.setMixMode(value as typeof mixMode)}
-                    />
-                </>
-            )}
-            {(!isAppChannel && !isStabilityModeEnabled) && (
-                <>
-                    <p>Visualizer</p>
-                    <Select
-                        selected={PLAYER_VISUALIZER_TYPE.find(({ value }) => value === playerAlbumArtStyle)}
-                        options={PLAYER_VISUALIZER_TYPE}
-                        onChange={(value) => themeStore.setPlayerAlbumArtStyle(value)}
-                    />
-                </>
-            )}
-            {(!isAppChannel && !isStabilityModeEnabled) && (
-                <>
-                    <p>Equalizer</p>
-                    <div>
-                        <Button onClick={() => navigate('/equalizer')}>Move to page</Button>
-                    </div>
-                </>
-            )}
-        </section>
+        <SettingSection
+            title="Experimental Features"
+            icon={<LabIcon />}
+            description="Try out new features that are still in development.">
+            <SettingItem
+                title="No Experimental Features"
+                description="There are currently no experimental features available. Check back later for new features.">
+                <div>See you soon! 😉💕</div>
+            </SettingItem>
+            <InfoBox type="warning">
+                <p>These features may not work properly. Use at your own risk. Features may be removed without notice.</p>
+            </InfoBox>
+        </SettingSection>
     );
 };

@@ -5,7 +5,10 @@ const cx = classNames.bind(styles);
 
 import { Image } from '~/components/shared';
 import { webAudioContext } from '~/modules/web-audio-context';
-import { ring, digital, line, round } from './visualizer';
+
+import {
+    digital, line, ring, round, wave, particle, spectrum, neon
+} from './visualizers';
 
 interface MusicPlayerVisualizerStyleProps {
     type: string;
@@ -26,14 +29,31 @@ const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt }: MusicPlayerVi
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         webAudioContext.getAnalyser()?.getByteFrequencyData(dataArray);
 
-        if (type === 'line') {
-            line(canvas, ctx, bufferLength, dataArray);
-        } else if (type === 'ring') {
-            ring(canvas, ctx, bufferLength, dataArray);
-        } else if (type === 'digital') {
-            digital(canvas, ctx, bufferLength, dataArray);
-        } else {
-            round(canvas, ctx, bufferLength, dataArray);
+        switch (type) {
+            case 'line':
+                line(canvas, ctx, bufferLength, dataArray);
+                break;
+            case 'ring':
+                ring(canvas, ctx, bufferLength, dataArray);
+                break;
+            case 'digital':
+                digital(canvas, ctx, bufferLength, dataArray);
+                break;
+            case 'wave':
+                wave(canvas, ctx, bufferLength, dataArray);
+                break;
+            case 'particle':
+                particle(canvas, ctx, bufferLength, dataArray);
+                break;
+            case 'neon':
+                neon(canvas, ctx, bufferLength, dataArray);
+                break;
+            case 'spectrum':
+                spectrum(canvas, ctx, bufferLength, dataArray);
+                break;
+            default:
+                round(canvas, ctx, bufferLength, dataArray);
+                break;
         }
     };
 

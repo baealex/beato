@@ -1,92 +1,79 @@
-import styled from '@emotion/styled';
 import { useStore } from 'badland-react';
-import { useState } from 'react';
-import { Button } from '~/components/shared';
+import { useState, useEffect, useCallback } from 'react';
+import EqualizerSlider from '~/components/shared/EqualizerSlider';
+import type { Preset } from '~/components/shared/EqualizerPreset';
+import EqualizerPreset from '~/components/shared/EqualizerPreset';
 import { equalizerStore } from '~/store/equalizer';
+import styles from './Equalizer.module.scss';
 
-const Container = styled.div`
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const SliderContainer = styled.div`
-    width: 100%;
-    margin: 1rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const Label = styled.label`
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-`;
-
-const SliderInput = styled.input`
-    -webkit-appearance: none;
-    width: 100%;
-    height: 8px;
-    background: #ddd;
-    border-radius: 5px;
-    outline: none;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-
-    &:hover {
-        opacity: 1;
-    }
-
-    &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        background: #4caf50;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid white;
-        transition: background 0.3s;
-
-        &:hover {
-            background: #45a049;
+const DEFAULT_PRESETS: Preset[] = [
+    {
+        id: 'flat',
+        name: 'Flat',
+        values: {
+            bass: 0,
+            lowMid: 0,
+            mid: 0,
+            highMid: 0,
+            treble: 0
+        }
+    },
+    {
+        id: 'bass-boost',
+        name: 'Bass Boost',
+        values: {
+            bass: 8,
+            lowMid: 4,
+            mid: 0,
+            highMid: 0,
+            treble: 2
+        }
+    },
+    {
+        id: 'treble-boost',
+        name: 'Treble Boost',
+        values: {
+            bass: 0,
+            lowMid: 0,
+            mid: 2,
+            highMid: 6,
+            treble: 8
+        }
+    },
+    {
+        id: 'vocal',
+        name: 'Vocal',
+        values: {
+            bass: -2,
+            lowMid: 0,
+            mid: 6,
+            highMid: 4,
+            treble: 0
         }
     }
-
-    &::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
-        background: #4caf50;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid white;
-        transition: background 0.3s;
-
-        &:hover {
-            background: #45a049;
-        }
-    }
-
-    &::-ms-thumb {
-        width: 20px;
-        height: 20px;
-        background: #4caf50;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid white;
-        transition: background 0.3s;
-
-        &:hover {
-            background: #45a049;
-        }
-    }
-`;
+];
 
 const Equalizer = () => {
     const [isStabilityModeEnabled] = useState(Boolean(localStorage.getItem('stability-mode::on')));
-
     const [equalizerState, setEqState] = useStore(equalizerStore);
+    const [presets, setPresets] = useState<Preset[]>([]);
+    const loadPresets = useCallback(() => {
+        const savedPresets = localStorage.getItem('audio::eq::presets');
+        if (savedPresets) {
+            try {
+                const parsedPresets = JSON.parse(savedPresets);
+                setPresets([...DEFAULT_PRESETS, ...parsedPresets]);
+            } catch (e) {
+                setPresets(DEFAULT_PRESETS);
+            }
+        } else {
+            setPresets(DEFAULT_PRESETS);
+        }
+    }, []);
+
+    useEffect(() => {
+        loadPresets();
+    }, [loadPresets]);
 
     const handleSliderChange = (name: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setEqState((state) => ({
@@ -95,47 +82,68 @@ const Equalizer = () => {
         }));
     };
 
+    const handlePresetSelect = (preset: Preset) => {
+        setEqState(() => ({ ...preset.values }));
+    };
+
+    const handleSaveCurrentAsPreset = () => {
+        const presetName = prompt('Enter a name for this preset:');
+        if (!presetName) return;
+
+        const newPreset: Preset = {
+            id: `custom-${Date.now()}`,
+            name: presetName,
+            values: { ...equalizerState }
+        };
+
+        const customPresets = [...presets.filter(p => p.id.startsWith('custom-')), newPreset];
+        localStorage.setItem('audio::eq::presets', JSON.stringify(customPresets));
+
+        setPresets([...DEFAULT_PRESETS, ...customPresets]);
+    };
+
+    const handleDeletePreset = (presetId: string) => {
+        const confirmDelete = window.confirm('Are you sure you want to delete this preset?');
+        if (!confirmDelete) return;
+
+        const customPresets = presets.filter(p => p.id.startsWith('custom-') && p.id !== presetId);
+
+        localStorage.setItem('audio::eq::presets', JSON.stringify(customPresets));
+
+        setPresets([...DEFAULT_PRESETS, ...customPresets]);
+    };
+
     return (
-        <Container>
-            <div
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                }}>
-                <Button onClick={() => equalizerStore.reset()}>
-                    Reset
-                </Button>
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>Audio Equalizer</h1>
+                <p className={styles.description}>Adjust the sliders to fine-tune your audio experience</p>
             </div>
-            {Object.entries(equalizerState).map(([name, value]) => (
-                <SliderContainer key={name}>
-                    <Label htmlFor={name}>{name.charAt(0).toUpperCase() + name.slice(1)}:</Label>
-                    <SliderInput
-                        type="range"
+
+            <EqualizerPreset
+                presets={presets}
+                onSelectPreset={handlePresetSelect}
+                onSaveCurrentAsPreset={handleSaveCurrentAsPreset}
+                onDeletePreset={handleDeletePreset}
+            />
+
+            <div className={styles.sliderGroup}>
+                {Object.entries(equalizerState).map(([name, value]) => (
+                    <EqualizerSlider
+                        key={name}
                         name={name}
-                        min="-10"
-                        max="10"
                         value={value}
                         onChange={handleSliderChange(name)}
                     />
-                </SliderContainer>
-            ))}
+                ))}
+            </div>
+
             {isStabilityModeEnabled && (
-                <div
-                    style={{
-                        position: 'fixed',
-                        backgroundColor: 'rgba(0, 0, 0, 0.77)',
-                        height: '100%',
-                        width: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 100
-                    }}>
+                <div className={styles.stabilityMode}>
                     You're in stability mode.
                 </div>
             )}
-        </Container>
+        </div>
     );
 };
 
