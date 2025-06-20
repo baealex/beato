@@ -3,10 +3,6 @@ import { useState } from 'react';
 import { Toggle, SettingSection, SettingItem, InfoBox } from '~/components/shared';
 import { themeStore } from '~/store/theme';
 
-export interface StabilityModeSectionProps {
-    isAppChannel: boolean;
-}
-
 const ShieldIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +16,7 @@ const ShieldIcon = () => (
     </svg>
 );
 
-export const StabilityModeSection = ({ isAppChannel }: StabilityModeSectionProps) => {
+export const StabilityModeSection = () => {
     const [isStabilityModeEnabled] = useState(Boolean(localStorage.getItem('stability-mode::on')));
 
     const handleChangeStabilityMode = () => {
@@ -33,23 +29,17 @@ export const StabilityModeSection = ({ isAppChannel }: StabilityModeSectionProps
         window.location.reload();
     };
 
-    if (isAppChannel) {
-        return null;
-    }
-
     return (
         <SettingSection
             title="Stability Mode"
             icon={<ShieldIcon />}
-            description="Improve app stability by disabling certain features."
-        >
+            description="Improve app stability by disabling certain features.">
             <SettingItem
                 title="Enable Stability Mode"
-                description="Activate this to stop using the audio context feature."
-            >
+                description="Activate this to stop using the audio context feature.">
                 <Toggle value={isStabilityModeEnabled} onChange={handleChangeStabilityMode} />
             </SettingItem>
-            
+
             <InfoBox type="warning">
                 <p>With Stability Mode enabled, the equalizer and visualizer will not be available.</p>
             </InfoBox>

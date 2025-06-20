@@ -92,7 +92,14 @@ const DevicesIcon = () => (
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round">
-        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+        <rect
+            x="2"
+            y="3"
+            width="20"
+            height="14"
+            rx="2"
+            ry="2"
+        />
         <line x1="8" y1="21" x2="16" y2="21" />
         <line x1="12" y1="17" x2="12" y2="21" />
     </svg>
@@ -269,14 +276,14 @@ export default function Setting() {
                         id="section-audio"
                         ref={(el) => (sectionRefs.current.audio = el)}
                         className={styles.settingSection}>
-                        <AudioSettingsSection />
+                        <AudioSettingsSection shouldStable={isAppChannel || isStabilityModeEnabled} />
                     </div>
 
                     <div
                         id="section-theme"
                         ref={(el) => (sectionRefs.current.theme = el)}
                         className={styles.settingSection}>
-                        <ThemeSection />
+                        <ThemeSection shouldStable={isAppChannel || isStabilityModeEnabled} />
                     </div>
 
                     <div
@@ -291,7 +298,7 @@ export default function Setting() {
                             id="section-stability"
                             ref={(el) => (sectionRefs.current.stability = el)}
                             className={styles.settingSection}>
-                            <StabilityModeSection isAppChannel={isAppChannel} />
+                            <StabilityModeSection />
                         </div>
                     )}
 
@@ -299,10 +306,7 @@ export default function Setting() {
                         id="section-experimental"
                         ref={(el) => (sectionRefs.current.experimental = el)}
                         className={styles.settingSection}>
-                        <ExperimentalSection
-                            isAppChannel={isAppChannel}
-                            isStabilityModeEnabled={isStabilityModeEnabled}
-                        />
+                        <ExperimentalSection />
                     </div>
 
                     <div

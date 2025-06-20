@@ -60,12 +60,10 @@ export const PlayModeSection = () => {
         <SettingSection
             title="Play Mode"
             icon={<PlayIcon />}
-            description="Configure how music is added to the queue when you select songs."
-        >
+            description="Configure how music is added to the queue when you select songs.">
             <SettingItem
                 title="When adding music to the queue"
-                description="Choose what happens when you add music to the queue."
-            >
+                description="Choose what happens when you add music to the queue.">
                 <Select
                     selected={PLAY_MODES.find(({ value }) => value === playMode)}
                     options={PLAY_MODES}
@@ -75,8 +73,7 @@ export const PlayModeSection = () => {
 
             <SettingItem
                 title="Queue placement"
-                description="Choose where in the queue new music should be placed."
-            >
+                description="Choose where in the queue new music should be placed.">
                 <Select
                     selected={INSERT_MODES.find(({ value }) => value === insertMode)}
                     options={INSERT_MODES}
@@ -86,8 +83,7 @@ export const PlayModeSection = () => {
 
             <SettingItem
                 title="Transition Effect"
-                description="Choose how songs transition when changing tracks."
-            >
+                description="Choose how songs transition when changing tracks.">
                 <Select
                     selected={MIX_MODES.find(({ value }) => value === mixMode)}
                     options={MIX_MODES}

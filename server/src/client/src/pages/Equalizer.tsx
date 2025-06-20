@@ -1,8 +1,8 @@
 import { useStore } from 'badland-react';
 import { useState, useEffect, useCallback } from 'react';
-import { Button } from '~/components/shared';
 import EqualizerSlider from '~/components/shared/EqualizerSlider';
-import EqualizerPreset, { Preset } from '~/components/shared/EqualizerPreset';
+import type { Preset } from '~/components/shared/EqualizerPreset';
+import EqualizerPreset from '~/components/shared/EqualizerPreset';
 import { equalizerStore } from '~/store/equalizer';
 import styles from './Equalizer.module.scss';
 
@@ -10,23 +10,47 @@ const DEFAULT_PRESETS: Preset[] = [
     {
         id: 'flat',
         name: 'Flat',
-        values: { bass: 0, lowMid: 0, mid: 0, highMid: 0, treble: 0 }
+        values: {
+            bass: 0,
+            lowMid: 0,
+            mid: 0,
+            highMid: 0,
+            treble: 0
+        }
     },
     {
         id: 'bass-boost',
         name: 'Bass Boost',
-        values: { bass: 8, lowMid: 4, mid: 0, highMid: 0, treble: 2 }
+        values: {
+            bass: 8,
+            lowMid: 4,
+            mid: 0,
+            highMid: 0,
+            treble: 2
+        }
     },
     {
         id: 'treble-boost',
         name: 'Treble Boost',
-        values: { bass: 0, lowMid: 0, mid: 2, highMid: 6, treble: 8 }
+        values: {
+            bass: 0,
+            lowMid: 0,
+            mid: 2,
+            highMid: 6,
+            treble: 8
+        }
     },
     {
         id: 'vocal',
         name: 'Vocal',
-        values: { bass: -2, lowMid: 0, mid: 6, highMid: 4, treble: 0 }
-    },
+        values: {
+            bass: -2,
+            lowMid: 0,
+            mid: 6,
+            highMid: 4,
+            treble: 0
+        }
+    }
 ];
 
 const Equalizer = () => {
@@ -40,7 +64,6 @@ const Equalizer = () => {
                 const parsedPresets = JSON.parse(savedPresets);
                 setPresets([...DEFAULT_PRESETS, ...parsedPresets]);
             } catch (e) {
-                console.error('Failed to parse saved presets', e);
                 setPresets(DEFAULT_PRESETS);
             }
         } else {

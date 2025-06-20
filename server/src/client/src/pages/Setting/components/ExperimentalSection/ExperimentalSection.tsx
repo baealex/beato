@@ -1,12 +1,5 @@
 import { SettingSection, SettingItem, InfoBox } from '~/components/shared';
 
-
-
-export interface ExperimentalSectionProps {
-    isAppChannel: boolean;
-    isStabilityModeEnabled: boolean;
-}
-
 const LabIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,18 +16,16 @@ const LabIcon = () => (
     </svg>
 );
 
-export const ExperimentalSection = (_props: ExperimentalSectionProps) => {
+export const ExperimentalSection = () => {
 
     return (
         <SettingSection
             title="Experimental Features"
             icon={<LabIcon />}
-            description="Try out new features that are still in development."
-        >
+            description="Try out new features that are still in development.">
             <SettingItem
                 title="No Experimental Features"
-                description="There are currently no experimental features available. Check back later for new features."
-            >
+                description="There are currently no experimental features available. Check back later for new features.">
                 <div>See you soon! 😉💕</div>
             </SettingItem>
             <InfoBox type="warning">

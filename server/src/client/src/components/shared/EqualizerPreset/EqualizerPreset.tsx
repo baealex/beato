@@ -52,15 +52,13 @@ const EqualizerPreset = ({
                     <button
                         key={preset.id}
                         className={`${styles.presetButton} ${activePreset === preset.id ? styles.active : ''}`}
-                        onClick={() => handlePresetClick(preset)}
-                    >
+                        onClick={() => handlePresetClick(preset)}>
                         {preset.name}
                         {isCustomPreset(preset.id) && onDeletePreset && (
                             <span
                                 className={styles.deleteIcon}
                                 onClick={(e) => handleDeleteClick(e, preset.id)}
-                                title="Delete preset"
-                            >
+                                title="Delete preset">
                                 ✕
                             </span>
                         )}
@@ -68,8 +66,7 @@ const EqualizerPreset = ({
                 ))}
                 <button
                     className={styles.saveButton}
-                    onClick={onSaveCurrentAsPreset}
-                >
+                    onClick={onSaveCurrentAsPreset}>
                     Save Current
                 </button>
             </div>

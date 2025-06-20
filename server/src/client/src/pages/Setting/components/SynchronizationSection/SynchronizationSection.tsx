@@ -60,12 +60,10 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
         <SettingSection
             title="Synchronization"
             icon={<SyncIcon />}
-            description="Keep your music library up to date with the server."
-        >
+            description="Keep your music library up to date with the server.">
             <SettingItem
                 title="Sync Music from Server"
-                description="Update your local music library with the latest content from the server"
-            >
+                description="Update your local music library with the latest content from the server">
                 <div>
                     {progressMessage && (
                         <div className={styles.progressContainer}>

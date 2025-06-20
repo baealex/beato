@@ -1,7 +1,9 @@
 import { useStore } from 'badland-react';
 import { useNavigate } from 'react-router';
 
-import { Select, Toggle, Button, SettingSection, SettingItem, InfoBox } from '~/components/shared';
+import {
+    Select, Toggle, Button, SettingSection, SettingItem, InfoBox
+} from '~/components/shared';
 import { audioSettingsStore } from '~/store/audio-settings';
 
 const AUDIO_FORMATS = [
@@ -56,20 +58,22 @@ const AudioIcon = () => (
     </svg>
 );
 
-export const AudioSettingsSection = () => {
+interface AudioSettingsSectionProps {
+    shouldStable: boolean;
+}
+
+export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps) => {
     const navigate = useNavigate();
     const [{ format, bitrate, useOriginal }] = useStore(audioSettingsStore);
 
     return (
-        <SettingSection 
-            title="Audio Settings" 
+        <SettingSection
+            title="Audio Settings"
             icon={<AudioIcon />}
-            description="Configure audio quality and format settings for music playback."
-        >
-            <SettingItem 
+            description="Configure audio quality and format settings for music playback.">
+            <SettingItem
                 title="Use Original Audio Files"
-                description="When enabled, plays the original audio files without any transcoding. This provides the highest quality but may use more bandwidth."
-            >
+                description="When enabled, plays the original audio files without any transcoding. This provides the highest quality but may use more bandwidth.">
                 <Toggle
                     value={useOriginal}
                     onChange={() => audioSettingsStore.setUseOriginal(!useOriginal)}
@@ -80,38 +84,37 @@ export const AudioSettingsSection = () => {
                 <>
                     <SettingItem
                         title="Audio Format"
-                        description="Choose the audio format for streaming. MP3 is more compatible, while AAC may offer better quality at the same bitrate."
-                    >
+                        description="Choose the audio format for streaming. MP3 is more compatible, while AAC may offer better quality at the same bitrate.">
                         <Select
                             selected={AUDIO_FORMATS.find(({ value }) => value === format)}
                             options={AUDIO_FORMATS}
                             onChange={(value) => audioSettingsStore.setFormat(value as 'mp3' | 'aac')}
                         />
                     </SettingItem>
-                    
+
                     <SettingItem
                         title="Audio Quality"
-                        description="Higher quality uses more data. Choose a lower bitrate to save data or a higher bitrate for better sound quality."
-                    >
+                        description="Higher quality uses more data. Choose a lower bitrate to save data or a higher bitrate for better sound quality.">
                         <Select
                             selected={AUDIO_BITRATES.find(({ value }) => value === bitrate)}
                             options={AUDIO_BITRATES}
                             onChange={(value) => audioSettingsStore.setBitrate(value as '64k' | '96k' | '128k' | '192k' | '256k' | '320k')}
                         />
                     </SettingItem>
-                    
+
                     <InfoBox>
                         <p>Higher quality settings will use more bandwidth and storage space. If you experience playback issues, try using a lower quality setting.</p>
                     </InfoBox>
                 </>
             )}
-            
-            <SettingItem
-                title="Equalizer"
-                description="Fine-tune your audio experience with the equalizer."
-            >
-                <Button onClick={() => navigate('/equalizer')}>Open Equalizer</Button>
-            </SettingItem>
+
+            {!shouldStable && (
+                <SettingItem
+                    title="Equalizer"
+                    description="Fine-tune your audio experience with the equalizer.">
+                    <Button onClick={() => navigate('/equalizer')}>Open Equalizer</Button>
+                </SettingItem>
+            )}
         </SettingSection>
     );
 };

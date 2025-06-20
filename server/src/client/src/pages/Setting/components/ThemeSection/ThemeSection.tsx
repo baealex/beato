@@ -29,26 +29,35 @@ const PLAYER_ALBUM_ART_STYLES = [
     },
     {
         value: 'visualizer',
-        label: 'Visualizer'
-    }
-];
-
-const PLAYER_VISUALIZER_TYPE = [
-    {
-        value: 'visualizer',
-        label: 'Round'
+        label: 'Visualizer (Round)'
     },
     {
         value: 'visualizer:line',
-        label: 'Line'
+        label: 'Visualizer (Line)'
     },
     {
         value: 'visualizer:ring',
-        label: 'Ring'
+        label: 'Visualizer (Ring)'
     },
     {
         value: 'visualizer:digital',
-        label: 'Digital'
+        label: 'Visualizer (Digital)'
+    },
+    {
+        value: 'visualizer:wave',
+        label: 'Visualizer (Wave)'
+    },
+    {
+        value: 'visualizer:particle',
+        label: 'Visualizer (Particle)'
+    },
+    {
+        value: 'visualizer:neon',
+        label: 'Visualizer (Neon)'
+    },
+    {
+        value: 'visualizer:spectrum',
+        label: 'Visualizer (Spectrum)'
     }
 ];
 
@@ -66,19 +75,21 @@ const ThemeIcon = () => (
     </svg>
 );
 
-export const ThemeSection = () => {
+interface ThemeSectionProps {
+    shouldStable: boolean;
+}
+
+export const ThemeSection = ({ shouldStable }: ThemeSectionProps) => {
     const [{ colorTone, playerAlbumArtStyle }] = useStore(themeStore);
 
     return (
         <SettingSection
             title="Theme"
             icon={<ThemeIcon />}
-            description="Customize the appearance of the application."
-        >
+            description="Customize the appearance of the application.">
             <SettingItem
                 title="Color Tone"
-                description="Choose the color theme for the application interface."
-            >
+                description="Choose the color theme for the application interface.">
                 <Select
                     selected={THEMES.find(({ value }) => value === colorTone)}
                     options={THEMES}
@@ -88,27 +99,13 @@ export const ThemeSection = () => {
 
             <SettingItem
                 title="Player Cover"
-                description="Select how album artwork is displayed in the music player."
-            >
+                description="Select how album artwork is displayed in the music player.">
                 <Select
                     selected={PLAYER_ALBUM_ART_STYLES.find(({ value }) => value === playerAlbumArtStyle)}
-                    options={PLAYER_ALBUM_ART_STYLES}
+                    options={PLAYER_ALBUM_ART_STYLES.filter(({ value }) => shouldStable ? !value.startsWith('visualizer') : true)}
                     onChange={(value) => themeStore.setPlayerAlbumArtStyle(value)}
                 />
             </SettingItem>
-
-            {playerAlbumArtStyle?.startsWith('visualizer') && (
-                <SettingItem
-                    title="Visualizer Style"
-                    description="Choose a visualizer style for the player."
-                >
-                    <Select
-                        selected={PLAYER_VISUALIZER_TYPE.find(({ value }) => value === playerAlbumArtStyle)}
-                        options={PLAYER_VISUALIZER_TYPE}
-                        onChange={(value) => themeStore.setPlayerAlbumArtStyle(value)}
-                    />
-                </SettingItem>
-            )}
         </SettingSection>
     );
 };

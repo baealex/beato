@@ -22,12 +22,10 @@ export const TroubleshootingSection = () => {
         <SettingSection
             title="Troubleshooting"
             icon={<AlertIcon />}
-            description="Having issues with the application? Try these solutions."
-        >
+            description="Having issues with the application? Try these solutions.">
             <SettingItem
                 title="Refresh Application"
-                description="Reload the application to resolve common issues."
-            >
+                description="Reload the application to resolve common issues.">
                 <div className={styles.buttonContainer}>
                     <Button onClick={() => window.location.reload()}>
                         Refresh App
