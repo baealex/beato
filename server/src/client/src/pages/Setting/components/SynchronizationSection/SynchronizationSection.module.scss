@@ -4,55 +4,42 @@
   margin-top: 16px;
 }
 
-.settingItem {
-    margin-bottom: 24px;
-    
-    p {
-        margin: 0;
-        line-height: 1.5;
-    }
-    
-    .description {
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 0.9rem;
-        margin-top: 4px;
-        margin-bottom: 16px;
-    }
-}
-
 .progressContainer {
-    margin: 16px 0;
+  margin: 16px 0;
+  width: 100%;
+  
+  .progressBar {
+    height: 6px;
+    background-color: var(--b-color-hover, rgba(var(--b-color-hover-rgb), 0.1));
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  
+  .progressIndicator {
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, var(--b-color-primary-button), var(--b-color-primary-button-hover, var(--b-color-primary-button)));
+    border-radius: 3px;
     
-    .progressBar {
-        height: 6px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 3px;
-        overflow: hidden;
-        margin-bottom: 8px;
+    &.animating {
+      animation: progress 1.5s ease-in-out infinite;
     }
-    
-    .progressIndicator {
-        height: 100%;
-        width: 30%;
-        background: linear-gradient(90deg, #4a6cf7, #6a8df9);
-        border-radius: 3px;
-        
-        &.animating {
-            animation: progress 1.5s ease-in-out infinite;
-        }
-    }
-    
-    .progressMessage {
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.8);
-    }
+  }
+  
+  .progressMessage {
+    font-size: 0.85rem;
+    color: var(--b-color-text);
+    opacity: 0.8;
+    margin: 0;
+  }
 }
 
 @keyframes progress {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(300%);
-    }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
 }

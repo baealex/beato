@@ -1,0 +1,88 @@
+.presetContainer {
+  width: 100%;
+  margin-bottom: 2rem;
+  color: var(--b-color-text);
+}
+
+.presetButtonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.presetButton {
+  background-color: var(--b-color-secondary-button);
+  border: 1px solid var(--b-color-border);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-weight: 500;
+  color: var(--b-color-text);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  &:hover {
+    background-color: var(--b-color-hover, rgba(var(--b-color-hover-rgb, 0, 0, 0), 0.05));
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  &.active {
+    background-color: var(--b-color-primary-button);
+    color: #fff;
+    border-color: var(--b-color-primary-button);
+  }
+
+  .deleteIcon {
+    opacity: 0.5;
+    margin-left: 4px;
+    transition: opacity 0.2s;
+    color: var(--b-color-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover .deleteIcon {
+    opacity: 0.7;
+  }
+
+  &:hover .deleteIcon:hover {
+    opacity: 1;
+    color: #f44336;
+  }
+}
+
+.saveButton {
+  background-color: var(--b-color-primary-button);
+  border: 1px solid var(--b-color-primary-button);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .presetButtonGroup {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .presetButton, .saveButton {
+    text-align: center;
+  }
+}

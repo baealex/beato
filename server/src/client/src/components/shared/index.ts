@@ -10,6 +10,7 @@ export { default as Loading } from './Loading';
 export { default as Observer } from './Observer';
 export { default as PanelContent } from './PanelContent';
 export { default as Select } from './Select';
+export { SettingSection, SettingItem, InfoBox } from './SettingSection';
 export { default as SiteHeader } from './SiteHeader';
 export { default as SortableItem } from './SortableItem';
 export { default as StickyHeader } from './StickyHeader';

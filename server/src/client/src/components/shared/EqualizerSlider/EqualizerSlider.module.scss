@@ -1,0 +1,112 @@
+.sliderRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 100%;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.label {
+  min-width: 80px;
+  margin-right: 1rem;
+  font-weight: 600;
+  color: var(--b-color-text);
+}
+
+.valueDisplay {
+  min-width: 40px;
+  text-align: right;
+  margin-left: 1rem;
+  font-weight: 500;
+  color: var(--b-color-primary-button);
+}
+
+.sliderInput {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--b-color-border);
+  border-radius: 5px;
+  outline: none;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--b-color-primary-button);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--b-color-background);
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background: var(--b-color-point);
+      transform: scale(1.1);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--b-color-primary-button);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--b-color-background);
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background: var(--b-color-point);
+      transform: scale(1.1);
+    }
+  }
+
+  &::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--b-color-primary-button);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--b-color-background);
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background: var(--b-color-point);
+      transform: scale(1.1);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .sliderRow {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+  
+  .label {
+    margin-bottom: 0.5rem;
+    margin-right: 0;
+  }
+  
+  .valueDisplay {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

@@ -92,14 +92,7 @@ const DevicesIcon = () => (
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round">
-        <rect
-            x="2"
-            y="3"
-            width="20"
-            height="14"
-            rx="2"
-            ry="2"
-        />
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
         <line x1="8" y1="21" x2="16" y2="21" />
         <line x1="12" y1="17" x2="12" y2="21" />
     </svg>
@@ -160,11 +153,6 @@ export default function Setting() {
             label: 'Play Mode',
             icon: <PlayIcon />
         },
-        ...(!isAppChannel ? [{
-            id: 'stability',
-            label: 'Stability Mode',
-            icon: <ShieldIcon />
-        }] : []),
         {
             id: 'audio',
             label: 'Audio Settings',
@@ -180,6 +168,11 @@ export default function Setting() {
             label: 'Devices',
             icon: <DevicesIcon />
         },
+        ...(!isAppChannel ? [{
+            id: 'stability',
+            label: 'Stability Mode',
+            icon: <ShieldIcon />
+        }] : []),
         {
             id: 'experimental',
             label: 'Experimental',
@@ -238,7 +231,7 @@ export default function Setting() {
         <div className={styles.container}>
             <div className={styles.settingsHeader}>
                 <h1>Settings</h1>
-                <p>Customize your Beato experience</p>
+                <p>Customize your listening experience</p>
             </div>
 
             <div className={styles.settingsGrid}>
@@ -272,15 +265,6 @@ export default function Setting() {
                         <PlayModeSection />
                     </div>
 
-                    {!isAppChannel && (
-                        <div
-                            id="section-stability"
-                            ref={(el) => (sectionRefs.current.stability = el)}
-                            className={styles.settingSection}>
-                            <StabilityModeSection isAppChannel={isAppChannel} />
-                        </div>
-                    )}
-
                     <div
                         id="section-audio"
                         ref={(el) => (sectionRefs.current.audio = el)}
@@ -301,6 +285,15 @@ export default function Setting() {
                         className={styles.settingSection}>
                         <ConnectorsSection />
                     </div>
+
+                    {!isAppChannel && (
+                        <div
+                            id="section-stability"
+                            ref={(el) => (sectionRefs.current.stability = el)}
+                            className={styles.settingSection}>
+                            <StabilityModeSection isAppChannel={isAppChannel} />
+                        </div>
+                    )}
 
                     <div
                         id="section-experimental"
