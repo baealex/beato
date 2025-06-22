@@ -61,7 +61,7 @@ export default function SiteLayout({
     return (
         <main>
             {isSubPage ? <SubPageHeader /> : <SiteHeader />}
-            <div ref={containerRef} className="container">
+            <div ref={containerRef} className="main-container">
                 <Suspense fallback={<Loading />}>
                     <Outlet />
                 </Suspense>

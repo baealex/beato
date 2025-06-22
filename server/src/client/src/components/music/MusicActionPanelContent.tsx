@@ -86,7 +86,7 @@ export default function MusicActionPanelContent({
                     onClick: () => queueStore.add(music.id)
                 },
                 {
-                    icon: <Icon.Data />,
+                    icon: <Icon.List />,
                     text: 'Add to Playlist',
                     onClick: () => {
                         panel.close();
@@ -112,7 +112,7 @@ export default function MusicActionPanelContent({
                     }
                 },
                 {
-                    icon: <Icon.Cross />,
+                    icon: <Icon.Close />,
                     text: music.isHated ? 'Show again this music' : 'Hide this music',
                     onClick: () => MusicListener.hate(music.id)
                 }

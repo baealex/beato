@@ -66,7 +66,7 @@ export default function PlaylistActionPanelContent({
                     }
                 },
                 {
-                    icon: <Icon.TrashBin />,
+                    icon: <Icon.TrashCan />,
                     text: 'Delete',
                     onClick: async () => {
                         if (!(await confirm('Are you sure you want to delete this playlist?'))) {

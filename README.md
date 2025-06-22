@@ -16,7 +16,7 @@ Beato is a revolutionary self-hosted music streaming web application designed fo
 - [x] Use audio mix-in effects (web only).
 - [x] Use audio equalizer (web only).
 - [x] Use audio visualizer (web only).
-- [ ] Transcode audio.
+- [x] Transcode audio.
 
 <br>
 

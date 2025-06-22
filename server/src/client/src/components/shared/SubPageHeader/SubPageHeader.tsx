@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { useBack } from '~/hooks';
 const cx = classNames.bind(styles);
 
-import { Left } from '~/icon';
+import { ChevronLeft } from '~/icon';
 
 const SubPageHeader = () => {
     const back = useBack();
@@ -11,7 +11,7 @@ const SubPageHeader = () => {
     return (
         <div className={cx('SubPageHeader')}>
             <button onClick={back}>
-                <Left /> <span className={cx('back-text')}>Back</span>
+                <ChevronLeft /> <span className={cx('back-text')}>Back</span>
             </button>
         </div>
     );
