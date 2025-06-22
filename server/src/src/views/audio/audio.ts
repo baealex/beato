@@ -29,7 +29,10 @@ const streamFile = (filePath: string, res: Response): void => {
             res.setHeader('Content-Range', `bytes ${start}-${end}/${fileSize}`);
             res.setHeader('Content-Length', chunkSize);
 
-            const stream = fs.createReadStream(filePath, { start, end });
+            const stream = fs.createReadStream(filePath, {
+                start,
+                end
+            });
             stream.on('error', (err) => {
                 console.error('Error streaming file:', err);
                 if (!res.headersSent) {
@@ -116,20 +119,6 @@ export const audio: Controller = async (req, res) => {
 
         try {
             console.log(`Starting audio transcoding with bitrate: ${bitrate}, format: ${outputFormat}`);
-
-            // Get audio metadata to ensure correct duration
-            const getAudioMetadata = async (audioPath: string) => {
-                return new Promise<{ format: { duration?: number, bit_rate?: number } }>((resolve, reject) => {
-                    ffmpeg.ffprobe(audioPath, (err, metadata) => {
-                        if (err) {
-                            console.error('Error getting audio metadata:', err);
-                            reject(err);
-                            return;
-                        }
-                        resolve(metadata);
-                    });
-                });
-            };
 
             // Create a pass-through stream for buffering
             const outputStream = new PassThrough();
