@@ -1,20 +1,24 @@
 .settingSection {
   background-color: var(--b-color-card);
   border-radius: 12px;
-  padding: 2rem;
+  padding: 24px;
   margin-bottom: 2.5rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--b-color-border);
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 }
 
 .sectionHeader {
   margin-bottom: 2rem;
   
   h3 {
-    font-size: 1.35rem;
+    font-size: 16px;
     font-weight: 700;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
     border-bottom: 1px solid var(--b-color-border);
     color: var(--b-color-primary-button);
     display: flex;
@@ -28,8 +32,8 @@
     justify-content: center;
     
     svg {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
     }
   }
 }
@@ -49,13 +53,9 @@
 }
 
 .settingItem {
-  padding: 1.25rem;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-  
-  &:hover {
-    background-color: rgba(var(--b-color-hover-rgb), 0.05);
-  }
+  padding: 16px;
+  border-radius: 16px;
+  background-color: var(--b-color-background-layer-1);
 }
 
 .settingItemContent {

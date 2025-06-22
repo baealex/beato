@@ -7,7 +7,12 @@ import { Image } from '~/components/shared';
 import { webAudioContext } from '~/modules/web-audio-context';
 
 import {
-    digital, line, ring, round, wave, particle, spectrum, neon
+    digital,
+    line,
+    ring,
+    round,
+    dna,
+    neon
 } from './visualizers';
 
 interface MusicPlayerVisualizerStyleProps {
@@ -39,17 +44,11 @@ const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt }: MusicPlayerVi
             case 'digital':
                 digital(canvas, ctx, bufferLength, dataArray);
                 break;
-            case 'wave':
-                wave(canvas, ctx, bufferLength, dataArray);
-                break;
-            case 'particle':
-                particle(canvas, ctx, bufferLength, dataArray);
+            case 'dna':
+                dna(canvas, ctx, bufferLength, dataArray);
                 break;
             case 'neon':
                 neon(canvas, ctx, bufferLength, dataArray);
-                break;
-            case 'spectrum':
-                spectrum(canvas, ctx, bufferLength, dataArray);
                 break;
             default:
                 round(canvas, ctx, bufferLength, dataArray);
