@@ -1,4 +1,5 @@
 @use '@baejino/style/scss/reset';
+@use '@baejino/style/scss/utils';
 @use '@baejino/ui/css/main';
 
 @use './theme';
@@ -37,7 +38,7 @@ body,
     -webkit-tap-highlight-color: transparent;
 }
 
-.container {
+.main-container {
     overflow: auto;
     display: flex;
     flex-direction: column;

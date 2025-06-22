@@ -308,7 +308,7 @@ export default function Queue() {
                     />
                 </div>
             </div>
-            <ul className="container" ref={ref}>
+            <ul className="main-container" ref={ref}>
                 <VerticalSortable items={items} onDragEnd={handleDragEnd}>
                     {items?.map((id, idx) => {
                         const music = musicMap.get(id);
@@ -362,7 +362,7 @@ export default function Queue() {
                                 />
                             )
                         })}>
-                        <Icon.Data />
+                        <Icon.Download />
                         <span>Save</span>
                     </button>
                     <button
@@ -371,7 +371,7 @@ export default function Queue() {
                             queueStore.removeItems(selectedItems);
                             setIsSelectMode(false);
                         }}>
-                        <Icon.TrashBin />
+                        <Icon.TrashCan />
                         <span>Delete</span>
                     </button>
                 </div>
@@ -379,7 +379,7 @@ export default function Queue() {
             <div className="footer">
                 <div />
                 <button className="icon-button" onClick={back}>
-                    <Icon.Cross />
+                    <Icon.Close />
                 </button>
             </div>
         </Container >

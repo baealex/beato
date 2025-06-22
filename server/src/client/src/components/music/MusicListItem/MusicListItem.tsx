@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 import { Image } from '~/components/shared';
-import { Heart, MoreVerticalFill } from '~/icon';
+import { Heart, VerticalDots } from '~/icon';
 
 interface MusicListItemProps {
     id?: number;
@@ -78,7 +78,7 @@ const MusicListItem = ({
                         {isLiked ? (
                             <Heart />
                         ) : (
-                            <MoreVerticalFill />
+                            <VerticalDots />
                         )}
                     </button>
                 )}

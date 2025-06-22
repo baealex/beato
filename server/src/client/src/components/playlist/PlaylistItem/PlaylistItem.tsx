@@ -2,7 +2,7 @@ import styles from './PlaylistItem.module.scss';
 import { useStore } from 'badland-react';
 
 import GridImage from '../../shared/GridImage';
-import { MoreVerticalFill } from '~/icon';
+import { VerticalDots } from '~/icon';
 
 import type { Music } from '~/models/type';
 
@@ -48,7 +48,7 @@ export default function PlaylistItem({
                         e.stopPropagation();
                         onLongPress();
                     }}>
-                    <MoreVerticalFill style={{ width: '16px' }} />
+                    <VerticalDots style={{ width: '16px' }} />
                 </button>
             )}
         </div>

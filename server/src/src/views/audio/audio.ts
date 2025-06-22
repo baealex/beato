@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import ffmpeg from 'fluent-ffmpeg';
+import { PassThrough } from 'stream';
 
 import models from '~/models';
 
@@ -8,26 +9,63 @@ import type { Controller } from '~/types';
 import type { Response } from 'express';
 
 const streamFile = (filePath: string, res: Response): void => {
-    const stream = fs.createReadStream(filePath);
-    stream.on('error', (err) => {
-        console.error('Error streaming file:', err);
-        if (!res.headersSent) {
-            res.status(500).send('Error streaming audio').end();
+    try {
+        const stat = fs.statSync(filePath);
+        const fileSize = stat.size;
+
+        // Set Content-Length header
+        res.setHeader('Content-Length', fileSize);
+
+        // Handle range requests
+        const range = res.req.headers.range;
+
+        if (range) {
+            const parts = range.replace(/bytes=/, '').split('-');
+            const start = parseInt(parts[0], 10);
+            const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+            const chunkSize = (end - start) + 1;
+
+            res.statusCode = 206;
+            res.setHeader('Content-Range', `bytes ${start}-${end}/${fileSize}`);
+            res.setHeader('Content-Length', chunkSize);
+
+            const stream = fs.createReadStream(filePath, { start, end });
+            stream.on('error', (err) => {
+                console.error('Error streaming file:', err);
+                if (!res.headersSent) {
+                    res.status(500).send('Error streaming audio').end();
+                }
+            });
+            stream.pipe(res);
+        } else {
+            // No range requested, stream the entire file
+            const stream = fs.createReadStream(filePath);
+            stream.on('error', (err) => {
+                console.error('Error streaming file:', err);
+                if (!res.headersSent) {
+                    res.status(500).send('Error streaming audio').end();
+                }
+            });
+            stream.pipe(res);
         }
-    });
-    stream.pipe(res);
+    } catch (error) {
+        console.error('Error accessing file stats:', error);
+        if (!res.headersSent) {
+            res.status(500).send('Error accessing audio file').end();
+        }
+    }
 };
 
 export const audio: Controller = async (req, res) => {
     const { id } = req.params;
 
-    const requestedBitrate = req.query.bitrate as string || '128k';
-    const requestedFormat = req.query.format as string || 'mp3';
+    const requestedBitrate = (req.query.bitrate as string) || '128k';
+    const requestedFormat = (req.query.format as string) || 'mp3';
 
     const validBitrates = ['64k', '96k', '128k', '192k', '256k', '320k'];
     const bitrate = validBitrates.includes(requestedBitrate) ? requestedBitrate : '128k';
 
-    const validFormats = ['mp3', 'aac', 'ogg'];
+    const validFormats = ['mp3', 'aac'];
     const outputFormat = validFormats.includes(requestedFormat) ? requestedFormat : 'mp3';
 
     if (!id || !Number.isInteger(Number(id))) {
@@ -50,7 +88,7 @@ export const audio: Controller = async (req, res) => {
             return;
         }
 
-        const fileExtension = $music.filePath.split('.').pop().toLowerCase();
+        const fileExtension = $music.filePath.split('.').pop()?.toLowerCase() || '';
 
         const contentTypeMap = {
             'mp3': 'audio/mpeg',
@@ -75,85 +113,87 @@ export const audio: Controller = async (req, res) => {
             streamFile(filePath, res);
             return;
         }
-        res.setHeader('Content-Type', contentTypeMap[outputFormat] || 'audio/mpeg');
-        res.setHeader('Cache-Control', 'max-age=604800');
-
-        if (fileExtension === outputFormat && bitrate === '320k') {
-            res.setHeader('Accept-Ranges', 'bytes');
-            streamFile(filePath, res);
-            return;
-        }
-
-        res.setHeader('Accept-Ranges', 'none');
 
         try {
-            const tempDir = path.resolve('./temp');
-            if (!fs.existsSync(tempDir)) {
-                fs.mkdirSync(tempDir, { recursive: true });
-            }
+            console.log(`Starting audio transcoding with bitrate: ${bitrate}, format: ${outputFormat}`);
 
-            const tempFileName = `${id}_${outputFormat}_${bitrate}_${Date.now()}.${outputFormat}`;
-            const tempFilePath = path.join(tempDir, tempFileName);
+            // Get audio metadata to ensure correct duration
+            const getAudioMetadata = async (audioPath: string) => {
+                return new Promise<{ format: { duration?: number, bit_rate?: number } }>((resolve, reject) => {
+                    ffmpeg.ffprobe(audioPath, (err, metadata) => {
+                        if (err) {
+                            console.error('Error getting audio metadata:', err);
+                            reject(err);
+                            return;
+                        }
+                        resolve(metadata);
+                    });
+                });
+            };
 
-            const command = ffmpeg(filePath)
+            // Create a pass-through stream for buffering
+            const outputStream = new PassThrough();
+
+            // Set headers
+            res.setHeader('Content-Type', contentTypeMap[outputFormat] || 'audio/mpeg');
+            res.setHeader('Cache-Control', 'max-age=604800');
+
+            // Create ffmpeg command configuration
+            const cmd = ffmpeg(filePath)
                 .audioBitrate(bitrate)
                 .audioFrequency(44100)
-                .audioChannels(2);
+                .audioChannels(2)
+                .on('start', (commandLine) => {
+                    console.log('FFmpeg process started:', commandLine);
+                })
+                .on('progress', (progress) => {
+                    console.log(`Processing: ${progress.percent ? progress.percent.toFixed(1) : 0}% done`);
+                })
+                .on('error', (err) => {
+                    console.error('Error during transcoding:', err);
+                    if (!res.headersSent) {
+                        console.log('Falling back to direct streaming');
+                        res.setHeader('Content-Type', contentTypeMap[fileExtension] || 'audio/mpeg');
+                        res.setHeader('Accept-Ranges', 'bytes');
+                        streamFile(filePath, res);
+                    } else if (!res.writableEnded) {
+                        res.end();
+                    }
+                })
+                .on('end', () => {
+                    console.log('Transcoding completed successfully');
+                });
 
             if (outputFormat === 'mp3') {
-                command
+                const outputOptions = [
+                    '-id3v2_version', '3',
+                    '-write_xing', '1'
+                ];
+
+                cmd
                     .format('mp3')
                     .audioCodec('libmp3lame')
-                    .outputOptions([
-                        '-id3v2_version', '3',
-                        '-write_xing', '1'
-                    ]);
+                    .outputOptions(outputOptions);
             } else if (outputFormat === 'aac') {
-                command
+                const outputOptions = [
+                    '-strict', '-2'
+                ];
+
+                cmd
                     .format('adts')
                     .audioCodec('aac')
-                    .outputOptions([
-                        '-strict', 'experimental'
-                    ]);
+                    .outputOptions(outputOptions);
             }
 
-            command.output(tempFilePath);
+            // Pipe the output directly to the response
+            cmd.pipe(outputStream, { end: true });
+            outputStream.pipe(res);
 
-            command.on('start', () => {
-                console.log(`Starting audio transcoding with bitrate: ${bitrate}, format: ${outputFormat}`);
+            // Handle client disconnect
+            res.on('close', () => {
+                console.log('Client disconnected, ending transcoding process');
+                cmd.kill('SIGKILL');
             });
-
-            command.on('end', () => {
-                console.log('Audio transcoding completed successfully');
-
-                const fileStream = fs.createReadStream(tempFilePath);
-
-                fileStream.on('error', (err) => {
-                    console.error('Error streaming transcoded file:', err);
-                    if (!res.headersSent) {
-                        res.status(500).send('Error streaming audio').end();
-                    }
-
-                    try { fs.unlinkSync(tempFilePath); } catch (e) { /* ignore */ }
-                });
-
-                fileStream.on('close', () => {
-                    try { fs.unlinkSync(tempFilePath); } catch (e) { /* ignore */ }
-                });
-
-                fileStream.pipe(res);
-            });
-
-            command.on('error', (err) => {
-                console.error('Error during audio transcoding:', err);
-                if (!res.headersSent) {
-                    console.log('Falling back to direct streaming');
-                    streamFile(filePath, res);
-                }
-                try { fs.unlinkSync(tempFilePath); } catch (e) { /* ignore */ }
-            });
-
-            command.run();
         } catch (err) {
             console.error('Error setting up ffmpeg:', err);
             if (!res.headersSent) {

@@ -340,7 +340,7 @@ export default function PlayerDetail() {
                 </div>
                 <div className="footer">
                     <button className="icon-button" onClick={back}>
-                        <Icon.Left />
+                        <Icon.ChevronLeft />
                     </button>
                 </div>
             </div>

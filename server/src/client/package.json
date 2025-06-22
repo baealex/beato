@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@baejino/handy": "^0.2.3",
+        "@baejino/icon": "^0.2.0",
         "@baejino/style": "^0.2.2",
         "@baejino/ui": "^0.2.1",
         "@dnd-kit/core": "^6.3.1",

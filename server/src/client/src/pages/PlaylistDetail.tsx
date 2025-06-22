@@ -241,7 +241,7 @@ export default function PlaylistDetail() {
                                 />
                             )
                         })}>
-                        <Icon.Data />
+                        <Icon.Download />
                         <span>Move</span>
                     </button>
                     <button
@@ -250,7 +250,7 @@ export default function PlaylistDetail() {
                             PlaylistListener.removeMusic(playlist.id, selectedItems);
                             setIsSelectMode(false);
                         }}>
-                        <Icon.TrashBin />
+                        <Icon.TrashCan />
                         <span>Delete</span>
                     </button>
                 </ActionBar>
