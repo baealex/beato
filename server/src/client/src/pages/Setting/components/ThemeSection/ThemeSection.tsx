@@ -44,20 +44,12 @@ const PLAYER_ALBUM_ART_STYLES = [
         label: 'Visualizer (Digital)'
     },
     {
-        value: 'visualizer:wave',
-        label: 'Visualizer (Wave)'
-    },
-    {
-        value: 'visualizer:particle',
-        label: 'Visualizer (Particle)'
+        value: 'visualizer:dna',
+        label: 'Visualizer (DNA)'
     },
     {
         value: 'visualizer:neon',
         label: 'Visualizer (Neon)'
-    },
-    {
-        value: 'visualizer:spectrum',
-        label: 'Visualizer (Spectrum)'
     }
 ];
 
