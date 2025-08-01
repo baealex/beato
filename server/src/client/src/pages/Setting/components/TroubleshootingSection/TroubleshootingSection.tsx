@@ -32,6 +32,15 @@ export const TroubleshootingSection = () => {
                     </Button>
                 </div>
             </SettingItem>
+            <SettingItem
+                title="Give Feedback"
+                description="Give feedback to help us improve the application.">
+                <div className={styles.buttonContainer}>
+                    <Button onClick={() => window.open('https://feedback.baejino.com/s/nfhsuyckehiwfgbpuzesy6dp', '_blank')}>
+                        Give Feedback
+                    </Button>
+                </div>
+            </SettingItem>
         </SettingSection>
     );
 };
