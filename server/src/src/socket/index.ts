@@ -4,6 +4,7 @@ import { connectors } from './connectors';
 import { syncListener } from './sync';
 import { musicListener } from './music';
 import { playlistListener } from './playlist';
+import { playbackListener } from './playback';
 
 export const socketManager = (socket: Socket) => {
     console.log(`${socket.id} : a user connected`);
@@ -20,6 +21,7 @@ export const socketManager = (socket: Socket) => {
     syncListener(socket);
     musicListener(socket);
     playlistListener(socket);
+    playbackListener(socket);
 
     socket.on('get-connectors', () => {
         socket.emit('get-connectors', connectors.get().map((c) => ({

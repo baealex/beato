@@ -9,10 +9,11 @@ import {
     WebAudioChannel,
     AppAudioChannel
 } from '~/modules/audio-channel';
-import { MusicListener } from '~/socket';
+import { MusicListener, PlaybackListener, socket } from '~/socket';
 import { shuffle } from '~/modules/shuffle';
 
 interface QueueStoreState {
+    activeDeviceId: string | null;
     selected: number | null;
     isPlaying: boolean;
     shuffle: boolean;
@@ -35,11 +36,15 @@ class QueueStore extends Store<QueueStoreState> {
     saveTimer: ReturnType<typeof setTimeout> | null = null;
     shouldCount = false;
     audioChannel: AudioChannel;
+    syncingFromServer = false;
+    playbackListener: PlaybackListener;
 
     constructor() {
         super();
         this.saveTimer = null;
+        this.syncingFromServer = false;
         this.state = {
+            activeDeviceId: null,
             selected: null,
             isPlaying: false,
             shuffle: false,
@@ -133,6 +138,52 @@ class QueueStore extends Store<QueueStoreState> {
                     this.select(nextState.selected || 0, false);
                 }
                 musicStore.unsubscribe(key);
+            }
+        });
+
+        // PlaybackListener 초기화 및 연결
+        this.playbackListener = new PlaybackListener();
+        this.playbackListener.connect({
+            onPlaybackStateSync: (state) => {
+                this.syncingFromServer = true;
+
+                // 서버로부터 받은 상태로 업데이트
+                const isThisDeviceActive = state.activeDeviceId === socket.id;
+
+                // 상태 업데이트
+                this.set({
+                    ...state,
+                    // 활성 기기가 아니면 재생 중이더라도 일시정지 상태로 표시
+                    isPlaying: isThisDeviceActive ? state.isPlaying : false
+                });
+
+                // 활성 기기인 경우에만 실제 오디오 재생/일시정지
+                if (isThisDeviceActive) {
+                    if (state.selected !== null && state.items.length > 0) {
+                        const music = getMusic(state.items[state.selected]);
+                        if (music) {
+                            // 현재 재생 중인 곡이 다르면 로드
+                            this.audioChannel.load(music);
+
+                            // 재생 위치 동기화
+                            if (state.currentTime > 0) {
+                                this.audioChannel.seek(state.currentTime);
+                            }
+
+                            // 재생/일시정지 상태 동기화
+                            if (state.isPlaying) {
+                                this.audioChannel.play();
+                            } else {
+                                this.audioChannel.pause();
+                            }
+                        }
+                    }
+                } else {
+                    // 활성 기기가 아니면 오디오 일시정지
+                    this.audioChannel.pause();
+                }
+
+                this.syncingFromServer = false;
             }
         });
 
@@ -255,11 +306,17 @@ class QueueStore extends Store<QueueStoreState> {
         document.title = `${music.name} - ${music.artist.name}`;
 
         this.audioChannel.load(music);
-        play && this.audioChannel.play();
+        if (play) {
+            // 재생할 때 이 기기를 활성 기기로 설정
+            PlaybackListener.requestPlaybackControl();
+            this.audioChannel.play();
+        }
     }
 
     play() {
         if (this.state.selected !== null) {
+            // 재생을 시작할 때 이 기기를 활성 기기로 설정
+            PlaybackListener.requestPlaybackControl();
             this.audioChannel.play();
         }
     }
@@ -357,6 +414,11 @@ class QueueStore extends Store<QueueStoreState> {
             }));
             this.saveTimer = null;
         }, 3000);
+
+        // 서버로부터 받은 상태 동기화 중이 아닐 때만 서버에 상태 전송
+        if (!this.syncingFromServer) {
+            PlaybackListener.updatePlaybackState(this.state);
+        }
     }
 }
 

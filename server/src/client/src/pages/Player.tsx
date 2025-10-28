@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useStore } from 'badland-react';
 
 import { MusicActionPanelContent, MusicPlayerDiskStyle, MusicPlayerFluffyStyle, MusicPlayerVisualizerStyle } from '~/components/music';
+import { DeviceSelector } from '~/components/device';
 import * as Icon from '~/icon';
 
 import { useBack } from '~/hooks';
@@ -335,6 +336,43 @@ export default function PlayerDetail() {
                             className={`icon-button shuffle ${state.shuffle ? 'active' : ''}`}
                             onClick={() => queueStore.toggleShuffle()}>
                             <Icon.Shuffle />
+                        </button>
+                    </div>
+                    <div style={{ marginTop: '1rem', textAlign: 'center', width: '100%' }}>
+                        <button
+                            className="icon-button"
+                            onClick={() => panel.open({
+                                title: 'Select Device',
+                                content: <DeviceSelector onClose={() => panel.close()} />
+                            })}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                padding: '0.75rem 1.5rem',
+                                borderRadius: '2rem',
+                                backgroundColor: 'var(--b-color-background-layer-1)',
+                                border: 'none',
+                                cursor: 'pointer',
+                                fontSize: '0.875rem',
+                                width: 'auto',
+                                height: 'auto'
+                            }}>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                />
+                            </svg>
+                            <span>Select Device</span>
                         </button>
                     </div>
                 </div>
