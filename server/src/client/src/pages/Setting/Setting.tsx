@@ -13,6 +13,7 @@ import {
     ThemeSection,
     TroubleshootingSection
 } from './components';
+import Text from '~/components/shared/Text';
 
 import styles from './Setting.module.scss';
 
@@ -237,8 +238,12 @@ export default function Setting() {
     return (
         <div className={styles.container}>
             <div className={styles.settingsHeader}>
-                <h1>Settings</h1>
-                <p>Customize your listening experience</p>
+                <Text as="h1" size="2xl" weight="bold">
+                    Settings
+                </Text>
+                <Text as="p" variant="secondary">
+                    Customize your listening experience
+                </Text>
             </div>
 
             <div className={styles.settingsGrid}>

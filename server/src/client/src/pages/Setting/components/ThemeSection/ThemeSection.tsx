@@ -3,21 +3,6 @@ import { useStore } from 'badland-react';
 import { Select, SettingSection, SettingItem } from '~/components/shared';
 import { themeStore } from '~/store/theme';
 
-const THEMES = [
-    {
-        value: '',
-        label: 'Beato'
-    },
-    {
-        value: 'rosy',
-        label: 'Rosy'
-    },
-    {
-        value: 'breeze',
-        label: 'Breeze'
-    }
-];
-
 const PLAYER_ALBUM_ART_STYLES = [
     {
         value: '',
@@ -72,23 +57,13 @@ interface ThemeSectionProps {
 }
 
 export const ThemeSection = ({ shouldStable }: ThemeSectionProps) => {
-    const [{ colorTone, playerAlbumArtStyle }] = useStore(themeStore);
+    const [{ playerAlbumArtStyle }] = useStore(themeStore);
 
     return (
         <SettingSection
             title="Theme"
             icon={<ThemeIcon />}
             description="Customize the appearance of the application.">
-            <SettingItem
-                title="Color Tone"
-                description="Choose the color theme for the application interface.">
-                <Select
-                    selected={THEMES.find(({ value }) => value === colorTone)}
-                    options={THEMES}
-                    onChange={(value) => themeStore.setColorTone(value)}
-                />
-            </SettingItem>
-
             <SettingItem
                 title="Player Cover"
                 description="Select how album artwork is displayed in the music player.">

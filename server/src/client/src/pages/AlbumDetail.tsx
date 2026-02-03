@@ -30,47 +30,46 @@ export default function AlbumDetail() {
     }
 
     return (
-        <>
-            <TwoToneLayout
-                header={(
-                    <AlbumSummary {...album} />
-                )}
-                primaryAction={(
-                    <button onClick={() => queueStore.reset(album.musics.map(music => music.id))}>
-                        <Play/>
-                    </button>
-                )}>
-                {album.musics.map(({ id }) => {
-                    const music = musicMap.get(id);
+        <TwoToneLayout
+            backgroundImage={album.cover.replace('/resized', '')}
+            header={(
+                <AlbumSummary {...album} />
+            )}
+            primaryAction={(
+                <button onClick={() => queueStore.reset(album.musics.map(music => music.id))}>
+                    <Play />
+                </button>
+            )}>
+            {album.musics.map(({ id }) => {
+                const music = musicMap.get(id);
 
-                    if (!music) {
-                        return null;
-                    }
+                if (!music) {
+                    return null;
+                }
 
-                    return (
-                        <MusicListItem
-                            key={music.id}
-                            albumName={music.album.name}
-                            artistName={music.artist.name}
-                            trackNumber={music.trackNumber}
-                            musicName={music.name}
-                            musicCodec={music.codec}
-                            isLiked={music.isLiked}
-                            isHated={music.isHated}
-                            onClick={() => queueStore.add(music.id)}
-                            onLongPress={() => panel.open({
-                                title: 'Related to this music',
-                                content: (
-                                    <MusicActionPanelContent
-                                        id={music.id}
-                                        onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
-                                    />
-                                )
-                            })}
-                        />
-                    );
-                })}
-            </TwoToneLayout>
-        </>
+                return (
+                    <MusicListItem
+                        key={music.id}
+                        albumName={music.album.name}
+                        artistName={music.artist.name}
+                        trackNumber={music.trackNumber}
+                        musicName={music.name}
+                        musicCodec={music.codec}
+                        isLiked={music.isLiked}
+                        isHated={music.isHated}
+                        onClick={() => queueStore.add(music.id)}
+                        onLongPress={() => panel.open({
+                            title: 'Related to this music',
+                            content: (
+                                <MusicActionPanelContent
+                                    id={music.id}
+                                    onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
+                                />
+                            )
+                        })}
+                    />
+                );
+            })}
+        </TwoToneLayout>
     );
 }

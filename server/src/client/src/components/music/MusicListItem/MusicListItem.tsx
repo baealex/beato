@@ -33,10 +33,7 @@ const MusicListItem = ({
 }: MusicListItemProps) => {
     return (
         <div
-            className={cx(
-                'MusicListItem',
-                { isHated }
-            )}
+            className={cx('MusicListItem', { isHated })}
             onClick={onClick}
             onContextMenu={(e) => {
                 e.preventDefault();
@@ -45,22 +42,14 @@ const MusicListItem = ({
             {typeof albumCover === 'string' && (
                 <Image className={cx('album-art')} src={albumCover} alt={albumName} />
             )}
-            <div
-                className={cx(
-                    'row',
-                    { hasAlbumCover: !!albumCover }
-                )}>
-                <div
-                    className={cx(
-                        'info',
-                        { hasMenu: typeof onLongPress === 'function' }
-                    )}>
+            <div className={cx('row')}>
+                <div className={cx('info', { hasMenu: typeof onLongPress === 'function' })}>
                     <div className={cx('title')}>
                         {!!trackNumber && (
                             <span className={cx('track-number')}>{trackNumber}.</span>
                         )}
-                        {musicName}
-                        {musicCodec && musicCodec.toLocaleLowerCase() === 'flac' && (
+                        <span>{musicName}</span>
+                        {musicCodec && musicCodec.toLowerCase() === 'flac' && (
                             <span className={cx('codec')}>{musicCodec}</span>
                         )}
                     </div>
@@ -75,11 +64,7 @@ const MusicListItem = ({
                             e.stopPropagation();
                             onLongPress?.();
                         }}>
-                        {isLiked ? (
-                            <Heart />
-                        ) : (
-                            <VerticalDots />
-                        )}
+                        {isLiked ? <Heart /> : <VerticalDots />}
                     </button>
                 )}
             </div>

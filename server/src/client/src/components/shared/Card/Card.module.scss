@@ -1,0 +1,69 @@
+@use '~/styles/var';
+
+.Card {
+    // Variants
+    &.variant-elevated {
+        background: var.$COLOR_BACKGROUND_LAYER_1;
+        box-shadow: var.$SHADOW_MAIN;
+    }
+
+    &.variant-flat {
+        background: var.$COLOR_BACKGROUND_LAYER_1;
+    }
+
+    &.variant-glass {
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(8px);
+        border: 1px solid var.$COLOR_BORDER_SUBTLE;
+    }
+
+    // Padding
+    &.padding-none {
+        padding: 0;
+    }
+
+    &.padding-sm {
+        padding: var.$SPACING_SM;
+    }
+
+    &.padding-md {
+        padding: var.$SPACING_MD;
+    }
+
+    &.padding-lg {
+        padding: var.$SPACING_LG;
+    }
+
+    // Border Radius
+    &.radius-md {
+        border-radius: var.$RADIUS_MD;
+    }
+
+    &.radius-lg {
+        border-radius: var.$RADIUS_LG;
+    }
+
+    &.radius-xl {
+        border-radius: var.$RADIUS_XL;
+    }
+
+    &.radius-2xl {
+        border-radius: var.$RADIUS_2XL;
+    }
+
+    // Interactive state
+    &.interactive {
+        cursor: pointer;
+        transition: var.$TRANSITION_FAST;
+        transition-property: transform, box-shadow;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: var.$SHADOW_HOVER;
+        }
+
+        &:active {
+            transform: translateY(-1px) scale(0.99);
+        }
+    }
+}

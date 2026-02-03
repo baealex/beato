@@ -11,12 +11,16 @@ interface AlbumListItemProps {
     onClick: () => void;
 }
 
-const AlbumListItem = ({ albumCover, albumName, artistName, onClick  }: AlbumListItemProps) => {
+const AlbumListItem = ({ albumCover, albumName, artistName, onClick }: AlbumListItemProps) => {
     return (
         <div className={cx('AlbumListItem')} onClick={onClick}>
-            <Image className={cx('cover')} src={albumCover} alt={albumName} />
-            <span className={cx('title')}>{albumName}</span>
-            <span className={cx('artist')}>{artistName}</span>
+            <div className={cx('cover-wrapper')}>
+                <Image className={cx('cover')} src={albumCover} alt={albumName} />
+            </div>
+            <div className={cx('info')}>
+                <span className={cx('title')}>{albumName}</span>
+                <span className={cx('artist')}>{artistName}</span>
+            </div>
         </div>
     );
 };

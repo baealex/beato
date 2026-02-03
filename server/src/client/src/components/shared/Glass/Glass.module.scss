@@ -1,0 +1,61 @@
+@use '~/styles/var';
+
+.Glass {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var.$COLOR_BORDER_SUBTLE;
+
+    // Intensity (blur amount)
+    &.intensity-light {
+        backdrop-filter: blur(4px);
+    }
+
+    &.intensity-medium {
+        backdrop-filter: blur(8px);
+    }
+
+    &.intensity-heavy {
+        backdrop-filter: blur(16px);
+    }
+
+    // Padding
+    &.padding-none {
+        padding: 0;
+    }
+
+    &.padding-sm {
+        padding: var.$SPACING_SM;
+    }
+
+    &.padding-md {
+        padding: var.$SPACING_MD;
+    }
+
+    &.padding-lg {
+        padding: var.$SPACING_LG;
+    }
+
+    // Border Radius
+    &.radius-sm {
+        border-radius: var.$RADIUS_SM;
+    }
+
+    &.radius-md {
+        border-radius: var.$RADIUS_MD;
+    }
+
+    &.radius-lg {
+        border-radius: var.$RADIUS_LG;
+    }
+
+    &.radius-xl {
+        border-radius: var.$RADIUS_XL;
+    }
+
+    &.radius-2xl {
+        border-radius: var.$RADIUS_2XL;
+    }
+
+    &.radius-full {
+        border-radius: var.$RADIUS_FULL;
+    }
+}

@@ -1,126 +1,135 @@
-.settingSection {
-  background-color: var(--b-color-card);
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 2.5rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border: 1px solid var(--b-color-border);
+@use '~/styles/var';
 
-  @media (max-width: 768px) {
-    padding: 16px;
-  }
+.settingSection {
+    background-color: var.$COLOR_BACKGROUND_LAYER_1;
+    border-radius: var.$RADIUS_LG;
+    padding: var.$SPACING_LG;
+    margin-bottom: var.$SPACING_2XL;
+    box-shadow: var.$SHADOW_MAIN;
+    border: 1px solid var.$COLOR_BORDER_SUBTLE;
+
+    @media (max-width: 768px) {
+        padding: var.$SPACING_MD;
+    }
 }
 
 .sectionHeader {
-  margin-bottom: 2rem;
-  
-  h3 {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--b-color-border);
-    color: var(--b-color-primary-button);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  
-  .sectionIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    svg {
-      width: 20px;
-      height: 20px;
+    margin-bottom: var.$SPACING_LG;
+
+    h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0;
+        margin-bottom: var.$SPACING_MD;
+        padding-bottom: var.$SPACING_MD;
+        border-bottom: 1px solid var.$COLOR_BORDER;
+        color: var.$COLOR_POINT;
+        display: flex;
+        align-items: center;
+        gap: var.$SPACING_SM;
     }
-  }
+
+    .sectionIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
 }
 
 .sectionDescription {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--b-color-text);
-  opacity: 0.8;
-  margin-bottom: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var.$COLOR_TEXT_SECONDARY;
+    margin: 0;
 }
 
 .sectionContent {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: var.$SPACING_MD;
 }
 
 .settingItem {
-  padding: 16px;
-  border-radius: 16px;
-  background-color: var(--b-color-background-layer-1);
+    padding: var.$SPACING_MD;
+    border-radius: var.$RADIUS_LG;
+    background-color: var.$COLOR_BACKGROUND_LAYER_2;
+    transition: var.$TRANSITION_FAST;
+    transition-property: background-color, box-shadow;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.04);
+    }
 }
 
 .settingItemContent {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 1.5rem;
-  align-items: center;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var.$SPACING_LG;
+    align-items: center;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: var.$SPACING_MD;
+    }
 }
 
 .settingItemHeader {
-  h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0 0 0.5rem;
-    color: var(--b-color-text);
-  }
-  
-  .description {
-    font-size: 0.9rem;
-    opacity: 0.7;
-    margin: 0;
-    line-height: 1.5;
-    color: var(--b-color-text);
-  }
+    h4 {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        margin: 0 0 var.$SPACING_XS;
+        color: var.$COLOR_TEXT;
+    }
+
+    .description {
+        font-size: 0.8125rem;
+        color: var.$COLOR_TEXT_TERTIARY;
+        margin: 0;
+        line-height: 1.5;
+    }
 }
 
 .settingItemControl {
-  display: flex;
-  justify-content: flex-end;
-  min-width: 180px;
-  
-  @media (max-width: 768px) {
-    justify-content: flex-start;
-  }
+    display: flex;
+    justify-content: flex-end;
+    min-width: 180px;
+
+    @media (max-width: 768px) {
+        justify-content: flex-start;
+    }
 }
 
 .infoBox {
-  padding: 1rem 1.25rem;
-  border-radius: 6px;
-  margin: 1rem 0;
-  border-left: 4px solid;
-  
-  p {
-    margin: 0;
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-  
-  &.info {
-    background-color: rgba(var(--b-color-primary-button-rgb), 0.1);
-    border-left-color: var(--b-color-primary-button);
-  }
-  
-  &.warning {
-    background-color: rgba(255, 152, 0, 0.1);
-    border-left-color: #ff9800;
-  }
-  
-  &.success {
-    background-color: rgba(76, 175, 80, 0.1);
-    border-left-color: #4caf50;
-  }
+    padding: var.$SPACING_MD var.$SPACING_LG;
+    border-radius: var.$RADIUS_MD;
+    margin: var.$SPACING_MD 0;
+    border-left: 4px solid;
+    background-color: rgba(255, 255, 255, 0.02);
+
+    p {
+        margin: 0;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: var.$COLOR_TEXT_SECONDARY;
+    }
+
+    &.info {
+        background-color: rgba(167, 139, 250, 0.08);
+        border-left-color: var.$COLOR_POINT;
+    }
+
+    &.warning {
+        background-color: rgba(255, 152, 0, 0.08);
+        border-left-color: #ff9800;
+    }
+
+    &.success {
+        background-color: rgba(76, 175, 80, 0.08);
+        border-left-color: #4caf50;
+    }
 }

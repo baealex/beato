@@ -4,7 +4,7 @@ const cx = classNames.bind(styles);
 
 import { Link } from 'react-router-dom';
 
-import { Image, SummaryTitle } from '~/components/shared';
+import { Image, Text } from '~/components/shared';
 
 import type { Album } from '~/models/type';
 
@@ -19,21 +19,23 @@ const AlbumSummary = ({
     return (
         <div className={cx('AlbumSummary')}>
             <div className={cx('cover')}>
-                <div>
-                    <Image src={cover.replace('/resized', '') || ''} alt={artist.name} />
+                <div className={cx('cover-inner')}>
+                    <Image src={cover.replace('/resized', '') || ''} alt={name} />
                 </div>
             </div>
-            <SummaryTitle as="h1">
+            <Text as="h1" size="2xl" weight="bold" className={cx('title')}>
                 {name}
-            </SummaryTitle>
-            <div className={cx('row')}>
+            </Text>
+            <div className={cx('meta')}>
                 <Link className={cx('artist')} to={`/artist/${artist.id}`}>
-                    {artist.name}
+                    <Text variant="secondary" size="md">
+                        {artist.name}
+                    </Text>
                 </Link>
-                -
-                <span className={cx('year')}>
+                <Text variant="muted" size="md">•</Text>
+                <Text variant="tertiary" size="md">
                     {publishedYear}
-                </span>
+                </Text>
             </div>
         </div>
     );
