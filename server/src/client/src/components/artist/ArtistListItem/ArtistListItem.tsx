@@ -20,23 +20,22 @@ const ArtistListItem = ({
     onClick
 }: ArtistListItemProps) => {
     return (
-        <div className={cx('ArtistListItem', 'clickable', 'linkable')} onClick={onClick}>
-            <Image
-                src={artistCover}
-                alt={artistName}
-            />
+        <div className={cx('ArtistListItem')} onClick={onClick}>
+            <div className={cx('image-container')}>
+                <Image
+                    className={cx('image')}
+                    src={artistCover}
+                    alt={artistName}
+                />
+            </div>
             <div className={cx('info')}>
                 <div className={cx('name')}>
                     {artistName}
                 </div>
                 <div className={cx('count')}>
-                    <div className={cx('album')}>
-                        {albumCount} albums
-                    </div>
-                    <span>/</span>
-                    <div className={cx('music')}>
-                        {musicCount} songs
-                    </div>
+                    <span>{albumCount} albums</span>
+                    <span className={cx('separator')}>/</span>
+                    <span>{musicCount} songs</span>
                 </div>
             </div>
         </div>

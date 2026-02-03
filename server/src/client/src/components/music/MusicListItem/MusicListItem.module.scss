@@ -6,11 +6,11 @@ $SIZE_ICON: 40px;
 .MusicListItem {
     color: var.$COLOR_TEXT;
     cursor: pointer;
-    padding: var.$SPACING_SM var.$SPACING_MD;
+    padding: var.$SPACING_MD;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: var.$SPACING_SM;
+    gap: var.$SPACING_MD;
     width: 100%;
     border-radius: var.$RADIUS_MD;
     transition: var.$TRANSITION_FAST;
@@ -55,10 +55,10 @@ $SIZE_ICON: 40px;
             flex-direction: column;
             flex: 1;
             min-width: 0;
-            gap: 2px;
+            gap: var.$SPACING_XS;
 
             &.hasMenu {
-                max-width: calc(100% - $SIZE_ICON - var.$SPACING_SM);
+                max-width: calc(100% - $SIZE_ICON - var.$SPACING_MD);
             }
         }
 
@@ -70,7 +70,7 @@ $SIZE_ICON: 40px;
         }
 
         .artist {
-            font-size: 0.75rem;
+            font-size: 0.8125rem;
             color: var.$COLOR_TEXT_TERTIARY;
         }
 

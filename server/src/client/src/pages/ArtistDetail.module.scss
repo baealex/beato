@@ -1,0 +1,30 @@
+@use '~/styles/var';
+
+.section {
+    margin-bottom: var.$SPACING_2XL;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var.$SPACING_MD 0;
+    margin-bottom: var.$SPACING_MD;
+    border-bottom: 1px solid var.$COLOR_BORDER;
+    gap: var.$SPACING_MD;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: var.$SPACING_SM;
+}
+
+.music-list {
+    display: flex;
+    flex-direction: column;
+}

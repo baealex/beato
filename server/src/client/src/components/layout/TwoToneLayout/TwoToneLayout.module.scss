@@ -1,44 +1,97 @@
 @use '~/styles/var';
 
 .TwoToneLayout {
+    position: relative;
+    min-height: 100%;
+
+    .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60vh;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(40px) saturate(1.5) brightness(0.6);
+            transform: scale(1.1);
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+                    rgba(5, 5, 5, 0.3) 0%,
+                    rgba(5, 5, 5, 0.7) 50%,
+                    var(--b-color-background) 100%);
+        }
+    }
+
     .header {
         position: relative;
-        padding: var.$SPACING_1X var.$SPACING_2X;
-        background: var.$COLOR_BACKGROUND_LAYER_1;
+        z-index: 1;
+        padding: var.$SPACING_XL var.$SPACING_LG;
+        padding-top: var.$SPACING_2XL;
     }
 
     .primaryAction {
         position: absolute;
         bottom: 0;
-        right: 0.5rem;
+        right: var.$SPACING_LG;
         transform: translateY(50%);
+        z-index: 2;
 
         button {
-            border-radius: 100%;
-            width: 4rem;
-            height: 4rem;
+            border-radius: var.$RADIUS_FULL;
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var.$COLOR_BACKGROUND_LAYER_1;
-            border: 4px solid var.$COLOR_BACKGROUND;
+            background: var(--b-gradient-primary);
+            border: none;
             color: var.$COLOR_TEXT;
-            transition: background-color 0.2s;
+            cursor: pointer;
+            box-shadow:
+                0 8px 24px rgba(167, 139, 250, 0.3),
+                0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: var.$TRANSITION_FAST;
+            transition-property: transform, box-shadow, filter;
 
             svg {
-                width: 1.5rem;
-                height: 1.5rem;
+                width: 28px;
+                height: 28px;
+            }
+
+            &:hover {
+                transform: scale(1.05);
+                filter: brightness(1.1);
+                box-shadow:
+                    0 12px 32px rgba(167, 139, 250, 0.4),
+                    0 6px 16px rgba(0, 0, 0, 0.5);
+            }
+
+            &:active {
+                transform: scale(0.95);
             }
         }
     }
 
     &.hasPrimaryAction {
         .content {
-            margin-top: var.$SPACING_2X;
+            padding-top: var.$SPACING_2XL;
         }
     }
 
     .content {
-        margin-top: 0;
+        position: relative;
+        z-index: 1;
+        padding: var.$SPACING_MD;
+        padding-top: var.$SPACING_MD;
     }
 }

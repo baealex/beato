@@ -1,0 +1,72 @@
+@use '~/styles/var';
+
+.Text {
+    margin: 0;
+    padding: 0;
+
+    // Variants
+    &.variant-primary {
+        color: var.$COLOR_TEXT;
+    }
+
+    &.variant-secondary {
+        color: var.$COLOR_TEXT_SECONDARY;
+    }
+
+    &.variant-tertiary {
+        color: var.$COLOR_TEXT_TERTIARY;
+    }
+
+    &.variant-muted {
+        color: var.$COLOR_TEXT_MUTED;
+    }
+
+    // Sizes
+    &.size-xs {
+        font-size: 0.625rem; // 10px
+    }
+
+    &.size-sm {
+        font-size: 0.75rem; // 12px
+    }
+
+    &.size-md {
+        font-size: 0.875rem; // 14px
+    }
+
+    &.size-lg {
+        font-size: 1rem; // 16px
+    }
+
+    &.size-xl {
+        font-size: 1.25rem; // 20px
+    }
+
+    &.size-2xl {
+        font-size: 1.5rem; // 24px
+    }
+
+    // Weights
+    &.weight-normal {
+        font-weight: 400;
+    }
+
+    &.weight-medium {
+        font-weight: 500;
+    }
+
+    &.weight-semibold {
+        font-weight: 600;
+    }
+
+    &.weight-bold {
+        font-weight: 700;
+    }
+
+    // Truncate
+    &.truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

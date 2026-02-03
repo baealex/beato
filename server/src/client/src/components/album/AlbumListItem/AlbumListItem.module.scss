@@ -4,26 +4,47 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    text-align: left;
-    gap: 4px;
-    border-radius: 16px;
     background: var.$COLOR_BACKGROUND_LAYER_1;
-    transition: background 0.2s ease-in-out;
-    padding: 0 0 8px;
-    box-shadow: var(--b-card-shadow-sub);
+    border-radius: var.$RADIUS_XL;
+    overflow: hidden;
+    box-shadow: var.$SHADOW_MAIN;
+    transition: var.$TRANSITION_FAST;
+    transition-property: transform, box-shadow;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: var.$SHADOW_HOVER;
+
+        .cover {
+            transform: scale(1.02);
+        }
+    }
+
+    &:active {
+        transform: translateY(-2px) scale(0.99);
+    }
+
+    .cover-wrapper {
+        aspect-ratio: 1;
+        overflow: hidden;
+    }
 
     .cover {
-        flex: 1;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 16px 16px 0 0;
-        padding-bottom: 8px;
+        transition: transform var.$TRANSITION_NORMAL;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        padding: var.$SPACING_MD;
+        gap: var.$SPACING_XS;
     }
 
     .title,
     .artist {
-        padding: 0 12px;
         width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -31,12 +52,13 @@
     }
 
     .title {
-        font-size: 14px;
-        font-weight: bold;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var.$COLOR_TEXT;
     }
 
     .artist {
-        font-size: 14px;
-        opacity: var.$OPACITY_SUB_TEXT;
+        font-size: 0.75rem;
+        color: var.$COLOR_TEXT_SECONDARY;
     }
 }

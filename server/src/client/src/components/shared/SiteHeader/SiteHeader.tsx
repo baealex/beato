@@ -2,7 +2,9 @@ import styles from './SiteHeader.module.scss';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { Music, Heart, Disc, User, ListMusic, Gear } from '~/icon';
+import {
+    Music, Heart, Disc, User, ListMusic, Gear
+} from '~/icon';
 
 const HEADER_ITEMS = [
     {

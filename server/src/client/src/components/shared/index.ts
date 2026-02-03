@@ -1,7 +1,9 @@
 export { default as ActionBar } from './ActionBar';
 export { default as BottomPanel } from './BottomPanel';
 export { default as Button } from './Button';
+export { default as Card } from './Card';
 export { default as Flex } from './Flex';
+export { default as Glass } from './Glass';
 export { default as Grid } from './Grid';
 export { default as GridImage } from './GridImage';
 export { default as Image } from './Image';
@@ -15,6 +17,7 @@ export { default as SiteHeader } from './SiteHeader';
 export { default as SortableItem } from './SortableItem';
 export { default as StickyHeader } from './StickyHeader';
 export { default as SubPageHeader } from './SubPageHeader';
+export { default as Text } from './Text';
 export { default as Toggle } from './Toggle';
 export { default as SummaryTitle } from './SummaryTitle';
 export { default as VerticalSortable } from './VerticalSortable';

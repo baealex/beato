@@ -5,18 +5,26 @@ const cx = classNames.bind(styles);
 import React from 'react';
 
 interface TwoToneLayoutProps {
+    backgroundImage?: string;
     header: React.ReactNode;
     primaryAction?: React.ReactNode;
     children: React.ReactNode;
 }
 
 const TwoToneLayout = ({
+    backgroundImage,
     header,
     primaryAction,
     children
 }: TwoToneLayoutProps) => {
     return (
         <div className={cx('TwoToneLayout', { hasPrimaryAction: !!primaryAction })}>
+            {backgroundImage && (
+                <div className={cx('background')}>
+                    <img src={backgroundImage} alt="" aria-hidden="true" />
+                    <div className={cx('overlay')} />
+                </div>
+            )}
             <div className={cx('header')}>
                 {header}
                 {primaryAction && (

@@ -7,9 +7,7 @@ interface ThemeState {
 class ThemeStore extends Store<ThemeState> {
     constructor() {
         super();
-        this.state = {
-            playerAlbumArtStyle: localStorage.getItem('theme:playerAlbumArtStyle') || ''
-        };
+        this.state = { playerAlbumArtStyle: localStorage.getItem('theme:playerAlbumArtStyle') || '' };
     }
 
     setPlayerAlbumArtStyle(playerAlbumArtStyle: string) {

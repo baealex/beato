@@ -10,8 +10,10 @@ import {
     PlayModeSection,
     StabilityModeSection,
     SynchronizationSection,
+    ThemeSection,
     TroubleshootingSection
 } from './components';
+import Text from '~/components/shared/Text';
 
 import styles from './Setting.module.scss';
 
@@ -236,8 +238,12 @@ export default function Setting() {
     return (
         <div className={styles.container}>
             <div className={styles.settingsHeader}>
-                <h1>Settings</h1>
-                <p>Customize your listening experience</p>
+                <Text as="h1" size="2xl" weight="bold">
+                    Settings
+                </Text>
+                <Text as="p" variant="secondary">
+                    Customize your listening experience
+                </Text>
             </div>
 
             <div className={styles.settingsGrid}>
@@ -276,6 +282,13 @@ export default function Setting() {
                         ref={(el) => (sectionRefs.current.audio = el)}
                         className={styles.settingSection}>
                         <AudioSettingsSection shouldStable={isAppChannel || isStabilityModeEnabled} />
+                    </div>
+
+                    <div
+                        id="section-theme"
+                        ref={(el) => (sectionRefs.current.theme = el)}
+                        className={styles.settingSection}>
+                        <ThemeSection shouldStable={isAppChannel || isStabilityModeEnabled} />
                     </div>
 
                     <div

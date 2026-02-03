@@ -1,0 +1,274 @@
+@use '~/styles/var';
+
+.Player {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+
+    .background {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(60px) saturate(1.8) brightness(0.5);
+            transform: scale(1.2);
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(5, 5, 5, 0.4) 0%,
+                rgba(5, 5, 5, 0.6) 50%,
+                rgba(5, 5, 5, 0.9) 100%
+            );
+        }
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: var.$SPACING_2XL var.$SPACING_LG;
+        overflow-y: auto;
+    }
+
+    .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .album-art {
+        position: relative;
+        width: 280px;
+        height: 280px;
+        max-width: 80vw;
+        max-height: 80vw;
+        margin-bottom: var.$SPACING_2XL;
+
+        &.framed {
+            border-radius: var.$RADIUS_XL;
+            overflow: hidden;
+            box-shadow:
+                0 24px 80px rgba(0, 0, 0, 0.6),
+                0 12px 40px rgba(0, 0, 0, 0.4);
+
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: var.$RADIUS_XL;
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                pointer-events: none;
+            }
+        }
+    }
+
+    .title-info {
+        width: 100%;
+        text-align: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: var.$SPACING_MD;
+        border-radius: var.$RADIUS_LG;
+        transition: background-color var.$TRANSITION_FAST;
+
+        &:hover {
+            background-color: var.$COLOR_HOVER;
+        }
+
+        &:active {
+            background-color: var.$COLOR_ACTIVE;
+        }
+
+        .name {
+            margin-bottom: var.$SPACING_XS;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+    }
+
+    .progress-section {
+        width: 100%;
+        margin-top: var.$SPACING_2XL;
+    }
+
+    .progress {
+        position: relative;
+        width: 100%;
+        height: 6px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: var.$RADIUS_FULL;
+        cursor: pointer;
+        overflow: visible;
+
+        &:hover {
+            .bar {
+                background: var(--b-gradient-primary);
+            }
+
+            .thumb {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var.$COLOR_POINT;
+            border-radius: var.$RADIUS_FULL;
+            transform-origin: left;
+            transition: background var.$TRANSITION_FAST;
+        }
+
+        .thumb {
+            position: absolute;
+            top: 50%;
+            width: 16px;
+            height: 16px;
+            background-color: var.$COLOR_TEXT;
+            border-radius: var.$RADIUS_FULL;
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            transition: var.$TRANSITION_FAST;
+            transition-property: opacity, transform;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    .time-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: var.$SPACING_SM;
+    }
+
+    .controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var.$SPACING_MD;
+        margin-top: var.$SPACING_2XL;
+        width: 100%;
+    }
+
+    .control-button {
+        width: 48px;
+        height: 48px;
+        border-radius: var.$RADIUS_FULL;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var.$COLOR_TEXT_SECONDARY;
+        transition: var.$TRANSITION_FAST;
+        transition-property: background-color, color, transform;
+
+        svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        &:hover {
+            background-color: var.$COLOR_HOVER;
+            color: var.$COLOR_TEXT;
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        &.active {
+            color: var.$COLOR_POINT;
+        }
+    }
+
+    .play-button {
+        width: 72px;
+        height: 72px;
+        border-radius: var.$RADIUS_FULL;
+        background: var(--b-gradient-primary);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var.$COLOR_TEXT;
+        box-shadow:
+            0 8px 24px rgba(167, 139, 250, 0.3),
+            0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: var.$TRANSITION_FAST;
+        transition-property: transform, box-shadow, filter;
+
+        svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+            box-shadow:
+                0 12px 32px rgba(167, 139, 250, 0.4),
+                0 6px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+
+    .back-button {
+        position: fixed;
+        bottom: var.$SPACING_LG;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 48px;
+        height: 48px;
+        border-radius: var.$RADIUS_FULL;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(8px);
+        border: 1px solid var.$COLOR_BORDER_SUBTLE;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var.$COLOR_TEXT_SECONDARY;
+        transition: var.$TRANSITION_FAST;
+        transition-property: background-color, color, transform;
+
+        svg {
+            width: 24px;
+            height: 24px;
+            transform: rotate(-90deg);
+        }
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.5);
+            color: var.$COLOR_TEXT;
+        }
+
+        &:active {
+            transform: translateX(-50%) scale(0.95);
+        }
+    }
+}

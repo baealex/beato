@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import styles from './SettingSection.module.scss';
+import Text from '../Text';
 
 interface SettingItemProps {
     title: string;
@@ -12,8 +13,14 @@ export const SettingItem = ({ title, description, children }: SettingItemProps) 
         <div className={styles.settingItem}>
             <div className={styles.settingItemContent}>
                 <div className={styles.settingItemHeader}>
-                    <h4>{title}</h4>
-                    {description && <p className={styles.description}>{description}</p>}
+                    <Text as="h4" size="md" weight="semibold">
+                        {title}
+                    </Text>
+                    {description && (
+                        <Text as="p" variant="tertiary" size="sm" className={styles.description}>
+                            {description}
+                        </Text>
+                    )}
                 </div>
                 <div className={styles.settingItemControl}>
                     {children}
@@ -38,7 +45,11 @@ export const SettingSection = ({ title, description, icon, children }: SettingSe
                     {icon && <span className={styles.sectionIcon}>{icon}</span>}
                     {title}
                 </h3>
-                {description && <p className={styles.sectionDescription}>{description}</p>}
+                {description && (
+                    <Text as="p" variant="secondary" size="md" className={styles.sectionDescription}>
+                        {description}
+                    </Text>
+                )}
             </div>
             <div className={styles.sectionContent}>
                 {children}
