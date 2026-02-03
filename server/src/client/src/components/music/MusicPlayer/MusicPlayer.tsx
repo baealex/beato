@@ -5,7 +5,7 @@ const cx = classNames.bind(styles);
 import { useStore } from 'badland-react';
 import { useNavigate } from 'react-router-dom';
 
-import MusicListItem from '../MusicListItem';
+import { Image } from '~/components/shared';
 import * as Icon from '~/icon';
 
 import { musicStore } from '~/store/music';
@@ -60,41 +60,66 @@ const MusicPlayer = () => {
                 onTouchMove={handleMoveProgress}>
                 <div
                     className={cx('bar')}
-                    style={{ transform: `translate(-${(100 - state.progress)}%, 0)` }}
+                    style={{ transform: `translateX(-${100 - state.progress}%)` }}
                 />
             </div>
-            <div className={cx('player')}>
-                <div className={cx('music')}>
-                    <MusicListItem
-                        albumName={currentMusic?.album.name ?? ''}
-                        albumCover={currentMusic?.album.cover ?? ''}
-                        musicName={currentMusic?.name ?? 'No music'}
-                        artistName={currentMusic?.artist.name ?? ''}
-                        onClick={() => currentMusic && navigate('/player')}
-                    />
-                </div>
-                <div className={cx('action')}>
-                    <button className={cx('icon-button', 'mode')} onClick={() => queueStore.changeRepeatMode()}>
+            <div className={cx('content')}>
+                <button
+                    className={cx('trackInfo')}
+                    onClick={() => currentMusic && navigate('/player')}>
+                    <div className={cx('albumArt')}>
+                        {currentMusic?.album.cover ? (
+                            <Image
+                                src={currentMusic.album.cover}
+                                alt={currentMusic.album.name}
+                            />
+                        ) : (
+                            <div className={cx('placeholder')}>
+                                <Icon.Music />
+                            </div>
+                        )}
+                    </div>
+                    <div className={cx('meta')}>
+                        <span className={cx('title')}>
+                            {currentMusic?.name ?? 'No music'}
+                        </span>
+                        <span className={cx('artist')}>
+                            {currentMusic?.artist.name ?? ''}
+                        </span>
+                    </div>
+                </button>
+                <div className={cx('controls')}>
+                    <button
+                        className={cx('controlButton', 'secondary')}
+                        onClick={() => queueStore.changeRepeatMode()}>
                         {state.repeatMode === 'all' && <Icon.Repeat />}
                         {state.repeatMode === 'one' && <Icon.Infinite />}
                         {state.repeatMode === 'none' && <Icon.RightLeft />}
                     </button>
-                    <button className={cx('icon-button', 'skip-back')} onClick={() => queueStore.prev()}>
-                        <Icon.Play />
-                    </button>
-                    <button className={cx('icon-button', 'play')} onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
-                        {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
-                    </button>
-                    <button className={cx('icon-button', 'skip-forward')} onClick={() => queueStore.next()}>
-                        <Icon.Play />
+                    <button
+                        className={cx('controlButton', 'secondary')}
+                        onClick={() => queueStore.prev()}>
+                        <Icon.SkipBack />
                     </button>
                     <button
-                        className={cx('icon-button', 'shuffle', { 'active': state.shuffle })}
+                        className={cx('controlButton', 'primary')}
+                        onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
+                        {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
+                    </button>
+                    <button
+                        className={cx('controlButton', 'secondary')}
+                        onClick={() => queueStore.next()}>
+                        <Icon.SkipForward />
+                    </button>
+                    <button
+                        className={cx('controlButton', 'secondary', { active: state.shuffle })}
                         onClick={() => queueStore.toggleShuffle()}>
                         <Icon.Shuffle />
                     </button>
-                    <button className={cx('icon-button', 'queue')} onClick={() => navigate('/queue')}>
-                        <Icon.Menu />
+                    <button
+                        className={cx('controlButton', 'secondary', 'queue')}
+                        onClick={() => navigate('/queue')}>
+                        <Icon.ListMusic />
                     </button>
                 </div>
             </div>

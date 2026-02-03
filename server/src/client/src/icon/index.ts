@@ -5,3 +5,8 @@ export { default as Repeat } from './Repeat.svg?react';
 export { default as Infinite } from './Infinite.svg?react';
 export { default as Shuffle } from './Shuffle.svg?react';
 export { default as RightLeft } from './RightLeft.svg?react';
+export { default as Music } from './Music.svg?react';
+export { default as Disc } from './Disc.svg?react';
+export { default as ListMusic } from './ListMusic.svg?react';
+export { default as SkipBack } from './SkipBack.svg?react';
+export { default as SkipForward } from './SkipForward.svg?react';

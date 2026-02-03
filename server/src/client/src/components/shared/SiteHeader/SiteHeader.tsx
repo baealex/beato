@@ -2,30 +2,38 @@ import styles from './SiteHeader.module.scss';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { Music, Heart, Disc, User, ListMusic, Gear } from '~/icon';
+
 const HEADER_ITEMS = [
     {
         name: 'Music',
-        path: '/'
+        path: '/',
+        icon: Music
     },
     {
         name: 'Favorite',
-        path: '/favorite'
+        path: '/favorite',
+        icon: Heart
     },
     {
         name: 'Album',
-        path: '/album'
+        path: '/album',
+        icon: Disc
     },
     {
         name: 'Artist',
-        path: '/artist'
+        path: '/artist',
+        icon: User
     },
     {
         name: 'Playlist',
-        path: '/playlist'
+        path: '/playlist',
+        icon: ListMusic
     },
     {
         name: 'Setting',
-        path: '/setting'
+        path: '/setting',
+        icon: Gear
     }
 ];
 
@@ -54,6 +62,12 @@ export default function SiteHeader() {
 
     return (
         <header className={styles.header}>
+            <div className={styles.logo}>
+                <div className={styles.logoIcon}>
+                    <Music />
+                </div>
+                <span>Beato</span>
+            </div>
             <nav ref={ref} className={styles.nav}>
                 <ul>
                     {HEADER_ITEMS.map((item) => (
@@ -64,7 +78,8 @@ export default function SiteHeader() {
                                     styles.link,
                                     location.pathname === item.path ? styles.active : ''
                                 ].join(' ')}>
-                                {item.name}
+                                <item.icon />
+                                <span className={styles.label}>{item.name}</span>
                             </Link>
                         </li>
                     ))}

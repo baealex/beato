@@ -2,16 +2,62 @@
 
 @use '@baejino/style/scss/var' as common;
 
-/* COLOR */
+/* BACKGROUNDS */
 $COLOR_BACKGROUND: var(--b-color-background);
 $COLOR_BACKGROUND_LAYER_1: var(--b-color-background-layer-1);
 $COLOR_BACKGROUND_LAYER_2: var(--b-color-background-layer-2);
+
+/* TEXT */
 $COLOR_TEXT: var(--b-color-text);
+$COLOR_TEXT_SECONDARY: var(--b-color-text-secondary);
+$COLOR_TEXT_TERTIARY: var(--b-color-text-tertiary);
+$COLOR_TEXT_MUTED: var(--b-color-text-muted);
+
+/* ACCENT */
 $COLOR_POINT: var(--b-color-point);
-$COLOR_BORDER: var(--b-color-border);
+$COLOR_POINT_LIGHT: var(--b-color-point-light);
+$COLOR_POINT_DARK: var(--b-color-point-dark);
+
+/* BUTTONS */
 $COLOR_PRIMARY_BUTTON: var(--b-color-primary-button);
 $COLOR_SECONDARY_BUTTON: var(--b-color-secondary-button);
 
-/* OPACITY */
-$OPACITY_SUB_TEXT: 0.7;
-$OPACITY_TERTIARY_TEXT: 0.5;
+/* INTERACTIVE */
+$COLOR_HOVER: var(--b-color-hover);
+$COLOR_ACTIVE: var(--b-color-active);
+$COLOR_FOCUS: var(--b-color-focus);
+
+/* BORDERS */
+$COLOR_BORDER: var(--b-color-border);
+$COLOR_BORDER_SUBTLE: var(--b-color-border-subtle);
+
+/* SHADOWS */
+$SHADOW_MAIN: var(--b-card-shadow-main);
+$SHADOW_HOVER: var(--b-card-shadow-hover);
+$SHADOW_GLOW: var(--b-card-shadow-glow);
+
+/* TRANSITIONS */
+$TRANSITION_FAST: var(--b-transition-fast);
+$TRANSITION_NORMAL: var(--b-transition-normal);
+$TRANSITION_SLOW: var(--b-transition-slow);
+$TRANSITION_BOUNCE: var(--b-transition-bounce);
+
+/* SPACING */
+$SPACING_XS: var(--b-spacing-xs);
+$SPACING_SM: var(--b-spacing-sm);
+$SPACING_MD: var(--b-spacing-md);
+$SPACING_LG: var(--b-spacing-lg);
+$SPACING_XL: var(--b-spacing-xl);
+$SPACING_2XL: var(--b-spacing-2xl);
+
+/* BORDER RADIUS */
+$RADIUS_SM: var(--b-radius-sm);
+$RADIUS_MD: var(--b-radius-md);
+$RADIUS_LG: var(--b-radius-lg);
+$RADIUS_XL: var(--b-radius-xl);
+$RADIUS_2XL: var(--b-radius-2xl);
+$RADIUS_FULL: var(--b-radius-full);
+
+/* LEGACY - deprecated, use new variables */
+$OPACITY_SUB_TEXT: 0.72;
+$OPACITY_TERTIARY_TEXT: 0.48;

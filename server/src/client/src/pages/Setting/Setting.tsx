@@ -10,7 +10,6 @@ import {
     PlayModeSection,
     StabilityModeSection,
     SynchronizationSection,
-    ThemeSection,
     TroubleshootingSection
 } from './components';
 
@@ -277,13 +276,6 @@ export default function Setting() {
                         ref={(el) => (sectionRefs.current.audio = el)}
                         className={styles.settingSection}>
                         <AudioSettingsSection shouldStable={isAppChannel || isStabilityModeEnabled} />
-                    </div>
-
-                    <div
-                        id="section-theme"
-                        ref={(el) => (sectionRefs.current.theme = el)}
-                        className={styles.settingSection}>
-                        <ThemeSection shouldStable={isAppChannel || isStabilityModeEnabled} />
                     </div>
 
                     <div

@@ -52,8 +52,8 @@ main {
 
     @media (min-width: 1024px) {
         display: grid;
-        grid-template-columns: 300px 1fr;
-        grid-template-rows: 1fr;
+        grid-template-columns: 280px 1fr;
+        grid-template-rows: 1fr auto;
     }
 }
 
@@ -92,31 +92,39 @@ button {
         width: 10px;
         height: 10px;
         content: "";
-        border-top: 2px solid #888;
-        border-right: 2px solid #888;
+        border-top: 2px solid var.$COLOR_TEXT_MUTED;
+        border-right: 2px solid var.$COLOR_TEXT_MUTED;
         transform: translateY(-50%) rotate(45deg);
     }
 }
 
 .icon-button {
     position: relative;
-    width: 48px;
-    height: 48px;
-    border-radius: 4px;
+    width: 44px;
+    height: 44px;
+    border-radius: var.$RADIUS_FULL;
     background-color: transparent;
     color: var.$COLOR_TEXT;
     border: none;
     cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: background-color 0.25s ease-in-out;
+    transition: var.$TRANSITION_FAST;
+    transition-property: background-color, transform;
+
+    &:hover {
+        background-color: var.$COLOR_HOVER;
+    }
+
+    &:active {
+        transform: scale(0.95);
+        background-color: var.$COLOR_ACTIVE;
+    }
 
     svg {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
     }
 }

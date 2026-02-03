@@ -1,18 +1,49 @@
 @use '~/styles/var';
 
 .header {
-    height: 60px;
+    height: 56px;
     background-color: var.$COLOR_BACKGROUND;
     display: flex;
-    gap: 5rem;
     align-items: center;
-    justify-content: space-between;
     border-bottom: 1px solid var.$COLOR_BORDER;
 
     @media (min-width: 1024px) {
         height: 100%;
+        flex-direction: column;
         border-right: 1px solid var.$COLOR_BORDER;
         border-bottom: none;
+        padding: var.$SPACING_LG 0;
+    }
+}
+
+.logo {
+    display: none;
+
+    @media (min-width: 1024px) {
+        display: flex;
+        align-items: center;
+        gap: var.$SPACING_SM;
+        padding: 0 var.$SPACING_LG;
+        margin-bottom: var.$SPACING_XL;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var.$COLOR_TEXT;
+
+        .logoIcon {
+            width: 32px;
+            height: 32px;
+            background: var(--b-gradient-primary);
+            border-radius: var.$RADIUS_MD;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                width: 18px;
+                height: 18px;
+                color: white;
+            }
+        }
     }
 }
 
@@ -32,56 +63,67 @@
         display: none;
     }
 
+    @media (min-width: 1024px) {
+        overflow: visible;
+        flex: 1;
+    }
+
     ul {
         display: flex;
         align-items: center;
         list-style: none;
         margin: 0;
-        padding: 0 1rem;
-        gap: 1rem;
+        padding: 0 var.$SPACING_MD;
+        gap: var.$SPACING_XS;
 
         @media (min-width: 1024px) {
             flex-direction: column;
-            align-items: flex-start;
-            gap: 2rem;
-        }
-
-        li {
-            font-size: 1rem;
-            font-weight: bold;
+            align-items: stretch;
+            width: 100%;
+            padding: 0 var.$SPACING_SM;
+            gap: var.$SPACING_XS;
         }
     }
 }
 
 .link {
-    position: relative;
-    color: var.$COLOR_TEXT;
-    padding: 1rem 0;
-    opacity: 0.3;
+    display: flex;
+    align-items: center;
+    gap: var.$SPACING_SM;
+    color: var.$COLOR_TEXT_TERTIARY;
+    padding: var.$SPACING_SM var.$SPACING_MD;
+    border-radius: var.$RADIUS_MD;
     text-decoration: none;
-    transition: opacity 0.3s ease;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: var.$TRANSITION_FAST;
+    transition-property: color, background-color;
 
-    @media (min-width: 1024px) {
-        padding: 0.5rem 0;
+    svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
     }
 
-    &::after {
-        content: "";
-        position: absolute;
-        transform: scaleX(0);
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background-color: var.$COLOR_TEXT;
-        transition: transform 0.3s ease;
+    .label {
+        display: none;
+
+        @media (min-width: 1024px) {
+            display: block;
+        }
+    }
+
+    &:hover {
+        color: var.$COLOR_TEXT_SECONDARY;
+        background-color: var.$COLOR_HOVER;
     }
 
     &.active {
-        opacity: 1;
+        color: var.$COLOR_TEXT;
+        background-color: var.$COLOR_HOVER;
 
-        &::after {
-            transform: scaleX(1);
+        @media (min-width: 1024px) {
+            background-color: var.$COLOR_ACTIVE;
         }
     }
 }

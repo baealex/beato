@@ -1,30 +1,44 @@
 @use '~/styles/var';
 
-$SIZE_ALBUM_ART: 50px;
+$SIZE_ALBUM_ART: 48px;
 $SIZE_ICON: 40px;
-
-$GAP_ITEM_INNER: 16px;
 
 .MusicListItem {
     color: var.$COLOR_TEXT;
-    font-size: 12px;
     cursor: pointer;
-    padding: 16px;
+    padding: var.$SPACING_SM var.$SPACING_MD;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: $GAP_ITEM_INNER;
+    gap: var.$SPACING_SM;
     width: 100%;
+    border-radius: var.$RADIUS_MD;
+    transition: var.$TRANSITION_FAST;
+    transition-property: background-color;
+
+    &:hover {
+        background-color: var.$COLOR_HOVER;
+    }
+
+    &:active {
+        background-color: var.$COLOR_ACTIVE;
+    }
 
     &.isHated {
-        opacity: 0.5;
+        opacity: 0.4;
     }
 
     .album-art {
         width: $SIZE_ALBUM_ART;
         height: $SIZE_ALBUM_ART;
-        border-radius: 16px;
+        border-radius: var.$RADIUS_MD;
         object-fit: cover;
+        flex-shrink: 0;
+        transition: transform var.$TRANSITION_FAST;
+    }
+
+    &:hover .album-art {
+        transform: scale(1.02);
     }
 
     .row {
@@ -33,25 +47,18 @@ $GAP_ITEM_INNER: 16px;
         align-items: center;
         justify-content: space-between;
         flex: 1;
-        width: 100%;
-        max-width: 100%;
-        gap: 12px;
-        overflow: hidden;
-
-        &.hasAlbumCover {
-            max-width: calc(100% - $SIZE_ALBUM_ART - $GAP_ITEM_INNER);
-        }
+        min-width: 0;
+        gap: var.$SPACING_SM;
 
         .info {
             display: flex;
             flex-direction: column;
             flex: 1;
-            width: 100%;
-            max-width: 100%;
-            gap: 0.125rem;
+            min-width: 0;
+            gap: 2px;
 
             &.hasMenu {
-                max-width: calc(100% - $SIZE_ICON - $GAP_ITEM_INNER);
+                max-width: calc(100% - $SIZE_ICON - var.$SPACING_SM);
             }
         }
 
@@ -63,41 +70,58 @@ $GAP_ITEM_INNER: 16px;
         }
 
         .artist {
-            font-size: 14px;
-            opacity: var.$OPACITY_TERTIARY_TEXT;
+            font-size: 0.75rem;
+            color: var.$COLOR_TEXT_TERTIARY;
         }
 
         .title {
-            font-size: 14px;
-            gap: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var.$COLOR_TEXT;
+            display: flex;
+            align-items: center;
+            gap: var.$SPACING_XS;
 
             .track-number {
-                margin-right: 0.25rem;
-                opacity: 0.3;
+                color: var.$COLOR_TEXT_MUTED;
                 font-weight: 400;
+                min-width: 1.5rem;
             }
 
             .codec {
+                flex-shrink: 0;
                 border: 1px solid var.$COLOR_BORDER;
-                margin-left: 4px;
-                padding: 1px 4px;
-                border-radius: 8px;
-                font-size: 8px;
+                padding: 1px 6px;
+                border-radius: var.$RADIUS_SM;
+                font-size: 0.625rem;
+                font-weight: 500;
+                color: var.$COLOR_TEXT_TERTIARY;
+                text-transform: uppercase;
             }
         }
 
         .icon-button {
-            color: var.$COLOR_TEXT;
+            color: var.$COLOR_TEXT_TERTIARY;
             width: $SIZE_ICON;
             height: $SIZE_ICON;
             background: none;
+            border: none;
+            border-radius: var.$RADIUS_FULL;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
+            transition: var.$TRANSITION_FAST;
+            transition-property: background-color, color;
 
             svg {
-                width: 1.125rem;
-                height: 1.125rem;
+                width: 18px;
+                height: 18px;
+            }
+
+            &:hover {
+                background-color: var.$COLOR_HOVER;
+                color: var.$COLOR_TEXT;
             }
 
             &.isLiked {
