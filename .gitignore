@@ -3,3 +3,6 @@
 /cache
 /data
 /node_modules
+/.superpowers/
+/docs/
+/.worktrees/
