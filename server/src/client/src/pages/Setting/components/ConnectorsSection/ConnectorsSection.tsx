@@ -1,6 +1,7 @@
 import { useStore } from 'badland-react';
 
 import { SettingSection } from '~/components/shared';
+import { appCopy } from '~/config/copy';
 import { ConnectorListener, socket } from '~/socket';
 import { connectorStore } from '~/store/connector';
 
@@ -35,7 +36,7 @@ export const ConnectorsSection = () => {
         <SettingSection
             title="Connected Devices"
             icon={<DevicesIcon />}
-            description="Manage devices connected to your Beato account.">
+            description={appCopy.connectors.description}>
             <div>
                 {connectors.map((connector) => (
                     <div key={connector.id} className={styles.connector}>

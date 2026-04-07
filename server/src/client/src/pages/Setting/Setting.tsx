@@ -2,6 +2,7 @@ import { confirm } from '@baejino/ui';
 import { useState, useRef, useEffect } from 'react';
 
 import { socket } from '~/socket';
+import { appCopy } from '~/config/copy';
 
 import {
     AudioSettingsSection,
@@ -153,22 +154,22 @@ export default function Setting() {
     const navItems = [
         {
             id: 'sync',
-            label: 'Synchronization',
+            label: 'Sync',
             icon: <SyncIcon />
         },
         {
             id: 'play',
-            label: 'Play Mode',
+            label: 'Playback',
             icon: <PlayIcon />
         },
         {
             id: 'audio',
-            label: 'Audio Settings',
+            label: 'Audio',
             icon: <AudioIcon />
         },
         {
             id: 'theme',
-            label: 'Theme',
+            label: 'Appearance',
             icon: <ThemeIcon />
         },
         {
@@ -178,17 +179,17 @@ export default function Setting() {
         },
         ...(!isAppChannel ? [{
             id: 'stability',
-            label: 'Stability Mode',
+            label: 'Stability',
             icon: <ShieldIcon />
         }] : []),
         {
             id: 'experimental',
-            label: 'Experimental',
+            label: 'Labs',
             icon: <LabIcon />
         },
         {
             id: 'troubleshooting',
-            label: 'Help',
+            label: 'Support',
             icon: <HelpIcon />
         }
     ];
@@ -214,24 +215,31 @@ export default function Setting() {
     };
 
     useEffect(() => {
-        const container = document.querySelector('.container');
+        const container = document.querySelector<HTMLElement>('.main-container');
+
+        if (!container) {
+            return;
+        }
 
         const handleScroll = () => {
+            const containerTop = container.getBoundingClientRect().top;
             const sections = Object.entries(sectionRefs.current).map(([id, ref]) => ({
                 id,
-                top: Math.abs(ref?.getBoundingClientRect().top || 0)
+                top: Math.abs((ref?.getBoundingClientRect().top || 0) - containerTop - 12)
             }));
             const minTop = Math.min(...sections.map(({ top }) => top));
-            const activeSection = sections.find(({ top }) => top === minTop)?.id;
-            if (activeSection) {
-                setActiveSection(activeSection);
+            const nextSection = sections.find(({ top }) => top === minTop)?.id;
+
+            if (nextSection) {
+                setActiveSection(nextSection);
             }
         };
 
-        container?.addEventListener('scroll', handleScroll);
+        container.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
 
         return () => {
-            container?.removeEventListener('scroll', handleScroll);
+            container.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
@@ -239,10 +247,10 @@ export default function Setting() {
         <div className={styles.container}>
             <div className={styles.settingsHeader}>
                 <Text as="h1" size="2xl" weight="bold">
-                    Settings
+                    {appCopy.settings.title}
                 </Text>
                 <Text as="p" variant="secondary">
-                    Customize your listening experience
+                    {appCopy.settings.description}
                 </Text>
             </div>
 
