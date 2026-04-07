@@ -1,12 +1,14 @@
 @use '~/styles/var';
 
 .settingSection {
-    background-color: var.$COLOR_BACKGROUND_LAYER_1;
-    border-radius: var.$RADIUS_LG;
+    background:
+        linear-gradient(180deg, rgba(9, 32, 41, 0.86) 0%, rgba(7, 25, 32, 0.82) 100%);
+    border-radius: var.$RADIUS_XL;
     padding: var.$SPACING_LG;
     margin-bottom: var.$SPACING_2XL;
     box-shadow: var.$SHADOW_MAIN;
     border: 1px solid var.$COLOR_BORDER_SUBTLE;
+    backdrop-filter: blur(18px);
 
     @media (max-width: 768px) {
         padding: var.$SPACING_MD;
@@ -17,26 +19,33 @@
     margin-bottom: var.$SPACING_LG;
 
     h3 {
-        font-size: 1rem;
+        font-size: 1.0625rem;
         font-weight: 600;
         margin: 0;
         margin-bottom: var.$SPACING_MD;
         padding-bottom: var.$SPACING_MD;
         border-bottom: 1px solid var.$COLOR_BORDER;
-        color: var.$COLOR_POINT;
+        color: var.$COLOR_TEXT;
         display: flex;
         align-items: center;
         gap: var.$SPACING_SM;
     }
 
     .sectionIcon {
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
         display: flex;
         align-items: center;
         justify-content: center;
+        background:
+            linear-gradient(135deg, rgba(193, 244, 251, 0.16) 0%, rgba(114, 215, 230, 0.08) 100%);
+        color: var.$COLOR_POINT;
+        border: 1px solid rgba(193, 244, 251, 0.12);
 
         svg {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
         }
     }
 }
@@ -56,13 +65,17 @@
 
 .settingItem {
     padding: var.$SPACING_MD;
-    border-radius: var.$RADIUS_LG;
-    background-color: var.$COLOR_BACKGROUND_LAYER_2;
+    border-radius: var.$RADIUS_XL;
+    background:
+        linear-gradient(180deg, rgba(12, 42, 52, 0.84) 0%, rgba(10, 31, 40, 0.9) 100%);
+    border: 1px solid rgba(193, 244, 251, 0.08);
     transition: var.$TRANSITION_FAST;
-    transition-property: background-color, box-shadow;
+    transition-property: background-color, box-shadow, border-color, transform;
 
     &:hover {
-        background-color: rgba(255, 255, 255, 0.04);
+        border-color: rgba(193, 244, 251, 0.14);
+        box-shadow: var.$SHADOW_SUB;
+        transform: translateY(-1px);
     }
 }
 
@@ -109,7 +122,7 @@
     border-radius: var.$RADIUS_MD;
     margin: var.$SPACING_MD 0;
     border-left: 4px solid;
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: rgba(239, 248, 251, 0.03);
 
     p {
         margin: 0;
@@ -119,7 +132,7 @@
     }
 
     &.info {
-        background-color: rgba(167, 139, 250, 0.08);
+        background-color: rgba(114, 215, 230, 0.08);
         border-left-color: var.$COLOR_POINT;
     }
 

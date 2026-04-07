@@ -2,40 +2,19 @@ import styles from './SiteHeader.module.scss';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import {
-    Music, Heart, Disc, User, ListMusic, Gear
-} from '~/icon';
+import { Music } from '~/icon';
+import { appShell } from '~/config/app-shell';
 
-const HEADER_ITEMS = [
+const NAVIGATION_GROUPS = [
     {
-        name: 'Music',
-        path: '/',
-        icon: Music
+        id: 'primary',
+        label: 'Listen',
+        items: appShell.navigation.primary
     },
     {
-        name: 'Favorite',
-        path: '/favorite',
-        icon: Heart
-    },
-    {
-        name: 'Album',
-        path: '/album',
-        icon: Disc
-    },
-    {
-        name: 'Artist',
-        path: '/artist',
-        icon: User
-    },
-    {
-        name: 'Playlist',
-        path: '/playlist',
-        icon: ListMusic
-    },
-    {
-        name: 'Setting',
-        path: '/setting',
-        icon: Gear
+        id: 'utility',
+        label: 'System',
+        items: appShell.navigation.utility
     }
 ];
 
@@ -52,9 +31,9 @@ export default function SiteHeader() {
 
             if (activeItem) {
                 const { left, width } = activeItem.getBoundingClientRect();
-                const { width: navWidth } = ref.current.getBoundingClientRect();
-                const center = left + width / 2 - navWidth / 2;
-                ref.current.scrollBy({
+                const { left: navLeft, width: navWidth } = el.getBoundingClientRect();
+                const center = left - navLeft + width / 2 - navWidth / 2;
+                el.scrollBy({
                     left: center,
                     behavior: 'smooth'
                 });
@@ -62,30 +41,50 @@ export default function SiteHeader() {
         }
     }, [location.pathname]);
 
+    const isActive = (path: string) => {
+        if (path === '/') {
+            return location.pathname === path;
+        }
+
+        return location.pathname.startsWith(path);
+    };
+
     return (
         <header className={styles.header}>
-            <div className={styles.logo}>
-                <div className={styles.logoIcon}>
-                    <Music />
-                </div>
-                <span>Beato</span>
+            <div className={styles.brand}>
+                <Link to="/" className={styles.brandLink}>
+                    <div className={styles.brandIcon}>
+                        <Music />
+                    </div>
+                    <span className={styles.brandName}>{appShell.brand.name}</span>
+                </Link>
             </div>
-            <nav ref={ref} className={styles.nav}>
-                <ul>
-                    {HEADER_ITEMS.map((item) => (
-                        <li key={item.name}>
-                            <Link
-                                to={item.path}
-                                className={[
-                                    styles.link,
-                                    location.pathname === item.path ? styles.active : ''
-                                ].join(' ')}>
-                                <item.icon />
-                                <span className={styles.label}>{item.name}</span>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+            <nav ref={ref} className={styles.nav} aria-label={`${appShell.brand.name} navigation`}>
+                {NAVIGATION_GROUPS.map((group) => (
+                    <div
+                        key={group.id}
+                        className={[
+                            styles.group,
+                            group.id === 'utility' ? styles.utilityGroup : ''
+                        ].join(' ')}>
+                        <span className={styles.groupLabel}>{group.label}</span>
+                        <ul>
+                            {group.items.map((item) => (
+                                <li key={item.id}>
+                                    <Link
+                                        to={item.path}
+                                        className={[
+                                            styles.link,
+                                            isActive(item.path) ? styles.active : ''
+                                        ].join(' ')}>
+                                        <item.icon />
+                                        <span className={styles.label}>{item.label}</span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
             </nav>
         </header>
     );

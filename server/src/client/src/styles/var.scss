@@ -6,6 +6,7 @@
 $COLOR_BACKGROUND: var(--b-color-background);
 $COLOR_BACKGROUND_LAYER_1: var(--b-color-background-layer-1);
 $COLOR_BACKGROUND_LAYER_2: var(--b-color-background-layer-2);
+$COLOR_PANEL_BACKGROUND: var(--b-color-panel-background);
 
 /* TEXT */
 $COLOR_TEXT: var(--b-color-text);
@@ -35,6 +36,12 @@ $COLOR_BORDER_SUBTLE: var(--b-color-border-subtle);
 $SHADOW_MAIN: var(--b-card-shadow-main);
 $SHADOW_HOVER: var(--b-card-shadow-hover);
 $SHADOW_GLOW: var(--b-card-shadow-glow);
+$SHADOW_SUB: var(--b-card-shadow-sub);
+
+/* APP SHELL */
+$APP_SHELL_BACKGROUND: var(--b-app-shell-background);
+$APP_SHELL_BORDER: var(--b-app-shell-border);
+$APP_SHELL_SHADOW: var(--b-app-shell-shadow);
 
 /* TRANSITIONS */
 $TRANSITION_FAST: var(--b-transition-fast);

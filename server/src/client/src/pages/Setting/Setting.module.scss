@@ -1,44 +1,26 @@
 @use '~/styles/var';
 
 .container {
-    width: 1200px;
-    max-width: 100%;
+    width: min(1180px, 100%);
     margin: 0 auto;
-    padding: var.$SPACING_LG;
+    padding: clamp(20px, 3vw, 36px);
     color: var.$COLOR_TEXT;
-
-    @media (max-width: 768px) {
-        padding: var.$SPACING_MD;
-    }
 }
 
 .settingsHeader {
-    margin-bottom: var.$SPACING_2XL;
-    position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        bottom: calc(var.$SPACING_MD * -1);
-        left: 0;
-        width: 60px;
-        height: 4px;
-        background: var(--b-gradient-primary);
-        border-radius: var.$RADIUS_SM;
-    }
+    margin-bottom: var.$SPACING_XL;
+    padding: 0 0 var.$SPACING_MD;
+    border-bottom: 1px solid rgba(193, 244, 251, 0.1);
 
     h1 {
-        font-size: 2.25rem;
         margin: 0 0 var.$SPACING_SM;
         font-weight: 700;
         color: var.$COLOR_TEXT;
-        display: inline-block;
     }
 
     p {
-        font-size: 1rem;
-        color: var.$COLOR_TEXT_SECONDARY;
-        max-width: 600px;
+        max-width: 540px;
+        font-size: 0.875rem;
         line-height: 1.5;
         margin: 0;
     }
@@ -46,11 +28,22 @@
 
 .settingsGrid {
     display: grid;
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 280px minmax(0, 1fr);
     gap: var.$SPACING_LG;
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .settingsHeader {
+        margin-bottom: var.$SPACING_LG;
+        padding-bottom: var.$SPACING_SM;
+
+        p {
+            display: none;
+        }
     }
 }
 
@@ -66,90 +59,70 @@
 
     ul {
         list-style: none;
-        padding: 0;
+        padding: var.$SPACING_SM;
         margin: 0;
-        border-radius: var.$RADIUS_LG;
-        overflow: hidden;
-        background-color: var.$COLOR_BACKGROUND_LAYER_1;
+        border-radius: var.$RADIUS_XL;
+        background:
+            linear-gradient(180deg, rgba(8, 28, 36, 0.84) 0%, rgba(7, 24, 31, 0.8) 100%);
         box-shadow: var.$SHADOW_MAIN;
-        border: 1px solid var.$COLOR_BORDER_SUBTLE;
+        border: 1px solid rgba(193, 244, 251, 0.1);
 
-        li {
-            &:not(:last-child) {
-                border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
+        @media (max-width: 768px) {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var.$SPACING_XS;
+        }
+
+        button {
+            width: 100%;
+            text-align: left;
+            padding: 0.875rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 18px;
+            background: transparent;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            color: var.$COLOR_TEXT_SECONDARY;
+            display: flex;
+            align-items: center;
+            gap: var.$SPACING_MD;
+            transition: var.$TRANSITION_FAST;
+            transition-property: background-color, color, border-color, transform;
+
+            &:hover {
+                background-color: rgba(239, 248, 251, 0.05);
+                color: var.$COLOR_TEXT;
+                border-color: rgba(193, 244, 251, 0.12);
+                transform: translateY(-1px);
             }
 
-            button {
-                width: 100%;
-                text-align: left;
-                padding: var.$SPACING_MD var.$SPACING_LG;
-                border: none;
-                background: none;
-                font-size: 0.9375rem;
-                cursor: pointer;
-                color: var.$COLOR_TEXT_SECONDARY;
-                display: flex;
-                align-items: center;
-                gap: var.$SPACING_MD;
-                transition: var.$TRANSITION_FAST;
-                transition-property: background-color, color;
-                position: relative;
-
-                &::before {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    height: 100%;
-                    width: 0;
-                    background: var(--b-gradient-primary);
-                    transition: width var.$TRANSITION_FAST;
-                }
-
-                &:hover {
-                    background-color: var.$COLOR_HOVER;
-                    color: var.$COLOR_TEXT;
-
-                    &::before {
-                        width: 3px;
-                    }
-
-                    svg {
-                        transform: scale(1.1);
-                    }
-                }
-
-                &.active {
-                    @media (min-width: 768px) {
-                        background-color: var.$COLOR_ACTIVE;
-                        color: var.$COLOR_TEXT;
-                        font-weight: 600;
-
-                        &::before {
-                            width: 3px;
-                        }
-
-                        svg {
-                            color: var.$COLOR_POINT;
-                        }
-                    }
-                }
+            &.active {
+                background:
+                    linear-gradient(135deg, rgba(193, 244, 251, 0.14) 0%, rgba(114, 215, 230, 0.08) 100%);
+                color: var.$COLOR_TEXT;
+                border-color: rgba(193, 244, 251, 0.16);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
                 svg {
-                    width: 20px;
-                    height: 20px;
-                    flex-shrink: 0;
-                    transition: var.$TRANSITION_FAST;
-                    transition-property: transform, color;
+                    color: var.$COLOR_POINT;
                 }
+            }
+
+            svg {
+                width: 18px;
+                height: 18px;
+                flex-shrink: 0;
+                transition: var.$TRANSITION_FAST;
+                transition-property: transform, color;
             }
         }
     }
 }
 
 .settingsContent {
+    min-width: 0;
+
     .settingSection {
-        background-color: transparent;
         margin-bottom: var.$SPACING_2XL;
         scroll-margin-top: var.$SPACING_LG;
 

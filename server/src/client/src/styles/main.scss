@@ -34,8 +34,14 @@ body,
     overflow: hidden;
 }
 
+html {
+    color-scheme: dark;
+    background: #03141b;
+}
+
 * {
     -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
 }
 
 .main-container {
@@ -43,22 +49,31 @@ body,
     display: flex;
     flex-direction: column;
     flex: 1;
+    min-height: 0;
+    position: relative;
 }
 
 main {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
+    background:
+        linear-gradient(180deg, rgba(4, 18, 24, 0.58) 0%, rgba(4, 18, 24, 0.28) 100%);
 
     @media (min-width: 1024px) {
         display: grid;
-        grid-template-columns: 280px 1fr;
+        grid-template-columns: 320px minmax(0, 1fr);
         grid-template-rows: 1fr auto;
     }
 }
 
 body {
-    background: var.$COLOR_BACKGROUND;
+    position: relative;
+    background:
+        radial-gradient(circle at top left, rgba(193, 244, 251, 0.14), transparent 34%),
+        radial-gradient(circle at 85% 12%, rgba(47, 157, 190, 0.22), transparent 30%),
+        linear-gradient(180deg, #061a22 0%, #04131b 52%, #02080c 100%);
     font-family: 'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -66,6 +81,19 @@ body {
     word-break: keep-all;
     overflow-wrap: anywhere;
     color: var.$COLOR_TEXT;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: -24%;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 22% 22%, rgba(114, 215, 230, 0.18), transparent 20%),
+        radial-gradient(circle at 78% 14%, rgba(193, 244, 251, 0.08), transparent 18%),
+        radial-gradient(circle at 70% 78%, rgba(29, 153, 178, 0.12), transparent 24%);
+    filter: blur(16px);
+    z-index: -1;
 }
 
 button {
@@ -103,15 +131,16 @@ button {
     width: 44px;
     height: 44px;
     border-radius: var.$RADIUS_FULL;
-    background-color: transparent;
+    background-color: rgba(239, 248, 251, 0.03);
     color: var.$COLOR_TEXT;
-    border: none;
+    border: 1px solid transparent;
     cursor: pointer;
     transition: var.$TRANSITION_FAST;
-    transition-property: background-color, transform;
+    transition-property: background-color, border-color, transform;
 
     &:hover {
         background-color: var.$COLOR_HOVER;
+        border-color: var.$COLOR_BORDER_SUBTLE;
     }
 
     &:active {

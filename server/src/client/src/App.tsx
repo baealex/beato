@@ -4,6 +4,7 @@ import { RouterProvider } from 'react-router-dom';
 import { MusicListener, socket } from './socket';
 
 import router from './router';
+import { appCopy } from './config/copy';
 
 import { musicStore } from './store/music';
 import { artistStore } from './store/artist';
@@ -12,6 +13,8 @@ import { Providers } from './components/app';
 
 export default function App() {
     useEffect(() => {
+        document.title = appCopy.documentTitle;
+
         socket.connect();
 
         socket.on('resync', () => {
