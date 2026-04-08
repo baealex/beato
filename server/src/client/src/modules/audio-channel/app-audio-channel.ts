@@ -2,9 +2,9 @@ import type { AudioChannel, AudioChannelEventHandler } from './audio-channel';
 
 import { getImage } from '~/modules/image';
 import { convertToMillisecond, convertToSecond } from '~/modules/time';
+import { toast } from '~/modules/toast';
 
 import type { Music } from '~/models/type';
-import { toast } from '@baejino/ui';
 
 interface SetMediaItemAction {
     actionType: 'setMediaItem';

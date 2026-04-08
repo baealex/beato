@@ -1,5 +1,5 @@
 import Store from 'badland';
-import { confirm, toast } from '@baejino/ui';
+import { confirm } from '@baejino/ui';
 
 import { musicStore } from './music';
 
@@ -9,6 +9,7 @@ import {
     WebAudioChannel,
     AppAudioChannel
 } from '~/modules/audio-channel';
+import { toast } from '~/modules/toast';
 import { MusicListener } from '~/socket';
 import { shuffle } from '~/modules/shuffle';
 

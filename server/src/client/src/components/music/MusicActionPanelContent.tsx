@@ -1,4 +1,3 @@
-import { toast } from '@baejino/ui';
 import { useStore } from 'badland-react';
 
 import { Image, PanelContent } from '~/components/shared';
@@ -7,6 +6,7 @@ import { PlaylistPanelContent } from '~/components/playlist';
 import * as Icon from '~/icon';
 
 import { panel } from '~/modules/panel';
+import { toast } from '~/modules/toast';
 import { makePlayTime } from '~/modules/time';
 import { MusicListener, PlaylistListener } from '~/socket';
 

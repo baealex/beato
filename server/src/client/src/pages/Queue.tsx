@@ -5,7 +5,6 @@ const cx = classNames.bind(styles);
 import { useStore } from 'badland-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from '@baejino/ui';
 
 import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
@@ -17,6 +16,7 @@ import { PlaylistPanelContent } from '~/components/playlist';
 import * as Icon from '~/icon';
 
 import { panel } from '~/modules/panel';
+import { toast } from '~/modules/toast';
 
 import type { Music } from '~/models/type';
 

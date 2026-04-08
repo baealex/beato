@@ -96,6 +96,31 @@ body::before {
     z-index: -1;
 }
 
+.app-toast {
+    border: 1px solid var.$COLOR_BORDER_SUBTLE !important;
+    border-radius: 18px !important;
+    background:
+        linear-gradient(180deg, rgba(8, 28, 36, 0.94) 0%, rgba(5, 20, 28, 0.96) 100%) !important;
+    color: var.$COLOR_TEXT !important;
+    box-shadow: var.$SHADOW_SUB !important;
+    backdrop-filter: blur(16px);
+}
+
+.app-toast [data-icon] {
+    color: var.$COLOR_POINT !important;
+}
+
+.app-toast-title {
+    color: var.$COLOR_TEXT !important;
+    font-size: 0.94rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.app-toast-description {
+    color: var.$COLOR_TEXT_SECONDARY !important;
+}
+
 button {
     cursor: pointer;
 }
