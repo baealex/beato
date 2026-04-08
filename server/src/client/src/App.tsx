@@ -37,7 +37,6 @@ export default function App() {
             setAuthSession(session);
             setAuthErrorMessage(null);
         } catch (error) {
-            console.error(error);
             setAuthBootstrapError('Unable to verify the current session. Retry once the server is reachable.');
         } finally {
             setIsAuthLoading(false);

@@ -17,4 +17,6 @@ io.on('connection', socketManager);
 
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => console.log(`http server listen on:${PORT} (auth: ${authConfig.mode}) `));
+server.listen(PORT, () => {
+    process.stdout.write(`http server listen on:${PORT} (auth: ${authConfig.mode}) \n`);
+});

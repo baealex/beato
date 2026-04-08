@@ -37,23 +37,25 @@ const normalizeCookieHeader = (cookieHeader?: string | string[]) => {
 };
 
 const parseCookieHeader = (cookieHeader?: string | string[]) => {
-    return normalizeCookieHeader(cookieHeader)
+    const normalizedCookieHeader = normalizeCookieHeader(cookieHeader);
+
+    return normalizedCookieHeader
         .split(';')
         .map((segment) => segment.trim())
         .filter(Boolean)
         .reduce<Record<string, string>>((cookies, segment) => {
-            const separatorIndex = segment.indexOf('=');
+        const separatorIndex = segment.indexOf('=');
 
-            if (separatorIndex === -1) {
-                return cookies;
-            }
-
-            const key = decodeURIComponent(segment.slice(0, separatorIndex).trim());
-            const value = decodeURIComponent(segment.slice(separatorIndex + 1).trim());
-
-            cookies[key] = value;
+        if (separatorIndex === -1) {
             return cookies;
-        }, {});
+        }
+
+        const key = decodeURIComponent(segment.slice(0, separatorIndex).trim());
+        const value = decodeURIComponent(segment.slice(separatorIndex + 1).trim());
+
+        cookies[key] = value;
+        return cookies;
+    }, {});
 };
 
 const getSigningSecret = (authConfig: AuthConfig) => authConfig.sessionSecret || authConfig.password || '';
