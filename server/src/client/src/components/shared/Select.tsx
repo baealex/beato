@@ -1,6 +1,8 @@
-import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
-import { Menu } from '~/icon';
+import * as RadixSelect from '@radix-ui/react-select';
+
+import * as Icon from '~/icon';
+
+import styles from './Select.module.scss';
 
 interface Option {
     value: string;
@@ -13,111 +15,45 @@ interface SelectProps {
     onChange: (value: string) => void;
 }
 
-const Styles = styled.div`
-    @keyframes slide-down {
-        0% {
-            opacity: 0;
-            transform: translateY(-0.5rem);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+const EMPTY_OPTION_VALUE = '__beato-empty-option__';
 
-    position: relative;
-    display: inline-block;
-    font-size: 0.825rem;
-
-    .selected {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.8rem 1rem;
-        border: 1px solid var(--b-color-border);
-        border-radius: 8px;
-        cursor: pointer;
-
-        svg {
-            width: 1rem;
-            height: 1rem;
-            fill: #fff;
-        }
-    }
-
-    .options {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: var(--b-color-background);
-        border: 1px solid var(--b-color-border);
-        border-radius: 8px;
-        border-top: none;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        display: none;
-        z-index: 1;
-
-        div {
-            padding: 0.825rem 1rem;
-            cursor: pointer;
-        }
-    }
-
-    &.open {
-        .selected {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .options {
-            display: block;
-            animation: slide-down 0.1s ease;
-        }
-    }
-`;
+const toInternalValue = (value: string) => (value === '' ? EMPTY_OPTION_VALUE : value);
+const fromInternalValue = (value: string) => (value === EMPTY_OPTION_VALUE ? '' : value);
 
 export default function Select({ selected, options, onChange }: SelectProps) {
-    const ref = useRef<HTMLDivElement>(null);
-    const [isOpen, setIsOpen] = useState(false);
-
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (ref.current && !ref.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [ref]);
-
     return (
-        <Styles ref={ref} className={`${isOpen ? 'open' : ''}`}>
-            <div className="selected" onClick={() => setIsOpen(!isOpen)}>
-                <Menu />
-                {selected ? (
-                    <div>{selected.label}</div>
-                ) : (
-                    <div>Select an option</div>
-                )}
-            </div>
-            <div className="options">
-                {options.map((option) => (
-                    <div
-                        key={option.value}
-                        onClick={() => {
-                            onChange(option.value);
-                            setIsOpen(false);
-                        }}>
-                        {option.label}
-                    </div>
-                ))}
-            </div>
-        </Styles>
+        <RadixSelect.Root
+            value={selected ? toInternalValue(selected.value) : undefined}
+            onValueChange={(value) => onChange(fromInternalValue(value))}>
+            <RadixSelect.Trigger className={styles.trigger}>
+                <RadixSelect.Value placeholder="Select an option" />
+                <RadixSelect.Icon className={styles.triggerIcon}>
+                    <Icon.ChevronDown />
+                </RadixSelect.Icon>
+            </RadixSelect.Trigger>
+
+            <RadixSelect.Portal>
+                <RadixSelect.Content
+                    className={styles.content}
+                    position="popper"
+                    sideOffset={8}>
+                    <RadixSelect.Viewport className={styles.viewport}>
+                        {options.map((option) => (
+                            <RadixSelect.Item
+                                key={option.value || EMPTY_OPTION_VALUE}
+                                value={toInternalValue(option.value)}
+                                className={styles.item}>
+                                <RadixSelect.ItemText>
+                                    {option.label}
+                                </RadixSelect.ItemText>
+                                <RadixSelect.ItemIndicator className={styles.itemIndicator}>
+                                    <Icon.Check />
+                                </RadixSelect.ItemIndicator>
+                            </RadixSelect.Item>
+                        ))}
+                    </RadixSelect.Viewport>
+                </RadixSelect.Content>
+            </RadixSelect.Portal>
+        </RadixSelect.Root>
     );
 }
