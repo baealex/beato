@@ -3,17 +3,20 @@ import type { AudioChannel, AudioChannelEventHandler } from './audio-channel';
 import type { Music } from '~/models/type';
 
 import { audioSettingsStore } from '~/store/audio-settings';
+import { shouldStartMix } from './mix-timing';
 
 export class WebAudioChannel implements AudioChannel {
     private audio: HTMLAudioElement;
     private backgroundAudio: HTMLAudioElement;
     private handler: AudioChannelEventHandler;
     private mixInterval: ReturnType<typeof setInterval> | null;
+    private loadedDuration: number | null;
 
     constructor(_handler: AudioChannelEventHandler) {
         this.audio = new Audio();
         this.backgroundAudio = new Audio();
         this.mixInterval = null;
+        this.loadedDuration = null;
         this.handler = {
             onPlay: () => _handler.onPlay?.(),
             onPause: () => _handler.onPause?.(),
@@ -21,7 +24,12 @@ export class WebAudioChannel implements AudioChannel {
             onEnded: () => _handler.onEnded(),
             onTimeUpdate: () => {
                 _handler.onTimeUpdate(this.audio.currentTime, (fadeTime: number, onMix: () => void) => {
-                    const shouldMix = this.audio.duration - this.audio.currentTime <= fadeTime;
+                    const shouldMix = shouldStartMix({
+                        currentTime: this.audio.currentTime,
+                        fadeTime,
+                        metadataDuration: this.loadedDuration,
+                        mediaDuration: this.audio.duration
+                    });
 
                     if (!this.mixInterval && shouldMix) {
                         onMix();
@@ -77,6 +85,7 @@ export class WebAudioChannel implements AudioChannel {
         let audioResource: string;
 
         const { format, bitrate, useOriginal } = audioSettingsStore.state;
+        this.loadedDuration = music.duration;
 
         if (useOriginal) {
             audioResource = `/api/audio/${music.id}?notranscode=true`;
