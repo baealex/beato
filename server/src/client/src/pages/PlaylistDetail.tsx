@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
 import { useQuery, useQueryClient } from 'react-query';
 import { useStore } from 'badland-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { theme } from '@baejino/style';
 
 import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
@@ -34,26 +32,7 @@ import {
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 import { TwoToneLayout } from '~/components/layout';
-
-const Item = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    .checkbox {
-        margin-left: 1rem;
-
-        svg {
-            width: 1rem;
-            height: 1rem;
-        }
-
-        &.active svg {
-            color: #ccc;
-            fill: ${theme.COLOR_PURPLE_PROMINENT};
-        }
-    }
-`;
+import styles from './PlaylistDetail.module.scss';
 
 export default function PlaylistDetail() {
     const navigate = useNavigate();
@@ -160,10 +139,10 @@ export default function PlaylistDetail() {
                                 id={music.id}
                                 key={music.id}
                                 render={({ listeners }) => (
-                                    <Item>
+                                    <div className={styles.item}>
                                         {isSelectMode ? (
                                             <button
-                                                className={`icon-button checkbox ${isSelected ? 'active' : ''} `}
+                                                className={`icon-button ${styles.checkbox} ${isSelected ? styles.active : ''}`}
                                                 onClick={() => {
                                                     if (selectedItems.includes(music.id)) {
                                                         setSelectedItems(selectedItems.filter(item => item !== music.id));
@@ -175,7 +154,7 @@ export default function PlaylistDetail() {
                                             </button>
                                         ) : (
                                             <div
-                                                className="icon-button checkbox"
+                                                className={`icon-button ${styles.checkbox}`}
                                                 {...listeners}
                                                 style={{
                                                     cursor: 'grab',
@@ -209,7 +188,7 @@ export default function PlaylistDetail() {
                                                 })}
                                             />
                                         </div>
-                                    </Item>
+                                    </div>
                                 )}
                             />
                         );

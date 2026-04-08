@@ -1,0 +1,44 @@
+@use '~/styles/var';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 1rem;
+}
+
+.dance {
+    animation: dance 1.25s infinite ease-in;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.text {
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    color: var.$COLOR_TEXT_SECONDARY;
+}
+
+@keyframes dance {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(12deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(-12deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
