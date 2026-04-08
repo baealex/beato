@@ -13,41 +13,34 @@
 
 .sectionHeader {
     margin-bottom: var.$SPACING_LG;
+}
 
-    h3 {
-        font-size: 1.0625rem;
-        font-weight: 600;
-        margin: 0;
-        margin-bottom: var.$SPACING_MD;
-        padding-bottom: var.$SPACING_MD;
-        border-bottom: 1px solid var.$COLOR_BORDER;
-        color: var.$COLOR_TEXT;
-        display: flex;
-        align-items: center;
-        gap: var.$SPACING_SM;
-    }
+.sectionTitle {
+    margin-bottom: var.$SPACING_MD;
+    padding-bottom: var.$SPACING_MD;
+    border-bottom: 1px solid var.$COLOR_BORDER;
+    display: flex;
+    align-items: center;
+    gap: var.$SPACING_SM;
+}
 
-    .sectionIcon {
-        width: 28px;
-        height: 28px;
-        border-radius: 999px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var.$COLOR_POINT;
+.sectionIcon {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var.$COLOR_POINT;
 
-        svg {
-            width: 16px;
-            height: 16px;
-        }
+    svg {
+        width: 16px;
+        height: 16px;
     }
 }
 
 .sectionDescription {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var.$COLOR_TEXT_SECONDARY;
-    margin: 0;
+    line-height: var.$LINE_HEIGHT_RELAXED;
 }
 
 .sectionContent {
@@ -79,18 +72,12 @@
 }
 
 .settingItemHeader {
-    h4 {
-        font-size: 0.9375rem;
-        font-weight: 600;
-        margin: 0 0 var.$SPACING_XS;
-        color: var.$COLOR_TEXT;
-    }
+.settingItemTitle {
+    margin-bottom: var.$SPACING_XS;
+}
 
     .description {
-        font-size: 0.8125rem;
-        color: var.$COLOR_TEXT_TERTIARY;
-        margin: 0;
-        line-height: 1.5;
+        line-height: var.$LINE_HEIGHT_DEFAULT;
     }
 }
 
@@ -113,8 +100,8 @@
 
     p {
         margin: 0;
-        font-size: 0.875rem;
-        line-height: 1.6;
+        font-size: var.$TEXT_SIZE_SM;
+        line-height: var.$LINE_HEIGHT_RELAXED;
         color: var.$COLOR_TEXT_SECONDARY;
     }
 

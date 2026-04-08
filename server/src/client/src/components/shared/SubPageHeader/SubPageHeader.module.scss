@@ -7,8 +7,6 @@
     padding: 0 1rem;
     height: 56px;
     background-color: var.$COLOR_BACKGROUND_LAYER_1;
-    font-size: 1rem;
-    font-weight: 700;
     border-bottom: 1px solid var.$COLOR_BORDER;
 
     @media (min-width: 1024px) {
@@ -29,8 +27,6 @@
 
         .back-text {
             display: none;
-            font-size: 0.875rem;
-            font-weight: 500;
             margin-left: 0.5rem;
 
             @media (min-width: 1024px) {

@@ -4,7 +4,7 @@
     flex: 1 1 18rem;
     min-width: min(100%, 16rem);
     max-width: 28rem;
-    min-height: 44px;
+    min-height: var.$CONTROL_HEIGHT_MD;
     padding: 0.25rem;
     display: flex;
     align-items: center;
@@ -36,7 +36,7 @@
     background: transparent;
     color: var.$COLOR_TEXT;
     font: inherit;
-    font-size: 0.875rem;
+    font-size: var.$TEXT_SIZE_SM;
 
     &::placeholder {
         color: var.$COLOR_TEXT_MUTED;

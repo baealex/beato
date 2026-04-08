@@ -41,10 +41,10 @@ export const SettingSection = ({ title, description, icon, children }: SettingSe
     return (
         <section className={styles.settingSection}>
             <div className={styles.sectionHeader}>
-                <h3>
+                <Text as="h3" size="lg" weight="semibold" className={styles.sectionTitle}>
                     {icon && <span className={styles.sectionIcon}>{icon}</span>}
-                    {title}
-                </h3>
+                    <span>{title}</span>
+                </Text>
                 {description && (
                     <Text as="p" variant="secondary" size="md" className={styles.sectionDescription}>
                         {description}

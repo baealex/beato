@@ -4,7 +4,24 @@
     display: inline-flex;
     align-items: center;
     gap: 0.625rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
     cursor: pointer;
+
+    &:focus-visible {
+        outline: none;
+
+        .ToggleSwitch {
+            box-shadow: 0 0 0 3px rgba(114, 215, 230, 0.14);
+            border-color: var.$COLOR_FOCUS;
+        }
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
 }
 
 .ToggleSwitch {
@@ -41,6 +58,5 @@
 }
 
 .ToggleLabel {
-    font-size: 0.875rem;
     color: var.$COLOR_TEXT_SECONDARY;
 }

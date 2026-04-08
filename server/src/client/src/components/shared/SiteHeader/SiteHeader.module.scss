@@ -79,8 +79,8 @@
     @media (min-width: 1024px) {
         display: block;
         padding: 0 var.$SPACING_SM;
-        font-size: 0.6875rem;
-        font-weight: 600;
+        font-size: var.$TEXT_SIZE_XS;
+        font-weight: var.$FONT_WEIGHT_SEMIBOLD;
         letter-spacing: 0.1em;
         text-transform: uppercase;
         color: var.$COLOR_TEXT_MUTED;
@@ -91,12 +91,12 @@
     display: flex;
     align-items: center;
     gap: var.$SPACING_SM;
-    min-height: 40px;
+    min-height: var.$CONTROL_HEIGHT_SM;
     padding: 0 var.$SPACING_MD;
     border-radius: var.$RADIUS_FULL;
     text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: var.$TEXT_SIZE_SM;
+    font-weight: var.$FONT_WEIGHT_MEDIUM;
     color: var.$COLOR_TEXT_SECONDARY;
     transition: var.$TRANSITION_FAST;
     transition-property: color, background-color;
