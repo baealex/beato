@@ -1,7 +1,7 @@
 {
-    "name": "beato-server",
+    "name": "ocean-wave-server",
     "version": "1.0.0",
-    "description": "",
+    "description": "Ocean Wave server",
     "scripts": {
         "dev": "cross-env PORT=4000 ts-node script/_dev.ts",
         "dev:client": "npm run dev --prefix client",
@@ -16,14 +16,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/baealex/my-express-template.git"
+        "url": "git+https://github.com/baealex/ocean-wave.git"
     },
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/baealex/my-express-template/issues"
+        "url": "https://github.com/baealex/ocean-wave/issues"
     },
-    "homepage": "https://github.com/baealex/my-express-template#readme",
+    "homepage": "https://github.com/baealex/ocean-wave#readme",
     "dependencies": {
         "@prisma/client": "^5.22.0",
         "bcrypt": "^5.1.1",

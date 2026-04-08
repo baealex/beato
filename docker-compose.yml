@@ -2,7 +2,7 @@ version: "2.0"
 
 services:
   app:
-    image: baealex/beato
+    image: baealex/ocean-wave
     volumes:
       - ./data:/data
       - ./cache:/cache
