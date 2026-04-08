@@ -52,3 +52,30 @@ docker run \
 ```
 
 Then open `http://localhost:4000`.
+
+### Password Mode
+
+Ocean Wave runs in open mode by default. To require a shared password, set `OCEAN_WAVE_AUTH_PASSWORD`.
+
+`OCEAN_WAVE_SESSION_SECRET` is recommended as a dedicated signing secret for the session cookie. If you omit it, Ocean Wave falls back to `OCEAN_WAVE_AUTH_PASSWORD`.
+
+Node.js:
+
+```bash
+OCEAN_WAVE_AUTH_PASSWORD=listen-safe \
+OCEAN_WAVE_SESSION_SECRET=replace-this-secret \
+npm start
+```
+
+Docker:
+
+```bash
+docker run \
+    -e OCEAN_WAVE_AUTH_PASSWORD=listen-safe \
+    -e OCEAN_WAVE_SESSION_SECRET=replace-this-secret \
+    -v {YOUR_MUSIC_PATH}:/music \
+    -v ./cache:/cache \
+    -v ./data:/data \
+    -p 4000:4000 \
+    baealex/ocean-wave
+```

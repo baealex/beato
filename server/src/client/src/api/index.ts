@@ -1,6 +1,14 @@
 import axios from 'axios';
 import type { Artist, Album, Music, Playlist } from '~/models/type';
 
+export type AuthMode = 'open' | 'password-protected';
+
+export interface AuthSession {
+    mode: AuthMode;
+    authRequired: boolean;
+    authenticated: boolean;
+}
+
 type QueryName = 'query' | 'mutation';
 
 export function wrapper(queryName: QueryName, query: string): string {
@@ -25,6 +33,35 @@ export async function graphQLRequest<T extends string, K>(query: string): Promis
         method: 'POST',
         data: { query }
     });
+    return data;
+}
+
+export async function getAuthSession() {
+    const { data } = await axios.request<AuthSession>({
+        url: '/api/auth/session',
+        method: 'GET'
+    });
+
+    return data;
+}
+
+export async function loginWithPassword(password: string) {
+    const { data } = await axios.request<AuthSession>({
+        url: '/api/auth/login',
+        method: 'POST',
+        data: { password }
+    });
+
+    return data;
+}
+
+export async function logoutSession() {
+    const { data } = await axios.request<AuthSession>({
+        url: '/api/auth/logout',
+        method: 'POST',
+        data: {}
+    });
+
     return data;
 }
 
