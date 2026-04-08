@@ -1,0 +1,159 @@
+@use '~/styles/var';
+
+.AuthGate {
+    width: 100%;
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    overflow: auto;
+}
+
+.panel {
+    width: min(440px, calc(100vw - 32px));
+    padding: 28px;
+    border-radius: 28px;
+    border: 1px solid rgba(198, 238, 244, 0.18);
+    background:
+        linear-gradient(180deg, rgba(8, 28, 36, 0.92) 0%, rgba(5, 18, 25, 0.96) 100%);
+    box-shadow:
+        0 28px 64px rgba(2, 8, 11, 0.36),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
+}
+
+.eyebrow {
+    display: inline-flex;
+    margin-bottom: 14px;
+    color: rgba(198, 238, 244, 0.7);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.title {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 2.6rem);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    color: var.$COLOR_TEXT;
+}
+
+.description {
+    margin: 16px 0 0;
+    color: var.$COLOR_TEXT_SECONDARY;
+    line-height: 1.7;
+}
+
+.error {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(247, 113, 113, 0.28);
+    background: rgba(78, 18, 22, 0.58);
+    color: #ffd9d9;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.form,
+.actions {
+    margin-top: 24px;
+}
+
+.form {
+    display: grid;
+    gap: 12px;
+}
+
+.label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var.$COLOR_TEXT_MUTED;
+}
+
+.input {
+    width: 100%;
+    min-height: 52px;
+    padding: 0 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(198, 238, 244, 0.14);
+    background: rgba(3, 17, 24, 0.88);
+    color: var.$COLOR_TEXT;
+    font: inherit;
+    transition: var.$TRANSITION_FAST;
+    transition-property: border-color, box-shadow, background-color;
+
+    &::placeholder {
+        color: rgba(198, 238, 244, 0.36);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: rgba(112, 218, 232, 0.48);
+        box-shadow: 0 0 0 4px rgba(47, 157, 190, 0.16);
+        background: rgba(4, 20, 28, 0.96);
+    }
+}
+
+.button {
+    min-height: 52px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 18px;
+    background:
+        linear-gradient(135deg, rgba(123, 233, 244, 0.92) 0%, rgba(56, 187, 210, 0.96) 100%);
+    color: #04202a;
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.42),
+        0 18px 36px rgba(22, 120, 144, 0.28);
+    transition: var.$TRANSITION_FAST;
+    transition-property: transform, box-shadow, filter;
+
+    &:hover:not(:disabled) {
+        transform: translateY(-1px);
+        filter: saturate(1.04);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.44),
+            0 22px 40px rgba(22, 120, 144, 0.34);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        cursor: wait;
+        opacity: 0.72;
+    }
+}
+
+.loadingPill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(198, 238, 244, 0.14);
+    background: rgba(5, 18, 24, 0.82);
+    color: var.$COLOR_TEXT_SECONDARY;
+    font-size: 0.92rem;
+}
+
+@media (max-width: 640px) {
+    .AuthGate {
+        padding: 16px;
+    }
+
+    .panel {
+        width: 100%;
+        padding: 24px;
+        border-radius: 24px;
+    }
+}
