@@ -1,8 +1,10 @@
-import styles from './BottomPanel.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import * as Dialog from '@radix-ui/react-dialog';
+import type { CSSProperties } from 'react';
+import { useEffect, useRef } from 'react';
 
-import React, { useEffect, useRef } from 'react';
+import { useDragDismiss } from '~/hooks';
+
+import styles from './BottomPanel.module.scss';
 
 interface BottomPanelProps {
     title?: string;
@@ -11,13 +13,24 @@ interface BottomPanelProps {
     children: React.ReactNode;
 }
 
-const BottomPanel = ({
+const DEFAULT_TITLE = 'Action panel';
+
+export default function BottomPanel({
     title,
     isOpen,
     onClose,
     children
-}: BottomPanelProps) => {
+}: BottomPanelProps) {
     const hasPush = useRef(false);
+    const {
+        dragOffset,
+        handlePointerDown,
+        handlePointerMove,
+        handlePointerEnd
+    } = useDragDismiss({
+        enabled: isOpen,
+        onDismiss: onClose
+    });
 
     useEffect(() => {
         if (!isOpen) {
@@ -43,20 +56,40 @@ const BottomPanel = ({
         return () => {
             window.removeEventListener('popstate', handlePopState);
         };
-
-    }, [hasPush, isOpen, onClose]);
+    }, [isOpen, onClose]);
 
     return (
-        <div
-            className={cx('BottomPanel', { 'open': isOpen })}>
-            <button className={cx('clickable', 'backdrop')} onClick={onClose} />
-            <div
-                className={cx('bottom-panel', { 'open': isOpen })}>
-                {title && <div className={cx('panel-title')}>{title}</div>}
-                {children}
-            </div>
-        </div>
-    );
-};
+        <Dialog.Root
+            open={isOpen}
+            onOpenChange={(open) => {
+                if (!open) {
+                    onClose?.();
+                }
+            }}>
+            <Dialog.Portal>
+                <Dialog.Overlay className={styles.overlay} />
 
-export default BottomPanel;
+                <Dialog.Content
+                    className={styles.content}
+                    style={{ '--panel-offset': `${dragOffset}px` } as CSSProperties}>
+                    <div
+                        className={styles.header}
+                        onPointerDown={handlePointerDown}
+                        onPointerMove={handlePointerMove}
+                        onPointerUp={handlePointerEnd}
+                        onPointerCancel={handlePointerEnd}>
+                        <div className={styles.handle} aria-hidden="true" />
+
+                        <Dialog.Title className={title ? styles.title : styles.visuallyHidden}>
+                            {title || DEFAULT_TITLE}
+                        </Dialog.Title>
+                    </div>
+
+                    <div className={styles.body}>
+                        {children}
+                    </div>
+                </Dialog.Content>
+            </Dialog.Portal>
+        </Dialog.Root>
+    );
+}
