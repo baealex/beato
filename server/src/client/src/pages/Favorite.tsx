@@ -1,9 +1,14 @@
-import { prompt } from '@baejino/ui';
 import { useStore } from 'badland-react';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { Button, StickyHeader, Loading, ItemSortPanelContent } from '~/components/shared';
+import {
+    Button,
+    StickyHeader,
+    Loading,
+    ItemSortPanelContent,
+    SearchField
+} from '~/components/shared';
 import { MusicListItem, MusicActionPanelContent } from '~/components/music';
 import * as Icon from '~/icon';
 
@@ -20,35 +25,47 @@ export default function Music() {
 
     const [{ musics, loaded }] = useStore(musicStore);
     const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT);
+    const query = searchParams.get('q') || '';
 
-    const handleSearch = async () => {
-        const q = await prompt('Search keyword', searchParams.get('q') || '');
-        setSearchParams({ q });
+    const handleSearchChange = (value: string) => {
+        const nextSearchParams = new URLSearchParams(searchParams);
+
+        if (value.trim()) {
+            nextSearchParams.set('q', value);
+        } else {
+            nextSearchParams.delete('q');
+        }
+
+        setSearchParams(nextSearchParams, { replace: true });
     };
 
     const handleReadMore = () => {
-        setRenderLimit(renderLimit + RENDER_LIMIT);
-        searchParams.set('l', (renderLimit + RENDER_LIMIT).toString());
-        setSearchParams(searchParams, { replace: true });
+        const nextRenderLimit = renderLimit + RENDER_LIMIT;
+        const nextSearchParams = new URLSearchParams(searchParams);
+
+        setRenderLimit(nextRenderLimit);
+        nextSearchParams.set('l', nextRenderLimit.toString());
+        setSearchParams(nextSearchParams, { replace: true });
     };
 
     const filteredMusics = musics
         ?.filter(music =>
             !music.isHated && music.isLiked && (
-                music.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
-                music.artist.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '') ||
-                music.album.name.toLowerCase().includes(searchParams.get('q')?.toLowerCase() || '')
+                music.name.toLowerCase().includes(query.toLowerCase()) ||
+                music.artist.name.toLowerCase().includes(query.toLowerCase()) ||
+                music.album.name.toLowerCase().includes(query.toLowerCase())
             )
         );
 
     return (
         <>
             <StickyHeader>
-                <Button
-                    style={{ width: '160px' }}
-                    onClick={handleSearch}>
-                    {searchParams.get('q') || 'Search'}
-                </Button>
+                <SearchField
+                    value={query}
+                    placeholder="Search liked music"
+                    ariaLabel="Search favorite music"
+                    onChange={handleSearchChange}
+                />
                 <div
                     style={{
                         display: 'flex',
