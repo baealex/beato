@@ -1,10 +1,11 @@
-import { confirm, prompt } from '@baejino/ui';
+import { prompt } from '@baejino/ui';
 import { useStore } from 'badland-react';
 
 import { GridImage, PanelContent } from '~/components/shared';
 import * as Icon from '~/icon';
 
 import { panel } from '~/modules/panel';
+import { confirm } from '~/modules/confirm';
 
 import { PlaylistListener } from '~/socket';
 
@@ -69,7 +70,12 @@ export default function PlaylistActionPanelContent({
                     icon: <Icon.TrashCan />,
                     text: 'Delete',
                     onClick: async () => {
-                        if (!(await confirm('Are you sure you want to delete this playlist?'))) {
+                        if (!(await confirm({
+                            title: 'Delete playlist?',
+                            description: `“${playlist.name}” will be removed from your library.`,
+                            confirmLabel: 'Delete playlist',
+                            tone: 'danger'
+                        }))) {
                             return;
                         }
                         PlaylistListener.delete(id);

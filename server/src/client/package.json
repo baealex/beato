@@ -20,6 +20,7 @@
         "@dnd-kit/sortable": "^8.0.0",
         "@dnd-kit/utilities": "^3.2.2",
         "@emotion/styled": "^11.14.1",
+        "@radix-ui/react-alert-dialog": "^1.1.15",
         "axios": "^1.13.4",
         "badland": "^0.2.4",
         "badland-react": "^0.0.7",

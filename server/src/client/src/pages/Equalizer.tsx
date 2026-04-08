@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import EqualizerSlider from '~/components/shared/EqualizerSlider';
 import type { Preset } from '~/components/shared/EqualizerPreset';
 import EqualizerPreset from '~/components/shared/EqualizerPreset';
+import { confirm } from '~/modules/confirm';
 import { equalizerStore } from '~/store/equalizer';
 import styles from './Equalizer.module.scss';
 
@@ -102,8 +103,13 @@ const Equalizer = () => {
         setPresets([...DEFAULT_PRESETS, ...customPresets]);
     };
 
-    const handleDeletePreset = (presetId: string) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this preset?');
+    const handleDeletePreset = async (presetId: string) => {
+        const confirmDelete = await confirm({
+            title: 'Delete preset?',
+            description: 'This custom preset will be removed from saved equalizer settings.',
+            confirmLabel: 'Delete preset',
+            tone: 'danger'
+        });
         if (!confirmDelete) return;
 
         const customPresets = presets.filter(p => p.id.startsWith('custom-') && p.id !== presetId);

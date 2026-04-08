@@ -2,6 +2,7 @@ import React from 'react';
 import { QueryClientProvider } from 'react-query';
 
 import queryClient from './configs/query-client';
+import ConfirmProvider from '../ConfirmProvider';
 import PanelProvider from '../PanelProvider';
 import ToastProvider from '../ToastProvider';
 
@@ -15,6 +16,7 @@ const Providers = ({ children }: ProvidersProps) => {
             <PanelProvider>
                 {children}
             </PanelProvider>
+            <ConfirmProvider />
             <ToastProvider />
         </QueryClientProvider>
     );
