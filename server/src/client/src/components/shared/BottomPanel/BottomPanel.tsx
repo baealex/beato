@@ -1,5 +1,8 @@
 import * as Dialog from '@radix-ui/react-dialog';
+import type { CSSProperties } from 'react';
 import { useEffect, useRef } from 'react';
+
+import { useDragDismiss } from '~/hooks';
 
 import styles from './BottomPanel.module.scss';
 
@@ -19,6 +22,15 @@ export default function BottomPanel({
     children
 }: BottomPanelProps) {
     const hasPush = useRef(false);
+    const {
+        dragOffset,
+        handlePointerDown,
+        handlePointerMove,
+        handlePointerEnd
+    } = useDragDismiss({
+        enabled: isOpen,
+        onDismiss: onClose
+    });
 
     useEffect(() => {
         if (!isOpen) {
@@ -57,8 +69,17 @@ export default function BottomPanel({
             <Dialog.Portal>
                 <Dialog.Overlay className={styles.overlay} />
 
-                <Dialog.Content className={styles.content}>
-                    <div className={styles.handle} aria-hidden="true" />
+                <Dialog.Content
+                    className={styles.content}
+                    style={{ '--panel-offset': `${dragOffset}px` } as CSSProperties}>
+                    <div
+                        className={styles.handle}
+                        aria-hidden="true"
+                        onPointerDown={handlePointerDown}
+                        onPointerMove={handlePointerMove}
+                        onPointerUp={handlePointerEnd}
+                        onPointerCancel={handlePointerEnd}
+                    />
 
                     <Dialog.Title className={title ? styles.title : styles.visuallyHidden}>
                         {title || DEFAULT_TITLE}

@@ -10,12 +10,13 @@
 }
 
 .content {
+    --panel-offset: 0px;
     position: fixed;
     left: 50%;
     bottom: 0;
     width: min(100vw, 37.5rem);
     max-height: min(80dvh, 42rem);
-    transform: translateX(-50%);
+    transform: translate(-50%, var(--panel-offset));
     display: flex;
     flex-direction: column;
     border-radius: 1.25rem 1.25rem 0 0;
@@ -42,6 +43,12 @@
     align-self: center;
     margin: 0.75rem 0 0.625rem;
     flex-shrink: 0;
+    cursor: grab;
+    touch-action: none;
+
+    &:active {
+        cursor: grabbing;
+    }
 }
 
 .title {
@@ -97,11 +104,11 @@
 @keyframes sheet-in {
     from {
         opacity: 0;
-        transform: translate(-50%, 0.75rem);
+        transform: translate(-50%, calc(var(--panel-offset) + 0.75rem));
     }
 
     to {
         opacity: 1;
-        transform: translate(-50%, 0);
+        transform: translate(-50%, var(--panel-offset));
     }
 }
