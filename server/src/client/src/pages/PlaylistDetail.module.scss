@@ -1,0 +1,23 @@
+@use '~/styles/var';
+
+.item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.checkbox {
+    margin-left: 1rem;
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
+.active {
+    svg {
+        color: #ccc;
+        fill: var.$COLOR_POINT;
+    }
+}

@@ -1,0 +1,89 @@
+@use '~/styles/var';
+
+.container {
+    :global(.panel-content) {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var.$COLOR_BORDER;
+    }
+
+    :global(.panel-album) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        overflow: hidden;
+        border-radius: 0.5rem;
+
+        > img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
+
+        :global(.album-cover-grid) {
+            width: 60px;
+            height: 60px;
+        }
+    }
+
+    :global(.panel-artist) {
+        display: flex;
+        flex-direction: column;
+    }
+
+    :global(.panel-sub-title) {
+        margin-bottom: 0.25rem;
+        font-size: 0.875rem;
+        color: var.$COLOR_TEXT_MUTED;
+    }
+
+    :global(.panel-sub-content) {
+        font-size: 0.875rem;
+        font-weight: 700;
+    }
+
+    :global(.items) {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 0;
+        margin: 0;
+        list-style: none;
+        border-bottom: 1px solid var.$COLOR_BORDER;
+
+        :global(.item) {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-radius: 0.5rem;
+
+            svg {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+
+            &.active {
+                svg {
+                    fill: var.$COLOR_POINT;
+                    color: var.$COLOR_POINT;
+                }
+            }
+        }
+    }
+
+    :global(.detail-info) {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 0 0;
+        font-size: 0.8rem;
+        color: var.$COLOR_TEXT_MUTED;
+    }
+}
