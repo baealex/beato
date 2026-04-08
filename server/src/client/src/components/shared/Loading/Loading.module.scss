@@ -17,25 +17,25 @@
         0% {
             height: 6px;
             transform: translateY(0px);
-            background: #ff8e3a;
+            background: rgba(114, 215, 230, 0.6);
         }
-    
+
         25% {
             height: 20px;
             transform: translateY(-5px) scaleY(1.7);
-            background: #ed509e;
+            background: rgba(114, 215, 230, 1);
         }
-    
+
         50% {
             height: 6px;
             transform: translateY(0px);
-            background: #9c73f8;
+            background: rgba(56, 187, 210, 0.8);
         }
-    
+
         100% {
             height: 6px;
             transform: translateY(0px);
-            background: #0fccce;
+            background: rgba(114, 215, 230, 0.6);
         }
     }
     
@@ -54,7 +54,7 @@
         width: 0.6rem;
         height: 0.4rem;
         border-radius: 0.5rem;
-        background: orange;
+        background: rgba(114, 215, 230, 0.6);
         animation: audio-wave 2.2s infinite ease-in-out;
     }
     

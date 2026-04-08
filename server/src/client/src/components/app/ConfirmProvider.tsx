@@ -1,6 +1,7 @@
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { useStore } from 'badland-react';
 
+import { Button, Text } from '~/components/shared';
 import { confirmStore } from '~/modules/confirm';
 
 import styles from './ConfirmProvider.module.scss';
@@ -21,38 +22,49 @@ export default function ConfirmProvider() {
                 }
             }}>
             <AlertDialog.Portal>
-                <AlertDialog.Overlay className={styles.overlay} />
+                <AlertDialog.Overlay
+                    className={styles.overlay}
+                    onClick={() => {
+                        if (options.tone !== 'danger') {
+                            confirmStore.cancelIfOpen();
+                        }
+                    }}
+                />
 
                 <AlertDialog.Content className={styles.content}>
                     <div className={styles.header}>
-                        <AlertDialog.Title className={styles.title}>
-                            {options.title}
+                        <AlertDialog.Title asChild>
+                            <Text as="h2" size="base" weight="semibold" className={styles.title}>
+                                {options.title}
+                            </Text>
                         </AlertDialog.Title>
 
                         {options.description && (
-                            <AlertDialog.Description className={styles.description}>
-                                {options.description}
+                            <AlertDialog.Description asChild>
+                                <Text as="p" variant="secondary" size="sm" className={styles.description}>
+                                    {options.description}
+                                </Text>
                             </AlertDialog.Description>
                         )}
                     </div>
 
                     <div className={styles.actions}>
                         <AlertDialog.Cancel asChild>
-                            <button
-                                type="button"
-                                className={`${styles.button} ${styles.secondary}`}
+                            <Button
+                                className={styles.button}
+                                variant="secondary"
                                 onClick={() => confirmStore.resolve(false)}>
                                 {options.cancelLabel}
-                            </button>
+                            </Button>
                         </AlertDialog.Cancel>
 
                         <AlertDialog.Action asChild>
-                            <button
-                                type="button"
-                                className={`${styles.button} ${styles.primary} ${options.tone === 'danger' ? styles.danger : ''}`}
+                            <Button
+                                className={styles.button}
+                                variant={options.tone === 'danger' ? 'danger' : 'primary'}
                                 onClick={() => confirmStore.resolve(true)}>
                                 {options.confirmLabel}
-                            </button>
+                            </Button>
                         </AlertDialog.Action>
                     </div>
                 </AlertDialog.Content>

@@ -76,6 +76,7 @@ export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps
                 description="When enabled, plays the original audio files without any transcoding. This provides the highest quality but may use more bandwidth.">
                 <Toggle
                     value={useOriginal}
+                    ariaLabel="Use original audio files"
                     onChange={() => audioSettingsStore.setUseOriginal(!useOriginal)}
                 />
             </SettingItem>

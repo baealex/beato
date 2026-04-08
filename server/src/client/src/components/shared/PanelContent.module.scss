@@ -38,13 +38,13 @@
 
     :global(.panel-sub-title) {
         margin-bottom: 0.25rem;
-        font-size: 0.875rem;
+        font-size: var.$TEXT_SIZE_SM;
         color: var.$COLOR_TEXT_MUTED;
     }
 
     :global(.panel-sub-content) {
-        font-size: 0.875rem;
-        font-weight: 700;
+        font-size: var.$TEXT_SIZE_SM;
+        font-weight: var.$FONT_WEIGHT_BOLD;
     }
 
     :global(.items) {
@@ -83,7 +83,7 @@
         align-items: center;
         gap: 0.5rem;
         padding: 1rem 0 0;
-        font-size: 0.8rem;
+        font-size: var.$TEXT_SIZE_SM;
         color: var.$COLOR_TEXT_MUTED;
     }
 }

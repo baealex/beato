@@ -3,9 +3,9 @@
 $SIZE_ICON: 40px;
 
 .PlaylistItem {
-    color: #eee;
-    font-size: 14px;
-    padding: 16px;
+    color: var.$COLOR_TEXT;
+    font-size: 0.875rem;
+    padding: 1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -27,7 +27,7 @@ $SIZE_ICON: 40px;
 
     .count {
         font-size: 0.875rem;
-        color: #aaa;
+        color: var.$COLOR_TEXT_TERTIARY;
     }
 
     .cover {

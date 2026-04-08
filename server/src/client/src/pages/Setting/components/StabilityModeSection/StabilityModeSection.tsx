@@ -37,7 +37,11 @@ export const StabilityModeSection = () => {
             <SettingItem
                 title="Enable Stability Mode"
                 description="Activate this to stop using the audio context feature.">
-                <Toggle value={isStabilityModeEnabled} onChange={handleChangeStabilityMode} />
+                <Toggle
+                    value={isStabilityModeEnabled}
+                    ariaLabel="Enable stability mode"
+                    onChange={handleChangeStabilityMode}
+                />
             </SettingItem>
 
             <InfoBox type="warning">

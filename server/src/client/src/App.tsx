@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useStore } from 'badland-react';
 import { RouterProvider } from 'react-router-dom';
 
 import AuthGate from './components/auth/AuthGate';
+import SplashScreen from './components/app/SplashScreen/SplashScreen';
 import { MusicListener, socket } from './socket';
 
 import router from './router';
@@ -19,6 +21,7 @@ import { albumStore } from './store/album';
 import { Providers } from './components/app';
 
 const AUTH_RECOVERY_PATH_PREFIX = '/api/auth/';
+const SPLASH_MIN_MS = 1200;
 
 export default function App() {
     const [authSession, setAuthSession] = useState<AuthSession | null>(null);
@@ -26,6 +29,16 @@ export default function App() {
     const [authErrorMessage, setAuthErrorMessage] = useState<string | null>(null);
     const [isAuthLoading, setIsAuthLoading] = useState(true);
     const [isSubmittingPassword, setIsSubmittingPassword] = useState(false);
+    const [showSplash, setShowSplash] = useState(true);
+    const [splashExiting, setSplashExiting] = useState(false);
+    const splashStartTime = useRef(Date.now());
+
+    const canAccessApp = Boolean(
+        authSession && (!authSession.authRequired || authSession.authenticated)
+    );
+
+    // Watch music store — only meaningful after canAccessApp
+    const [{ loaded: musicLoaded }] = useStore(musicStore);
 
     const refreshAuthSession = async () => {
         setIsAuthLoading(true);
@@ -83,15 +96,29 @@ export default function App() {
         };
     }, []);
 
-    const canAccessApp = Boolean(
-        authSession && (!authSession.authRequired || authSession.authenticated)
-    );
+    // Splash exit: auth done + (music loaded OR auth failed) + minimum time
+    useEffect(() => {
+        if (!showSplash) return;
+
+        const authDone = !isAuthLoading;
+        const storesDone = !canAccessApp || musicLoaded;
+
+        if (!authDone || !storesDone) return;
+
+        const elapsed = Date.now() - splashStartTime.current;
+        const remaining = Math.max(0, SPLASH_MIN_MS - elapsed);
+
+        const exitTimer = setTimeout(() => {
+            setSplashExiting(true);
+            setTimeout(() => setShowSplash(false), 440);
+        }, remaining);
+
+        return () => clearTimeout(exitTimer);
+    }, [isAuthLoading, canAccessApp, musicLoaded, showSplash]);
 
     useEffect(() => {
         const handleWindowFocus = () => {
-            if (!canAccessApp) {
-                return;
-            }
+            if (!canAccessApp) return;
 
             if (!socket.connected) {
                 socket.connect();
@@ -148,34 +175,43 @@ export default function App() {
         }
     };
 
-    if (isAuthLoading) {
-        return <AuthGate state="loading" />;
-    }
+    const appContent = () => {
+        if (authBootstrapError || (!isAuthLoading && !authSession)) {
+            return (
+                <AuthGate
+                    state="error"
+                    errorMessage={authBootstrapError}
+                    onRetry={refreshAuthSession}
+                />
+            );
+        }
 
-    if (authBootstrapError || !authSession) {
-        return (
-            <AuthGate
-                state="error"
-                errorMessage={authBootstrapError}
-                onRetry={refreshAuthSession}
-            />
-        );
-    }
+        if (!isAuthLoading && authSession?.authRequired && !authSession.authenticated) {
+            return (
+                <AuthGate
+                    state="login"
+                    errorMessage={authErrorMessage}
+                    isSubmitting={isSubmittingPassword}
+                    onSubmit={handlePasswordSubmit}
+                />
+            );
+        }
 
-    if (authSession.authRequired && !authSession.authenticated) {
-        return (
-            <AuthGate
-                state="login"
-                errorMessage={authErrorMessage}
-                isSubmitting={isSubmittingPassword}
-                onSubmit={handlePasswordSubmit}
-            />
-        );
-    }
+        if (canAccessApp) {
+            return (
+                <Providers>
+                    <RouterProvider router={router} />
+                </Providers>
+            );
+        }
+
+        return null;
+    };
 
     return (
-        <Providers>
-            <RouterProvider router={router} />
-        </Providers>
+        <>
+            {showSplash && <SplashScreen isExiting={splashExiting} />}
+            {appContent()}
+        </>
     );
 }

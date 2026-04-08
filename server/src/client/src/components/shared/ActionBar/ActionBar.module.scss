@@ -8,15 +8,15 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem 0;
-    background-color: var.$COLOR_PURPLE_PROMINENT;
+    background-color: rgba(7, 25, 33, 0.96);
 
     button {
         display: flex;
         align-items: center;
         flex-direction: column;
         justify-content: center;
-        font-size: 0.75rem;
-        font-weight: bold;
+        font-size: var.$TEXT_SIZE_XS;
+        font-weight: var.$FONT_WEIGHT_BOLD;
         gap: 0.25rem;
 
         svg {

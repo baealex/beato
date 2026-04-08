@@ -2,7 +2,6 @@ import styles from './SiteHeader.module.scss';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { Music } from '~/icon';
 import { appShell } from '~/config/app-shell';
 
 const NAVIGATION_GROUPS = [
@@ -51,14 +50,6 @@ export default function SiteHeader() {
 
     return (
         <header className={styles.header}>
-            <div className={styles.brand}>
-                <Link to="/" className={styles.brandLink}>
-                    <div className={styles.brandIcon}>
-                        <Music />
-                    </div>
-                    <span className={styles.brandName}>{appShell.brand.name}</span>
-                </Link>
-            </div>
             <nav ref={ref} className={styles.nav} aria-label={`${appShell.brand.name} navigation`}>
                 {NAVIGATION_GROUPS.map((group) => (
                     <div

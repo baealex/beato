@@ -2,6 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { useStore } from 'badland-react';
 import { useEffect, useRef, useState } from 'react';
 
+import { Button, Text } from '~/components/shared';
 import { promptStore } from '~/modules/prompt';
 
 import styles from './PromptProvider.module.scss';
@@ -49,13 +50,17 @@ export default function PromptProvider() {
                             promptStore.resolve(value.trim());
                         }}>
                         <div className={styles.header}>
-                            <Dialog.Title className={styles.title}>
-                                {options.title}
+                            <Dialog.Title asChild>
+                                <Text as="h2" size="base" weight="semibold" className={styles.title}>
+                                    {options.title}
+                                </Text>
                             </Dialog.Title>
 
                             {options.description && (
-                                <Dialog.Description className={styles.description}>
-                                    {options.description}
+                                <Dialog.Description asChild>
+                                    <Text as="p" variant="secondary" size="sm" className={styles.description}>
+                                        {options.description}
+                                    </Text>
                                 </Dialog.Description>
                             )}
                         </div>
@@ -70,19 +75,20 @@ export default function PromptProvider() {
 
                         <div className={styles.actions}>
                             <Dialog.Close asChild>
-                                <button
-                                    type="button"
-                                    className={`${styles.button} ${styles.secondary}`}
+                                <Button
+                                    className={styles.button}
+                                    variant="secondary"
                                     onClick={() => promptStore.resolve(null)}>
                                     {options.cancelLabel}
-                                </button>
+                                </Button>
                             </Dialog.Close>
 
-                            <button
+                            <Button
                                 type="submit"
-                                className={`${styles.button} ${styles.primary}`}>
+                                className={styles.button}
+                                variant="primary">
                                 {options.confirmLabel}
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 </Dialog.Content>

@@ -4,28 +4,41 @@ const cx = classNames.bind(styles);
 
 import React from 'react';
 
-interface ButtonProps {
-    type?: 'primary' | 'secondary';
-    style?: React.CSSProperties;
-    children?: React.ReactNode;
-    onClick?: () => void;
+type ButtonVariant = 'primary' | 'secondary' | 'danger';
+type ButtonSize = 'sm' | 'md';
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: ButtonVariant;
+    size?: ButtonSize;
+    fullWidth?: boolean;
 }
 
-const Button = ({
-    type='secondary',
-    style,
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
+    variant = 'secondary',
+    size = 'md',
+    fullWidth = false,
+    className,
+    type = 'button',
     children,
-    onClick
-}: ButtonProps) => {
+    ...props
+}, ref) => {
     return (
         <button
-            type="button"
-            style={style}
-            className={cx('Button', type)}
-            onClick={onClick}>
+            ref={ref}
+            type={type}
+            className={cx(
+                'Button',
+                `variant-${variant}`,
+                `size-${size}`,
+                { fullWidth },
+                className
+            )}
+            {...props}>
             {children}
         </button>
     );
-};
+});
+
+Button.displayName = 'Button';
 
 export default Button;

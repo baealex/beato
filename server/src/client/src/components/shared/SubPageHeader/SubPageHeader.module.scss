@@ -5,13 +5,11 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
-    height: 60px;
+    height: 56px;
     background-color: var.$COLOR_BACKGROUND_LAYER_1;
-    font-size: 1.2rem;
-    font-weight: bold;
     border-bottom: 1px solid var.$COLOR_BORDER;
 
-    @media (min-width: var.$BREAKPOINT_DESKTOP) {
+    @media (min-width: 1024px) {
         height: 100%;
         border-right: 1px solid var.$COLOR_BORDER;
         border-bottom: none;
@@ -29,7 +27,6 @@
 
         .back-text {
             display: none;
-            font-size: 1rem;
             margin-left: 0.5rem;
 
             @media (min-width: 1024px) {

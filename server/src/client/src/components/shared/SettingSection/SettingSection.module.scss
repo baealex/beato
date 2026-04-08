@@ -1,14 +1,10 @@
 @use '~/styles/var';
 
 .settingSection {
-    background:
-        linear-gradient(180deg, rgba(9, 32, 41, 0.86) 0%, rgba(7, 25, 32, 0.82) 100%);
-    border-radius: var.$RADIUS_XL;
+    background: rgba(8, 28, 36, 0.6);
+    border-radius: var.$RADIUS_LG;
     padding: var.$SPACING_LG;
-    margin-bottom: var.$SPACING_2XL;
-    box-shadow: var.$SHADOW_MAIN;
     border: 1px solid var.$COLOR_BORDER_SUBTLE;
-    backdrop-filter: blur(18px);
 
     @media (max-width: 768px) {
         padding: var.$SPACING_MD;
@@ -17,44 +13,34 @@
 
 .sectionHeader {
     margin-bottom: var.$SPACING_LG;
+}
 
-    h3 {
-        font-size: 1.0625rem;
-        font-weight: 600;
-        margin: 0;
-        margin-bottom: var.$SPACING_MD;
-        padding-bottom: var.$SPACING_MD;
-        border-bottom: 1px solid var.$COLOR_BORDER;
-        color: var.$COLOR_TEXT;
-        display: flex;
-        align-items: center;
-        gap: var.$SPACING_SM;
-    }
+.sectionTitle {
+    margin-bottom: var.$SPACING_MD;
+    padding-bottom: var.$SPACING_MD;
+    border-bottom: 1px solid var.$COLOR_BORDER;
+    display: flex;
+    align-items: center;
+    gap: var.$SPACING_SM;
+}
 
-    .sectionIcon {
-        width: 32px;
-        height: 32px;
-        border-radius: 999px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background:
-            linear-gradient(135deg, rgba(193, 244, 251, 0.16) 0%, rgba(114, 215, 230, 0.08) 100%);
-        color: var.$COLOR_POINT;
-        border: 1px solid rgba(193, 244, 251, 0.12);
+.sectionIcon {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var.$COLOR_POINT;
 
-        svg {
-            width: 16px;
-            height: 16px;
-        }
+    svg {
+        width: 16px;
+        height: 16px;
     }
 }
 
 .sectionDescription {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var.$COLOR_TEXT_SECONDARY;
-    margin: 0;
+    line-height: var.$LINE_HEIGHT_RELAXED;
 }
 
 .sectionContent {
@@ -65,17 +51,11 @@
 
 .settingItem {
     padding: var.$SPACING_MD;
-    border-radius: var.$RADIUS_XL;
-    background:
-        linear-gradient(180deg, rgba(12, 42, 52, 0.84) 0%, rgba(10, 31, 40, 0.9) 100%);
-    border: 1px solid rgba(193, 244, 251, 0.08);
-    transition: var.$TRANSITION_FAST;
-    transition-property: background-color, box-shadow, border-color, transform;
+    border-radius: var.$RADIUS_MD;
+    border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
 
-    &:hover {
-        border-color: rgba(193, 244, 251, 0.14);
-        box-shadow: var.$SHADOW_SUB;
-        transform: translateY(-1px);
+    &:last-child {
+        border-bottom: none;
     }
 }
 
@@ -92,18 +72,12 @@
 }
 
 .settingItemHeader {
-    h4 {
-        font-size: 0.9375rem;
-        font-weight: 600;
-        margin: 0 0 var.$SPACING_XS;
-        color: var.$COLOR_TEXT;
-    }
+.settingItemTitle {
+    margin-bottom: var.$SPACING_XS;
+}
 
     .description {
-        font-size: 0.8125rem;
-        color: var.$COLOR_TEXT_TERTIARY;
-        margin: 0;
-        line-height: 1.5;
+        line-height: var.$LINE_HEIGHT_DEFAULT;
     }
 }
 
@@ -126,8 +100,8 @@
 
     p {
         margin: 0;
-        font-size: 0.875rem;
-        line-height: 1.6;
+        font-size: var.$TEXT_SIZE_SM;
+        line-height: var.$LINE_HEIGHT_RELAXED;
         color: var.$COLOR_TEXT_SECONDARY;
     }
 

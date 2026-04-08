@@ -12,7 +12,7 @@
 
 .title {
   font-size: 1.8rem;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 0.5rem;
   color: var(--b-color-text);
 }
@@ -97,7 +97,6 @@
 
     &:hover {
       background: var(--b-color-point);
-      transform: scale(1.1);
     }
   }
 
@@ -113,7 +112,6 @@
 
     &:hover {
       background: var(--b-color-point);
-      transform: scale(1.1);
     }
   }
 
@@ -129,7 +127,6 @@
 
     &:hover {
       background: var(--b-color-point);
-      transform: scale(1.1);
     }
   }
 }
@@ -153,7 +150,6 @@
   
   &:hover {
     background-color: var(--b-color-hover, rgba(var(--b-color-hover-rgb, 0, 0, 0), 0.05));
-    transform: translateY(-1px);
   }
   
   &.active {

@@ -62,7 +62,7 @@ main {
 
     @media (min-width: 1024px) {
         display: grid;
-        grid-template-columns: 320px minmax(0, 1fr);
+        grid-template-columns: 256px minmax(0, 1fr);
         grid-template-rows: 1fr auto;
     }
 }

@@ -78,19 +78,13 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
 
                     <div className={styles.buttonContainer}>
                         <Button
-                            onClick={() => handleSync(false)}
-                            style={{
-                                opacity: isSyncing ? 0.5 : 1,
-                                pointerEvents: isSyncing ? 'none' : 'auto'
-                            }}>
+                            disabled={isSyncing}
+                            onClick={() => handleSync(false)}>
                             Sync
                         </Button>
                         <Button
-                            onClick={() => handleSync(true)}
-                            style={{
-                                opacity: isSyncing ? 0.5 : 1,
-                                pointerEvents: isSyncing ? 'none' : 'auto'
-                            }}>
+                            disabled={isSyncing}
+                            onClick={() => handleSync(true)}>
                             Force Sync
                         </Button>
                     </div>
