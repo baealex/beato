@@ -2,8 +2,11 @@
 
 .Player {
     position: relative;
-    height: 100%;
+    min-height: 100dvh;
     overflow: hidden;
+    background:
+        radial-gradient(circle at top, rgba(114, 215, 230, 0.06), transparent 34%),
+        linear-gradient(180deg, rgba(3, 20, 27, 0.96) 0%, rgba(3, 16, 22, 1) 100%);
 
     .background {
         position: absolute;
@@ -15,116 +18,143 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: blur(60px) saturate(1.8) brightness(0.5);
-            transform: scale(1.2);
+            filter: blur(72px) saturate(1.1) brightness(0.28);
+            transform: scale(1.18);
+            opacity: 0.58;
         }
 
         .overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(
-                to bottom,
-                rgba(5, 5, 5, 0.4) 0%,
-                rgba(5, 5, 5, 0.6) 50%,
-                rgba(5, 5, 5, 0.9) 100%
-            );
+            background:
+                linear-gradient(180deg, rgba(3, 20, 27, 0.24) 0%, rgba(3, 20, 27, 0.66) 52%, rgba(3, 16, 22, 0.96) 100%),
+                radial-gradient(circle at top right, rgba(193, 244, 251, 0.04), transparent 28%);
         }
     }
 
     .container {
         position: relative;
         z-index: 1;
-        height: 100%;
+        min-height: 100dvh;
+        padding: 1rem 1rem 1.5rem;
         display: flex;
         flex-direction: column;
-        padding: var.$SPACING_2XL var.$SPACING_LG;
-        overflow-y: auto;
+    }
+
+    .top-bar {
+        width: min(100%, 30rem);
+        margin: 0 auto 0.875rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .utility-button {
+        width: 2.25rem;
+        height: 2.25rem;
+        border: none;
+        border-radius: var.$RADIUS_FULL;
+        background: transparent;
+        color: var.$COLOR_TEXT_SECONDARY;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: var.$TRANSITION_FAST;
+        transition-property: color, background-color;
+
+        svg {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        &:hover {
+            color: var.$COLOR_TEXT;
+            background: rgba(238, 249, 252, 0.08);
+        }
     }
 
     .content {
-        flex: 1;
+        width: min(100%, 30rem);
+        margin: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        max-width: 500px;
+        gap: 1.5rem;
+    }
+
+    .art-wrap {
         width: 100%;
-        margin: 0 auto;
+        display: flex;
+        justify-content: center;
     }
 
     .album-art {
         position: relative;
-        width: 280px;
-        height: 280px;
-        max-width: 80vw;
-        max-height: 80vw;
-        margin-bottom: var.$SPACING_2XL;
+        width: min(100%, 19rem);
+        aspect-ratio: 1;
 
         &.framed {
-            border-radius: var.$RADIUS_XL;
+            border-radius: 2rem;
             overflow: hidden;
             box-shadow:
-                0 24px 80px rgba(0, 0, 0, 0.6),
-                0 12px 40px rgba(0, 0, 0, 0.4);
+                0 24px 48px rgba(2, 8, 11, 0.24),
+                0 0 32px rgba(114, 215, 230, 0.06);
 
             &::after {
                 content: '';
                 position: absolute;
                 inset: 0;
-                border-radius: var.$RADIUS_XL;
-                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+                border-radius: 2rem;
+                box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
                 pointer-events: none;
             }
         }
     }
 
-    .title-info {
+    .title-block {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
         text-align: center;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: var.$SPACING_MD;
-        border-radius: var.$RADIUS_LG;
-        transition: background-color var.$TRANSITION_FAST;
+    }
 
-        &:hover {
-            background-color: var.$COLOR_HOVER;
-        }
+    .eyebrow {
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
 
-        &:active {
-            background-color: var.$COLOR_ACTIVE;
-        }
+    .title {
+        line-height: 1;
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+        max-width: 12ch;
+    }
 
-        .name {
-            margin-bottom: var.$SPACING_XS;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-        }
+    .album-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.625rem;
     }
 
     .progress-section {
         width: 100%;
-        margin-top: var.$SPACING_2XL;
+        padding-top: 0.25rem;
     }
 
     .progress {
         position: relative;
         width: 100%;
         height: 6px;
-        background-color: rgba(255, 255, 255, 0.1);
+        background: rgba(238, 249, 252, 0.12);
         border-radius: var.$RADIUS_FULL;
         cursor: pointer;
-        overflow: visible;
 
-        &:hover {
-            .bar {
-                background: var(--b-gradient-primary);
-            }
-
-            .thumb {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
+        &:focus-visible {
+            outline: 2px solid var.$COLOR_FOCUS;
+            outline-offset: 4px;
         }
 
         .bar {
@@ -133,142 +163,227 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: var.$COLOR_POINT;
             border-radius: var.$RADIUS_FULL;
+            background: var(--b-gradient-primary);
             transform-origin: left;
-            transition: background var.$TRANSITION_FAST;
         }
 
         .thumb {
             position: absolute;
             top: 50%;
-            width: 16px;
-            height: 16px;
-            background-color: var.$COLOR_TEXT;
+            width: 12px;
+            height: 12px;
             border-radius: var.$RADIUS_FULL;
-            transform: translate(-50%, -50%) scale(0.5);
-            opacity: 0;
-            transition: var.$TRANSITION_FAST;
-            transition-property: opacity, transform;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            background: var.$COLOR_TEXT;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 4px 12px rgba(2, 8, 11, 0.28);
         }
     }
 
     .time-info {
+        margin-top: 0.75rem;
         display: flex;
         justify-content: space-between;
-        margin-top: var.$SPACING_SM;
+        gap: var.$SPACING_MD;
     }
 
     .controls {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var.$SPACING_MD;
-        margin-top: var.$SPACING_2XL;
         width: 100%;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        align-items: center;
+        gap: 0.625rem;
     }
 
-    .control-button {
-        width: 48px;
-        height: 48px;
+    .control-button,
+    .play-button {
+        justify-self: center;
+        width: clamp(2.75rem, 10vw, 3.25rem);
+        height: clamp(2.75rem, 10vw, 3.25rem);
         border-radius: var.$RADIUS_FULL;
-        background: transparent;
         border: none;
-        cursor: pointer;
-        display: flex;
+        background: transparent;
+        color: var.$COLOR_TEXT_SECONDARY;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: var.$COLOR_TEXT_SECONDARY;
         transition: var.$TRANSITION_FAST;
-        transition-property: background-color, color, transform;
+        transition-property: color, background-color, transform;
 
         svg {
-            width: 22px;
-            height: 22px;
+            width: 1.25rem;
+            height: 1.25rem;
         }
 
         &:hover {
-            background-color: var.$COLOR_HOVER;
             color: var.$COLOR_TEXT;
+            background: rgba(238, 249, 252, 0.08);
+            transform: translateY(-1px);
         }
 
         &:active {
-            transform: scale(0.95);
+            transform: translateY(0);
         }
 
         &.active {
-            color: var.$COLOR_POINT;
+            color: var.$COLOR_POINT_LIGHT;
         }
     }
 
     .play-button {
-        width: 72px;
-        height: 72px;
-        border-radius: var.$RADIUS_FULL;
+        width: clamp(4.25rem, 14vw, 4.75rem);
+        height: clamp(4.25rem, 14vw, 4.75rem);
+        color: #03212b;
         background: var(--b-gradient-primary);
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var.$COLOR_TEXT;
         box-shadow:
-            0 8px 24px rgba(167, 139, 250, 0.3),
-            0 4px 12px rgba(0, 0, 0, 0.4);
-        transition: var.$TRANSITION_FAST;
-        transition-property: transform, box-shadow, filter;
+            inset 0 1px 0 rgba(255, 255, 255, 0.36),
+            0 12px 24px rgba(29, 153, 178, 0.14);
 
         svg {
-            width: 32px;
-            height: 32px;
+            width: 1.75rem;
+            height: 1.75rem;
         }
 
         &:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
-            box-shadow:
-                0 12px 32px rgba(167, 139, 250, 0.4),
-                0 6px 16px rgba(0, 0, 0, 0.5);
-        }
-
-        &:active {
-            transform: scale(0.95);
+            color: #03212b;
+            background: var(--b-gradient-primary);
         }
     }
 
-    .back-button {
-        position: fixed;
-        bottom: var.$SPACING_LG;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 48px;
-        height: 48px;
-        border-radius: var.$RADIUS_FULL;
-        background: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(8px);
-        border: 1px solid var.$COLOR_BORDER_SUBTLE;
-        cursor: pointer;
+    .secondary-actions {
+        width: 100%;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        color: var.$COLOR_TEXT_SECONDARY;
-        transition: var.$TRANSITION_FAST;
-        transition-property: background-color, color, transform;
+        gap: 0.625rem;
+    }
+
+    .secondary-action {
+        min-height: 2.25rem;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid rgba(193, 244, 251, 0.08);
+        border-radius: var.$RADIUS_FULL;
+        background: rgba(238, 249, 252, 0.03);
+        color: var.$COLOR_TEXT_TERTIARY;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: color var.$TRANSITION_FAST;
+        transition-property: color, background-color, border-color;
 
         svg {
-            width: 24px;
-            height: 24px;
-            transform: rotate(-90deg);
+            width: 0.95rem;
+            height: 0.95rem;
         }
 
         &:hover {
-            background: rgba(0, 0, 0, 0.5);
             color: var.$COLOR_TEXT;
+            background: rgba(238, 249, 252, 0.08);
+            border-color: rgba(193, 244, 251, 0.14);
+        }
+    }
+
+    .empty-state {
+        width: min(100%, 28rem);
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(193, 244, 251, 0.12);
+        background: rgba(7, 27, 35, 0.44);
+        color: var.$COLOR_POINT_LIGHT;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+
+    .empty-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .empty-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .empty-button {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+        border-radius: var.$RADIUS_FULL;
+        border: 1px solid rgba(193, 244, 251, 0.08);
+        background: rgba(7, 27, 35, 0.4);
+        color: var.$COLOR_TEXT_SECONDARY;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.625rem;
+        transition: var.$TRANSITION_FAST;
+        transition-property: color, background-color, border-color;
+
+        svg {
+            width: 1rem;
+            height: 1rem;
         }
 
-        &:active {
-            transform: translateX(-50%) scale(0.95);
+        &:hover {
+            color: var.$COLOR_TEXT;
+            background: rgba(10, 36, 45, 0.68);
+            border-color: rgba(193, 244, 251, 0.16);
+        }
+
+        &.empty-button-primary {
+            color: var.$COLOR_TEXT;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .content {
+            gap: 1.25rem;
+        }
+
+        .album-art {
+            width: min(100%, 16rem);
+        }
+
+        .title {
+            max-width: none;
+        }
+
+        .controls {
+            gap: 0.5rem;
+        }
+
+        .secondary-actions {
+            gap: 0.5rem;
+        }
+
+        .empty-actions {
+            width: 100%;
+            flex-direction: column;
+
+            .empty-button {
+                width: 100%;
+            }
         }
     }
 }
