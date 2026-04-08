@@ -1,6 +1,6 @@
-# beato
+# Ocean Wave
 
-Beato is a revolutionary self-hosted music streaming web application designed for music lovers who want complete control over their audio experience. With Beato, you can create your own personal music library and stream your favorite tracks anytime, anywhere. Start your musical journey today!
+Ocean Wave is a self-hosted music streaming app for your private library. It is built for listening on your own terms: sync music from storage you control, keep your playlists and favorites close, and stream across desktop and mobile without handing your collection to a third-party service.
 
 ![](https://github.com/user-attachments/assets/d23e162e-0cd9-406b-9bc3-23b7b30d8d6a)
 
@@ -8,7 +8,7 @@ Beato is a revolutionary self-hosted music streaming web application designed fo
 
 ## Features
 
-- [x] Sync your music (supported mp3, acc, wav, ogg, flac).
+- [x] Sync your music (supported mp3, aac, wav, ogg, flac).
 - [x] Categorize your favorite music.
 - [x] Sort your music by the number of times you've listened to it.
 - [x] Create your playlists.
@@ -20,43 +20,35 @@ Beato is a revolutionary self-hosted music streaming web application designed fo
 
 <br>
 
-## Demo site
-
-[demo-beato.baejino.com](https://demo-beato.baejino.com/)
-
-<br>
-
 ## Setup
 
 ⚠️ **Warning** This application under development may be unstable.
 
-### use NodeJS
+### Use Node.js
 
-Please place the 'music' folder at the 'server/src' of the project.
+Link your music directory into `server/src/music`.
 
 ```bash
-git clone https://github.com/baealex/beato
-
-# LINK YOUR MUSIC
-ln -s {YOUR_MUSIC_PATH} beato/server/src/music
-
-# RUN
-./beato/start.sh
+git clone <repository-url> ocean-wave
+cd ocean-wave
+ln -s {YOUR_MUSIC_PATH} server/src/music
+npm install
+npm start
 ```
 
-you can connect to `http://localhost:4000`
+Then open `http://localhost:4000`.
 
-### use Docker
+### Use Docker
 
-Please place the 'music' folder at the top level of the project.
+Bind your music directory to `/music` inside the container.
 
-```
+```bash
 docker run \
     -v {YOUR_MUSIC_PATH}:/music \
     -v ./cache:/cache \
     -v ./data:/data \
     -p 4000:4000 \
-    baealex/beato
+    baealex/ocean-wave
 ```
 
-you can connect to `http://localhost:4000`
+Then open `http://localhost:4000`.
