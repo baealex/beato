@@ -34,11 +34,6 @@ $SIZE_ICON: 40px;
         border-radius: var.$RADIUS_MD;
         object-fit: cover;
         flex-shrink: 0;
-        transition: transform var.$TRANSITION_FAST;
-    }
-
-    &:hover .album-art {
-        transform: scale(1.02);
     }
 
     .row {

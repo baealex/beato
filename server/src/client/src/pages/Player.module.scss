@@ -208,7 +208,7 @@
         align-items: center;
         justify-content: center;
         transition: var.$TRANSITION_FAST;
-        transition-property: color, background-color, transform;
+        transition-property: color, background-color;
 
         svg {
             width: 1.25rem;
@@ -218,11 +218,6 @@
         &:hover {
             color: var.$COLOR_TEXT;
             background: rgba(238, 249, 252, 0.08);
-            transform: translateY(-1px);
-        }
-
-        &:active {
-            transform: translateY(0);
         }
 
         &.active {

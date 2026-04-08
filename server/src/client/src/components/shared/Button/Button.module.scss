@@ -8,18 +8,16 @@
         linear-gradient(180deg, rgba(10, 36, 45, 0.86) 0%, rgba(7, 27, 35, 0.92) 100%);
     border-radius: var.$RADIUS_FULL;
     color: var.$COLOR_TEXT;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 600;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.04),
-        0 12px 24px rgba(2, 8, 11, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     transition: var.$TRANSITION_FAST;
-    transition-property: transform, background-color, border-color, box-shadow, color;
+    transition-property: background-color, border-color, color;
 
     svg {
         width: 1rem;
@@ -30,29 +28,22 @@
         border-color: var.$COLOR_BORDER;
         background:
             linear-gradient(180deg, rgba(12, 44, 55, 0.9) 0%, rgba(9, 33, 42, 0.96) 100%);
-        box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.06),
-            0 16px 28px rgba(2, 8, 11, 0.18);
-        transform: translateY(-1px);
-    }
-
-    &:active {
-        transform: translateY(0);
-        box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.04),
-            0 8px 16px rgba(2, 8, 11, 0.14);
     }
 
     &.primary {
         color: #03212b;
         border-color: transparent;
         background: var(--b-gradient-primary);
-        box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.42),
-            0 18px 32px rgba(29, 153, 178, 0.26);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 
     &.secondary {
         background-color: var.$COLOR_SECONDARY_BUTTON;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
     }
 }

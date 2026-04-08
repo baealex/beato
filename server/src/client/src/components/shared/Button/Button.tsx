@@ -6,6 +6,7 @@ import React from 'react';
 
 interface ButtonProps {
     type?: 'primary' | 'secondary';
+    disabled?: boolean;
     style?: React.CSSProperties;
     children?: React.ReactNode;
     onClick?: () => void;
@@ -13,6 +14,7 @@ interface ButtonProps {
 
 const Button = ({
     type='secondary',
+    disabled,
     style,
     children,
     onClick
@@ -20,6 +22,7 @@ const Button = ({
     return (
         <button
             type="button"
+            disabled={disabled}
             style={style}
             className={cx('Button', type)}
             onClick={onClick}>

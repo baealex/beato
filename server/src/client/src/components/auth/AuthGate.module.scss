@@ -117,11 +117,10 @@
     transition-property: transform, box-shadow, filter;
 
     &:hover:not(:disabled) {
-        transform: translateY(-1px);
-        filter: saturate(1.04);
+        filter: saturate(1.04) brightness(1.04);
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.44),
-            0 22px 40px rgba(22, 120, 144, 0.34);
+            0 18px 36px rgba(22, 120, 144, 0.34);
     }
 
     &:active:not(:disabled) {

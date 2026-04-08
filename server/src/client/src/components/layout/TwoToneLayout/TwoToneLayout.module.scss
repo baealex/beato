@@ -58,10 +58,10 @@
             color: var.$COLOR_TEXT;
             cursor: pointer;
             box-shadow:
-                0 8px 24px rgba(167, 139, 250, 0.3),
+                0 8px 24px rgba(29, 153, 178, 0.25),
                 0 4px 12px rgba(0, 0, 0, 0.4);
             transition: var.$TRANSITION_FAST;
-            transition-property: transform, box-shadow, filter;
+            transition-property: box-shadow, filter;
 
             svg {
                 width: 28px;
@@ -69,10 +69,9 @@
             }
 
             &:hover {
-                transform: scale(1.05);
                 filter: brightness(1.1);
                 box-shadow:
-                    0 12px 32px rgba(167, 139, 250, 0.4),
+                    0 12px 32px rgba(29, 153, 178, 0.32),
                     0 6px 16px rgba(0, 0, 0, 0.5);
             }
 

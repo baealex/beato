@@ -21,7 +21,14 @@ export default function ConfirmProvider() {
                 }
             }}>
             <AlertDialog.Portal>
-                <AlertDialog.Overlay className={styles.overlay} />
+                <AlertDialog.Overlay
+                    className={styles.overlay}
+                    onClick={() => {
+                        if (options.tone !== 'danger') {
+                            confirmStore.cancelIfOpen();
+                        }
+                    }}
+                />
 
                 <AlertDialog.Content className={styles.content}>
                     <div className={styles.header}>
