@@ -1,15 +1,18 @@
-import styled from '@emotion/styled';
+import styles from './Queue.module.scss';
+import classNames from 'classnames/bind';
+const cx = classNames.bind(styles);
+
 import { useStore } from 'badland-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@baejino/ui';
 
 import type { DragEndEvent } from '@dnd-kit/core';
-import { arrayMove, useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { arrayMove } from '@dnd-kit/sortable';
 
 import { VerticalSortable } from '~/components/shared';
-import { MusicActionPanelContent, MusicListItem, MusicSelector } from '~/components/music';
+import { Image, Text } from '~/components/shared';
+import { MusicActionPanelContent } from '~/components/music';
 import { PlaylistPanelContent } from '~/components/playlist';
 import * as Icon from '~/icon';
 
@@ -22,213 +25,7 @@ import { PlaylistListener } from '~/socket';
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 import { useBack } from '~/hooks';
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 60px;
-        padding: 0 1rem;
-        border-bottom: 1px solid var(--b-color-border);
-
-        button {
-            width: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            color: var(--b-color-text);
-            font-size: 0.8rem;
-
-            .link {
-                width: 0;
-                height: 0;
-                border-top: 0.3rem solid transparent;
-                border-bottom: 0.3rem solid transparent;
-                border-left: 0.3rem solid currentColor;
-                transform: rotate(90deg);
-            }
-
-            &.active {
-                color: var(--b-color-point);
-            }
-
-            svg {
-                width: 1rem;
-                height: 1rem;
-            }
-        }
-    }
-
-    .footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.75rem 0.5rem;
-
-        .button {
-            border: none;
-            background: none;
-            color: var(--b-color-point);
-            font-size: 1rem;
-            font-weight: 600;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-        }
-    }
-
-    .select-actions {
-        position: sticky;
-        bottom: 0;
-        left: 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.5rem 0;
-        background-color: var(--b-color-point);
-
-        button {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            gap: 0.25rem;
-
-            svg {
-                width: 1.25rem;
-                height: 1.25rem;
-            }
-        }
-    }
-
-    ul {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        list-style: none;
-    }
-`;
-
-const Item = styled.li`
-    position: relative;
-    display: flex;
-    align-items: center;
-
-    .checkbox {
-        margin-left: 1rem;
-
-        svg {
-            width: 1rem;
-            height: 1rem;
-        }
-
-        &.active {
-            svg {
-                color: var(--b-color-text);
-                fill: var(--b-color-point);
-            }
-        }
-    }
-
-    @keyframes breathing {
-        0% {
-            opacity: 0.15;
-        }
-        50% {
-            opacity: 0.25;
-        }
-        100% {
-            opacity: 0.15;
-        }
-    }
-
-    &.now-playing {
-        &::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--b-color-point);
-            animation: breathing 3s ease infinite;
-            z-index: -1;
-            pointer-events: none;
-        }
-    }
-`;
-
-const QueueDndItem = ({
-    music,
-    isCurrentMusic,
-    isSelectMode,
-    isSelected,
-    onSelect,
-    onClick,
-    onLongPress
-}: {
-    music: Music;
-    isCurrentMusic: boolean;
-    isSelectMode: boolean;
-    isSelected: boolean;
-    onSelect: () => void;
-    onClick: () => void;
-    onLongPress: () => void;
-}) => {
-    const {
-        attributes, listeners, setNodeRef, transform, transition
-    } = useSortable({ id: music.id });
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition
-    };
-
-    return (
-        <Item ref={setNodeRef} {...attributes} style={style} className={isCurrentMusic ? 'now-playing' : ''}>
-            {isSelectMode ? (
-                <button
-                    className={`icon-button checkbox ${isSelected ? 'active' : ''}`}
-                    onClick={onSelect}>
-                    <Icon.CheckBox />
-                </button>
-            ) : (
-                <button
-                    {...listeners}
-                    className="icon-button checkbox"
-                    style={{
-                        cursor: 'grab',
-                        touchAction: 'none'
-                    }}>
-                    <Icon.Menu />
-                </button>
-            )}
-            <div
-                style={{
-                    flex: 1,
-                    maxWidth: 'calc(100% - 4rem)'
-                }}>
-                <MusicListItem
-                    key={music.id}
-                    musicName={music.name}
-                    artistName={music.artist.name}
-                    albumName={music.album.name}
-                    albumCover={music.album.cover}
-                    isLiked={music.isLiked}
-                    isHated={music.isHated}
-                    onClick={isSelectMode ? onSelect : onClick}
-                    onLongPress={onLongPress}
-                />
-            </div>
-        </Item>
-    );
-};
+import QueueDndItem, { type QueueTone } from './Queue/QueueDndItem';
 
 export default function Queue() {
     const back = useBack();
@@ -237,37 +34,70 @@ export default function Queue() {
     const [{ items, selected }, setState] = useStore(queueStore);
     const [{ musicMap }] = useStore(musicStore);
 
-    const ref = useRef<HTMLUListElement>(null);
+    const listRef = useRef<HTMLDivElement>(null);
     const [isSelectMode, setIsSelectMode] = useState(false);
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+    const currentIndex = selected ?? -1;
+    const currentMusic = currentIndex >= 0
+        ? musicMap.get(items[currentIndex]) ?? null
+        : null;
+    const nextMusic = currentIndex >= 0
+        ? currentIndex + 1 < items.length
+            ? musicMap.get(items[currentIndex + 1]) ?? null
+            : null
+        : items.length > 0
+            ? musicMap.get(items[0]) ?? null
+            : null;
+
+    const previousEntries = currentIndex > 0
+        ? items.slice(0, currentIndex).map((id, index) => ({
+            id,
+            index
+        }))
+        : [];
+    const currentEntry = currentIndex >= 0
+        ? {
+            id: items[currentIndex],
+            index: currentIndex
+        }
+        : null;
+    const upcomingStart = currentIndex >= 0 ? currentIndex + 1 : 0;
+    const upcomingEntries = items
+        .slice(upcomingStart)
+        .map((id, offset) => ({
+            id,
+            index: upcomingStart + offset
+        }));
 
     const handleDragEnd = async (event: DragEndEvent) => {
         const { active, over } = event;
 
-        if (over) {
-            if (active.id === over.id) return;
+        if (!over || active.id === over.id) {
+            return;
+        }
 
-            setState((prevState) => {
-                const prevSelectedItem = prevState.items[prevState.selected!];
+        setState((prevState) => {
+            const prevSelectedItem = prevState.selected !== null
+                ? prevState.items[prevState.selected]
+                : null;
+            const oldIndex = prevState.items.indexOf(active.id.toString());
+            const newIndex = prevState.items.indexOf(over.id.toString());
+            const newItems = arrayMove(prevState.items, oldIndex, newIndex);
 
-                const oldIndex = prevState.items.indexOf(active.id.toString());
-                const newIndex = prevState.items.indexOf(over.id.toString());
-                const newItems = arrayMove(prevState.items, oldIndex, newIndex);
-
-                if (prevSelectedItem) {
-                    return {
-                        ...prevState,
-                        items: newItems,
-                        selected: newItems.indexOf(prevSelectedItem)
-                    };
-                }
-
+            if (prevSelectedItem) {
                 return {
                     ...prevState,
-                    items: newItems
+                    items: newItems,
+                    selected: newItems.indexOf(prevSelectedItem)
                 };
-            });
-        }
+            }
+
+            return {
+                ...prevState,
+                items: newItems
+            };
+        });
     };
 
     useEffect(() => {
@@ -275,113 +105,277 @@ export default function Queue() {
     }, [isSelectMode]);
 
     useEffect(() => {
-        if (ref.current) {
-            const targetElement = ref.current.children.item(
-                selected || 0
-            ) as HTMLElement;
+        setSelectedItems((prev) => prev.filter((id) => items.includes(id)));
+    }, [items]);
 
-            if (!targetElement) return;
-
-            ref.current.scrollTo({
-                top: targetElement.offsetTop - 60,
-                behavior: 'smooth'
-            });
+    useEffect(() => {
+        if (selected === null || !listRef.current) {
+            return;
         }
-    }, [ref, selected]);
+
+        const targetElement = listRef.current.querySelector<HTMLElement>(`[data-queue-index="${selected}"]`);
+
+        if (!targetElement) {
+            return;
+        }
+
+        listRef.current.scrollTo({
+            top: Math.max(0, targetElement.offsetTop - 80),
+            behavior: 'smooth'
+        });
+    }, [selected]);
+
+    const openMusicActions = (music: Music) => {
+        panel.open({
+            content: (
+                <MusicActionPanelContent
+                    id={music.id}
+                    onAlbumClick={() => navigate(`/album/${music.album.id}`)}
+                    onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
+                />
+            )
+        });
+    };
+
+    const toggleSelectedItem = (id: string) => {
+        setSelectedItems((prev) => prev.includes(id)
+            ? prev.filter((item) => item !== id)
+            : [...prev, id]);
+    };
+
+    const renderQueueItem = (id: string, index: number, tone: QueueTone) => {
+        const music = musicMap.get(id);
+
+        if (!music) {
+            return null;
+        }
+
+        return (
+            <QueueDndItem
+                key={id}
+                music={music}
+                index={index}
+                tone={tone}
+                isSelectMode={isSelectMode}
+                isSelected={selectedItems.includes(id)}
+                onSelect={() => toggleSelectedItem(id)}
+                onClick={() => {
+                    queueStore.select(index);
+                }}
+                onOpenActions={() => openMusicActions(music)}
+            />
+        );
+    };
 
     return (
-        <Container>
-            <div className="header">
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem'
-                    }}>
-                    <MusicSelector
-                        label={isSelectMode
-                            ? `${selectedItems.length} selected`
-                            : `${items?.length} musics`}
-                        active={isSelectMode}
-                        onClick={() => setIsSelectMode(!isSelectMode)}
-                        onSelectAll={() => setSelectedItems(items)}
-                    />
-                </div>
-            </div>
-            <ul className="main-container" ref={ref}>
-                <VerticalSortable items={items} onDragEnd={handleDragEnd}>
-                    {items?.map((id, idx) => {
-                        const music = musicMap.get(id);
-
-                        if (!music) return null;
-
-                        return (
-                            <QueueDndItem
-                                key={id}
-                                music={music}
-                                isCurrentMusic={selected === idx}
-                                isSelectMode={isSelectMode}
-                                isSelected={selectedItems.includes(id)}
-                                onSelect={() => {
-                                    if (selectedItems.includes(id)) {
-                                        setSelectedItems(selectedItems.filter(item => item !== id));
-                                    } else {
-                                        setSelectedItems([...selectedItems, id]);
-                                    }
-                                }}
-                                onClick={() => {
-                                    queueStore.select(idx);
-                                }}
-                                onLongPress={() => panel.open({
-                                    content: (
-                                        <MusicActionPanelContent
-                                            id={music.id}
-                                            onAlbumClick={() => navigate(`/album/${music.album.id}`)}
-                                            onArtistClick={() => navigate(`/artist/${music.artist.id}`)}
-                                        />
-                                    )
-                                })}
-                            />
-                        );
-                    })}
-                </VerticalSortable>
-            </ul>
-            {isSelectMode && selectedItems.length > 0 && (
-                <div className="select-actions">
+        <div className={cx('Queue')}>
+            <div className={cx('container')}>
+                <div className={cx('top-bar')}>
                     <button
-                        className="clickable"
-                        onClick={() => panel.open({
-                            title: 'Move to playlist',
-                            content: (
-                                <PlaylistPanelContent
-                                    onClick={(id) => {
-                                        PlaylistListener.addMusic(id, selectedItems);
-                                        toast('Added to playlist');
-                                        setIsSelectMode(false);
-                                    }}
-                                />
-                            )
-                        })}>
-                        <Icon.Download />
-                        <span>Save</span>
+                        type="button"
+                        className={cx('utility-button')}
+                        aria-label="Go back"
+                        onClick={back}>
+                        <Icon.ChevronLeft />
                     </button>
-                    <button
-                        className="clickable"
-                        onClick={() => {
-                            queueStore.removeItems(selectedItems);
-                            setIsSelectMode(false);
-                        }}>
-                        <Icon.TrashCan />
-                        <span>Delete</span>
-                    </button>
+
+                    <div className={cx('page-copy')}>
+                        <Text as="h1" size="lg" weight="semibold">
+                            Queue
+                        </Text>
+                        <Text as="p" variant="muted" size="xs">
+                            {isSelectMode
+                                ? `${selectedItems.length} selected`
+                                : `${items.length} tracks in session`}
+                        </Text>
+                    </div>
+
+                    {items.length > 0 ? (
+                        <button
+                            type="button"
+                            className={cx('edit-button', { active: isSelectMode })}
+                            onClick={() => setIsSelectMode((prev) => !prev)}>
+                            {isSelectMode ? 'Done' : 'Edit'}
+                        </button>
+                    ) : (
+                        <div className={cx('top-bar-spacer')} />
+                    )}
                 </div>
-            )}
-            <div className="footer">
-                <div />
-                <button className="icon-button" onClick={back}>
-                    <Icon.Close />
-                </button>
+
+                {items.length > 0 ? (
+                    <>
+                        <section className={cx('overview')}>
+                            <div className={cx('overview-header')}>
+                                <Text
+                                    as="span"
+                                    variant="muted"
+                                    size="xs"
+                                    weight="medium"
+                                    className={cx('eyebrow')}>
+                                    {currentMusic ? 'Now playing' : 'Queue overview'}
+                                </Text>
+                                <div className={cx('overview-stats')}>
+                                    <span>{currentMusic ? `${currentIndex + 1} / ${items.length}` : `${items.length} queued`}</span>
+                                    <span>{currentMusic ? `${Math.max(items.length - currentIndex - 1, 0)} up next` : 'Ready to start'}</span>
+                                </div>
+                            </div>
+
+                            {currentMusic ? (
+                                <div className={cx('overview-track')}>
+                                    <Image
+                                        className={cx('overview-art')}
+                                        src={currentMusic.album.cover}
+                                        alt={currentMusic.album.name}
+                                        loading="eager"
+                                    />
+                                    <div className={cx('overview-copy')}>
+                                        <Text as="h2" size="xl" weight="bold" className={cx('overview-title')}>
+                                            {currentMusic.name}
+                                        </Text>
+                                        <Text as="p" variant="secondary" size="md">
+                                            {currentMusic.artist.name}
+                                        </Text>
+                                        <Text as="p" variant="tertiary" size="sm">
+                                            {currentMusic.album.name}
+                                        </Text>
+                                    </div>
+                                </div>
+                            ) : nextMusic ? (
+                                <div className={cx('overview-track')}>
+                                    <Image
+                                        className={cx('overview-art')}
+                                        src={nextMusic.album.cover}
+                                        alt={nextMusic.album.name}
+                                        loading="eager"
+                                    />
+                                    <div className={cx('overview-copy')}>
+                                        <Text as="h2" size="xl" weight="bold" className={cx('overview-title')}>
+                                            {nextMusic.name}
+                                        </Text>
+                                        <Text as="p" variant="secondary" size="md">
+                                            {nextMusic.artist.name}
+                                        </Text>
+                                        <Text as="p" variant="tertiary" size="sm">
+                                            Waiting at the front of the queue
+                                        </Text>
+                                    </div>
+                                </div>
+                            ) : null}
+
+                            <Text as="p" variant="secondary" size="sm" className={cx('overview-note')}>
+                                {nextMusic && currentMusic
+                                    ? `Up next: ${nextMusic.name} by ${nextMusic.artist.name}`
+                                    : currentMusic
+                                        ? 'This is the last track in the current session.'
+                                        : nextMusic
+                                            ? `${nextMusic.name} is first in line.`
+                                            : 'Choose a track from your library to begin listening.'}
+                            </Text>
+
+                            {isSelectMode && (
+                                <div className={cx('selection-summary')}>
+                                    <Text as="span" variant="secondary" size="sm">
+                                        Select tracks to save or remove them together.
+                                    </Text>
+                                    <button
+                                        type="button"
+                                        className={cx('summary-action')}
+                                        disabled={selectedItems.length === items.length}
+                                        onClick={() => setSelectedItems(items)}>
+                                        Select all
+                                    </button>
+                                </div>
+                            )}
+                        </section>
+
+                        <div className={cx('list-shell')} ref={listRef}>
+                            <ul className={cx('list')}>
+                                <VerticalSortable items={items} onDragEnd={handleDragEnd}>
+                                    {previousEntries.length > 0 && (
+                                        <li className={cx('section-label')}>Earlier</li>
+                                    )}
+                                    {previousEntries.map(({ id, index }) => renderQueueItem(id, index, 'past'))}
+
+                                    {currentEntry && (
+                                        <li className={cx('section-label', 'section-label-current')}>
+                                            Now playing
+                                        </li>
+                                    )}
+                                    {currentEntry && renderQueueItem(currentEntry.id, currentEntry.index, 'current')}
+
+                                    {upcomingEntries.length > 0 && (
+                                        <li className={cx('section-label')}>
+                                            {currentEntry ? 'Up next' : 'Queue'}
+                                        </li>
+                                    )}
+                                    {upcomingEntries.map(({ id, index }) => renderQueueItem(id, index, 'upcoming'))}
+                                </VerticalSortable>
+                            </ul>
+                        </div>
+                    </>
+                ) : (
+                    <div className={cx('empty-state')}>
+                        <div className={cx('empty-icon')}>
+                            <Icon.ListMusic />
+                        </div>
+
+                        <div className={cx('empty-copy')}>
+                            <Text as="h1" size="2xl" weight="bold">
+                                Queue is empty.
+                            </Text>
+                            <Text as="p" variant="secondary" size="md">
+                                Add music from your library to shape the next listening session.
+                            </Text>
+                        </div>
+
+                        <div className={cx('empty-actions')}>
+                            <button
+                                type="button"
+                                className={cx('empty-button', 'empty-button-primary')}
+                                onClick={() => navigate('/')}>
+                                <Icon.Music />
+                                <span>Open library</span>
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {isSelectMode && selectedItems.length > 0 && (
+                    <div className={cx('selection-actions')}>
+                        <button
+                            type="button"
+                            className={cx('action-button', 'action-button-primary')}
+                            onClick={() => panel.open({
+                                title: 'Move to playlist',
+                                content: (
+                                    <PlaylistPanelContent
+                                        onClick={(id) => {
+                                            PlaylistListener.addMusic(id, selectedItems);
+                                            toast('Added to playlist');
+                                            setSelectedItems([]);
+                                            setIsSelectMode(false);
+                                        }}
+                                    />
+                                )
+                            })}>
+                            <Icon.Download />
+                            <span>Save</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            className={cx('action-button')}
+                            onClick={() => {
+                                queueStore.removeItems(selectedItems);
+                                setSelectedItems([]);
+                                setIsSelectMode(false);
+                            }}>
+                            <Icon.TrashCan />
+                            <span>Delete</span>
+                        </button>
+                    </div>
+                )}
             </div>
-        </Container >
+        </div>
     );
 }
