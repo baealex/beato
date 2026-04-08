@@ -36,11 +36,8 @@
 }
 
 .header {
-    padding: 0.75rem 1rem 0.875rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.625rem;
+    position: relative;
+    padding: 1.75rem 1rem 0.875rem;
     cursor: grab;
     touch-action: none;
     user-select: none;
@@ -51,20 +48,25 @@
 }
 
 .handle {
+    position: absolute;
+    top: 0.75rem;
+    left: 50%;
     width: 3rem;
     height: 0.3125rem;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.18);
-    align-self: center;
+    transform: translateX(-50%);
     flex-shrink: 0;
 }
 
 .title {
     margin: 0;
+    width: 100%;
     font-size: 0.8125rem;
     font-weight: 600;
     color: var.$COLOR_TEXT_SECONDARY;
     letter-spacing: 0.01em;
+    text-align: left;
 }
 
 .body {
