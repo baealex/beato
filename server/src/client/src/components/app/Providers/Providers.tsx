@@ -4,6 +4,7 @@ import { QueryClientProvider } from 'react-query';
 import queryClient from './configs/query-client';
 import ConfirmProvider from '../ConfirmProvider';
 import PanelProvider from '../PanelProvider';
+import PromptProvider from '../PromptProvider';
 import ToastProvider from '../ToastProvider';
 
 interface ProvidersProps {
@@ -17,6 +18,7 @@ const Providers = ({ children }: ProvidersProps) => {
                 {children}
             </PanelProvider>
             <ConfirmProvider />
+            <PromptProvider />
             <ToastProvider />
         </QueryClientProvider>
     );
