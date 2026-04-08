@@ -1,8 +1,8 @@
-import { confirm } from '@baejino/ui';
 import { useState, useRef, useEffect } from 'react';
 
 import { socket } from '~/socket';
 import { appCopy } from '~/config/copy';
+import { confirm } from '~/modules/confirm';
 
 import {
     AudioSettingsSection,
@@ -197,9 +197,11 @@ export default function Setting() {
     const handleClickSyncMusic = async (force: boolean) => {
         if (
             force &&
-            !(await confirm(
-                'Please only proceed with the update if it is recommended by the developer. Are you sure you want to proceed?'
-            ))
+            !(await confirm({
+                title: 'Force sync music?',
+                description: 'Please only proceed if this update is recommended by the developer.',
+                confirmLabel: 'Force sync'
+            }))
         ) {
             return;
         }

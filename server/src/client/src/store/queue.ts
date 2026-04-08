@@ -1,5 +1,4 @@
 import Store from 'badland';
-import { confirm } from '@baejino/ui';
 
 import { musicStore } from './music';
 
@@ -9,6 +8,7 @@ import {
     WebAudioChannel,
     AppAudioChannel
 } from '~/modules/audio-channel';
+import { confirm } from '~/modules/confirm';
 import { toast } from '~/modules/toast';
 import { MusicListener } from '~/socket';
 import { shuffle } from '~/modules/shuffle';
@@ -143,7 +143,12 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     async reset(ids: string[]) {
-        if (this.state.items.length > 0 && !(await confirm('Are you sure to reset queue?'))) {
+        if (this.state.items.length > 0 && !(await confirm({
+            title: 'Reset queue?',
+            description: 'Current queue will be replaced with the selected tracks.',
+            confirmLabel: 'Reset queue',
+            tone: 'danger'
+        }))) {
             return;
         }
         await this.set({
