@@ -1,4 +1,3 @@
-import { prompt } from '@baejino/ui';
 import { useStore } from 'badland-react';
 
 import { GridImage, PanelContent } from '~/components/shared';
@@ -6,6 +5,7 @@ import * as Icon from '~/icon';
 
 import { panel } from '~/modules/panel';
 import { confirm } from '~/modules/confirm';
+import { prompt } from '~/modules/prompt';
 
 import { PlaylistListener } from '~/socket';
 
@@ -59,7 +59,11 @@ export default function PlaylistActionPanelContent({
                     icon: <Icon.Pencil />,
                     text: 'Rename',
                     onClick: async () => {
-                        const name = await prompt('Rename playlist', playlist.name);
+                        const name = await prompt({
+                            title: 'Rename playlist',
+                            placeholder: 'Playlist name',
+                            confirmLabel: 'Rename'
+                        }, playlist.name);
                         if (name) {
                             PlaylistListener.update(id, name);
                         }

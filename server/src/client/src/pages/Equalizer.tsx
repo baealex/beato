@@ -4,6 +4,7 @@ import EqualizerSlider from '~/components/shared/EqualizerSlider';
 import type { Preset } from '~/components/shared/EqualizerPreset';
 import EqualizerPreset from '~/components/shared/EqualizerPreset';
 import { confirm } from '~/modules/confirm';
+import { prompt } from '~/modules/prompt';
 import { equalizerStore } from '~/store/equalizer';
 import styles from './Equalizer.module.scss';
 
@@ -87,8 +88,13 @@ const Equalizer = () => {
         setEqState(() => ({ ...preset.values }));
     };
 
-    const handleSaveCurrentAsPreset = () => {
-        const presetName = prompt('Enter a name for this preset:');
+    const handleSaveCurrentAsPreset = async () => {
+        const presetName = await prompt({
+            title: 'Save preset',
+            description: 'Store the current equalizer curve as a reusable preset.',
+            placeholder: 'Late night',
+            confirmLabel: 'Save preset'
+        });
         if (!presetName) return;
 
         const newPreset: Preset = {

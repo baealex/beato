@@ -1,5 +1,3 @@
-
-import { prompt } from '@baejino/ui';
 import { useStore } from 'badland-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,6 +19,7 @@ import type { Playlist as PlaylistModel } from '~/models/type';
 
 import { PlaylistListener } from '~/socket';
 
+import { prompt } from '~/modules/prompt';
 import { playlistStore } from '~/store/playlist';
 import { panel } from '~/modules/panel';
 
@@ -80,7 +79,15 @@ export default function Playlist() {
     const [{ playlists, loaded }, setState] = useStore(playlistStore);
 
     const handleCreate = async () => {
-        const name = await prompt('Enter playlist name');
+        const name = await prompt({
+            title: 'Create playlist',
+            description: 'Give this playlist a short name so you can find it later.',
+            placeholder: 'Night drive',
+            confirmLabel: 'Create'
+        });
+        if (!name) {
+            return;
+        }
         PlaylistListener.create(name);
     };
 
