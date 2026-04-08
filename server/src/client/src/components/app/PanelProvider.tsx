@@ -9,7 +9,7 @@ interface PanelProviderProps {
 }
 
 export default function PanelProvider({ children }: PanelProviderProps) {
-    const [{ isOpen, title, content }, setState] = useStore(panel);
+    const [{ isOpen, title, content }] = useStore(panel);
 
     return (
         <>
@@ -17,7 +17,7 @@ export default function PanelProvider({ children }: PanelProviderProps) {
             <BottomPanel
                 title={title}
                 isOpen={isOpen}
-                onClose={() => setState({ isOpen: false })}>
+                onClose={() => panel.close()}>
                 {content}
             </BottomPanel>
         </>
