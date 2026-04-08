@@ -4,7 +4,6 @@ import { useQuery, useQueryClient } from 'react-query';
 import { useStore } from 'badland-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { theme } from '@baejino/style';
-import { toast } from '@baejino/ui';
 
 import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
@@ -23,6 +22,7 @@ import * as Icon from '~/icon';
 import { panel } from '~/modules/panel';
 
 import { getPlaylist } from '~/api';
+import { toast } from '~/modules/toast';
 import {
     PLAYLIST_CHANGE_MUSIC_ORDER,
     PLAYLIST_MOVE_MUSIC,

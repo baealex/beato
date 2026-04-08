@@ -1,7 +1,7 @@
-import { toast } from '@baejino/ui';
 import { useEffect, useState } from 'react';
 
 import { Button, SettingSection, SettingItem } from '~/components/shared';
+import { toast } from '~/modules/toast';
 import { socket } from '~/socket';
 
 import styles from './SynchronizationSection.module.scss';
@@ -31,9 +31,9 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
         socket.on('sync-music', (serverMessage: string | 'done' | 'error') => {
             if (serverMessage === 'done' || serverMessage === 'error') {
                 if (serverMessage === 'done') {
-                    toast('Completed sync music');
+                    toast.success('Completed sync music');
                 } else if (serverMessage === 'error') {
-                    toast('Error while sync music');
+                    toast.error('Error while sync music');
                 }
 
                 setIsSyncing(false);

@@ -3,6 +3,7 @@ import { QueryClientProvider } from 'react-query';
 
 import queryClient from './configs/query-client';
 import PanelProvider from '../PanelProvider';
+import ToastProvider from '../ToastProvider';
 
 interface ProvidersProps {
     children?: React.ReactNode;
@@ -14,6 +15,7 @@ const Providers = ({ children }: ProvidersProps) => {
             <PanelProvider>
                 {children}
             </PanelProvider>
+            <ToastProvider />
         </QueryClientProvider>
     );
 };
