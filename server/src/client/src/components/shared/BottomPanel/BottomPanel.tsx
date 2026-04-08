@@ -73,17 +73,17 @@ export default function BottomPanel({
                     className={styles.content}
                     style={{ '--panel-offset': `${dragOffset}px` } as CSSProperties}>
                     <div
-                        className={styles.handle}
-                        aria-hidden="true"
+                        className={styles.header}
                         onPointerDown={handlePointerDown}
                         onPointerMove={handlePointerMove}
                         onPointerUp={handlePointerEnd}
-                        onPointerCancel={handlePointerEnd}
-                    />
+                        onPointerCancel={handlePointerEnd}>
+                        <div className={styles.handle} aria-hidden="true" />
 
-                    <Dialog.Title className={title ? styles.title : styles.visuallyHidden}>
-                        {title || DEFAULT_TITLE}
-                    </Dialog.Title>
+                        <Dialog.Title className={title ? styles.title : styles.visuallyHidden}>
+                            {title || DEFAULT_TITLE}
+                        </Dialog.Title>
+                    </div>
 
                     <div className={styles.body}>
                         {children}

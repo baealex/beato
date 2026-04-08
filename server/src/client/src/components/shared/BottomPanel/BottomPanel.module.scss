@@ -35,25 +35,32 @@
     }
 }
 
-.handle {
-    width: 3rem;
-    height: 0.3125rem;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.18);
-    align-self: center;
-    margin: 0.75rem 0 0.625rem;
-    flex-shrink: 0;
+.header {
+    padding: 0.75rem 1rem 0.875rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.625rem;
     cursor: grab;
     touch-action: none;
+    user-select: none;
 
     &:active {
         cursor: grabbing;
     }
 }
 
+.handle {
+    width: 3rem;
+    height: 0.3125rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    align-self: center;
+    flex-shrink: 0;
+}
+
 .title {
     margin: 0;
-    padding: 0 1rem 0.875rem;
     font-size: 0.8125rem;
     font-weight: 600;
     color: var.$COLOR_TEXT_SECONDARY;

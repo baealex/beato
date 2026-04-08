@@ -14,7 +14,7 @@ interface UseDragDismissResult {
     handlePointerEnd: PointerEventHandler<HTMLDivElement>;
 }
 
-const DEFAULT_CLOSE_THRESHOLD = 72;
+const DEFAULT_CLOSE_THRESHOLD = 56;
 
 const useDragDismiss = ({
     enabled = true,
