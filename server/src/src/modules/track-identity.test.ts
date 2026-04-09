@@ -2,6 +2,7 @@ import {
     TRACK_SYNC_STATUS,
     classifyTrackIdentityCandidate,
     deriveTrackPresenceUpdates,
+    resolveVisibleTrackSyncStatus,
     type TrackIdentityRecord
 } from './track-identity';
 
@@ -126,5 +127,28 @@ describe('track identity', () => {
                 syncStatus: TRACK_SYNC_STATUS.missing
             }
         ]);
+    });
+
+    it('promotes the lowest visible hash match to active and keeps later copies duplicate', () => {
+        const original = createRecord({
+            id: 2,
+            filePath: 'library/copy-a.mp3',
+            contentHash: 'same-hash',
+            syncStatus: TRACK_SYNC_STATUS.duplicate
+        });
+        const laterCopy = createRecord({
+            id: 5,
+            filePath: 'library/copy-b.mp3',
+            contentHash: 'same-hash',
+            syncStatus: TRACK_SYNC_STATUS.duplicate
+        });
+        const visiblePaths = new Set([original.filePath, laterCopy.filePath]);
+
+        expect(resolveVisibleTrackSyncStatus([original, laterCopy], original, visiblePaths)).toBe(
+            TRACK_SYNC_STATUS.active
+        );
+        expect(resolveVisibleTrackSyncStatus([original, laterCopy], laterCopy, visiblePaths)).toBe(
+            TRACK_SYNC_STATUS.duplicate
+        );
     });
 });

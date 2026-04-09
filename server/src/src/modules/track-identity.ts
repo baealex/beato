@@ -33,6 +33,34 @@ export interface TrackPresenceUpdate {
     syncStatus: TrackSyncStatus;
 }
 
+const sortByLowestId = (records: TrackIdentityRecord[]) => {
+    return [...records].sort((left, right) => left.id - right.id);
+};
+
+export const resolveVisibleTrackSyncStatus = (
+    records: TrackIdentityRecord[],
+    record: TrackIdentityRecord,
+    visiblePaths: Set<string>
+) => {
+    if (!record.contentHash) {
+        return TRACK_SYNC_STATUS.active;
+    }
+
+    const visibleHashMatches = records.filter((candidate) => {
+        return candidate.contentHash === record.contentHash && visiblePaths.has(candidate.filePath);
+    });
+
+    if (visibleHashMatches.length <= 1) {
+        return TRACK_SYNC_STATUS.active;
+    }
+
+    const primaryVisibleId = sortByLowestId(visibleHashMatches)[0].id;
+
+    return record.id === primaryVisibleId
+        ? TRACK_SYNC_STATUS.active
+        : TRACK_SYNC_STATUS.duplicate;
+};
+
 export const classifyTrackIdentityCandidate = (
     records: TrackIdentityRecord[],
     candidate: TrackIdentityCandidate,
@@ -51,7 +79,7 @@ export const classifyTrackIdentityCandidate = (
         return { kind: 'new' };
     }
 
-    const hashMatches = records.filter((record) => record.contentHash === candidate.contentHash);
+    const hashMatches = sortByLowestId(records.filter((record) => record.contentHash === candidate.contentHash));
 
     if (hashMatches.length === 0) {
         return { kind: 'new' };
@@ -83,7 +111,7 @@ export const deriveTrackPresenceUpdates = (
                 id: record.id,
                 lastSeenAt: observedAt,
                 missingSinceAt: null,
-                syncStatus: TRACK_SYNC_STATUS.active
+                syncStatus: resolveVisibleTrackSyncStatus(records, record, visiblePaths)
             }];
         }
 

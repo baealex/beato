@@ -7,19 +7,352 @@ import sharp from 'sharp';
 import { connectors } from './connectors';
 
 import { walk } from '../modules/file';
+import {
+    TRACK_CONTENT_HASH_VERSION,
+    createTrackContentHash,
+    shouldRefreshTrackContentHash
+} from '../modules/track-hash';
+import {
+    TRACK_SYNC_STATUS,
+    classifyTrackIdentityCandidate,
+    deriveTrackPresenceUpdates,
+    type TrackIdentityRecord,
+    type TrackSyncStatus
+} from '../modules/track-identity';
 
-import models from '~/models';
+import models, { type Album, type Artist, type Genre, type Music } from '~/models';
+
+const SUPPORTED_AUDIO_EXTENSIONS = new Set([
+    '.mp3',
+    '.aac',
+    '.wav',
+    '.ogg',
+    '.flac'
+]);
+
+const SYNC_EVENT = 'sync-music';
+
+interface ParsedTrackMetadata {
+    title: string;
+    albumArtist: string | null;
+    artist: string;
+    album: string;
+    pictureData: Buffer | null;
+    genres: string[];
+    year: string;
+    trackNumber: number;
+    codec: string;
+    container: string;
+    bitrate: number;
+    duration: number;
+    sampleRate: number;
+}
+
+interface SyncResultEntry {
+    musicId: number;
+    filePath: string;
+}
+
+export interface SyncMusicResult {
+    scannedFiles: number;
+    indexedFiles: number;
+    created: SyncResultEntry[];
+    moved: SyncResultEntry[];
+    duplicate: SyncResultEntry[];
+    missing: SyncResultEntry[];
+}
+
+const ensureDirectory = (directoryPath: string) => {
+    if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath, { recursive: true });
+    }
+};
+
+const emitSyncMessage = (socket: Pick<Socket, 'emit'>, message: string) => {
+    socket.emit(SYNC_EVENT, message);
+};
+
+const isSupportedAudioFile = (filePath: string) => {
+    return SUPPORTED_AUDIO_EXTENSIONS.has(path.extname(filePath).toLowerCase());
+};
+
+const toTrackIdentityRecord = (music: Music): TrackIdentityRecord => {
+    return {
+        id: music.id,
+        filePath: music.filePath,
+        contentHash: music.contentHash,
+        lastSeenAt: music.lastSeenAt,
+        missingSinceAt: music.missingSinceAt,
+        syncStatus: music.syncStatus as TrackSyncStatus
+    };
+};
+
+const parseTrackMetadata = async (filePath: string, data: Buffer): Promise<ParsedTrackMetadata> => {
+    const { format, common } = await parseBuffer(data);
+    const {
+        container = '',
+        codec = '',
+        bitrate = 0,
+        duration = 0,
+        sampleRate = 0
+    } = format;
+    const {
+        title = path.parse(filePath).name,
+        albumartist: albumArtist = null,
+        artist = 'unknown',
+        album = 'unknown',
+        picture,
+        genre = [],
+        year = (new Date()).getFullYear(),
+        track
+    } = common;
+
+    return {
+        title,
+        albumArtist,
+        artist,
+        album,
+        pictureData: picture?.[0]?.data ?? null,
+        genres: genre,
+        year: year.toString(),
+        trackNumber: track?.no || 1,
+        codec,
+        container,
+        bitrate,
+        duration,
+        sampleRate
+    };
+};
+
+const findOrCreateArtist = async (name: string): Promise<Artist> => {
+    const existingArtist = await models.artist.findFirst({ where: { name } });
+
+    if (existingArtist) {
+        return existingArtist;
+    }
+
+    return models.artist.create({ data: { name } });
+};
+
+const findOrCreateAlbum = async ({
+    name,
+    publishedYear,
+    artistId
+}: {
+    name: string;
+    publishedYear: string;
+    artistId: number;
+}): Promise<Album> => {
+    const existingAlbum = await models.album.findFirst({
+        where: {
+            name,
+            artistId
+        }
+    });
+
+    if (existingAlbum) {
+        return existingAlbum;
+    }
+
+    return models.album.create({
+        data: {
+            name,
+            cover: '',
+            publishedYear,
+            artistId
+        }
+    });
+};
+
+const findOrCreateGenres = async (genreNames: string[]): Promise<Genre[]> => {
+    return Promise.all(genreNames.map(async (name) => {
+        const existingGenre = await models.genre.findUnique({ where: { name } });
+
+        if (existingGenre) {
+            return existingGenre;
+        }
+
+        return models.genre.create({ data: { name } });
+    }));
+};
+
+const syncAlbumCover = async ({
+    album,
+    pictureData,
+    cachePath,
+    resizedPath
+}: {
+    album: Album;
+    pictureData: Buffer | null;
+    cachePath: string;
+    resizedPath: string;
+}) => {
+    if (!pictureData) {
+        return album.cover;
+    }
+
+    const fileName = `${album.id}.jpg`;
+    const savePath = path.join(cachePath, fileName);
+
+    const hasCache = fs.existsSync(savePath);
+    const shouldUpdate = hasCache && (
+        fs.readFileSync(savePath).toString() !== pictureData.toString()
+    );
+
+    if (!hasCache || shouldUpdate) {
+        fs.writeFileSync(savePath, pictureData);
+    }
+
+    const resizedSavePath = path.join(resizedPath, fileName);
+    if (!fs.existsSync(resizedSavePath) || shouldUpdate) {
+        await sharp(savePath)
+            .resize(300, 300)
+            .toFile(resizedSavePath);
+    }
+
+    const coverPath = `/cache/resized/${fileName}`;
+    if (album.cover !== coverPath) {
+        await models.album.update({
+            where: { id: album.id },
+            data: { cover: coverPath }
+        });
+    }
+
+    return coverPath;
+};
+
+const upsertMusicFromMetadata = async ({
+    existingMusic,
+    filePath,
+    contentHash,
+    metadata,
+    observedAt,
+    syncStatus,
+    cachePath,
+    resizedPath
+}: {
+    existingMusic?: Music;
+    filePath: string;
+    contentHash: string;
+    metadata: ParsedTrackMetadata;
+    observedAt: Date;
+    syncStatus: TrackSyncStatus;
+    cachePath: string;
+    resizedPath: string;
+}) => {
+    const artist = await findOrCreateArtist(metadata.artist);
+    const albumArtist = metadata.albumArtist
+        ? await findOrCreateArtist(metadata.albumArtist)
+        : null;
+    const album = await findOrCreateAlbum({
+        name: metadata.album,
+        publishedYear: metadata.year,
+        artistId: albumArtist ? albumArtist.id : artist.id
+    });
+    const genres = await findOrCreateGenres(metadata.genres);
+
+    await syncAlbumCover({
+        album,
+        pictureData: metadata.pictureData,
+        cachePath,
+        resizedPath
+    });
+
+    if (existingMusic) {
+        return models.music.update({
+            where: { id: existingMusic.id },
+            data: {
+                codec: metadata.codec,
+                container: metadata.container,
+                bitrate: metadata.bitrate,
+                sampleRate: metadata.sampleRate,
+                name: metadata.title,
+                duration: metadata.duration,
+                trackNumber: metadata.trackNumber,
+                filePath,
+                contentHash,
+                hashVersion: TRACK_CONTENT_HASH_VERSION,
+                lastSeenAt: observedAt,
+                missingSinceAt: null,
+                syncStatus,
+                albumId: album.id,
+                artistId: artist.id,
+                Genre: { set: genres.map((genre) => ({ id: genre.id })) }
+            }
+        });
+    }
+
+    return models.music.create({
+        data: {
+            codec: metadata.codec,
+            container: metadata.container,
+            bitrate: metadata.bitrate,
+            sampleRate: metadata.sampleRate,
+            name: metadata.title,
+            duration: metadata.duration,
+            trackNumber: metadata.trackNumber,
+            filePath,
+            contentHash,
+            hashVersion: TRACK_CONTENT_HASH_VERSION,
+            lastSeenAt: observedAt,
+            missingSinceAt: null,
+            syncStatus,
+            Album: { connect: { id: album.id } },
+            Artist: { connect: { id: artist.id } },
+            Genre: { connect: genres.map((genre) => ({ id: genre.id })) }
+        }
+    });
+};
+
+const updateMusicIdentity = async ({
+    music,
+    contentHash
+}: {
+    music: Music;
+    contentHash: string;
+}) => {
+    return models.music.update({
+        where: { id: music.id },
+        data: {
+            contentHash,
+            hashVersion: TRACK_CONTENT_HASH_VERSION
+        }
+    });
+};
+
+const pruneEmptyLibraryNodes = async () => {
+    const existingAlbums = await models.album.findMany({ include: { Music: true } });
+
+    for (const album of existingAlbums) {
+        if (album.Music.length === 0) {
+            await models.album.delete({ where: { id: album.id } });
+        }
+    }
+
+    const existingArtists = await models.artist.findMany({
+        include: {
+            Album: {},
+            Music: {}
+        }
+    });
+
+    for (const artist of existingArtists) {
+        if (artist.Album.length === 0 && artist.Music.length === 0) {
+            await models.artist.delete({ where: { id: artist.id } });
+        }
+    }
+};
 
 export const syncListener = (socket: Socket) => {
     let alreadySyncing = false;
 
-    socket.on('sync-music', async ({ force = false }) => {
-        console.log('sync-music');
-        socket.emit('sync-music', 'syncing...');
+    socket.on(SYNC_EVENT, async ({ force = false }) => {
+        console.log(SYNC_EVENT);
+        emitSyncMessage(socket, 'syncing...');
 
         if (alreadySyncing) {
             console.error('already syncing');
-            socket.emit('sync-music', 'error');
+            emitSyncMessage(socket, 'error');
             return;
         }
 
@@ -30,224 +363,208 @@ export const syncListener = (socket: Socket) => {
     });
 };
 
-export const syncMusic = async (socket: Socket, force = false) => {
+export const syncMusic = async (socket: Pick<Socket, 'emit'>, force = false): Promise<SyncMusicResult | null> => {
     try {
         const files = (await walk(path.resolve('./music')))
-            .filter((file) =>
-                file.endsWith('.mp3') ||
-                file.endsWith('.aac') ||
-                file.endsWith('.wav') ||
-                file.endsWith('.ogg') ||
-                file.endsWith('.flac'));
+            .filter(isSupportedAudioFile)
+            .sort();
+        const visiblePaths = new Set(files);
+        const observedAt = new Date();
+
         console.log(`find ${files.length} files`);
-        socket.emit('sync-music', `find ${files.length} files`);
-
-        let $existMusics = await models.music.findMany();
-
-        const filteredFiles = force ? files : files.filter((file) => {
-            for (const existMusic of $existMusics) {
-                if (existMusic.filePath === file) {
-                    return false;
-                }
-            }
-            return true;
-        });
-
-        console.log(`indexing ${filteredFiles.length} files`);
-        socket.emit('sync-music', `indexing ${filteredFiles.length} files`);
+        emitSyncMessage(socket, `find ${files.length} files`);
 
         const cachePath = path.resolve('./cache');
-        if (!fs.existsSync(cachePath)) {
-            fs.mkdirSync(cachePath);
-        }
         const resizedPath = path.join(cachePath, 'resized');
-        if (!fs.existsSync(resizedPath)) {
-            fs.mkdirSync(resizedPath);
-        }
+        ensureDirectory(cachePath);
+        ensureDirectory(resizedPath);
 
-        for (const file of filteredFiles) {
-            console.log(`sync... ${file}`);
-            socket.emit('sync-music', `sync... ${filteredFiles.indexOf(file) + 1}/${filteredFiles.length}`);
+        const musics = await models.music.findMany({ orderBy: { id: 'asc' } });
+        const musicById = new Map(musics.map((music) => [music.id, music]));
+        const musicByPath = new Map(musics.map((music) => [music.filePath, music]));
+        const identityRecordById = new Map(musics.map((music) => [music.id, toTrackIdentityRecord(music)]));
+        const indexedFiles = files.filter((filePath) => {
+            const music = musicByPath.get(filePath);
 
-            const data = fs.readFileSync(path.resolve('./music', file));
-
-            const { format, common } = await parseBuffer(data);
-            const {
-                container = '',
-                codec = '',
-                bitrate = 0,
-                duration = 0,
-                sampleRate = 0
-            } = format;
-            const {
-                title = file.split('/').pop().split('.').shift(),
-                albumartist: albumArtist = null,
-                artist = 'unknown',
-                album = 'unknown',
-                picture,
-                genre,
-                year = (new Date()).getFullYear(),
-                track
-            } = common;
-
-            let $artist = await models.artist.findFirst({ where: { name: artist } });
-
-            if (!$artist) {
-                $artist = await models.artist.create({ data: { name: artist } });
+            if (!music) {
+                return true;
             }
 
-            let $albumArtist = null;
+            return force || shouldRefreshTrackContentHash({
+                contentHash: music.contentHash,
+                hashVersion: music.hashVersion
+            });
+        }).length;
+        const result: SyncMusicResult = {
+            scannedFiles: files.length,
+            indexedFiles,
+            created: [],
+            moved: [],
+            duplicate: [],
+            missing: []
+        };
+        const orderedFiles = [
+            ...files.filter((filePath) => musicByPath.has(filePath)),
+            ...files.filter((filePath) => !musicByPath.has(filePath))
+        ];
 
-            if (albumArtist) {
-                $albumArtist = await models.artist.findFirst({ where: { name: albumArtist } });
+        console.log(`indexing ${indexedFiles} files`);
+        emitSyncMessage(socket, `indexing ${indexedFiles} files`);
 
-                if (!$albumArtist) {
-                    $albumArtist = await models.artist.create({ data: { name: albumArtist } });
-                }
+        const upsertKnownMusic = (music: Music) => {
+            const previousMusic = musicById.get(music.id);
+
+            if (previousMusic) {
+                musicByPath.delete(previousMusic.filePath);
             }
 
-            let $album = await models.album.findFirst({
-                where: {
-                    name: album,
-                    Artist: { name: albumArtist || artist }
-                }
+            musicById.set(music.id, music);
+            musicByPath.set(music.filePath, music);
+            identityRecordById.set(music.id, toTrackIdentityRecord(music));
+        };
+
+        for (const [index, filePath] of orderedFiles.entries()) {
+            console.log(`sync... ${filePath}`);
+            emitSyncMessage(socket, `sync... ${index + 1}/${files.length}`);
+
+            const pathMatch = musicByPath.get(filePath);
+            const requiresHashRefresh = !pathMatch || force || shouldRefreshTrackContentHash({
+                contentHash: pathMatch.contentHash,
+                hashVersion: pathMatch.hashVersion
             });
 
-            if (!$album) {
-                $album = await models.album.create({
-                    data: {
-                        name: album,
-                        cover: '',
-                        publishedYear: year.toString(),
-                        Artist: { connect: { id: albumArtist ? $albumArtist.id : $artist.id } }
-                    }
+            let fileData: Buffer | null = null;
+            let contentHash = pathMatch?.contentHash ?? null;
+
+            if (requiresHashRefresh) {
+                fileData = fs.readFileSync(filePath);
+                contentHash = createTrackContentHash(fileData);
+            }
+
+            if (pathMatch) {
+                if (force) {
+                    const metadata = await parseTrackMetadata(filePath, fileData ?? fs.readFileSync(filePath));
+                    const updatedMusic = await upsertMusicFromMetadata({
+                        existingMusic: pathMatch,
+                        filePath,
+                        contentHash: contentHash ?? createTrackContentHash(fs.readFileSync(filePath)),
+                        metadata,
+                        observedAt,
+                        syncStatus: pathMatch.syncStatus as TrackSyncStatus,
+                        cachePath,
+                        resizedPath
+                    });
+                    upsertKnownMusic(updatedMusic);
+                    continue;
+                }
+
+                if (requiresHashRefresh && contentHash) {
+                    const updatedMusic = await updateMusicIdentity({
+                        music: pathMatch,
+                        contentHash
+                    });
+                    upsertKnownMusic(updatedMusic);
+                }
+
+                continue;
+            }
+
+            const resolvedFileData = fileData ?? fs.readFileSync(filePath);
+            const resolvedContentHash = contentHash ?? createTrackContentHash(resolvedFileData);
+            const metadata = await parseTrackMetadata(filePath, resolvedFileData);
+            const match = classifyTrackIdentityCandidate(
+                [...identityRecordById.values()],
+                {
+                    filePath,
+                    contentHash: resolvedContentHash
+                },
+                visiblePaths
+            );
+
+            if (match.kind === 'moved') {
+                const existingMusic = musicById.get(match.record.id);
+
+                if (!existingMusic) {
+                    continue;
+                }
+
+                const movedMusic = await upsertMusicFromMetadata({
+                    existingMusic,
+                    filePath,
+                    contentHash: resolvedContentHash,
+                    metadata,
+                    observedAt,
+                    syncStatus: TRACK_SYNC_STATUS.active,
+                    cachePath,
+                    resizedPath
                 });
-            }
-
-            let coverPath = '';
-            if (picture?.[0]?.data) {
-                const fileName = $album.id + '.jpg';
-                const savePath = path.join(cachePath, fileName);
-
-                const hasCache = fs.existsSync(savePath);
-                const shouldUpdate = hasCache && (
-                    fs.readFileSync(savePath).toString() !== picture[0].data.toString()
-                );
-                if (!hasCache || shouldUpdate) {
-                    fs.writeFileSync(savePath, picture[0].data);
-                }
-
-                const resizedFileName = $album.id + '.jpg';
-                const resizedSavePath = path.join(resizedPath, resizedFileName);
-                if (!fs.existsSync(resizedSavePath) || shouldUpdate) {
-                    await sharp(savePath)
-                        .resize(300, 300)
-                        .toFile(resizedSavePath);
-                }
-                coverPath = '/cache/resized/' + fileName;
-            }
-
-            if (coverPath && $album.cover !== coverPath) {
-                $album = await models.album.update({
-                    where: { id: $album.id },
-                    data: { cover: coverPath }
+                upsertKnownMusic(movedMusic);
+                result.moved.push({
+                    musicId: movedMusic.id,
+                    filePath
                 });
+                continue;
             }
 
-            const promises = genre?.map(async (name) => {
-                const $genre = await models.genre.findUnique({ where: { name } });
-
-                if (!$genre) {
-                    return await models.genre.create({ data: { name } });
-                }
-
-                return $genre;
+            const createdMusic = await upsertMusicFromMetadata({
+                filePath,
+                contentHash: resolvedContentHash,
+                metadata,
+                observedAt,
+                syncStatus: match.kind === 'duplicate'
+                    ? TRACK_SYNC_STATUS.duplicate
+                    : TRACK_SYNC_STATUS.active,
+                cachePath,
+                resizedPath
             });
+            upsertKnownMusic(createdMusic);
 
-            const $genres = promises ? await Promise.all(promises) : [];
+            if (match.kind === 'duplicate') {
+                result.duplicate.push({
+                    musicId: createdMusic.id,
+                    filePath
+                });
+            } else {
+                result.created.push({
+                    musicId: createdMusic.id,
+                    filePath
+                });
+            }
+        }
 
-            const $music = await models.music.findFirst({
-                where: {
-                    codec,
-                    container,
-                    bitrate,
-                    sampleRate,
-                    name: title,
-                    duration,
-                    trackNumber: track?.no || 1,
-                    filePath: file,
-                    albumId: $album.id,
-                    artistId: $artist.id
+        const presenceUpdates = deriveTrackPresenceUpdates(
+            [...identityRecordById.values()],
+            visiblePaths,
+            observedAt
+        );
+
+        for (const presenceUpdate of presenceUpdates) {
+            const updatedMusic = await models.music.update({
+                where: { id: presenceUpdate.id },
+                data: {
+                    lastSeenAt: presenceUpdate.lastSeenAt,
+                    missingSinceAt: presenceUpdate.missingSinceAt,
+                    syncStatus: presenceUpdate.syncStatus
                 }
             });
+            upsertKnownMusic(updatedMusic);
 
-            if (!$music) {
-                await models.music.create({
-                    data: {
-                        codec,
-                        container,
-                        bitrate,
-                        sampleRate,
-                        name: title,
-                        duration,
-                        trackNumber: track?.no || 1,
-                        filePath: file,
-                        Album: { connect: { id: $album.id } },
-                        Artist: { connect: { id: $artist.id } },
-                        Genre: { connect: $genres.map((genre) => ({ id: genre.id })) }
-                    }
-                });
-            } else if ($music.filePath !== file) {
-                await models.music.update({
-                    where: { id: $music.id },
-                    data: { filePath: file }
+            if (presenceUpdate.syncStatus === TRACK_SYNC_STATUS.missing) {
+                result.missing.push({
+                    musicId: updatedMusic.id,
+                    filePath: updatedMusic.filePath
                 });
             }
         }
 
-        $existMusics = await models.music.findMany();
+        await pruneEmptyLibraryNodes();
+        console.log('sync-music done');
+        emitSyncMessage(socket, 'done');
 
-        for (const music of $existMusics) {
-            if (!files.includes(music.filePath)) {
-                console.log(`delete music from db... ${music.name}`);
-                socket.emit('sync-music', `delete music from db... ${music.name}`);
-                await models.playlistMusic.deleteMany({ where: { musicId: music.id } });
-                await models.musicHate.deleteMany({ where: { musicId: music.id } });
-                await models.musicLike.deleteMany({ where: { musicId: music.id } });
-                await models.music.delete({ where: { id: music.id } });
-            }
-        }
-
-        const $existAlbums = await models.album.findMany({ include: { Music: true } });
-
-        for (const album of $existAlbums) {
-            if (album.Music.length === 0) {
-                console.log(`delete album from db... ${album.name}`);
-                socket.emit('sync-music', `delete album from db... ${album.name}`);
-                await models.album.delete({ where: { id: album.id } });
-            }
-        }
-
-        const $existArtists = await models.artist.findMany({
-            include: {
-                Album: {},
-                Music: {}
-            }
-        });
-
-        for (const artist of $existArtists) {
-            if (artist.Album.length === 0 && artist.Music.length === 0) {
-                console.log(`delete artist from db... ${artist.name}`);
-                socket.emit('sync-music', `delete artist from db... ${artist.name}`);
-                await models.artist.delete({ where: { id: artist.id } });
-            }
-        }
+        return result;
     } catch (error) {
         console.error(error);
-        socket.emit('sync-music', 'error');
-        return;
+        emitSyncMessage(socket, 'error');
+        return null;
     }
-
-    console.log('sync-music done');
-    socket.emit('sync-music', 'done');
 };
