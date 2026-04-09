@@ -11,7 +11,7 @@ import { MusicPlayerDiskStyle, MusicPlayerFluffyStyle, MusicPlayerVisualizerStyl
 import { Text } from '~/components/shared';
 import * as Icon from '~/icon';
 
-import { useBack } from '~/hooks';
+import { useBack, useStoreValue } from '~/hooks';
 
 import { getImage } from '~/modules/image';
 import { makePlayTime } from '~/modules/time';
@@ -24,15 +24,22 @@ export default function PlayerDetail() {
     const back = useBack();
     const navigate = useNavigate();
 
-    const [state] = useStore(queueStore);
+    const [currentTrackId] = useStoreValue(queueStore, 'currentTrackId');
+    const [selected] = useStoreValue(queueStore, 'selected');
+    const [queueLength] = useStoreValue(queueStore, 'queueLength');
+    const [currentTime] = useStoreValue(queueStore, 'currentTime');
+    const [progress] = useStoreValue(queueStore, 'progress');
+    const [isPlaying] = useStoreValue(queueStore, 'isPlaying');
+    const [repeatMode] = useStoreValue(queueStore, 'repeatMode');
+    const [shuffle] = useStoreValue(queueStore, 'shuffle');
     const [{ playerAlbumArtStyle }] = useStore(themeStore);
     const [{ musicMap }] = useStore(musicStore);
 
-    const currentMusic = state.selected !== null
-        ? musicMap.get(state.items[state.selected])
+    const currentMusic = currentTrackId
+        ? musicMap.get(currentTrackId)
         : null;
     const duration = currentMusic?.duration || 0;
-    const queuePosition = state.selected !== null ? state.selected + 1 : null;
+    const queuePosition = selected !== null ? selected + 1 : null;
     const publishedYear = currentMusic?.album?.publishedYear?.trim() || '';
 
     // TODO: Fix type
@@ -71,12 +78,12 @@ export default function PlayerDetail() {
 
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
-            queueStore.seek(Math.max(0, state.currentTime - 5));
+            queueStore.seek(Math.max(0, currentTime - 5));
         }
 
         if (e.key === 'ArrowRight') {
             e.preventDefault();
-            queueStore.seek(Math.min(duration, state.currentTime + 5));
+            queueStore.seek(Math.min(duration, currentTime + 5));
         }
 
         if (e.key === 'Home') {
@@ -118,14 +125,14 @@ export default function PlayerDetail() {
                             <div className={cx('album-art', { framed: showBackground })}>
                                 {playerAlbumArtStyle === '' && (
                                     <MusicPlayerFluffyStyle
-                                        isPlaying={state.isPlaying}
+                                        isPlaying={isPlaying}
                                         src={getImage(currentMusic.album.cover)}
                                         alt={currentMusic.album.name}
                                     />
                                 )}
                                 {playerAlbumArtStyle === 'disk' && (
                                     <MusicPlayerDiskStyle
-                                        isPlaying={state.isPlaying}
+                                        isPlaying={isPlaying}
                                         src={getImage(currentMusic.album.cover)}
                                         alt={currentMusic.album.name}
                                     />
@@ -133,7 +140,7 @@ export default function PlayerDetail() {
                                 {playerAlbumArtStyle.includes('visualizer') && (
                                     <MusicPlayerVisualizerStyle
                                         type={playerAlbumArtStyle.split(':')[1] || 'round'}
-                                        isPlaying={state.isPlaying}
+                                        isPlaying={isPlaying}
                                         src={getImage(currentMusic.album.cover)}
                                         alt={currentMusic.album.name}
                                     />
@@ -177,26 +184,26 @@ export default function PlayerDetail() {
                                 role="slider"
                                 tabIndex={duration > 0 ? 0 : -1}
                                 aria-label="Seek playback position"
-                                aria-valuenow={Math.round(state.currentTime)}
+                                aria-valuenow={Math.round(currentTime)}
                                 aria-valuemin={0}
                                 aria-valuemax={Math.round(duration)}
-                                aria-valuetext={`${makePlayTime(state.currentTime)} of ${makePlayTime(duration)}`}
+                                aria-valuetext={`${makePlayTime(currentTime)} of ${makePlayTime(duration)}`}
                                 onClick={handleClickProgress}
                                 onKeyDown={handleKeyDownProgress}
                                 onMouseMove={handleMoveProgress}
                                 onTouchMove={handleMoveProgress}>
                                 <div
                                     className={cx('bar')}
-                                    style={{ transform: `scaleX(${state.progress / 100})` }}
+                                    style={{ transform: `scaleX(${progress / 100})` }}
                                 />
                                 <div
                                     className={cx('thumb')}
-                                    style={{ left: `${state.progress}%` }}
+                                    style={{ left: `${progress}%` }}
                                 />
                             </div>
                             <div className={cx('time-info')}>
                                 <Text variant="tertiary" size="sm">
-                                    {makePlayTime(state.currentTime)}
+                                    {makePlayTime(currentTime)}
                                 </Text>
                                 <Text variant="tertiary" size="sm">
                                     {makePlayTime(duration)}
@@ -207,8 +214,8 @@ export default function PlayerDetail() {
                         <div className={cx('controls')}>
                             <button
                                 type="button"
-                                className={cx('control-button', { active: state.shuffle })}
-                                aria-label={state.shuffle ? 'Disable shuffle' : 'Enable shuffle'}
+                                className={cx('control-button', { active: shuffle })}
+                                aria-label={shuffle ? 'Disable shuffle' : 'Enable shuffle'}
                                 onClick={() => queueStore.toggleShuffle()}>
                                 <Icon.Shuffle />
                             </button>
@@ -224,9 +231,9 @@ export default function PlayerDetail() {
                             <button
                                 type="button"
                                 className={cx('play-button')}
-                                aria-label={state.isPlaying ? 'Pause playback' : 'Resume playback'}
-                                onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
-                                {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
+                                aria-label={isPlaying ? 'Pause playback' : 'Resume playback'}
+                                onClick={() => isPlaying ? queueStore.pause() : queueStore.play()}>
+                                {isPlaying ? <Icon.Pause /> : <Icon.Play />}
                             </button>
 
                             <button
@@ -240,11 +247,11 @@ export default function PlayerDetail() {
                             <button
                                 type="button"
                                 className={cx('control-button')}
-                                aria-label={`Repeat mode ${state.repeatMode}`}
+                                aria-label={`Repeat mode ${repeatMode}`}
                                 onClick={() => queueStore.changeRepeatMode()}>
-                                {state.repeatMode === 'all' && <Icon.Repeat />}
-                                {state.repeatMode === 'one' && <Icon.Infinite />}
-                                {state.repeatMode === 'none' && <Icon.RightLeft />}
+                                {repeatMode === 'all' && <Icon.Repeat />}
+                                {repeatMode === 'one' && <Icon.Infinite />}
+                                {repeatMode === 'none' && <Icon.RightLeft />}
                             </button>
                         </div>
 
@@ -269,7 +276,7 @@ export default function PlayerDetail() {
                                     className={cx('secondary-action')}
                                     onClick={() => navigate('/queue')}>
                                     <Icon.ListMusic />
-                                    <span>Queue {queuePosition}/{state.items.length}</span>
+                                    <span>Queue {queuePosition}/{queueLength}</span>
                                 </button>
                             )}
                         </div>
