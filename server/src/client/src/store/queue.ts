@@ -9,6 +9,7 @@ import {
     AppAudioChannel
 } from '~/modules/audio-channel';
 import { confirm } from '~/modules/confirm';
+import { getNextSelectedIndexAfterRemovingCurrent } from '~/modules/queue-selection';
 import { toast } from '~/modules/toast';
 import { convertToMillisecond } from '~/modules/time';
 import { PlaybackSessionTracker } from '~/modules/playback-session';
@@ -265,14 +266,11 @@ class QueueStore extends Store<QueueStoreState> {
                 return;
             }
             if (ids.includes(prevSelectedItem)) {
-                if (this.state.items.length >= prevSelected!) {
-                    this.select(prevSelected!);
-                    return;
-                }
-                if (this.state.items.length < prevSelected!) {
-                    this.select(this.state.items.length - 1);
-                    return;
-                }
+                this.select(getNextSelectedIndexAfterRemovingCurrent(
+                    prevSelected!,
+                    this.state.items.length
+                ));
+                return;
             }
         }
     }
