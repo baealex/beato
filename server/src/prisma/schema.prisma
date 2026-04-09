@@ -73,6 +73,40 @@ model Music {
     @@index([syncStatus, missingSinceAt])
 }
 
+model SyncReport {
+    id             Int              @id @default(autoincrement())
+    createdAt      DateTime         @default(now())
+    updatedAt      DateTime         @updatedAt
+    startedAt      DateTime
+    completedAt    DateTime?
+    status         String
+    force          Boolean          @default(false)
+    scannedFiles   Int              @default(0)
+    indexedFiles   Int              @default(0)
+    createdCount   Int              @default(0)
+    movedCount     Int              @default(0)
+    duplicateCount Int              @default(0)
+    missingCount   Int              @default(0)
+    Item           SyncReportItem[]
+
+    @@index([createdAt])
+    @@index([status, createdAt])
+}
+
+model SyncReportItem {
+    id               Int        @id @default(autoincrement())
+    createdAt        DateTime   @default(now())
+    kind             String
+    musicId          Int?
+    musicName        String
+    filePath         String
+    previousFilePath String?
+    SyncReport       SyncReport @relation(fields: [syncReportId], references: [id], onDelete: Cascade)
+    syncReportId     Int
+
+    @@index([syncReportId, kind])
+}
+
 model PlaybackEvent {
     id             Int      @id @default(autoincrement())
     createdAt      DateTime @default(now())

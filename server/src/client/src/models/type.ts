@@ -53,3 +53,32 @@ export interface Playlist {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface SyncReportItem {
+    id: string;
+    kind: 'created' | 'moved' | 'duplicate' | 'missing';
+    musicId: string | null;
+    musicName: string;
+    filePath: string;
+    previousFilePath: string | null;
+    createdAt: string;
+}
+
+export interface SyncReport {
+    id: string;
+    createdAt: string;
+    startedAt: string;
+    completedAt: string | null;
+    status: 'success' | 'error';
+    force: boolean;
+    scannedFiles: number;
+    indexedFiles: number;
+    createdCount: number;
+    movedCount: number;
+    duplicateCount: number;
+    missingCount: number;
+    created: SyncReportItem[];
+    moved: SyncReportItem[];
+    duplicate: SyncReportItem[];
+    missing: SyncReportItem[];
+}
