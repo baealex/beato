@@ -74,6 +74,8 @@ export function getMusics() {
             'codec',
             'duration',
             'playCount',
+            'lastPlayedAt',
+            'totalPlayedMs',
             'trackNumber',
             'isLiked',
             'isHated',

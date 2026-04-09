@@ -61,11 +61,13 @@ class MusicStore extends Store<MusicStoreState> {
                     })
                 });
             },
-            onCount: ({ id, playCount }) => {
+            onCount: ({ id, playCount, lastPlayedAt, totalPlayedMs }) => {
                 this.set((prevState) => {
                     let nextMusics = prevState.musics.map((music) => {
                         if (music.id === id) {
                             music.playCount = playCount;
+                            music.lastPlayedAt = lastPlayedAt;
+                            music.totalPlayedMs = totalPlayedMs;
                         }
                         return music;
                     });

@@ -55,11 +55,30 @@ model Music {
     bitrate       Float
     sampleRate    Float
     playCount     Int             @default(0)
+    lastPlayedAt  DateTime?
+    totalPlayedMs Float           @default(0)
     trackNumber   Int
     Genre         Genre[]
     MusicLike     MusicLike[]
     MusicHate     MusicHate[]
+    PlaybackEvent PlaybackEvent[]
     PlaylistMusic PlaylistMusic[]
+}
+
+model PlaybackEvent {
+    id             Int      @id @default(autoincrement())
+    createdAt      DateTime @default(now())
+    startedAt      DateTime
+    endedAt        DateTime
+    playedMs       Float
+    completionRate Float
+    countedAsPlay  Boolean  @default(false)
+    source         String
+    connectorId    String?
+    Music          Music    @relation(fields: [musicId], references: [id])
+    musicId        Int
+
+    @@index([musicId, endedAt])
 }
 
 model MusicLike {

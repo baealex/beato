@@ -10,6 +10,8 @@ import {
 } from '~/modules/audio-channel';
 import { confirm } from '~/modules/confirm';
 import { toast } from '~/modules/toast';
+import { convertToMillisecond } from '~/modules/time';
+import { PlaybackSessionTracker } from '~/modules/playback-session';
 import { MusicListener } from '~/socket';
 import { shuffle } from '~/modules/shuffle';
 
@@ -34,12 +36,13 @@ const getMusic = (id: string) => {
 
 class QueueStore extends Store<QueueStoreState> {
     saveTimer: ReturnType<typeof setTimeout> | null = null;
-    shouldCount = false;
     audioChannel: AudioChannel;
+    playbackSessionTracker: PlaybackSessionTracker;
 
     constructor() {
         super();
         this.saveTimer = null;
+        this.playbackSessionTracker = new PlaybackSessionTracker();
         this.state = {
             selected: null,
             isPlaying: false,
@@ -56,31 +59,50 @@ class QueueStore extends Store<QueueStoreState> {
 
         const audioChannelEventHandler: AudioChannelEventHandler = {
             onPlay: () => {
+                if (this.state.selected === null) {
+                    return;
+                }
+
+                const currentMusic = getMusic(this.state.items[this.state.selected]);
+
+                if (currentMusic) {
+                    this.playbackSessionTracker.play({
+                        id: currentMusic.id,
+                        durationMs: convertToMillisecond(currentMusic.duration)
+                    });
+                }
+
                 this.set({ isPlaying: true });
             },
             onPause: () => {
+                this.playbackSessionTracker.pause();
                 this.set({ isPlaying: false });
             },
             onStop: () => {
+                this.playbackSessionTracker.pause();
                 this.set({ isPlaying: false });
             },
             onEnded: () => {
                 if (this.state.selected === null) return;
 
                 if (this.state.repeatMode === 'one') {
+                    this.commitPlaybackEvent('queue-repeat-one');
                     this.select(this.state.selected);
                     return;
                 }
                 if (this.state.repeatMode === 'all') {
+                    this.commitPlaybackEvent('queue-track-change');
                     this.select((this.state.selected + 1) % this.state.items.length);
                     this.audioChannel.play();
                     return;
                 }
                 if (this.state.repeatMode === 'none') {
                     if (this.state.selected + 1 < this.state.items.length) {
+                        this.commitPlaybackEvent('queue-track-change');
                         this.select(this.state.selected + 1);
                         this.audioChannel.play();
                     } else {
+                        this.commitPlaybackEvent('queue-ended');
                         this.audioChannel.stop();
                         this.set({ isPlaying: false });
                     }
@@ -90,24 +112,11 @@ class QueueStore extends Store<QueueStoreState> {
                 const music = getMusic(this.state.items[this.state.selected!]);
                 const progress = Number((time / (music?.duration || 1) * 100).toFixed(2));
 
-                if (!this.shouldCount && Math.floor(progress) >= 0 && Math.floor(progress) < 10) {
-                    this.shouldCount = true;
-                }
-
-                if (this.shouldCount && Math.floor(progress) >= 80 && Math.floor(progress) < 90) {
-                    this.shouldCount = false;
-                    MusicListener.count(this.state.items[this.state.selected!]);
-                }
-
                 if (this.state.mixMode === 'mix') {
-                    mix(20, () => {
-                        if (this.shouldCount) {
-                            this.shouldCount = false;
-                            MusicListener.count(this.state.items[this.state.selected!]);
-                        }
-                    });
+                    mix(20, () => undefined);
                 }
 
+                this.playbackSessionTracker.tick();
                 this.set({
                     currentTime: time,
                     progress
@@ -138,7 +147,21 @@ class QueueStore extends Store<QueueStoreState> {
         });
 
         window.addEventListener('beforeunload', () => {
+            this.commitPlaybackEvent('queue-unload');
             this.audioChannel.stop();
+        });
+    }
+
+    commitPlaybackEvent(source: string) {
+        const payload = this.playbackSessionTracker.commit();
+
+        if (!payload) {
+            return;
+        }
+
+        void MusicListener.count({
+            ...payload,
+            source
         });
     }
 
@@ -151,6 +174,9 @@ class QueueStore extends Store<QueueStoreState> {
         }))) {
             return;
         }
+
+        this.commitPlaybackEvent('queue-reset');
+
         await this.set({
             items: ids,
             sourceItems: [],
@@ -213,6 +239,10 @@ class QueueStore extends Store<QueueStoreState> {
             ? this.state.items[prevSelected || 0]
             : null;
 
+        if (prevSelectedItem && ids.includes(prevSelectedItem)) {
+            this.commitPlaybackEvent('queue-remove');
+        }
+
         await this.set({
             items: newItems,
             sourceItems: newSourceItems
@@ -248,6 +278,8 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     select(index: number, play = true) {
+        this.commitPlaybackEvent('queue-track-change');
+
         this.set({
             selected: index,
             progress: 0,
@@ -275,6 +307,7 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     stop() {
+        this.commitPlaybackEvent('queue-stop');
         this.audioChannel.stop();
     }
 

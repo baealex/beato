@@ -14,6 +14,8 @@ export const musicType = gql`
         bitrate: Float!
         sampleRate: Float!
         playCount: Int!
+        lastPlayedAt: String
+        totalPlayedMs: Float!
         trackNumber: Int!
         filePath: String!
         isLiked: Boolean!
