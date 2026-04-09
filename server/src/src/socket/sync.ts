@@ -19,6 +19,11 @@ import {
     type TrackIdentityRecord,
     type TrackSyncStatus
 } from '../modules/track-identity';
+import {
+    SYNC_REPORT_KIND,
+    SYNC_REPORT_STATUS,
+    type SyncReportStatus
+} from '../modules/sync-report';
 
 import models, { type Album, type Artist, type Genre, type Music } from '~/models';
 
@@ -50,7 +55,9 @@ interface ParsedTrackMetadata {
 
 interface SyncResultEntry {
     musicId: number;
+    musicName: string;
     filePath: string;
+    previousFilePath: string | null;
 }
 
 export interface SyncMusicResult {
@@ -343,6 +350,60 @@ const pruneEmptyLibraryNodes = async () => {
     }
 };
 
+const flattenSyncReportEntries = (result: SyncMusicResult) => {
+    return ([
+        [SYNC_REPORT_KIND.created, result.created],
+        [SYNC_REPORT_KIND.moved, result.moved],
+        [SYNC_REPORT_KIND.duplicate, result.duplicate],
+        [SYNC_REPORT_KIND.missing, result.missing]
+    ] as const).flatMap(([kind, entries]) => {
+        return entries.map((entry) => ({
+            kind,
+            ...entry
+        }));
+    });
+};
+
+const persistSyncReport = async ({
+    startedAt,
+    completedAt,
+    force,
+    status,
+    result
+}: {
+    startedAt: Date;
+    completedAt: Date;
+    force: boolean;
+    status: SyncReportStatus;
+    result: SyncMusicResult;
+}) => {
+    const items = flattenSyncReportEntries(result);
+
+    return models.syncReport.create({
+        data: {
+            startedAt,
+            completedAt,
+            force,
+            status,
+            scannedFiles: result.scannedFiles,
+            indexedFiles: result.indexedFiles,
+            createdCount: result.created.length,
+            movedCount: result.moved.length,
+            duplicateCount: result.duplicate.length,
+            missingCount: result.missing.length,
+            Item: {
+                create: items.map((entry) => ({
+                    kind: entry.kind,
+                    musicId: entry.musicId,
+                    musicName: entry.musicName,
+                    filePath: entry.filePath,
+                    previousFilePath: entry.previousFilePath
+                }))
+            }
+        }
+    });
+};
+
 export const syncListener = (socket: Socket) => {
     let alreadySyncing = false;
 
@@ -357,19 +418,23 @@ export const syncListener = (socket: Socket) => {
         }
 
         alreadySyncing = true;
-        await syncMusic(socket, force);
-        connectors.broadcast('resync', '');
+        const syncResult = await syncMusic(socket, force);
+        if (syncResult) {
+            connectors.broadcast('resync', '');
+        }
         alreadySyncing = false;
     });
 };
 
 export const syncMusic = async (socket: Pick<Socket, 'emit'>, force = false): Promise<SyncMusicResult | null> => {
+    const startedAt = new Date();
+
     try {
         const files = (await walk(path.resolve('./music')))
             .filter(isSupportedAudioFile)
             .sort();
         const visiblePaths = new Set(files);
-        const observedAt = new Date();
+        const observedAt = startedAt;
 
         console.log(`find ${files.length} files`);
         emitSyncMessage(socket, `find ${files.length} files`);
@@ -501,7 +566,9 @@ export const syncMusic = async (socket: Pick<Socket, 'emit'>, force = false): Pr
                 upsertKnownMusic(movedMusic);
                 result.moved.push({
                     musicId: movedMusic.id,
-                    filePath
+                    musicName: movedMusic.name,
+                    filePath,
+                    previousFilePath: match.record.filePath
                 });
                 continue;
             }
@@ -522,12 +589,16 @@ export const syncMusic = async (socket: Pick<Socket, 'emit'>, force = false): Pr
             if (match.kind === 'duplicate') {
                 result.duplicate.push({
                     musicId: createdMusic.id,
-                    filePath
+                    musicName: createdMusic.name,
+                    filePath,
+                    previousFilePath: null
                 });
             } else {
                 result.created.push({
                     musicId: createdMusic.id,
-                    filePath
+                    musicName: createdMusic.name,
+                    filePath,
+                    previousFilePath: null
                 });
             }
         }
@@ -552,18 +623,43 @@ export const syncMusic = async (socket: Pick<Socket, 'emit'>, force = false): Pr
             if (presenceUpdate.syncStatus === TRACK_SYNC_STATUS.missing) {
                 result.missing.push({
                     musicId: updatedMusic.id,
-                    filePath: updatedMusic.filePath
+                    musicName: updatedMusic.name,
+                    filePath: updatedMusic.filePath,
+                    previousFilePath: null
                 });
             }
         }
 
         await pruneEmptyLibraryNodes();
+        await persistSyncReport({
+            startedAt,
+            completedAt: new Date(),
+            force,
+            status: SYNC_REPORT_STATUS.success,
+            result
+        });
         console.log('sync-music done');
         emitSyncMessage(socket, 'done');
 
         return result;
     } catch (error) {
         console.error(error);
+        await persistSyncReport({
+            startedAt,
+            completedAt: new Date(),
+            force,
+            status: SYNC_REPORT_STATUS.error,
+            result: {
+                scannedFiles: 0,
+                indexedFiles: 0,
+                created: [],
+                moved: [],
+                duplicate: [],
+                missing: []
+            }
+        }).catch((reportError) => {
+            console.error(reportError);
+        });
         emitSyncMessage(socket, 'error');
         return null;
     }

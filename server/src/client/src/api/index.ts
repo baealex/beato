@@ -1,5 +1,12 @@
 import axios from 'axios';
-import type { Artist, Album, Music, Playlist } from '~/models/type';
+import type {
+    Artist,
+    Album,
+    Music,
+    Playlist,
+    SyncReport,
+    SyncReportItem
+} from '~/models/type';
 
 export type AuthMode = 'open' | 'password-protected';
 
@@ -203,4 +210,59 @@ export function getAudio(id: string) {
         url: `/api/audio/${id}`,
         responseType: 'blob'
     });
+}
+
+export function getLatestSyncReport() {
+    return graphQLRequest<'latestSyncReport', SyncReport | null>(
+        wrapper('query', createQuery<SyncReport>('latestSyncReport', [
+            'id',
+            'createdAt',
+            'startedAt',
+            'completedAt',
+            'status',
+            'force',
+            'scannedFiles',
+            'indexedFiles',
+            'createdCount',
+            'movedCount',
+            'duplicateCount',
+            'missingCount',
+            createQuery<SyncReportItem>('created', [
+                'id',
+                'kind',
+                'musicId',
+                'musicName',
+                'filePath',
+                'previousFilePath',
+                'createdAt'
+            ]),
+            createQuery<SyncReportItem>('moved', [
+                'id',
+                'kind',
+                'musicId',
+                'musicName',
+                'filePath',
+                'previousFilePath',
+                'createdAt'
+            ]),
+            createQuery<SyncReportItem>('duplicate', [
+                'id',
+                'kind',
+                'musicId',
+                'musicName',
+                'filePath',
+                'previousFilePath',
+                'createdAt'
+            ]),
+            createQuery<SyncReportItem>('missing', [
+                'id',
+                'kind',
+                'musicId',
+                'musicName',
+                'filePath',
+                'previousFilePath',
+                'createdAt'
+            ])
+        ]))
+    );
 }

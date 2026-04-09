@@ -4,6 +4,125 @@
   margin-top: 16px;
 }
 
+.reportCard {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--b-color-border, rgba(255, 255, 255, 0.08));
+  background: rgba(var(--b-color-hover-rgb), 0.04);
+}
+
+.reportHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  &.success {
+    background: rgba(56, 189, 120, 0.14);
+    color: #38bd78;
+  }
+
+  &.error {
+    background: rgba(244, 63, 94, 0.14);
+    color: #f43f5e;
+  }
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.summaryItem {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(var(--b-color-hover-rgb), 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summaryLabel {
+  font-size: 0.75rem;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.reportMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.reportDetails {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detailGroup {
+  border-radius: 12px;
+  background: rgba(var(--b-color-hover-rgb), 0.06);
+  overflow: hidden;
+
+  summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.detailList {
+  list-style: none;
+  margin: 0;
+  padding: 0 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detailItem {
+  padding-top: 10px;
+  border-top: 1px solid rgba(var(--b-color-hover-rgb), 0.12);
+
+  &:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+}
+
+.emptyDetail {
+  margin: 0;
+  padding: 0 14px 14px;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
 .progressContainer {
   margin: 16px 0;
   width: 100%;
@@ -41,5 +160,15 @@
   }
   100% {
     transform: translateX(300%);
+  }
+}
+
+@media (max-width: 720px) {
+  .summaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reportHeader {
+    flex-direction: column;
   }
 }

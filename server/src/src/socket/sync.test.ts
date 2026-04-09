@@ -19,6 +19,7 @@ jest.mock('sharp', () => {
 
 import { walk } from '../modules/file';
 import { TRACK_CONTENT_HASH_VERSION, createTrackContentHash } from '../modules/track-hash';
+import { SYNC_REPORT_KIND, SYNC_REPORT_STATUS } from '../modules/sync-report';
 import { TRACK_SYNC_STATUS } from '../modules/track-identity';
 import { syncMusic } from './sync';
 
@@ -132,6 +133,8 @@ describe('sync music identity', () => {
         });
 
         await models.playbackEvent.deleteMany();
+        await models.syncReportItem.deleteMany();
+        await models.syncReport.deleteMany();
         await models.playlistMusic.deleteMany();
         await models.playlist.deleteMany();
         await models.musicLike.deleteMany();
@@ -185,6 +188,10 @@ describe('sync music identity', () => {
         const movedMusic = await models.music.findUniqueOrThrow({ where: { id: existingMusic.id } });
         const like = await models.musicLike.findFirst({ where: { musicId: existingMusic.id } });
         const playlistLink = await models.playlistMusic.findFirst({ where: { musicId: existingMusic.id } });
+        const report = await models.syncReport.findFirstOrThrow({
+            orderBy: { createdAt: 'desc' },
+            include: { Item: true }
+        });
 
         expect(result).toMatchObject({
             moved: [{
@@ -197,6 +204,22 @@ describe('sync music identity', () => {
         expect(movedMusic.missingSinceAt).toBeNull();
         expect(like).not.toBeNull();
         expect(playlistLink).not.toBeNull();
+        expect(report).toMatchObject({
+            status: SYNC_REPORT_STATUS.success,
+            movedCount: 1,
+            createdCount: 0,
+            duplicateCount: 0,
+            missingCount: 0
+        });
+        expect(report.Item).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                kind: SYNC_REPORT_KIND.moved,
+                musicId: existingMusic.id,
+                musicName: movedMusic.name,
+                filePath: movedPath,
+                previousFilePath: path.join(tempDirectory, 'library/old/track-a.mp3')
+            })
+        ]));
     });
 
     it('creates a duplicate row but keeps the normal library scoped to active tracks', async () => {
@@ -225,6 +248,10 @@ describe('sync music identity', () => {
         const result = await syncMusic({ emit: jest.fn() } as never);
         const musics = await models.music.findMany({ orderBy: { id: 'asc' } });
         const visibleMusics = await (musicResolvers.Query as { allMusics: () => Promise<{ id: number }[]> }).allMusics();
+        const report = await models.syncReport.findFirstOrThrow({
+            orderBy: { createdAt: 'desc' },
+            include: { Item: true }
+        });
 
         expect(result).toMatchObject({
             duplicate: [{
@@ -244,6 +271,20 @@ describe('sync music identity', () => {
             syncStatus: TRACK_SYNC_STATUS.duplicate
         });
         expect(visibleMusics.map((music) => music.id)).toEqual([originalMusic.id]);
+        expect(report).toMatchObject({
+            status: SYNC_REPORT_STATUS.success,
+            createdCount: 0,
+            movedCount: 0,
+            duplicateCount: 1,
+            missingCount: 0
+        });
+        expect(report.Item).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                kind: SYNC_REPORT_KIND.duplicate,
+                filePath: copyPath,
+                musicName: musics[1].name
+            })
+        ]));
     });
 
     it('marks unseen tracks as missing instead of deleting them', async () => {
@@ -266,6 +307,10 @@ describe('sync music identity', () => {
         const result = await syncMusic({ emit: jest.fn() } as never);
         const missingMusic = await models.music.findUniqueOrThrow({ where: { id: existingMusic.id } });
         const visibleMusics = await (musicResolvers.Query as { allMusics: () => Promise<{ id: number }[]> }).allMusics();
+        const report = await models.syncReport.findFirstOrThrow({
+            orderBy: { createdAt: 'desc' },
+            include: { Item: true }
+        });
 
         expect(result).toMatchObject({
             missing: [{
@@ -278,5 +323,17 @@ describe('sync music identity', () => {
         expect(await models.musicLike.count({ where: { musicId: existingMusic.id } })).toBe(1);
         expect(await models.playlistMusic.count({ where: { musicId: existingMusic.id } })).toBe(1);
         expect(visibleMusics).toHaveLength(0);
+        expect(report).toMatchObject({
+            status: SYNC_REPORT_STATUS.success,
+            missingCount: 1
+        });
+        expect(report.Item).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                kind: SYNC_REPORT_KIND.missing,
+                musicId: existingMusic.id,
+                filePath: existingMusic.filePath,
+                musicName: existingMusic.name
+            })
+        ]));
     });
 });
