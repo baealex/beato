@@ -117,12 +117,15 @@ export default function App() {
     }, [isAuthLoading, canAccessApp, musicLoaded, showSplash]);
 
     useEffect(() => {
+        const handleConnect = () => {
+            void MusicListener.count();
+        };
+
         const handleWindowFocus = () => {
             if (!canAccessApp) return;
 
             if (!socket.connected) {
                 socket.connect();
-                MusicListener.count();
             }
         };
 
@@ -142,11 +145,13 @@ export default function App() {
         }
 
         socket.connect();
+        socket.on('connect', handleConnect);
         socket.on('connect_error', handleConnectError);
         window.addEventListener('focus', handleWindowFocus);
         window.addEventListener('beforeunload', handleBeforeUnload);
 
         return () => {
+            socket.off('connect', handleConnect);
             socket.off('connect_error', handleConnectError);
             window.removeEventListener('focus', handleWindowFocus);
             window.removeEventListener('beforeunload', handleBeforeUnload);

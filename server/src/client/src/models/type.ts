@@ -7,6 +7,8 @@ export interface Music {
     sampleRate: number;
     trackNumber: number;
     playCount: number;
+    lastPlayedAt: string | null;
+    totalPlayedMs: number;
     filePath: string;
     isLiked: boolean;
     isHated: boolean;

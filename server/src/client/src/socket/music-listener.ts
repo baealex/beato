@@ -5,6 +5,14 @@ export const MUSIC_LIKE = 'music-like';
 export const MUSIC_HATE = 'music-hate';
 export const MUSIC_COUNT = 'music-count';
 
+export interface CountPayload {
+    id: string;
+    playedMs: number;
+    completionRate: number;
+    startedAt: string;
+    source?: string;
+}
+
 interface Like {
     id: string;
     isLiked: boolean;
@@ -18,6 +26,9 @@ interface Hate {
 interface Count {
     id: string;
     playCount: number;
+    lastPlayedAt: string | null;
+    totalPlayedMs: number;
+    countedAsPlay: boolean;
 }
 
 interface MusicListenerEventHandler {
@@ -27,7 +38,8 @@ interface MusicListenerEventHandler {
 }
 
 export class MusicListener implements Listener {
-    static shouldIncreaseItems: string[] = [];
+    static pendingCountEvents: CountPayload[] = [];
+    static isFlushing = false;
 
     handler: MusicListenerEventHandler | null;
 
@@ -57,22 +69,29 @@ export class MusicListener implements Listener {
         socket.emit(MUSIC_HATE, { id });
     }
 
-    static async count(id?: string) {
-        id && this.shouldIncreaseItems.push(id);
+    static async count(payload?: CountPayload) {
+        if (payload) {
+            this.pendingCountEvents.push(payload);
+        }
 
-        if (!socket.connected) {
+        if (!socket.connected || this.isFlushing) {
             return;
         }
 
-        while (this.shouldIncreaseItems.length > 0) {
-            const itemId = this.shouldIncreaseItems.pop();
+        this.isFlushing = true;
 
-            if (!itemId) {
-                break;
+        try {
+            while (this.pendingCountEvents.length > 0) {
+                const item = this.pendingCountEvents.shift();
+
+                if (!item) {
+                    break;
+                }
+
+                socket.emit(MUSIC_COUNT, item);
             }
-
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            socket.emit(MUSIC_COUNT, { id: itemId });
+        } finally {
+            this.isFlushing = false;
         }
     }
 
