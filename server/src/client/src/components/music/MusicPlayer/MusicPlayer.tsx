@@ -8,17 +8,22 @@ import { useNavigate } from 'react-router-dom';
 import { Image } from '~/components/shared';
 import * as Icon from '~/icon';
 
+import { useStoreValue } from '~/hooks';
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 
 const MusicPlayer = () => {
     const navigate = useNavigate();
 
-    const [state] = useStore(queueStore);
+    const [currentTrackId] = useStoreValue(queueStore, 'currentTrackId');
+    const [progress] = useStoreValue(queueStore, 'progress');
+    const [isPlaying] = useStoreValue(queueStore, 'isPlaying');
+    const [repeatMode] = useStoreValue(queueStore, 'repeatMode');
+    const [shuffle] = useStoreValue(queueStore, 'shuffle');
     const [{ musicMap }] = useStore(musicStore);
 
-    const currentMusic = state.selected !== null
-        ? musicMap.get(state.items[state.selected])
+    const currentMusic = currentTrackId
+        ? musicMap.get(currentTrackId)
         : null;
 
     // TODO: Fix type
@@ -52,7 +57,7 @@ const MusicPlayer = () => {
             <div
                 className={cx('progress')}
                 role="progressbar"
-                aria-valuenow={state.progress}
+                aria-valuenow={progress}
                 aria-valuemin={0}
                 aria-valuemax={100}
                 onClick={handleClickProgress}
@@ -60,7 +65,7 @@ const MusicPlayer = () => {
                 onTouchMove={handleMoveProgress}>
                 <div
                     className={cx('bar')}
-                    style={{ transform: `translateX(-${100 - state.progress}%)` }}
+                    style={{ transform: `translateX(-${100 - progress}%)` }}
                 />
             </div>
             <div className={cx('content')}>
@@ -92,9 +97,9 @@ const MusicPlayer = () => {
                     <button
                         className={cx('controlButton', 'secondary')}
                         onClick={() => queueStore.changeRepeatMode()}>
-                        {state.repeatMode === 'all' && <Icon.Repeat />}
-                        {state.repeatMode === 'one' && <Icon.Infinite />}
-                        {state.repeatMode === 'none' && <Icon.RightLeft />}
+                        {repeatMode === 'all' && <Icon.Repeat />}
+                        {repeatMode === 'one' && <Icon.Infinite />}
+                        {repeatMode === 'none' && <Icon.RightLeft />}
                     </button>
                     <button
                         className={cx('controlButton', 'secondary')}
@@ -103,8 +108,8 @@ const MusicPlayer = () => {
                     </button>
                     <button
                         className={cx('controlButton', 'primary')}
-                        onClick={() => state.isPlaying ? queueStore.pause() : queueStore.play()}>
-                        {state.isPlaying ? <Icon.Pause /> : <Icon.Play />}
+                        onClick={() => isPlaying ? queueStore.pause() : queueStore.play()}>
+                        {isPlaying ? <Icon.Pause /> : <Icon.Play />}
                     </button>
                     <button
                         className={cx('controlButton', 'secondary')}
@@ -112,7 +117,7 @@ const MusicPlayer = () => {
                         <Icon.SkipForward />
                     </button>
                     <button
-                        className={cx('controlButton', 'secondary', { active: state.shuffle })}
+                        className={cx('controlButton', 'secondary', { active: shuffle })}
                         onClick={() => queueStore.toggleShuffle()}>
                         <Icon.Shuffle />
                     </button>

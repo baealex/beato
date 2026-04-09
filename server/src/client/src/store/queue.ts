@@ -10,6 +10,12 @@ import {
 } from '~/modules/audio-channel';
 import { confirm } from '~/modules/confirm';
 import { getNextSelectedIndexAfterRemovingCurrent } from '~/modules/queue-selection';
+import {
+    deriveQueueState,
+    deriveQueueStateFromTrack,
+    moveQueueItemToIndex,
+    reorderQueueItems
+} from '~/modules/queue-state';
 import { toast } from '~/modules/toast';
 import { convertToMillisecond } from '~/modules/time';
 import { PlaybackSessionTracker } from '~/modules/playback-session';
@@ -18,6 +24,8 @@ import { shuffle } from '~/modules/shuffle';
 
 interface QueueStoreState {
     selected: number | null;
+    currentTrackId: string | null;
+    queueLength: number;
     isPlaying: boolean;
     shuffle: boolean;
     insertMode: 'first' | 'last' | 'after';
@@ -35,6 +43,11 @@ const getMusic = (id: string) => {
     return musicMap.get(id);
 };
 
+const createQueueState = (items: string[], selected: number | null) => ({
+    items,
+    ...deriveQueueState(items, selected)
+});
+
 class QueueStore extends Store<QueueStoreState> {
     saveTimer: ReturnType<typeof setTimeout> | null = null;
     audioChannel: AudioChannel;
@@ -46,6 +59,8 @@ class QueueStore extends Store<QueueStoreState> {
         this.playbackSessionTracker = new PlaybackSessionTracker();
         this.state = {
             selected: null,
+            currentTrackId: null,
+            queueLength: 0,
             isPlaying: false,
             shuffle: false,
             insertMode: 'last',
@@ -60,11 +75,11 @@ class QueueStore extends Store<QueueStoreState> {
 
         const audioChannelEventHandler: AudioChannelEventHandler = {
             onPlay: () => {
-                if (this.state.selected === null) {
+                if (!this.state.currentTrackId) {
                     return;
                 }
 
-                const currentMusic = getMusic(this.state.items[this.state.selected]);
+                const currentMusic = getMusic(this.state.currentTrackId);
 
                 if (currentMusic) {
                     this.playbackSessionTracker.play({
@@ -110,7 +125,9 @@ class QueueStore extends Store<QueueStoreState> {
                 }
             },
             onTimeUpdate: (time, mix) => {
-                const music = getMusic(this.state.items[this.state.selected!]);
+                const music = this.state.currentTrackId
+                    ? getMusic(this.state.currentTrackId)
+                    : undefined;
                 const progress = Number((time / (music?.duration || 1) * 100).toFixed(2));
 
                 if (this.state.mixMode === 'mix') {
@@ -139,9 +156,33 @@ class QueueStore extends Store<QueueStoreState> {
             if (loaded) {
                 const queue = localStorage.getItem('queue');
                 if (queue) {
-                    const nextState = JSON.parse(queue) as QueueStoreState;
-                    await this.set(nextState);
-                    this.select(nextState.selected || 0, false);
+                    const persistedState = JSON.parse(queue) as Partial<QueueStoreState>;
+                    const restoredItems = Array.isArray(persistedState.items)
+                        ? persistedState.items
+                        : [];
+                    const restoredSelected = typeof persistedState.selected === 'number'
+                        ? persistedState.selected
+                        : null;
+                    const restoredQueueState = createQueueState(restoredItems, restoredSelected);
+
+                    await this.set({
+                        ...restoredQueueState,
+                        isPlaying: false,
+                        shuffle: persistedState.shuffle ?? false,
+                        insertMode: persistedState.insertMode ?? 'last',
+                        repeatMode: persistedState.repeatMode ?? 'none',
+                        playMode: persistedState.playMode ?? 'later',
+                        mixMode: persistedState.mixMode ?? 'none',
+                        currentTime: 0,
+                        progress: 0,
+                        sourceItems: Array.isArray(persistedState.sourceItems)
+                            ? persistedState.sourceItems
+                            : []
+                    });
+
+                    if (restoredQueueState.selected !== null) {
+                        this.select(restoredQueueState.selected, false);
+                    }
                 }
                 musicStore.unsubscribe(key);
             }
@@ -179,10 +220,9 @@ class QueueStore extends Store<QueueStoreState> {
         this.commitPlaybackEvent('queue-reset');
 
         await this.set({
-            items: ids,
+            ...createQueueState(ids, null),
             sourceItems: [],
             shuffle: false,
-            selected: null,
             currentTime: 0,
             progress: 0,
             isPlaying: false
@@ -199,34 +239,46 @@ class QueueStore extends Store<QueueStoreState> {
             toast('Already added to queue');
             return;
         }
+
+        const currentTrackId = this.state.currentTrackId;
+        let nextItems = this.state.items;
+        let nextSourceItems = this.state.sourceItems;
+
         if (this.state.shuffle) {
-            this.set({ sourceItems: [...this.state.items, id] });
+            nextSourceItems = [...this.state.items, id];
         }
         if (this.state.insertMode === 'first') {
-            this.set({ items: [id, ...this.state.items] });
+            nextItems = [id, ...this.state.items];
         }
         if (this.state.insertMode === 'last') {
-            this.set({ items: [...this.state.items, id] });
+            nextItems = [...this.state.items, id];
         }
         if (this.state.insertMode === 'after') {
             if (this.state.selected === null) {
-                this.set({ items: [...this.state.items, id] });
+                nextItems = [...this.state.items, id];
             } else {
-                this.set({
-                    items: [
-                        ...this.state.items.slice(0, this.state.selected + 1),
-                        id,
-                        ...this.state.items.slice(this.state.selected + 1)
-                    ]
-                });
+                nextItems = [
+                    ...this.state.items.slice(0, this.state.selected + 1),
+                    id,
+                    ...this.state.items.slice(this.state.selected + 1)
+                ];
             }
         }
+
+        const nextQueueState = deriveQueueStateFromTrack(nextItems, currentTrackId);
+
+        this.set({
+            ...nextQueueState,
+            items: nextItems,
+            sourceItems: nextSourceItems
+        });
+
         toast('Added to queue');
         if (this.state.playMode === 'immediately') {
-            this.select(this.state.items.indexOf(id));
+            this.select(nextItems.indexOf(id));
             return;
         }
-        if (this.state.selected === null) {
+        if (nextQueueState.selected === null) {
             this.select(0);
         }
     }
@@ -236,15 +288,14 @@ class QueueStore extends Store<QueueStoreState> {
         const newSourceItems = this.state.sourceItems.filter((i) => !ids.includes(i));
 
         const prevSelected = this.state.selected;
-        const prevSelectedItem = newItems.length > 0
-            ? this.state.items[prevSelected || 0]
-            : null;
+        const prevSelectedItem = this.state.currentTrackId;
 
         if (prevSelectedItem && ids.includes(prevSelectedItem)) {
             this.commitPlaybackEvent('queue-remove');
         }
 
         await this.set({
+            ...deriveQueueStateFromTrack(newItems, prevSelectedItem),
             items: newItems,
             sourceItems: newSourceItems
         });
@@ -252,7 +303,6 @@ class QueueStore extends Store<QueueStoreState> {
         if (newItems.length === 0) {
             this.audioChannel.stop();
             this.set({
-                selected: null,
                 currentTime: 0,
                 progress: 0,
                 isPlaying: false
@@ -262,7 +312,6 @@ class QueueStore extends Store<QueueStoreState> {
 
         if (prevSelectedItem) {
             if (!ids.includes(prevSelectedItem)) {
-                this.set({ selected: newItems.indexOf(prevSelectedItem) });
                 return;
             }
             if (ids.includes(prevSelectedItem)) {
@@ -278,14 +327,18 @@ class QueueStore extends Store<QueueStoreState> {
     select(index: number, play = true) {
         this.commitPlaybackEvent('queue-track-change');
 
+        const nextQueueState = createQueueState(this.state.items, index);
+
         this.set({
-            selected: index,
+            ...nextQueueState,
             progress: 0,
             currentTime: 0,
             isPlaying: play
         });
 
-        const music = getMusic(this.state.items[index]);
+        const music = nextQueueState.currentTrackId
+            ? getMusic(nextQueueState.currentTrackId)
+            : undefined;
         if (music === undefined) return;
 
         document.title = `${music.name} - ${music.artist.name}`;
@@ -332,14 +385,46 @@ class QueueStore extends Store<QueueStoreState> {
         this.set({ repeatMode: next });
     }
 
+    reorder(activeId: string, overId: string) {
+        const nextItems = reorderQueueItems(this.state.items, activeId, overId);
+
+        if (nextItems === this.state.items) {
+            return;
+        }
+
+        this.set({
+            ...deriveQueueStateFromTrack(nextItems, this.state.currentTrackId),
+            items: nextItems
+        });
+    }
+
+    reorderToIndex(activeId: string, targetIndex: number) {
+        const nextItems = moveQueueItemToIndex(this.state.items, activeId, targetIndex);
+
+        if (nextItems === this.state.items) {
+            return;
+        }
+
+        this.set({
+            ...deriveQueueStateFromTrack(nextItems, this.state.currentTrackId),
+            items: nextItems
+        });
+    }
+
     toggleShuffle() {
-        const selectedMusic = this.state.items[this.state.selected!];
+        const selectedMusic = this.state.currentTrackId;
+
+        if (!selectedMusic) {
+            return;
+        }
 
         if (this.state.shuffle) {
+            const nextItems = [...this.state.sourceItems];
+
             this.set({
                 shuffle: false,
-                selected: this.state.sourceItems.indexOf(selectedMusic),
-                items: [...this.state.sourceItems],
+                ...deriveQueueStateFromTrack(nextItems, selectedMusic),
+                items: nextItems,
                 sourceItems: []
             });
             return;
@@ -352,7 +437,7 @@ class QueueStore extends Store<QueueStoreState> {
 
         this.set({
             shuffle: true,
-            selected: 0,
+            ...deriveQueueStateFromTrack(newItems, selectedMusic),
             items: newItems,
             sourceItems: [...this.state.items]
         });
