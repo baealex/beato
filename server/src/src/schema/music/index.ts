@@ -2,6 +2,7 @@ import type { IResolvers } from '@graphql-tools/utils';
 
 import models, { type Music } from '~/models';
 import { gql } from '~/modules/graphql';
+import { TRACK_SYNC_STATUS } from '~/modules/track-identity';
 import { artistType } from '../artist';
 import { albumType } from '../album';
 
@@ -51,7 +52,10 @@ export const musicTypeDefs = `
 
 export const musicResolvers: IResolvers = {
     Query: {
-        allMusics: () => models.music.findMany({ orderBy: { playCount: 'desc' } }),
+        allMusics: () => models.music.findMany({
+            where: { syncStatus: TRACK_SYNC_STATUS.active },
+            orderBy: { playCount: 'desc' }
+        }),
         music: (_, { id }: Music) => models.music.findUnique({ where: { id: Number(id) } })
     },
     Music: {

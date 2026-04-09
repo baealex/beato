@@ -2,6 +2,7 @@ import type { IResolvers } from '@graphql-tools/utils';
 
 import models, { type Playlist } from '~/models';
 import { gql } from '~/modules/graphql';
+import { TRACK_SYNC_STATUS } from '~/modules/track-identity';
 import { musicType } from '../music';
 
 export const playlistType = gql`
@@ -43,7 +44,10 @@ export const playlistResolvers: IResolvers = {
     Playlist: {
         musics: async (playlist: Playlist) => {
             const musics = await models.playlistMusic.findMany({
-                where: { playlistId: playlist.id },
+                where: {
+                    playlistId: playlist.id,
+                    Music: { syncStatus: TRACK_SYNC_STATUS.active }
+                },
                 orderBy: { order: 'asc' },
                 include: { Music: true }
             });
@@ -51,13 +55,21 @@ export const playlistResolvers: IResolvers = {
         },
         headerMusics: async (playlist: Playlist) => {
             const musics = await models.playlistMusic.findMany({
-                where: { playlistId: playlist.id },
+                where: {
+                    playlistId: playlist.id,
+                    Music: { syncStatus: TRACK_SYNC_STATUS.active }
+                },
                 orderBy: { order: 'asc' },
                 include: { Music: true },
                 take: 4
             });
             return musics.map((playlistMusic) => playlistMusic.Music);
         },
-        musicCount: (playlist: Playlist) => models.music.count({ where: { PlaylistMusic: { some: { playlistId: playlist.id } } } })
+        musicCount: (playlist: Playlist) => models.music.count({
+            where: {
+                PlaylistMusic: { some: { playlistId: playlist.id } },
+                syncStatus: TRACK_SYNC_STATUS.active
+            }
+        })
     }
 };

@@ -49,6 +49,8 @@ model Music {
     albumId       Int
     artistId      Int
     filePath      String
+    contentHash   String?
+    hashVersion   Int?
     duration      Float
     codec         String
     container     String
@@ -56,6 +58,9 @@ model Music {
     sampleRate    Float
     playCount     Int             @default(0)
     lastPlayedAt  DateTime?
+    lastSeenAt    DateTime?
+    missingSinceAt DateTime?
+    syncStatus    String          @default("active")
     totalPlayedMs Float           @default(0)
     trackNumber   Int
     Genre         Genre[]
@@ -63,6 +68,9 @@ model Music {
     MusicHate     MusicHate[]
     PlaybackEvent PlaybackEvent[]
     PlaylistMusic PlaylistMusic[]
+
+    @@index([contentHash])
+    @@index([syncStatus, missingSinceAt])
 }
 
 model PlaybackEvent {
