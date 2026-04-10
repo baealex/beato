@@ -1,16 +1,22 @@
 import { socket } from './socket';
 import type { Listener } from './listener';
+import {
+    deletePlaybackCheckpoint,
+    listPlaybackCheckpoints
+} from '~/modules/playback-checkpoint-store';
 
 export const MUSIC_LIKE = 'music-like';
 export const MUSIC_HATE = 'music-hate';
 export const MUSIC_COUNT = 'music-count';
+const MUSIC_COUNT_ACK_TIMEOUT_MS = 5_000;
 
 export interface CountPayload {
     id: string;
     playedMs: number;
-    completionRate: number;
+    completionRate?: number;
     startedAt: string;
     source?: string;
+    clientSessionId?: string;
 }
 
 interface Like {
@@ -75,10 +81,11 @@ export class MusicListener implements Listener {
         }
 
         if (!socket.connected || this.isFlushing) {
-            return;
+            return false;
         }
 
         this.isFlushing = true;
+        let deliveredPayload = payload === undefined;
 
         try {
             while (this.pendingCountEvents.length > 0) {
@@ -88,10 +95,43 @@ export class MusicListener implements Listener {
                     break;
                 }
 
-                socket.emit(MUSIC_COUNT, item);
+                const delivered = await this.emitCount(item);
+
+                if (!delivered) {
+                    this.pendingCountEvents.unshift(item);
+                    break;
+                }
+
+                if (item === payload) {
+                    deliveredPayload = true;
+                }
             }
         } finally {
             this.isFlushing = false;
+        }
+
+        return deliveredPayload;
+    }
+
+    static async recoverPlaybackCheckpoints() {
+        if (!socket.connected) {
+            return;
+        }
+
+        const checkpoints = await listPlaybackCheckpoints();
+
+        for (const checkpoint of checkpoints) {
+            const delivered = await this.emitCount({
+                id: checkpoint.trackId,
+                playedMs: checkpoint.accumulatedPlayedMs,
+                startedAt: checkpoint.startedAt,
+                source: 'queue-recovery',
+                clientSessionId: checkpoint.clientSessionId
+            });
+
+            if (delivered) {
+                await deletePlaybackCheckpoint(checkpoint.clientSessionId);
+            }
         }
     }
 
@@ -103,5 +143,22 @@ export class MusicListener implements Listener {
         socket.off(MUSIC_COUNT, this.handler.onCount);
 
         this.handler = null;
+    }
+
+    private static async emitCount(payload: CountPayload) {
+        if (!socket.connected) {
+            return false;
+        }
+
+        return new Promise<boolean>((resolve) => {
+            const timer = globalThis.setTimeout(() => {
+                resolve(false);
+            }, MUSIC_COUNT_ACK_TIMEOUT_MS);
+
+            socket.emit(MUSIC_COUNT, payload, (response?: { ok?: boolean }) => {
+                globalThis.clearTimeout(timer);
+                resolve(response?.ok !== false);
+            });
+        });
     }
 }

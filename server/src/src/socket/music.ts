@@ -17,7 +17,17 @@ interface CountPayload {
     completionRate?: number;
     startedAt?: string;
     source?: string;
+    clientSessionId?: string;
     connectorId?: string | null;
+}
+
+interface CountResult {
+    id: string;
+    playCount: number;
+    lastPlayedAt: string | null;
+    totalPlayedMs: number;
+    countedAsPlay: boolean;
+    deduped: boolean;
 }
 
 const clamp = (value: number, min: number, max: number) => {
@@ -43,7 +53,17 @@ const shouldCountAsPlay = ({
 export const musicListener = (socket: Socket) => {
     socket.on(MUSIC_LIKE, like);
     socket.on(MUSIC_HATE, hate);
-    socket.on(MUSIC_COUNT, count);
+    socket.on(MUSIC_COUNT, async (
+        payload: CountPayload,
+        ack?: (response: { ok: boolean }) => void
+    ) => {
+        const result = await count({
+            ...payload,
+            connectorId: socket.id
+        });
+
+        ack?.({ ok: result !== null });
+    });
 };
 
 export const like = async ({ id = '' }) => {
@@ -106,15 +126,43 @@ export const count = async ({
     completionRate,
     startedAt,
     source = 'queue',
+    clientSessionId,
     connectorId = null
-}: CountPayload) => {
+}: CountPayload): Promise<CountResult | null> => {
     if (!id) {
-        return;
+        return null;
     }
 
     const $music = await models.music.findUnique({ where: { id: parseInt(id) } });
 
     if ($music) {
+        if (clientSessionId) {
+            const existingEvent = await models.playbackEvent.findUnique({
+                where: { clientSessionId },
+                include: {
+                    Music: {
+                        select: {
+                            id: true,
+                            playCount: true,
+                            lastPlayedAt: true,
+                            totalPlayedMs: true
+                        }
+                    }
+                }
+            });
+
+            if (existingEvent) {
+                return {
+                    id: existingEvent.Music.id.toString(),
+                    playCount: existingEvent.Music.playCount,
+                    lastPlayedAt: existingEvent.Music.lastPlayedAt?.toISOString() ?? null,
+                    totalPlayedMs: existingEvent.Music.totalPlayedMs,
+                    countedAsPlay: existingEvent.countedAsPlay,
+                    deduped: true
+                };
+            }
+        }
+
         const endedAt = new Date();
         const requestedStartedAt = startedAt ? new Date(startedAt) : null;
         const validStartedAtMs = requestedStartedAt && !Number.isNaN(requestedStartedAt.getTime())
@@ -133,7 +181,7 @@ export const count = async ({
         const normalizedPlayedMs = clamp(playedMs, 0, maxPlayedMs);
 
         if (normalizedPlayedMs <= 0) {
-            return;
+            return null;
         }
 
         const normalizedCompletionRate = clamp(
@@ -155,6 +203,7 @@ export const count = async ({
                     completionRate: normalizedCompletionRate,
                     countedAsPlay,
                     source,
+                    clientSessionId: clientSessionId ?? undefined,
                     connectorId: connectorId ?? undefined
                 }
             });
@@ -171,17 +220,25 @@ export const count = async ({
                 select: {
                     id: true,
                     playCount: true,
+                    lastPlayedAt: true,
                     totalPlayedMs: true
                 }
             });
         });
 
-        await connectors.broadcast(MUSIC_COUNT, {
+        const result = {
             id: updatedMusic.id.toString(),
             playCount: updatedMusic.playCount,
             lastPlayedAt: endedAt.toISOString(),
             totalPlayedMs: updatedMusic.totalPlayedMs,
-            countedAsPlay
-        });
+            countedAsPlay,
+            deduped: false
+        } satisfies CountResult;
+
+        await connectors.broadcast(MUSIC_COUNT, result);
+
+        return result;
     }
+
+    return null;
 };

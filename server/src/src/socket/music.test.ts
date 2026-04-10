@@ -126,4 +126,39 @@ describe('music playback counting', () => {
             countedAsPlay: false
         }));
     });
+
+    it('dedupes repeated recovery commits with the same clientSessionId', async () => {
+        const broadcastSpy = jest.spyOn(connectors, 'broadcast').mockResolvedValue([]);
+        const music = await createMusic({ duration: 180 });
+        const clientSessionId = 'session-dedupe-1';
+
+        await count({
+            id: music.id.toString(),
+            clientSessionId,
+            playedMs: 35_000,
+            completionRate: 35_000 / 180_000,
+            source: 'queue-recovery'
+        });
+        await count({
+            id: music.id.toString(),
+            clientSessionId,
+            playedMs: 35_000,
+            completionRate: 35_000 / 180_000,
+            source: 'queue-recovery'
+        });
+
+        const updatedMusic = await models.music.findUniqueOrThrow({ where: { id: music.id } });
+        const events = await models.playbackEvent.findMany({ where: { musicId: music.id } });
+
+        expect(events).toHaveLength(1);
+        expect(events[0]).toMatchObject({
+            musicId: music.id,
+            clientSessionId,
+            playedMs: 35_000,
+            source: 'queue-recovery'
+        });
+        expect(updatedMusic.playCount).toBe(1);
+        expect(updatedMusic.totalPlayedMs).toBe(35_000);
+        expect(broadcastSpy).toHaveBeenCalledTimes(1);
+    });
 });

@@ -118,7 +118,10 @@ export default function App() {
 
     useEffect(() => {
         const handleConnect = () => {
-            void MusicListener.count();
+            void (async () => {
+                await MusicListener.count();
+                await MusicListener.recoverPlaybackCheckpoints();
+            })();
         };
 
         const handleWindowFocus = () => {

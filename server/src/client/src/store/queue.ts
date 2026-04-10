@@ -19,8 +19,14 @@ import {
 import { toast } from '~/modules/toast';
 import { convertToMillisecond } from '~/modules/time';
 import { PlaybackSessionTracker } from '~/modules/playback-session';
+import {
+    deletePlaybackCheckpoint,
+    savePlaybackCheckpoint
+} from '~/modules/playback-checkpoint-store';
 import { MusicListener } from '~/socket';
 import { shuffle } from '~/modules/shuffle';
+
+const PLAYBACK_CHECKPOINT_INTERVAL_MS = 10_000;
 
 interface QueueStoreState {
     selected: number | null;
@@ -52,11 +58,15 @@ class QueueStore extends Store<QueueStoreState> {
     saveTimer: ReturnType<typeof setTimeout> | null = null;
     audioChannel: AudioChannel;
     playbackSessionTracker: PlaybackSessionTracker;
+    lastCheckpointClientSessionId: string | null = null;
+    lastCheckpointPlayedMs = 0;
 
     constructor() {
         super();
         this.saveTimer = null;
         this.playbackSessionTracker = new PlaybackSessionTracker();
+        this.lastCheckpointClientSessionId = null;
+        this.lastCheckpointPlayedMs = 0;
         this.state = {
             selected: null,
             currentTrackId: null,
@@ -91,11 +101,15 @@ class QueueStore extends Store<QueueStoreState> {
                 this.set({ isPlaying: true });
             },
             onPause: () => {
-                this.playbackSessionTracker.pause();
+                const now = Date.now();
+                this.playbackSessionTracker.pause(now);
+                void this.persistPlaybackCheckpoint('queue-pause', true, now).persisted;
                 this.set({ isPlaying: false });
             },
             onStop: () => {
-                this.playbackSessionTracker.pause();
+                const now = Date.now();
+                this.playbackSessionTracker.pause(now);
+                void this.persistPlaybackCheckpoint('queue-stop', true, now).persisted;
                 this.set({ isPlaying: false });
             },
             onEnded: () => {
@@ -134,7 +148,10 @@ class QueueStore extends Store<QueueStoreState> {
                     mix(20, () => undefined);
                 }
 
-                this.playbackSessionTracker.tick();
+                const now = Date.now();
+
+                this.playbackSessionTracker.tick(now);
+                void this.persistPlaybackCheckpoint('queue-checkpoint', false, now).persisted;
                 this.set({
                     currentTime: time,
                     progress
@@ -192,16 +209,26 @@ class QueueStore extends Store<QueueStoreState> {
             this.commitPlaybackEvent('queue-unload');
             this.audioChannel.stop();
         });
+        window.addEventListener('pagehide', () => {
+            void this.persistPlaybackCheckpoint('queue-pagehide', true).persisted;
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                void this.persistPlaybackCheckpoint('queue-visibilitychange', true).persisted;
+            }
+        });
     }
 
     commitPlaybackEvent(source: string) {
-        const payload = this.playbackSessionTracker.commit();
+        const now = Date.now();
+        const { checkpoint, persisted } = this.persistPlaybackCheckpoint(source, true, now);
+        const payload = this.playbackSessionTracker.commit(now);
 
-        if (!payload) {
+        if (!payload || !checkpoint) {
             return;
         }
 
-        void MusicListener.count({
+        void this.flushCommittedPlaybackEvent(payload.clientSessionId, persisted, {
             ...payload,
             source
         });
@@ -479,6 +506,56 @@ class QueueStore extends Store<QueueStoreState> {
             }));
             this.saveTimer = null;
         }, 3000);
+    }
+
+    private persistPlaybackCheckpoint(source: string, force: boolean, now = Date.now()) {
+        const checkpoint = this.playbackSessionTracker.createCheckpoint(source, now);
+
+        if (!checkpoint) {
+            return {
+                checkpoint: null,
+                persisted: Promise.resolve()
+            };
+        }
+
+        if (this.lastCheckpointClientSessionId !== checkpoint.clientSessionId) {
+            this.lastCheckpointClientSessionId = checkpoint.clientSessionId;
+            this.lastCheckpointPlayedMs = 0;
+        }
+
+        const playedDelta = checkpoint.accumulatedPlayedMs - this.lastCheckpointPlayedMs;
+
+        if (!force && playedDelta < PLAYBACK_CHECKPOINT_INTERVAL_MS) {
+            return {
+                checkpoint,
+                persisted: Promise.resolve()
+            };
+        }
+
+        this.lastCheckpointClientSessionId = checkpoint.clientSessionId;
+        this.lastCheckpointPlayedMs = checkpoint.accumulatedPlayedMs;
+        const persisted = savePlaybackCheckpoint(checkpoint);
+
+        return {
+            checkpoint,
+            persisted
+        };
+    }
+
+    private async flushCommittedPlaybackEvent(
+        clientSessionId: string,
+        persisted: Promise<void>,
+        payload: Parameters<typeof MusicListener.count>[0]
+    ) {
+        await persisted;
+
+        const delivered = await MusicListener.count(payload);
+
+        if (!delivered) {
+            return;
+        }
+
+        await deletePlaybackCheckpoint(clientSessionId);
     }
 }
 
