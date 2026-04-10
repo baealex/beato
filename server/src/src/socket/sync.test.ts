@@ -13,11 +13,14 @@ jest.mock('music-metadata', () => ({ parseBuffer: jest.fn() }));
 jest.mock('sharp', () => {
     return jest.fn(() => ({
         resize: jest.fn().mockReturnThis(),
-        toFile: jest.fn().mockResolvedValue(undefined)
+        toFile: jest.fn().mockImplementation(async (outputPath: string) => {
+            fs.writeFileSync(outputPath, 'resized-artwork');
+        })
     }));
 });
 
 import { walk } from '../modules/file';
+import { resolveCachePath } from '../modules/storage-paths';
 import { TRACK_CONTENT_HASH_VERSION, createTrackContentHash } from '../modules/track-hash';
 import { SYNC_REPORT_KIND, SYNC_REPORT_STATUS } from '../modules/sync-report';
 import { TRACK_SYNC_STATUS } from '../modules/track-identity';
@@ -33,6 +36,7 @@ const createTrackFixture = (overrides?: {
     year?: string;
     trackNumber?: number;
     fingerprint?: string;
+    picture?: string;
 }) => {
     const title = overrides?.title ?? 'Track A';
     const artist = overrides?.artist ?? 'Artist A';
@@ -40,8 +44,9 @@ const createTrackFixture = (overrides?: {
     const year = overrides?.year ?? '2026';
     const trackNumber = overrides?.trackNumber ?? 1;
     const fingerprint = overrides?.fingerprint ?? 'fingerprint-a';
+    const picture = overrides?.picture ?? '';
 
-    return `title=${title}|artist=${artist}|album=${album}|year=${year}|track=${trackNumber}|fingerprint=${fingerprint}`;
+    return `title=${title}|artist=${artist}|album=${album}|year=${year}|track=${trackNumber}|fingerprint=${fingerprint}|picture=${picture}`;
 };
 
 const createTempTrackFile = ({
@@ -103,6 +108,8 @@ const createExistingMusic = async ({
 
 describe('sync music identity', () => {
     const tempDirectories: string[] = [];
+    const workspaceDirectories: string[] = [];
+    const originalCachePath = process.env.OCEAN_WAVE_CACHE_PATH;
 
     beforeEach(async () => {
         jest.restoreAllMocks();
@@ -125,12 +132,24 @@ describe('sync music identity', () => {
                     title: entries.title,
                     artist: entries.artist,
                     album: entries.album,
+                    picture: entries.picture
+                        ? [
+                            {
+                                data: Buffer.from(entries.picture),
+                                format: 'image/jpeg'
+                            }
+                        ]
+                        : [],
                     genre: [],
                     year: Number(entries.year),
                     track: { no: Number(entries.track) }
                 }
             } as never;
         });
+
+        const workspaceDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'beato-sync-workspace-'));
+        workspaceDirectories.push(workspaceDirectory);
+        process.env.OCEAN_WAVE_CACHE_PATH = path.join(workspaceDirectory, 'cache');
 
         await models.playbackEvent.deleteMany();
         await models.syncReportItem.deleteMany();
@@ -146,6 +165,8 @@ describe('sync music identity', () => {
     });
 
     afterEach(() => {
+        process.env.OCEAN_WAVE_CACHE_PATH = originalCachePath;
+
         while (tempDirectories.length > 0) {
             fs.rmSync(tempDirectories.pop()!, {
                 recursive: true,
@@ -153,10 +174,12 @@ describe('sync music identity', () => {
             });
         }
 
-        fs.rmSync(path.resolve('./cache'), {
-            recursive: true,
-            force: true
-        });
+        while (workspaceDirectories.length > 0) {
+            fs.rmSync(workspaceDirectories.pop()!, {
+                recursive: true,
+                force: true
+            });
+        }
     });
 
     it('moves a track to a new path without losing linked data', async () => {
@@ -285,6 +308,46 @@ describe('sync music identity', () => {
                 musicName: musics[1].name
             })
         ]));
+    });
+
+    it('repairs missing cached album artwork for unchanged tracks during normal sync', async () => {
+        const contents = createTrackFixture({
+            fingerprint: 'cover-repair-hash',
+            picture: 'cover-art-a'
+        });
+        const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'beato-sync-cover-repair-'));
+        tempDirectories.push(tempDirectory);
+
+        const existingPath = createTempTrackFile({
+            directory: tempDirectory,
+            relativePath: 'library/track-a.mp3',
+            contents
+        });
+        const existingMusic = await createExistingMusic({
+            filePath: existingPath,
+            contents
+        });
+
+        await models.album.update({
+            where: { id: existingMusic.albumId },
+            data: { cover: `/cache/resized/${existingMusic.albumId}.jpg` }
+        });
+
+        walkMock.mockResolvedValue([existingPath]);
+
+        const result = await syncMusic({ emit: jest.fn() } as never);
+        const album = await models.album.findUniqueOrThrow({ where: { id: existingMusic.albumId } });
+
+        expect(result).toMatchObject({
+            created: [],
+            moved: [],
+            duplicate: [],
+            missing: []
+        });
+        expect(parseBufferMock).toHaveBeenCalledTimes(1);
+        expect(album.cover).toBe(`/cache/resized/${existingMusic.albumId}.jpg`);
+        expect(fs.existsSync(path.join(resolveCachePath(), `${existingMusic.albumId}.jpg`))).toBe(true);
+        expect(fs.existsSync(path.join(resolveCachePath(), 'resized', `${existingMusic.albumId}.jpg`))).toBe(true);
     });
 
     it('marks unseen tracks as missing instead of deleting them', async () => {

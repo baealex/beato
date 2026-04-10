@@ -4,6 +4,7 @@ const cx = classNames.bind(styles);
 
 import { useEffect, useState } from 'react';
 import { Image } from '~/components/shared';
+import { getOriginalImage } from '~/modules/image';
 
 interface MusicPlayerFluffyStyleProps {
     isPlaying: boolean;
@@ -41,17 +42,18 @@ const MusicPlayerFluffyStyle = ({ isPlaying, src, alt }: MusicPlayerFluffyStyleP
 
     return (
         <div className={cx('MusicPlayerFluffyStyle')}>
-            <img
+            <Image
                 className={cx('background')}
                 style={{ borderRadius }}
                 src={src}
                 alt={alt}
+                loading="eager"
             />
             <div className={cx('foreground-wrapper')}>
                 <Image
                     className={cx('foreground')}
                     style={{ borderRadius }}
-                    src={src.replace('/resized', '')}
+                    src={getOriginalImage(src)}
                     alt={alt}
                 />
             </div>

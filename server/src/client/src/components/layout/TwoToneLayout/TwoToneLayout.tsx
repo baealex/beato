@@ -4,6 +4,8 @@ const cx = classNames.bind(styles);
 
 import React from 'react';
 
+import { Image } from '~/components/shared';
+
 interface TwoToneLayoutProps {
     backgroundImage?: string;
     header: React.ReactNode;
@@ -21,7 +23,7 @@ const TwoToneLayout = ({
         <div className={cx('TwoToneLayout', { hasPrimaryAction: !!primaryAction })}>
             {backgroundImage && (
                 <div className={cx('background')}>
-                    <img src={backgroundImage} alt="" aria-hidden="true" />
+                    <Image src={backgroundImage} alt="" aria-hidden="true" loading="eager" />
                     <div className={cx('overlay')} />
                 </div>
             )}

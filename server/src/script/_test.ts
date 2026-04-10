@@ -10,7 +10,7 @@ const main = async () => {
     try {
         await removeDatabase(fileName);
         await createDatabase();
-        childProcess.execSync('jest --coverage', {
+        childProcess.execSync('jest --coverage --runInBand', {
             stdio: 'inherit',
         });
     } catch (e) {

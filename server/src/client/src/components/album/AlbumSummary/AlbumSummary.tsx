@@ -5,6 +5,7 @@ const cx = classNames.bind(styles);
 import { Link } from 'react-router-dom';
 
 import { Image, Text } from '~/components/shared';
+import { getOriginalImage } from '~/modules/image';
 
 import type { Album } from '~/models/type';
 
@@ -20,7 +21,7 @@ const AlbumSummary = ({
         <div className={cx('AlbumSummary')}>
             <div className={cx('cover')}>
                 <div className={cx('cover-inner')}>
-                    <Image src={cover.replace('/resized', '') || ''} alt={name} />
+                    <Image src={getOriginalImage(cover)} alt={name} />
                 </div>
             </div>
             <Text as="h1" size="2xl" weight="bold" className={cx('title')}>

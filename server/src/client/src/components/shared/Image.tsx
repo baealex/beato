@@ -1,22 +1,40 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ImgHTMLAttributes, type ReactEventHandler } from 'react';
 import { getImage } from '~/modules/image';
 
-interface ImageProps {
+const PLACEHOLDER_IMAGE =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NQV1f/DwACYwF11mMyYQAAAABJRU5ErkJggg==';
+const FALLBACK_APPLIED_FLAG = 'fallbackApplied';
+
+interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
     src?: string;
-    alt?: string;
-    style?: React.CSSProperties;
     loading?: 'lazy' | 'eager';
-    className?: string;
 }
 
 export default function Image({
     src,
-    alt,
-    style,
     loading = 'lazy',
-    className
+    onError,
+    ...props
 }: ImageProps) {
     const ref = useRef<HTMLImageElement>(null);
+
+    const handleError: ReactEventHandler<HTMLImageElement> = (event) => {
+        onError?.(event);
+
+        const image = event.currentTarget;
+        if (image.dataset[FALLBACK_APPLIED_FLAG] === 'true') {
+            return;
+        }
+
+        image.dataset[FALLBACK_APPLIED_FLAG] = 'true';
+        image.src = getImage();
+    };
+
+    useEffect(() => {
+        if (ref.current) {
+            delete ref.current.dataset[FALLBACK_APPLIED_FLAG];
+        }
+    }, [src]);
 
     useEffect(() => {
         if (!ref.current || loading !== 'lazy') {
@@ -41,14 +59,20 @@ export default function Image({
     return (
         <>
             {loading !== 'lazy' ? (
-                <img src={getImage(src)} alt={alt} style={style} className={className} />
+                <img
+                    ref={ref}
+                    src={getImage(src)}
+                    loading={loading}
+                    onError={handleError}
+                    {...props}
+                />
             ) : (
                 <img
                     ref={ref}
-                    src={'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NQV1f/DwACYwF11mMyYQAAAABJRU5ErkJggg=='}
-                    alt={alt}
-                    style={style}
-                    className={className}
+                    src={PLACEHOLDER_IMAGE}
+                    loading={loading}
+                    onError={handleError}
+                    {...props}
                 />
             )}
         </>
