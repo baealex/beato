@@ -116,6 +116,7 @@ model PlaybackEvent {
     completionRate Float
     countedAsPlay  Boolean  @default(false)
     source         String
+    clientSessionId String? @unique
     connectorId    String?
     Music          Music    @relation(fields: [musicId], references: [id])
     musicId        Int
