@@ -2,11 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import type { Socket } from 'socket.io';
 import { parseBuffer } from 'music-metadata';
-import sharp from 'sharp';
 
 import { connectors } from './connectors';
 
+import {
+    hasHealthyAlbumCoverCache,
+    syncAlbumCoverCache
+} from '../modules/album-cover-cache';
 import { walk } from '../modules/file';
+import { resolveCachePath } from '../modules/storage-paths';
 import {
     TRACK_CONTENT_HASH_VERSION,
     createTrackContentHash,
@@ -183,51 +187,6 @@ const findOrCreateGenres = async (genreNames: string[]): Promise<Genre[]> => {
     }));
 };
 
-const syncAlbumCover = async ({
-    album,
-    pictureData,
-    cachePath,
-    resizedPath
-}: {
-    album: Album;
-    pictureData: Buffer | null;
-    cachePath: string;
-    resizedPath: string;
-}) => {
-    if (!pictureData) {
-        return album.cover;
-    }
-
-    const fileName = `${album.id}.jpg`;
-    const savePath = path.join(cachePath, fileName);
-
-    const hasCache = fs.existsSync(savePath);
-    const shouldUpdate = hasCache && (
-        fs.readFileSync(savePath).toString() !== pictureData.toString()
-    );
-
-    if (!hasCache || shouldUpdate) {
-        fs.writeFileSync(savePath, pictureData);
-    }
-
-    const resizedSavePath = path.join(resizedPath, fileName);
-    if (!fs.existsSync(resizedSavePath) || shouldUpdate) {
-        await sharp(savePath)
-            .resize(300, 300)
-            .toFile(resizedSavePath);
-    }
-
-    const coverPath = `/cache/resized/${fileName}`;
-    if (album.cover !== coverPath) {
-        await models.album.update({
-            where: { id: album.id },
-            data: { cover: coverPath }
-        });
-    }
-
-    return coverPath;
-};
-
 const upsertMusicFromMetadata = async ({
     existingMusic,
     filePath,
@@ -258,12 +217,20 @@ const upsertMusicFromMetadata = async ({
     });
     const genres = await findOrCreateGenres(metadata.genres);
 
-    await syncAlbumCover({
-        album,
+    const coverPath = await syncAlbumCoverCache({
+        albumId: album.id,
+        currentCoverPath: album.cover,
         pictureData: metadata.pictureData,
         cachePath,
         resizedPath
     });
+
+    if (album.cover !== coverPath) {
+        await models.album.update({
+            where: { id: album.id },
+            data: { cover: coverPath }
+        });
+    }
 
     if (existingMusic) {
         return models.music.update({
@@ -324,6 +291,46 @@ const updateMusicIdentity = async ({
             contentHash,
             hashVersion: TRACK_CONTENT_HASH_VERSION
         }
+    });
+};
+
+const repairAlbumCoverCacheIfNeeded = async ({
+    music,
+    filePath,
+    fileData,
+    cachePath,
+    resizedPath,
+    albumById
+}: {
+    music: Music;
+    filePath: string;
+    fileData: Buffer | null;
+    cachePath: string;
+    resizedPath: string;
+    albumById: Map<number, Album>;
+}) => {
+    const album = albumById.get(music.albumId);
+
+    if (!album || !album.cover || hasHealthyAlbumCoverCache({
+        coverPath: album.cover,
+        cachePath,
+        resizedPath
+    })) {
+        return;
+    }
+
+    const metadata = await parseTrackMetadata(filePath, fileData ?? fs.readFileSync(filePath));
+    const coverPath = await syncAlbumCoverCache({
+        albumId: album.id,
+        currentCoverPath: album.cover,
+        pictureData: metadata.pictureData,
+        cachePath,
+        resizedPath
+    });
+
+    albumById.set(album.id, {
+        ...album,
+        cover: coverPath
     });
 };
 
@@ -439,15 +446,17 @@ export const syncMusic = async (socket: Pick<Socket, 'emit'>, force = false): Pr
         console.log(`find ${files.length} files`);
         emitSyncMessage(socket, `find ${files.length} files`);
 
-        const cachePath = path.resolve('./cache');
+        const cachePath = resolveCachePath();
         const resizedPath = path.join(cachePath, 'resized');
         ensureDirectory(cachePath);
         ensureDirectory(resizedPath);
 
         const musics = await models.music.findMany({ orderBy: { id: 'asc' } });
+        const albums = await models.album.findMany({ orderBy: { id: 'asc' } });
         const musicById = new Map(musics.map((music) => [music.id, music]));
         const musicByPath = new Map(musics.map((music) => [music.filePath, music]));
         const identityRecordById = new Map(musics.map((music) => [music.id, toTrackIdentityRecord(music)]));
+        const albumById = new Map(albums.map((album) => [album.id, album]));
         const indexedFiles = files.filter((filePath) => {
             const music = musicByPath.get(filePath);
 
@@ -530,6 +539,15 @@ export const syncMusic = async (socket: Pick<Socket, 'emit'>, force = false): Pr
                     });
                     upsertKnownMusic(updatedMusic);
                 }
+
+                await repairAlbumCoverCacheIfNeeded({
+                    music: pathMatch,
+                    filePath,
+                    fileData,
+                    cachePath,
+                    resizedPath,
+                    albumById
+                });
 
                 continue;
             }

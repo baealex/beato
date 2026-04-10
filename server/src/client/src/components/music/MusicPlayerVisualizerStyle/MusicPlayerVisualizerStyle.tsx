@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from 'react';
 const cx = classNames.bind(styles);
 
 import { Image } from '~/components/shared';
+import { getOriginalImage } from '~/modules/image';
 import { webAudioContext } from '~/modules/web-audio-context';
 
 import {
@@ -82,7 +83,7 @@ const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt }: MusicPlayerVi
             <div className={cx('foreground-wrapper')}>
                 <Image
                     className={cx('foreground', { isPlaying })}
-                    src={src.replace('/resized', '')}
+                    src={getOriginalImage(src)}
                     alt={alt}
                 />
             </div>

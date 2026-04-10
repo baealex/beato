@@ -9,6 +9,7 @@ import { Play } from '~/icon';
 
 import { getAlbum } from '~/api';
 
+import { getOriginalImage } from '~/modules/image';
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 import { panel } from '~/modules/panel';
@@ -31,7 +32,7 @@ export default function AlbumDetail() {
 
     return (
         <TwoToneLayout
-            backgroundImage={album.cover.replace('/resized', '')}
+            backgroundImage={album.cover ? getOriginalImage(album.cover) : undefined}
             header={(
                 <AlbumSummary {...album} />
             )}

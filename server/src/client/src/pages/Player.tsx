@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from 'badland-react';
 
 import { MusicPlayerDiskStyle, MusicPlayerFluffyStyle, MusicPlayerVisualizerStyle } from '~/components/music';
-import { Text } from '~/components/shared';
+import { Image, Text } from '~/components/shared';
 import * as Icon from '~/icon';
 
 import { useBack, useStoreValue } from '~/hooks';
@@ -103,7 +103,12 @@ export default function PlayerDetail() {
         <div className={cx('Player')}>
             {currentMusic && showBackground && (
                 <div className={cx('background')}>
-                    <img src={getImage(currentMusic.album.cover)} alt="" aria-hidden="true" />
+                    <Image
+                        src={currentMusic.album.cover}
+                        alt=""
+                        aria-hidden="true"
+                        loading="eager"
+                    />
                     <div className={cx('overlay')} />
                 </div>
             )}

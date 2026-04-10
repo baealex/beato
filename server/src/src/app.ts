@@ -8,17 +8,25 @@ import {
 } from './modules/auth';
 import { resolveAuthConfig, type AuthConfig } from './modules/auth-mode';
 import logger from './modules/logger';
+import { resolveCachePath } from './modules/storage-paths';
+import useAsync from './modules/use-async';
 import schema from './schema';
 import { createApiRouter } from './urls';
+import { cacheAsset } from './views';
 
 export const createApp = (authConfig: AuthConfig = resolveAuthConfig(process.env)) => {
     return express()
         .use(logger)
         .use(express.static(path.resolve('client/dist'), { extensions: ['html'] }))
-        .use('/cache', requireAuthenticatedRequest(authConfig), express.static(path.resolve('cache'), {
-            cacheControl: true,
-            maxAge: 31536000
-        }))
+        .use(
+            '/cache',
+            requireAuthenticatedRequest(authConfig),
+            useAsync(cacheAsset),
+            express.static(resolveCachePath(), {
+                cacheControl: true,
+                maxAge: 31536000
+            })
+        )
         .use(express.json())
         .use('/graphql', requireAuthenticatedGraphqlRequest(authConfig), createHandler({ schema }))
         .use('/api', createApiRouter(authConfig))
