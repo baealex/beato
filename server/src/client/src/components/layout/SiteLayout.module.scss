@@ -1,0 +1,174 @@
+@use '~/styles/var';
+
+.contentFrame {
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+
+    &.hasSubPage {
+        @media (min-width: 1024px) {
+            grid-column: 1 / 3;
+        }
+    }
+}
+
+.subPageFrame {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+
+    &.sheet {
+        padding-top: 0.875rem;
+    }
+
+    &.fullscreen {
+        padding-top: 0;
+        background:
+            linear-gradient(180deg, rgba(3, 20, 27, 0.98) 0%, rgba(4, 16, 22, 1) 100%);
+    }
+
+    @media (min-width: 1024px) {
+        padding: 0;
+    }
+}
+
+.subPageBackdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 12% 16%, rgba(193, 244, 251, 0.08), transparent 28%),
+        linear-gradient(180deg, rgba(2, 10, 14, 0.3) 0%, rgba(2, 10, 14, 0.62) 100%);
+    opacity: 0;
+    animation: sub-page-backdrop-in 220ms ease forwards;
+
+    @media (min-width: 1024px) {
+        display: none;
+    }
+
+    .fullscreen & {
+        display: none;
+    }
+}
+
+.subPageSurface {
+    position: relative;
+    display: flex;
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, rgba(8, 28, 36, 0.98) 0%, rgba(4, 18, 24, 0.98) 100%);
+    border-top: 1px solid var.$COLOR_BORDER_SUBTLE;
+    box-shadow:
+        0 -10px 32px rgba(0, 0, 0, 0.22),
+        0 0 0 1px rgba(193, 244, 251, 0.03);
+
+    &.stacked {
+        animation: sub-page-stacked-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    &.sheet {
+        border-top-left-radius: 1.5rem;
+        border-top-right-radius: 1.5rem;
+        animation: sub-page-sheet-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    &.fullscreen {
+        border-top: 0;
+        background: transparent;
+        box-shadow: none;
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    @media (min-width: 1024px) {
+        display: grid;
+        grid-template-columns: 256px minmax(0, 1fr);
+        margin: 0;
+        border-radius: 0;
+        border-top: 0;
+        background: transparent;
+        box-shadow: none;
+        animation: none;
+
+        &.fullscreen {
+            display: flex;
+            grid-template-columns: none;
+            width: 100%;
+        }
+    }
+}
+
+.subPageContent {
+    min-height: 0;
+    background:
+        linear-gradient(180deg, rgba(7, 25, 33, 0.52) 0%, rgba(4, 18, 24, 0) 100%);
+
+    &.fullscreen {
+        flex: 1;
+        display: flex;
+        width: 100%;
+        min-width: 0;
+        overflow: hidden;
+        background: transparent;
+    }
+
+    @media (min-width: 1024px) {
+        background: transparent;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .subPageBackdrop,
+    .subPageSurface {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes sub-page-backdrop-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes sub-page-stacked-in {
+    from {
+        opacity: 0.74;
+        transform: translate3d(2rem, 0, 0) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes sub-page-sheet-in {
+    from {
+        opacity: 0.78;
+        transform: translate3d(0, 1.75rem, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
