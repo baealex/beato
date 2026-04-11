@@ -2,18 +2,12 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import {
     AlbumDetail,
-    AlbumList,
     ArtistDetail,
-    ArtistList,
     Equalizer,
-    Favorite,
-    MusicList,
     NotFound,
     Player,
-    Playlist,
     PlaylistDetail,
-    Queue,
-    Setting
+    Queue
 } from './pages';
 import { SiteLayout } from './components/layout';
 
@@ -21,35 +15,12 @@ const router = createBrowserRouter([
     {
         element: <SiteLayout />,
         children: [
-            {
-                path: '/',
-                element: <MusicList />
-            },
-            {
-                path: '/favorite',
-                element: <Favorite />
-            },
-            {
-                path: '/album',
-                element: <AlbumList />
-            },
-            {
-                path: '/artist',
-                element: <ArtistList />
-            },
-            {
-                path: '/playlist',
-                element: <Playlist />
-            },
-            {
-                path: '/setting',
-                element: <Setting />
-            }
-        ]
-    },
-    {
-        element: <SiteLayout isSubPage />,
-        children: [
+            { path: '/' },
+            { path: '/favorite' },
+            { path: '/album' },
+            { path: '/artist' },
+            { path: '/playlist' },
+            { path: '/setting' },
             {
                 path: '/album/:id',
                 element: <AlbumDetail />
@@ -65,19 +36,11 @@ const router = createBrowserRouter([
             {
                 path: '/equalizer',
                 element: <Equalizer />
-            }
-        ]
-    },
-    {
-        children: [
+            },
             {
                 path: '/player',
                 element: <Player />
-            }
-        ]
-    },
-    {
-        children: [
+            },
             {
                 path: '/queue',
                 element: <Queue />
