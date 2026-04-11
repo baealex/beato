@@ -1,8 +1,9 @@
 import { useStore } from 'badland-react';
-import { useState } from 'react';
+import { useDeferredValue } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import {
+    FixedVirtualList,
     ItemSortPanelContent,
     Loading,
     Button,
@@ -17,24 +18,15 @@ import { panel } from '~/modules/panel';
 
 import { artistStore } from '~/store/artist';
 
-const RENDER_LIMIT = 150;
+const ARTIST_LIST_ROW_HEIGHT = 96;
 
 export default function ArtistList() {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [{ artists, loaded }] = useStore(artistStore);
-    const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT);
     const query = searchParams.get('q') || '';
-
-    const handleReadMore = () => {
-        const nextRenderLimit = renderLimit + RENDER_LIMIT;
-        const nextSearchParams = new URLSearchParams(searchParams);
-
-        setRenderLimit(nextRenderLimit);
-        nextSearchParams.set('l', nextRenderLimit.toString());
-        setSearchParams(nextSearchParams, { replace: true });
-    };
+    const deferredQuery = useDeferredValue(query.trim().toLowerCase());
 
     const handleSearchChange = (value: string) => {
         const nextSearchParams = new URLSearchParams(searchParams);
@@ -48,10 +40,10 @@ export default function ArtistList() {
         setSearchParams(nextSearchParams, { replace: true });
     };
 
-    const filteredArtists = artists
+    const filteredArtists = (artists
         ?.filter(artist =>
-            artist.name.toLowerCase().includes(query.toLowerCase())
-        );
+            artist.name.toLowerCase().includes(deferredQuery)
+        )) ?? [];
 
     return (
         <>
@@ -75,28 +67,23 @@ export default function ArtistList() {
             {!loaded && (
                 <Loading />
             )}
-            {loaded && filteredArtists.slice(0, renderLimit).map((artist) => (
-                <ArtistListItem
-                    key={artist.id}
-                    artistName={artist.name}
-                    artistCover={artist.latestAlbum?.cover || ''}
-                    musicCount={artist.musicCount}
-                    albumCount={artist.albumCount}
-                    onClick={() => navigate(`/artist/${artist.id}`)}
+            {loaded && (
+                <FixedVirtualList
+                    items={filteredArtists}
+                    rowHeight={ARTIST_LIST_ROW_HEIGHT}
+                    overscanPx={ARTIST_LIST_ROW_HEIGHT * 5}
+                    getKey={(artist) => artist.id}
+                    renderItem={(artist) => (
+                        <ArtistListItem
+                            key={artist.id}
+                            artistName={artist.name}
+                            artistCover={artist.latestAlbum?.cover || ''}
+                            musicCount={artist.musicCount}
+                            albumCount={artist.albumCount}
+                            onClick={() => navigate(`/artist/${artist.id}`)}
+                        />
+                    )}
                 />
-            ))}
-            {loaded && filteredArtists.length > renderLimit && (
-                <div
-                    style={{ padding: '0 16px 16px' }}>
-                    <Button
-                        style={{
-                            width: '100%',
-                            justifyContent: 'center'
-                        }}
-                        onClick={handleReadMore}>
-                        Load More
-                    </Button>
-                </div>
             )}
         </>
     );
