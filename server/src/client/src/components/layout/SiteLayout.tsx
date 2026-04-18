@@ -9,7 +9,6 @@ import SiteHeader from '../shared/SiteHeader';
 import SubPageHeader from '../shared/SubPageHeader';
 import MusicPlayer from '../music/MusicPlayer';
 import Loading from '../shared/Loading';
-import RootPagerShell from './RootPagerShell';
 import {
     isSubPagePath,
     resolveSubPagePresentation,
@@ -31,9 +30,6 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     const subPagePresentation = resolveSubPagePresentation(location.pathname);
     const hasSubPageHeader = shouldRenderSubPageHeader(location.pathname);
     const hideMiniPlayer = shouldHideMiniPlayer(location.pathname);
-    const rootPagerObscuredMode = subPagePresentation === 'fullscreen'
-        ? 'always'
-        : 'desktop';
 
     useEffect(() => {
         if (!isSubPage) {
@@ -81,10 +77,13 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
         <main>
             {!isSubPage && <SiteHeader />}
             <div className={cx('contentFrame', { hasSubPage: isSubPage })}>
-                <RootPagerShell
-                    obscured={isSubPage}
-                    obscuredMode={rootPagerObscuredMode}
-                />
+                {!isSubPage && (
+                    <div className={cx('pageContent', 'main-container')}>
+                        <Suspense fallback={<Loading />}>
+                            <Outlet />
+                        </Suspense>
+                    </div>
+                )}
                 {isSubPage && (
                     <div
                         className={cx('subPageFrame', subPagePresentation)}>
