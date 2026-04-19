@@ -6,15 +6,14 @@
     flex-direction: column;
     gap: var.$SPACING_SM;
     padding: 0.75rem;
-    background: var.$APP_SHELL_BACKGROUND;
-    border-bottom: 1px solid var.$APP_SHELL_BORDER;
-    backdrop-filter: blur(12px);
+    background: var.$COLOR_BACKGROUND;
+    border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
 
     @media (min-width: 1024px) {
         height: 100%;
         gap: var.$SPACING_MD;
         padding: var.$SPACING_LG 0.75rem;
-        border-right: 1px solid var.$APP_SHELL_BORDER;
+        border-right: 1px solid var.$COLOR_BORDER_SUBTLE;
         border-bottom: none;
     }
 }
