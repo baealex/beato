@@ -32,10 +32,6 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     const hideMiniPlayer = shouldHideMiniPlayer(location.pathname);
 
     useEffect(() => {
-        if (!isSubPage) {
-            return;
-        }
-
         if (containerRef.current && shouldBeScroll.current) {
             containerRef.current.scrollTop = parseInt(searchParams.get('py') || '0');
             shouldBeScroll.current = false;
@@ -46,7 +42,7 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     }, [containerRef, isSubPage, shouldBeScroll, location.pathname, searchParams]);
 
     useEffect(() => {
-        if (!isSubPage || !containerRef.current) {
+        if (!containerRef.current) {
             return;
         }
 
@@ -78,7 +74,7 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
             {!isSubPage && <SiteHeader />}
             <div className={cx('contentFrame', { hasSubPage: isSubPage })}>
                 {!isSubPage && (
-                    <div className={cx('pageContent', 'main-container')}>
+                    <div ref={containerRef} className={cx('pageContent', 'main-container')}>
                         <Suspense fallback={<Loading />}>
                             <Outlet />
                         </Suspense>
