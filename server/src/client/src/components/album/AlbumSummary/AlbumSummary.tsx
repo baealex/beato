@@ -25,7 +25,7 @@ const AlbumSummary = ({
                     <Image className={cx('cover-img')} src={getOriginalImage(cover)} alt={name} icon={<Disc />} />
                 </div>
             </div>
-            <Text as="h1" size="2xl" weight="bold" className={cx('title')}>
+            <Text as="h1" size="xl" weight="bold" className={cx('title')}>
                 {name}
             </Text>
             <div className={cx('meta')}>

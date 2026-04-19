@@ -6,10 +6,7 @@
 
     .background {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 60vh;
+        inset: 0;
         z-index: 0;
         overflow: hidden;
         pointer-events: none;
@@ -34,9 +31,12 @@
 
     .header {
         position: relative;
+    }
+
+    .headerContent {
+        position: relative;
         z-index: 1;
-        padding: var.$SPACING_XL var.$SPACING_LG;
-        padding-top: var.$SPACING_2XL;
+        padding: calc(var.$SPACING_2XL + var.$SPACING_LG) var.$SPACING_LG;
     }
 
     .primaryAction {
@@ -92,7 +92,5 @@
     .content {
         position: relative;
         z-index: 1;
-        padding: var.$SPACING_MD;
-        padding-top: var.$SPACING_MD;
     }
 }

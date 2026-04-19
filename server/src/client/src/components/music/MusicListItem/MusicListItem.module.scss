@@ -6,7 +6,7 @@ $SIZE_ICON: 40px;
 .MusicListItem {
     color: var.$COLOR_TEXT;
     cursor: pointer;
-    padding: var.$SPACING_MD;
+    padding: var.$SPACING_MD var.$SPACING_LG;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -35,6 +35,12 @@ $SIZE_ICON: 40px;
         border-radius: var.$RADIUS_MD;
         object-fit: cover;
         flex-shrink: 0;
+    }
+
+    .track-number-col {
+        width: $SIZE_ALBUM_ART;
+        flex-shrink: 0;
+        text-align: center;
     }
 
     .row {
@@ -66,13 +72,12 @@ $SIZE_ICON: 40px;
         }
 
         .artist {
-            font-size: var.$TEXT_SIZE_SM;
-            color: var.$COLOR_TEXT_TERTIARY;
+            min-width: 0;
         }
 
         .title {
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: var.$TEXT_SIZE_SM;
+            font-weight: var.$FONT_WEIGHT_MEDIUM;
             color: var.$COLOR_TEXT;
             display: flex;
             align-items: center;
@@ -80,14 +85,14 @@ $SIZE_ICON: 40px;
 
             .track-number {
                 color: var.$COLOR_TEXT_MUTED;
-                font-weight: 400;
+                font-weight: var.$FONT_WEIGHT_NORMAL;
                 min-width: 1.5rem;
             }
 
             .codec {
                 flex-shrink: 0;
                 font-size: 0.625rem;
-                font-weight: 600;
+                font-weight: var.$FONT_WEIGHT_SEMIBOLD;
                 color: var.$COLOR_POINT;
                 text-transform: uppercase;
                 letter-spacing: 0.04em;

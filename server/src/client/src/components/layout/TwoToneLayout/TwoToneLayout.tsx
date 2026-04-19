@@ -21,20 +21,23 @@ const TwoToneLayout = ({
 }: TwoToneLayoutProps) => {
     return (
         <div className={cx('TwoToneLayout', { hasPrimaryAction: !!primaryAction })}>
-            {backgroundImage && (
-                <div className={cx('background')}>
-                    <Image src={backgroundImage} alt="" aria-hidden="true" loading="eager" />
-                    <div className={cx('overlay')} />
-                </div>
-            )}
             <div className={cx('header')}>
-                {header}
-                {primaryAction && (
-                    <div className={cx('primaryAction')}>
-                        {primaryAction}
+                {backgroundImage && (
+                    <div className={cx('background')}>
+                        <Image src={backgroundImage} alt="" aria-hidden="true" loading="eager" />
+                        <div className={cx('overlay')} />
                     </div>
                 )}
+                <div className={cx('headerContent')}>
+                    {header}
+                    {primaryAction && (
+                        <div className={cx('primaryAction')}>
+                            {primaryAction}
+                        </div>
+                    )}
+                </div>
             </div>
+
             <div className={cx('content')}>
                 {children}
             </div>

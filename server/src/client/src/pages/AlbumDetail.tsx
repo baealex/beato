@@ -56,6 +56,7 @@ export default function AlbumDetail() {
                         trackNumber={music.trackNumber}
                         musicName={music.name}
                         musicCodec={music.codec}
+                        hideAlbumArt
                         isLiked={music.isLiked}
                         isHated={music.isHated}
                         onClick={() => queueStore.add(music.id)}

@@ -2,7 +2,7 @@ import styles from './MusicListItem.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
-import { IconButton, Image } from '~/components/shared';
+import { IconButton, Image, Text } from '~/components/shared';
 import { Disc, Heart, VerticalDots } from '~/icon';
 
 interface MusicListItemProps {
@@ -15,6 +15,7 @@ interface MusicListItemProps {
     musicCodec?: string;
     isLiked?: boolean;
     isHated?: boolean;
+    hideAlbumArt?: boolean;
     onClick?: () => void;
     onLongPress?: () => void;
 }
@@ -28,6 +29,7 @@ const MusicListItem = ({
     musicCodec,
     isLiked,
     isHated,
+    hideAlbumArt,
     onClick,
     onLongPress
 }: MusicListItemProps) => {
@@ -39,27 +41,33 @@ const MusicListItem = ({
                 e.preventDefault();
                 onLongPress?.();
             }}>
-            <Image
-                className={cx('album-art')}
-                src={albumCover}
-                alt={albumName}
-                loading="eager"
-                icon={<Disc />}
-            />
+            {hideAlbumArt ? (
+                <Text as="span" size="sm" variant="muted" className={cx('track-number-col')}>
+                    {trackNumber ?? '·'}
+                </Text>
+            ) : (
+                <Image
+                    className={cx('album-art')}
+                    src={albumCover}
+                    alt={albumName}
+                    loading="eager"
+                    icon={<Disc />}
+                />
+            )}
             <div className={cx('row')}>
                 <div className={cx('info', { hasMenu: typeof onLongPress === 'function' })}>
                     <div className={cx('title')}>
-                        {!!trackNumber && (
+                        {!!trackNumber && !hideAlbumArt && (
                             <span className={cx('track-number')}>{trackNumber}.</span>
                         )}
-                        <span>{musicName}</span>
+                        <Text as="span" size="sm" truncate>{musicName}</Text>
                         {musicCodec && musicCodec.toLowerCase() === 'flac' && (
                             <span className={cx('codec')}>{musicCodec}</span>
                         )}
                     </div>
-                    <div className={cx('artist')}>
+                    <Text as="div" size="sm" variant="tertiary" truncate className={cx('artist')}>
                         {artistName}
-                    </div>
+                    </Text>
                 </div>
                 {onLongPress && (
                     <IconButton
