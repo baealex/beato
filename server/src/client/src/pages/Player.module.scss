@@ -68,9 +68,11 @@
             height: 1rem;
         }
 
-        &:hover {
-            color: var.$COLOR_TEXT;
-            background: rgba(238, 249, 252, 0.08);
+        @include var.hover-capable {
+            &:hover {
+                color: var.$COLOR_TEXT;
+                background: rgba(238, 249, 252, 0.08);
+            }
         }
     }
 
@@ -217,9 +219,11 @@
             height: 1.25rem;
         }
 
-        &:hover {
-            color: var.$COLOR_TEXT;
-            background: rgba(238, 249, 252, 0.08);
+        @include var.hover-capable {
+            &:hover {
+                color: var.$COLOR_TEXT;
+                background: rgba(238, 249, 252, 0.08);
+            }
         }
 
         &.active {
@@ -241,9 +245,11 @@
             height: 1.75rem;
         }
 
-        &:hover {
-            color: #03212b;
-            background: var(--b-gradient-primary);
+        @include var.hover-capable {
+            &:hover {
+                color: #03212b;
+                background: var(--b-gradient-primary);
+            }
         }
     }
 
@@ -276,10 +282,12 @@
             height: 0.95rem;
         }
 
-        &:hover {
-            color: var.$COLOR_TEXT;
-            background: rgba(238, 249, 252, 0.08);
-            border-color: rgba(193, 244, 251, 0.14);
+        @include var.hover-capable {
+            &:hover {
+                color: var.$COLOR_TEXT;
+                background: rgba(238, 249, 252, 0.08);
+                border-color: rgba(193, 244, 251, 0.14);
+            }
         }
     }
 
@@ -342,10 +350,12 @@
             height: 1rem;
         }
 
-        &:hover {
-            color: var.$COLOR_TEXT;
-            background: rgba(10, 36, 45, 0.68);
-            border-color: rgba(193, 244, 251, 0.16);
+        @include var.hover-capable {
+            &:hover {
+                color: var.$COLOR_TEXT;
+                background: rgba(10, 36, 45, 0.68);
+                border-color: rgba(193, 244, 251, 0.16);
+            }
         }
 
         &.empty-button-primary {

@@ -66,9 +66,11 @@
         height: 0.875rem;
     }
 
-    &:hover {
-        color: var.$COLOR_TEXT;
-        background: rgba(255, 255, 255, 0.06);
+    @include var.hover-capable {
+        &:hover {
+            color: var.$COLOR_TEXT;
+            background: rgba(255, 255, 255, 0.06);
+        }
     }
 }
 

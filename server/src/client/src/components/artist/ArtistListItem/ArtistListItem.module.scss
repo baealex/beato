@@ -11,8 +11,10 @@
     transition: var.$TRANSITION_FAST;
     transition-property: background-color;
 
-    &:hover {
-        background-color: var.$COLOR_HOVER;
+    @include var.hover-capable {
+        &:hover {
+            background-color: var.$COLOR_HOVER;
+        }
     }
 
     &:active {

@@ -68,11 +68,13 @@
                 height: 28px;
             }
 
-            &:hover {
-                filter: brightness(1.1);
-                box-shadow:
-                    0 12px 32px rgba(29, 153, 178, 0.32),
-                    0 6px 16px rgba(0, 0, 0, 0.5);
+            @include var.hover-capable {
+                &:hover {
+                    filter: brightness(1.1);
+                    box-shadow:
+                        0 12px 32px rgba(29, 153, 178, 0.32),
+                        0 6px 16px rgba(0, 0, 0, 0.5);
+                }
             }
 
             &:active {

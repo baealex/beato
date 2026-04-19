@@ -1,3 +1,5 @@
+@use '~/styles/var';
+
 .presetContainer {
   width: 100%;
   margin-bottom: 2rem;
@@ -23,8 +25,10 @@
   align-items: center;
   gap: 8px;
   
-  &:hover {
-    background-color: var(--b-color-hover, rgba(var(--b-color-hover-rgb, 0, 0, 0), 0.05));
+  @include var.hover-capable {
+    &:hover {
+      background-color: var(--b-color-hover, rgba(var(--b-color-hover-rgb, 0, 0, 0), 0.05));
+    }
   }
   
   &.active {
@@ -46,13 +50,15 @@
     height: 16px;
   }
 
-  &:hover .deleteIcon {
-    opacity: 0.7;
-  }
+  @include var.hover-capable {
+    &:hover .deleteIcon {
+      opacity: 0.7;
+    }
 
-  &:hover .deleteIcon:hover {
-    opacity: 1;
-    color: #f44336;
+    &:hover .deleteIcon:hover {
+      opacity: 1;
+      color: #f44336;
+    }
   }
 }
 
@@ -66,8 +72,10 @@
   cursor: pointer;
   transition: all 0.2s;
   
-  &:hover {
-    opacity: 0.9;
+  @include var.hover-capable {
+    &:hover {
+      opacity: 0.9;
+    }
   }
 }
 

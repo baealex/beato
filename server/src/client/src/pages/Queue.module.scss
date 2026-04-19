@@ -54,9 +54,11 @@
         height: 1rem;
     }
 
-    &:hover {
-        color: var.$COLOR_TEXT;
-        background: rgba(238, 249, 252, 0.08);
+    @include var.hover-capable {
+        &:hover {
+            color: var.$COLOR_TEXT;
+            background: rgba(238, 249, 252, 0.08);
+        }
     }
 }
 
@@ -93,10 +95,12 @@
     transition: var.$TRANSITION_FAST;
     transition-property: color, background-color, border-color;
 
-    &:hover:not(:disabled) {
-        color: var.$COLOR_TEXT;
-        background: rgba(238, 249, 252, 0.08);
-        border-color: rgba(193, 244, 251, 0.14);
+    @include var.hover-capable {
+        &:hover:not(:disabled) {
+            color: var.$COLOR_TEXT;
+            background: rgba(238, 249, 252, 0.08);
+            border-color: rgba(193, 244, 251, 0.14);
+        }
     }
 
     &:disabled {
@@ -284,10 +288,12 @@
         height: 1rem;
     }
 
-    &:hover {
-        color: var.$COLOR_TEXT;
-        background: rgba(10, 36, 45, 0.96);
-        border-color: rgba(193, 244, 251, 0.16);
+    @include var.hover-capable {
+        &:hover {
+            color: var.$COLOR_TEXT;
+            background: rgba(10, 36, 45, 0.96);
+            border-color: rgba(193, 244, 251, 0.16);
+        }
     }
 }
 
@@ -297,10 +303,12 @@
     background: linear-gradient(135deg, rgba(132, 225, 239, 0.98), rgba(95, 206, 224, 0.96));
     border-color: transparent;
 
-    &:hover {
-        color: #03212b;
-        background: linear-gradient(135deg, rgba(132, 225, 239, 1), rgba(95, 206, 224, 0.98));
-        border-color: transparent;
+    @include var.hover-capable {
+        &:hover {
+            color: #03212b;
+            background: linear-gradient(135deg, rgba(132, 225, 239, 1), rgba(95, 206, 224, 0.98));
+            border-color: transparent;
+        }
     }
 }
 

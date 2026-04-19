@@ -1,3 +1,5 @@
+@use '~/styles/var';
+
 .container {
   width: 1200px;
   max-width: 100%;
@@ -79,8 +81,10 @@
   opacity: 0.9;
   transition: opacity 0.2s;
 
-  &:hover {
-    opacity: 1;
+  @include var.hover-capable {
+    &:hover {
+      opacity: 1;
+    }
   }
 
   &::-webkit-slider-thumb {
@@ -95,8 +99,10 @@
     transition: background 0.3s, transform 0.2s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
-    &:hover {
-      background: var(--b-color-point);
+    @include var.hover-capable {
+      &:hover {
+        background: var(--b-color-point);
+      }
     }
   }
 
@@ -110,8 +116,10 @@
     transition: background 0.3s, transform 0.2s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
-    &:hover {
-      background: var(--b-color-point);
+    @include var.hover-capable {
+      &:hover {
+        background: var(--b-color-point);
+      }
     }
   }
 
@@ -125,8 +133,10 @@
     transition: background 0.3s, transform 0.2s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
-    &:hover {
-      background: var(--b-color-point);
+    @include var.hover-capable {
+      &:hover {
+        background: var(--b-color-point);
+      }
     }
   }
 }
@@ -148,8 +158,10 @@
   cursor: pointer;
   transition: all 0.2s;
   
-  &:hover {
-    background-color: var(--b-color-hover, rgba(var(--b-color-hover-rgb, 0, 0, 0), 0.05));
+  @include var.hover-capable {
+    &:hover {
+      background-color: var(--b-color-hover, rgba(var(--b-color-hover-rgb, 0, 0, 0), 0.05));
+    }
   }
   
   &.active {

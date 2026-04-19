@@ -20,8 +20,10 @@
     transition: height var.$TRANSITION_FAST;
 
     @media (min-width: 1024px) {
-        &:hover {
-            height: 5px;
+        @include var.hover-capable {
+            &:hover {
+                height: 5px;
+            }
         }
     }
 
@@ -142,8 +144,10 @@
         height: 18px;
     }
 
-    &:hover {
-        background-color: var.$COLOR_HOVER;
+    @include var.hover-capable {
+        &:hover {
+            background-color: var.$COLOR_HOVER;
+        }
     }
 
     &:active {
@@ -161,9 +165,11 @@
             height: 20px;
         }
 
-        &:hover {
-            filter: brightness(1.1);
-            background: var(--b-gradient-primary);
+        @include var.hover-capable {
+            &:hover {
+                filter: brightness(1.1);
+                background: var(--b-gradient-primary);
+            }
         }
     }
 

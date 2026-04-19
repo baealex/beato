@@ -19,9 +19,11 @@
     transition: var.$TRANSITION_FAST;
     transition-property: border-color, background-color;
 
-    &:hover {
-        border-color: var.$COLOR_BORDER;
-        background: rgba(12, 44, 55, 0.8);
+    @include var.hover-capable {
+        &:hover {
+            border-color: var.$COLOR_BORDER;
+            background: rgba(12, 44, 55, 0.8);
+        }
     }
 
     &:focus-visible {

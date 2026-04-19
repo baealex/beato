@@ -12,8 +12,10 @@ $SIZE_ICON: 40px;
     width: 100%;
 
     @media (min-width: 1024px) {
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+        @include var.hover-capable {
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
         }
     }
 

@@ -34,10 +34,12 @@
             0 0 0 3px rgba(114, 215, 230, 0.14);
     }
 
-    &:hover {
-        border-color: var.$COLOR_BORDER;
-        background:
-            linear-gradient(180deg, rgba(12, 44, 55, 0.9) 0%, rgba(9, 33, 42, 0.96) 100%);
+    @include var.hover-capable {
+        &:hover {
+            border-color: var.$COLOR_BORDER;
+            background:
+                linear-gradient(180deg, rgba(12, 44, 55, 0.9) 0%, rgba(9, 33, 42, 0.96) 100%);
+        }
     }
 
     &.size-sm {
@@ -60,10 +62,12 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 
-    &.variant-primary:hover {
-        color: #03212b;
-        border-color: transparent;
-        background: var(--b-gradient-primary);
+    @include var.hover-capable {
+        &.variant-primary:hover {
+            color: #03212b;
+            border-color: transparent;
+            background: var(--b-gradient-primary);
+        }
     }
 
     &.variant-secondary {

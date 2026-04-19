@@ -16,8 +16,10 @@ $SIZE_ICON: 40px;
     transition: var.$TRANSITION_FAST;
     transition-property: background-color;
 
-    &:hover {
-        background-color: var.$COLOR_HOVER;
+    @include var.hover-capable {
+        &:hover {
+            background-color: var.$COLOR_HOVER;
+        }
     }
 
     &:active {
@@ -114,9 +116,11 @@ $SIZE_ICON: 40px;
                 height: 18px;
             }
 
-            &:hover {
-                background-color: var.$COLOR_HOVER;
-                color: var.$COLOR_TEXT;
+            @include var.hover-capable {
+                &:hover {
+                    background-color: var.$COLOR_HOVER;
+                    color: var.$COLOR_TEXT;
+                }
             }
 
             &.isLiked {

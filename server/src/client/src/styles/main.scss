@@ -162,9 +162,11 @@ button {
     transition: var.$TRANSITION_FAST;
     transition-property: background-color, border-color, transform;
 
-    &:hover {
-        background-color: var.$COLOR_HOVER;
-        border-color: var.$COLOR_BORDER_SUBTLE;
+    @include var.hover-capable {
+        &:hover {
+            background-color: var.$COLOR_HOVER;
+            border-color: var.$COLOR_BORDER_SUBTLE;
+        }
     }
 
     &:active {

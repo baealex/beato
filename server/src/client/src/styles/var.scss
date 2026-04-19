@@ -93,3 +93,9 @@ $CONTROL_HEIGHT_LG: 48px;
 /* LEGACY - deprecated, use new variables */
 $OPACITY_SUB_TEXT: 0.72;
 $OPACITY_TERTIARY_TEXT: 0.48;
+
+@mixin hover-capable {
+    @media (hover: hover) and (pointer: fine) {
+        @content;
+    }
+}

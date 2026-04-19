@@ -11,8 +11,10 @@
     transition: var.$TRANSITION_FAST;
     transition-property: box-shadow;
 
-    &:hover {
-        box-shadow: var.$SHADOW_HOVER;
+    @include var.hover-capable {
+        &:hover {
+            box-shadow: var.$SHADOW_HOVER;
+        }
     }
 
     &:active {

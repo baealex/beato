@@ -107,9 +107,11 @@
         flex-shrink: 0;
     }
 
-    &:hover {
-        color: var.$COLOR_TEXT;
-        background-color: rgba(239, 248, 251, 0.06);
+    @include var.hover-capable {
+        &:hover {
+            color: var.$COLOR_TEXT;
+            background-color: rgba(239, 248, 251, 0.06);
+        }
     }
 
     &.active {

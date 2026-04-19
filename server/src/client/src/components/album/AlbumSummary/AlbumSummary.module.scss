@@ -50,8 +50,10 @@
         text-decoration: none;
         transition: opacity var.$TRANSITION_FAST;
 
-        &:hover {
-            opacity: 0.8;
+        @include var.hover-capable {
+            &:hover {
+                opacity: 0.8;
+            }
         }
     }
 }
