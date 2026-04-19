@@ -25,7 +25,7 @@
     @include var.hover-capable {
         &:hover {
             color: var.$COLOR_TEXT;
-            background: rgba(238, 249, 252, 0.08);
+            background: var.$COLOR_HOVER;
         }
     }
 

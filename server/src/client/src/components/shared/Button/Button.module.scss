@@ -2,7 +2,7 @@
 
 .Button {
     min-height: var.$CONTROL_HEIGHT_MD;
-    padding: 0.625rem 0.875rem;
+    padding: 0.75rem 1rem;
     border: 1px solid var.$COLOR_BORDER_SUBTLE;
     border-radius: var.$RADIUS_FULL;
     color: var.$COLOR_TEXT;
@@ -15,7 +15,7 @@
     justify-content: center;
     gap: 0.5rem;
     text-decoration: none;
-    background: rgba(10, 36, 45, 0.62);
+    background: var.$COLOR_SECONDARY_BUTTON;
     transition: var.$TRANSITION_FAST;
     transition-property: background-color, border-color, color, box-shadow;
 
@@ -43,10 +43,6 @@
         padding: 0.5rem 0.75rem;
     }
 
-    &.size-md {
-        min-height: var.$CONTROL_HEIGHT_MD;
-    }
-
     &.fullWidth {
         width: 100%;
     }
@@ -64,10 +60,6 @@
             border-color: transparent;
             background: var(--b-gradient-primary);
         }
-    }
-
-    &.variant-secondary {
-        background: rgba(10, 36, 45, 0.62);
     }
 
     &.variant-danger {
