@@ -11,7 +11,7 @@
     gap: 0.5rem;
     border: 1px solid var.$COLOR_BORDER_SUBTLE;
     border-radius: var.$RADIUS_FULL;
-    background: rgba(10, 36, 45, 0.7);
+    background: var.$COLOR_SURFACE_INPUT;
     transition: var.$TRANSITION_FAST;
     transition-property: border-color, background-color, box-shadow;
 

@@ -1,4 +1,6 @@
+@use '~/styles/var';
+
 .buttonContainer {
-  display: flex;
-  gap: 1rem;
+    display: flex;
+    gap: var.$SPACING_SM;
 }

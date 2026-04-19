@@ -48,30 +48,10 @@ const reportSections = (report: SyncReport | null) => {
     }
 
     return [
-        {
-            key: 'created',
-            title: 'Created',
-            count: report.createdCount,
-            items: report.created
-        },
-        {
-            key: 'moved',
-            title: 'Moved',
-            count: report.movedCount,
-            items: report.moved
-        },
-        {
-            key: 'duplicate',
-            title: 'Duplicate',
-            count: report.duplicateCount,
-            items: report.duplicate
-        },
-        {
-            key: 'missing',
-            title: 'Missing',
-            count: report.missingCount,
-            items: report.missing
-        }
+        { key: 'created', title: 'Created', count: report.createdCount, items: report.created },
+        { key: 'moved', title: 'Moved', count: report.movedCount, items: report.moved },
+        { key: 'duplicate', title: 'Duplicate', count: report.duplicateCount, items: report.duplicate },
+        { key: 'missing', title: 'Missing', count: report.missingCount, items: report.missing }
     ];
 };
 
@@ -131,32 +111,31 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                                     className={`${styles.progressIndicator} ${isSyncing ? styles.animating : ''}`}
                                 />
                             </div>
-                            <p className={styles.progressMessage}>{progressMessage}</p>
+                            <Text as="p" size="sm" variant="secondary" className={styles.progressMessage}>
+                                {progressMessage}
+                            </Text>
                         </div>
                     )}
 
                     <div className={styles.buttonContainer}>
-                        <Button
-                            disabled={isSyncing}
-                            onClick={() => handleSync(false)}>
+                        <Button disabled={isSyncing} onClick={() => handleSync(false)}>
                             Sync
                         </Button>
-                        <Button
-                            disabled={isSyncing}
-                            onClick={() => handleSync(true)}>
+                        <Button disabled={isSyncing} onClick={() => handleSync(true)}>
                             Force Sync
                         </Button>
                     </div>
                 </div>
             </SettingItem>
+
             {latestSyncReport && (
                 <div className={styles.reportCard}>
                     <div className={styles.reportHeader}>
                         <div>
-                            <Text as="h5" size="md" weight="semibold">
+                            <Text as="h5" size="sm" weight="semibold">
                                 Latest Sync Report
                             </Text>
-                            <Text as="p" variant="tertiary" size="sm">
+                            <Text as="p" variant="muted" size="xs">
                                 Started {formatTimestamp(latestSyncReport.startedAt)}
                             </Text>
                         </div>
@@ -166,38 +145,27 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                     </div>
 
                     <div className={styles.summaryGrid}>
-                        <div className={styles.summaryItem}>
-                            <span className={styles.summaryLabel}>Scanned</span>
-                            <strong>{latestSyncReport.scannedFiles}</strong>
-                        </div>
-                        <div className={styles.summaryItem}>
-                            <span className={styles.summaryLabel}>Indexed</span>
-                            <strong>{latestSyncReport.indexedFiles}</strong>
-                        </div>
-                        <div className={styles.summaryItem}>
-                            <span className={styles.summaryLabel}>Created</span>
-                            <strong>{latestSyncReport.createdCount}</strong>
-                        </div>
-                        <div className={styles.summaryItem}>
-                            <span className={styles.summaryLabel}>Moved</span>
-                            <strong>{latestSyncReport.movedCount}</strong>
-                        </div>
-                        <div className={styles.summaryItem}>
-                            <span className={styles.summaryLabel}>Duplicate</span>
-                            <strong>{latestSyncReport.duplicateCount}</strong>
-                        </div>
-                        <div className={styles.summaryItem}>
-                            <span className={styles.summaryLabel}>Missing</span>
-                            <strong>{latestSyncReport.missingCount}</strong>
-                        </div>
+                        {([
+                            { label: 'Scanned', value: latestSyncReport.scannedFiles },
+                            { label: 'Indexed', value: latestSyncReport.indexedFiles },
+                            { label: 'Created', value: latestSyncReport.createdCount },
+                            { label: 'Moved', value: latestSyncReport.movedCount },
+                            { label: 'Duplicate', value: latestSyncReport.duplicateCount },
+                            { label: 'Missing', value: latestSyncReport.missingCount },
+                        ] as const).map(({ label, value }) => (
+                            <div key={label} className={styles.summaryItem}>
+                                <Text as="span" size="xs" variant="muted">{label}</Text>
+                                <Text as="strong" size="sm" weight="semibold">{value}</Text>
+                            </div>
+                        ))}
                     </div>
 
                     <div className={styles.reportMeta}>
-                        <Text as="p" variant="tertiary" size="sm">
+                        <Text as="p" variant="muted" size="xs">
                             Completed {formatTimestamp(latestSyncReport.completedAt)}
                         </Text>
-                        <Text as="p" variant="tertiary" size="sm">
-                            Mode: {latestSyncReport.force ? 'Force sync' : 'Normal sync'}
+                        <Text as="p" variant="muted" size="xs">
+                            {latestSyncReport.force ? 'Force sync' : 'Normal sync'}
                         </Text>
                     </div>
 
@@ -205,11 +173,13 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                         {sections.map((section) => (
                             <details key={section.key} className={styles.detailGroup}>
                                 <summary>
-                                    <span>{section.title}</span>
-                                    <span>{section.count}</span>
+                                    <Text as="span" size="sm" weight="semibold">{section.title}</Text>
+                                    <Text as="span" size="sm" variant="muted">{section.count}</Text>
                                 </summary>
                                 {section.items.length === 0 ? (
-                                    <p className={styles.emptyDetail}>No items in this group.</p>
+                                    <Text as="p" size="sm" variant="muted" className={styles.emptyDetail}>
+                                        No items in this group.
+                                    </Text>
                                 ) : (
                                     <ul className={styles.detailList}>
                                         {section.items.map((item) => (
@@ -217,7 +187,7 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                                                 <Text as="p" size="sm" weight="semibold">
                                                     {item.musicName}
                                                 </Text>
-                                                <Text as="p" variant="tertiary" size="sm">
+                                                <Text as="p" size="xs" variant="muted">
                                                     {buildDetailLabel(item)}
                                                 </Text>
                                             </li>

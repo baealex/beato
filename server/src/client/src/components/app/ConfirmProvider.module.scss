@@ -17,7 +17,7 @@
     z-index: 121;
     border-radius: var.$RADIUS_LG;
     border: 1px solid var.$COLOR_BORDER_SUBTLE;
-    background: rgba(8, 28, 36, 0.97);
+    background: var.$COLOR_SURFACE_MODAL;
     box-shadow: 0 12px 28px rgba(2, 8, 11, 0.22);
     padding: 0.875rem;
     color: var.$COLOR_TEXT;

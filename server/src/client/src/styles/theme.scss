@@ -1,35 +1,35 @@
 :root {
-    --b-color-background: #03141b;
-    --b-color-background-layer-1: rgba(8, 28, 36, 0.78);
-    --b-color-background-layer-2: rgba(10, 36, 45, 0.88);
-    --b-color-panel-background: rgba(5, 20, 28, 0.78);
+    --b-color-background: #09090b;
+    --b-color-background-layer-1: rgba(18, 18, 22, 0.78);
+    --b-color-background-layer-2: rgba(24, 24, 28, 0.88);
+    --b-color-panel-background: rgba(12, 12, 16, 0.78);
 
-    --b-color-text: rgba(238, 249, 252, 0.88);
-    --b-color-text-secondary: rgba(238, 249, 252, 0.74);
-    --b-color-text-tertiary: rgba(238, 249, 252, 0.56);
-    --b-color-text-muted: rgba(238, 249, 252, 0.36);
+    --b-color-text: rgba(255, 255, 255, 0.9);
+    --b-color-text-secondary: rgba(255, 255, 255, 0.7);
+    --b-color-text-tertiary: rgba(255, 255, 255, 0.55);
+    --b-color-text-muted: rgba(255, 255, 255, 0.32);
 
-    --b-color-point: #72d7e6;
-    --b-color-point-light: #c1f4fb;
-    --b-color-point-dark: #1d99b2;
-    --b-gradient-primary: linear-gradient(135deg, #c1f4fb 0%, #72d7e6 34%, #2f9dbe 100%);
-    --b-color-point-glow: rgba(114, 215, 230, 0.24);
+    --b-color-point: #8c50ff;
+    --b-color-point-light: #c8a0ff;
+    --b-color-point-dark: #6030c0;
+    --b-gradient-primary: linear-gradient(135deg, #dcc0ff 0%, #c8a0ff 34%, #8c50ff 100%);
+    --b-color-point-glow: rgba(140, 80, 255, 0.4);
 
-    --b-color-primary-button: #72d7e6;
-    --b-color-secondary-button: rgba(8, 30, 39, 0.82);
+    --b-color-primary-button: #8c50ff;
+    --b-color-secondary-button: rgba(18, 18, 22, 0.82);
 
-    --b-color-hover: rgba(193, 244, 251, 0.08);
-    --b-color-active: rgba(114, 215, 230, 0.14);
-    --b-color-focus: rgba(114, 215, 230, 0.3);
+    --b-color-hover: rgba(140, 80, 255, 0.08);
+    --b-color-active: rgba(140, 80, 255, 0.14);
+    --b-color-focus: rgba(140, 80, 255, 0.3);
 
-    --b-color-border: rgba(193, 244, 251, 0.18);
-    --b-color-border-subtle: rgba(193, 244, 251, 0.1);
-    --b-color-cd-border: rgba(238, 249, 252, 0.22);
+    --b-color-border: rgba(160, 100, 255, 0.18);
+    --b-color-border-subtle: rgba(160, 100, 255, 0.1);
+    --b-color-cd-border: rgba(200, 160, 255, 0.22);
 
-    --b-card-shadow-main: 0 22px 50px rgba(2, 8, 11, 0.32);
-    --b-card-shadow-hover: 0 28px 64px rgba(2, 8, 11, 0.4);
-    --b-card-shadow-glow: 0 0 60px rgba(114, 215, 230, 0.16);
-    --b-card-shadow-sub: 0 14px 28px rgba(2, 8, 11, 0.18);
+    --b-card-shadow-main: 0 22px 50px rgba(0, 0, 0, 0.5);
+    --b-card-shadow-hover: 0 28px 64px rgba(0, 0, 0, 0.6);
+    --b-card-shadow-glow: 0 0 60px rgba(140, 80, 255, 0.16);
+    --b-card-shadow-sub: 0 14px 28px rgba(0, 0, 0, 0.4);
 
     --b-backdrop-filter-panel-background: blur(18px);
 
@@ -52,7 +52,17 @@
     --b-radius-2xl: 28px;
     --b-radius-full: 9999px;
 
-    --b-app-shell-background: rgba(6, 24, 32, 0.8);
-    --b-app-shell-border: rgba(193, 244, 251, 0.12);
-    --b-app-shell-shadow: 0 24px 48px rgba(2, 8, 11, 0.26);
+    --b-app-shell-background: rgba(12, 12, 16, 0.8);
+    --b-app-shell-border: rgba(140, 80, 255, 0.15);
+    --b-app-shell-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+
+    /* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+    --b-color-surface-modal:       rgba(18, 18, 22, 0.97);
+    --b-color-surface-dropdown:    rgba(18, 18, 22, 0.98);
+    --b-color-surface-input:       rgba(24, 24, 28, 0.7);
+    --b-color-surface-input-hover: rgba(28, 28, 34, 0.8);
+    --b-color-surface-input-focus: rgba(26, 26, 32, 0.9);
+    --b-color-surface-item:        rgba(22, 22, 26, 0.5);
+    --b-color-focus-ring:          rgba(140, 80, 255, 0.14);
+    --b-gradient-layer:            linear-gradient(180deg, rgba(18, 18, 22, 0.98) 0%, rgba(10, 10, 14, 0.98) 100%);
 }

@@ -353,8 +353,8 @@
         @include var.hover-capable {
             &:hover {
                 color: var.$COLOR_TEXT;
-                background: rgba(10, 36, 45, 0.68);
-                border-color: rgba(193, 244, 251, 0.16);
+                background: var.$COLOR_SURFACE_INPUT;
+                border-color: rgba(160, 100, 255, 0.16);
             }
         }
 

@@ -17,7 +17,7 @@
   overflow: hidden;
   border: 1px solid var.$COLOR_BORDER_SUBTLE;
   border-radius: var.$RADIUS_FULL;
-  background: rgba(10, 36, 45, 0.46);
+  background: var.$COLOR_SURFACE_ITEM;
 }
 
 .presetButton,

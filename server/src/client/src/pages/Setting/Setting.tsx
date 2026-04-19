@@ -39,11 +39,8 @@ export default function Setting() {
     return (
         <div className={styles.container}>
             <div className={styles.settingsHeader}>
-                <Text as="h1" size="2xl" weight="bold">
+                <Text as="h1" size="xl" weight="bold">
                     {appCopy.settings.title}
-                </Text>
-                <Text as="p" variant="secondary">
-                    {appCopy.settings.description}
                 </Text>
             </div>
 

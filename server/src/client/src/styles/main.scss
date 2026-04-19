@@ -35,7 +35,7 @@ body,
 
 html {
     color-scheme: dark;
-    background: #03141b;
+    background: var(--b-color-background);
 }
 
 * {
@@ -67,7 +67,7 @@ main {
 
 body {
     position: relative;
-    background: #03141b;
+    background: var(--b-color-background);
     font-family: 'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -82,7 +82,7 @@ body {
     border: 1px solid var.$COLOR_BORDER_SUBTLE !important;
     border-radius: 18px !important;
     background:
-        linear-gradient(180deg, rgba(8, 28, 36, 0.94) 0%, rgba(5, 20, 28, 0.96) 100%) !important;
+        var(--b-color-panel-background) !important;
     color: var.$COLOR_TEXT !important;
     box-shadow: var.$SHADOW_SUB !important;
     backdrop-filter: blur(16px);

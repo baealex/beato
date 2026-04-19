@@ -70,7 +70,7 @@
     flex-direction: column;
     overflow: hidden;
     background:
-        linear-gradient(180deg, rgba(8, 28, 36, 0.98) 0%, rgba(4, 18, 24, 0.98) 100%);
+        var(--b-gradient-layer);
     border-top: 1px solid var.$COLOR_BORDER_SUBTLE;
     box-shadow:
         0 -10px 32px rgba(0, 0, 0, 0.22),

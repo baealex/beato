@@ -61,6 +61,16 @@ $APP_SHELL_BACKGROUND: var(--b-app-shell-background);
 $APP_SHELL_BORDER: var(--b-app-shell-border);
 $APP_SHELL_SHADOW: var(--b-app-shell-shadow);
 
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+$COLOR_SURFACE_MODAL: var(--b-color-surface-modal);
+$COLOR_SURFACE_DROPDOWN: var(--b-color-surface-dropdown);
+$COLOR_SURFACE_INPUT: var(--b-color-surface-input);
+$COLOR_SURFACE_INPUT_HOVER: var(--b-color-surface-input-hover);
+$COLOR_SURFACE_INPUT_FOCUS: var(--b-color-surface-input-focus);
+$COLOR_SURFACE_ITEM: var(--b-color-surface-item);
+$COLOR_FOCUS_RING: var(--b-color-focus-ring);
+$GRADIENT_LAYER: var(--b-gradient-layer);
+
 /* TRANSITIONS */
 $TRANSITION_FAST: var(--b-transition-fast);
 $TRANSITION_NORMAL: var(--b-transition-normal);

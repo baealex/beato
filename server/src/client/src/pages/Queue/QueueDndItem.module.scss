@@ -12,9 +12,9 @@
     transition-property: background-color, border-color, opacity;
 
     &.current {
-        background: rgba(10, 36, 45, 0.44);
-        border-color: rgba(193, 244, 251, 0.08);
-        box-shadow: 0 12px 28px rgba(2, 8, 11, 0.14);
+        background: var.$COLOR_SURFACE_ITEM;
+        border-color: rgba(160, 100, 255, 0.08);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
     }
 
     &.past {
@@ -22,8 +22,8 @@
     }
 
     &.selected {
-        border-color: rgba(193, 244, 251, 0.18);
-        background: rgba(10, 36, 45, 0.5);
+        border-color: rgba(160, 100, 255, 0.18);
+        background: var.$COLOR_SURFACE_ITEM;
     }
 }
 

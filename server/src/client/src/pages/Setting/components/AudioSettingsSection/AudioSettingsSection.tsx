@@ -104,7 +104,7 @@ export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps
                     </SettingItem>
 
                     <InfoBox>
-                        <p>Higher quality settings will use more bandwidth and storage space. If you experience playback issues, try using a lower quality setting.</p>
+                        Higher quality settings will use more bandwidth and storage space. If you experience playback issues, try using a lower quality setting.
                     </InfoBox>
                 </>
             )}

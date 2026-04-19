@@ -45,7 +45,7 @@ export const StabilityModeSection = () => {
             </SettingItem>
 
             <InfoBox type="warning">
-                <p>With Stability Mode enabled, the equalizer and visualizer will not be available.</p>
+                With Stability Mode enabled, the equalizer and visualizer will not be available.
             </InfoBox>
         </SettingSection>
     );
