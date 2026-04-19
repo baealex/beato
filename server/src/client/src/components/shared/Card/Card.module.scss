@@ -11,9 +11,8 @@
         background: var.$COLOR_BACKGROUND_LAYER_1;
     }
 
-    &.variant-glass {
-        background: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(8px);
+    &.variant-outlined {
+        background: var.$COLOR_BACKGROUND_LAYER_1;
         border: 1px solid var.$COLOR_BORDER_SUBTLE;
     }
 
@@ -51,15 +50,25 @@
         border-radius: var.$RADIUS_2XL;
     }
 
+    // Overflow
+    &.overflow {
+        overflow: hidden;
+    }
+
     // Interactive state
     &.interactive {
         cursor: pointer;
         transition: var.$TRANSITION_FAST;
-        transition-property: box-shadow, background-color;
+        transition-property: box-shadow, background-color, border-color;
 
         @include var.hover-capable {
             &:hover {
                 box-shadow: var.$SHADOW_HOVER;
+            }
+
+            &.variant-outlined:hover {
+                border-color: var.$COLOR_BORDER;
+                box-shadow: none;
             }
         }
 

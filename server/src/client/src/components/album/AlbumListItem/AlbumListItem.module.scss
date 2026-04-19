@@ -1,61 +1,19 @@
 @use '~/styles/var';
 
-.AlbumListItem {
-    cursor: pointer;
+.cover-wrapper {
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info {
     display: flex;
     flex-direction: column;
-    background: var.$COLOR_BACKGROUND_LAYER_1;
-    border: 1px solid var.$COLOR_BORDER_SUBTLE;
-    border-radius: var.$RADIUS_XL;
-    overflow: hidden;
-    transition: var.$TRANSITION_FAST;
-    transition-property: border-color, background-color;
-
-    @include var.hover-capable {
-        &:hover {
-            border-color: var.$COLOR_BORDER;
-            background: rgba(10, 36, 45, 0.78);
-        }
-    }
-
-    &:active {
-        transform: scale(0.98);
-    }
-
-    .cover-wrapper {
-        aspect-ratio: 1;
-        overflow: hidden;
-    }
-
-    .cover {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .info {
-        display: flex;
-        flex-direction: column;
-        padding: var.$SPACING_MD;
-        gap: var.$SPACING_XS;
-    }
-
-    .title,
-    .artist {
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .title {
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var.$COLOR_TEXT;
-    }
-
-    .artist {
-        font-size: 0.75rem;
-        color: var.$COLOR_TEXT_SECONDARY;
-    }
+    padding: var.$SPACING_MD;
+    gap: var.$SPACING_XS;
 }

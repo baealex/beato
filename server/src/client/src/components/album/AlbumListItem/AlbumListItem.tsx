@@ -2,7 +2,7 @@ import styles from './AlbumListItem.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
-import { Image } from '~/components/shared';
+import { Card, Image, Text } from '~/components/shared';
 
 interface AlbumListItemProps {
     albumCover: string;
@@ -13,15 +13,21 @@ interface AlbumListItemProps {
 
 const AlbumListItem = ({ albumCover, albumName, artistName, onClick }: AlbumListItemProps) => {
     return (
-        <div className={cx('AlbumListItem')} onClick={onClick}>
+        <Card
+            variant="outlined"
+            radius="xl"
+            padding="none"
+            interactive
+            overflow
+            onClick={onClick}>
             <div className={cx('cover-wrapper')}>
                 <Image className={cx('cover')} src={albumCover} alt={albumName} />
             </div>
             <div className={cx('info')}>
-                <span className={cx('title')}>{albumName}</span>
-                <span className={cx('artist')}>{artistName}</span>
+                <Text as="span" size="sm" weight="semibold" truncate>{albumName}</Text>
+                <Text as="span" variant="secondary" size="xs" truncate>{artistName}</Text>
             </div>
-        </div>
+        </Card>
     );
 };
 
