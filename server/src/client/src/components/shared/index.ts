@@ -5,7 +5,6 @@ export { default as Button } from './Button';
 export { default as Card } from './Card';
 export { default as FixedVirtualList } from './FixedVirtualList/FixedVirtualList';
 export { default as Flex } from './Flex';
-export { default as Glass } from './Glass';
 export { default as Grid } from './Grid';
 export { default as GridImage } from './GridImage';
 export { default as IconButton } from './IconButton';
