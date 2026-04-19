@@ -10,7 +10,7 @@ import { AlbumListItem } from '~/components/album';
 import { ArtistSummary } from '~/components/artist';
 import { TwoToneLayout } from '~/components/layout';
 import { MusicActionPanelContent, MusicListItem } from '~/components/music';
-import { Grid, Text, Button } from '~/components/shared';
+import { Grid, Text } from '~/components/shared';
 import { Play } from '~/icon';
 
 import { getArtist } from '~/api';
@@ -46,15 +46,22 @@ export default function ArtistDetail() {
                     cover={artist.latestAlbum?.cover || ''}
                     listenedCount={listenedCount}
                 />
+            )}
+            primaryAction={(
+                <button onClick={() => queueStore.reset(artist.musics.map(music => music.id))}>
+                    <Play />
+                </button>
             )}>
             <div className={cx('section')}>
                 <div className={cx('section-header')}>
-                    <Text as="h2" size="xl" weight="semibold">
-                        Albums
-                    </Text>
-                    <Text variant="tertiary" size="sm">
-                        {artist.albums.length}
-                    </Text>
+                    <div className={cx('section-title')}>
+                        <Text as="h2" size="xl" weight="semibold">
+                            Albums
+                        </Text>
+                        <Text variant="tertiary" size="sm">
+                            {artist.albums.length}
+                        </Text>
+                    </div>
                 </div>
                 <Grid>
                     {artist.albums.map(album => (
@@ -79,9 +86,6 @@ export default function ArtistDetail() {
                             {artist.musics.length}
                         </Text>
                     </div>
-                    <Button onClick={() => queueStore.reset(artist.musics.map(music => music.id))}>
-                        <Play /> Play All
-                    </Button>
                 </div>
                 <div className={cx('music-list')}>
                     {artist.musics.map(({ id }) => {
@@ -92,7 +96,7 @@ export default function ArtistDetail() {
                         return (
                             <MusicListItem
                                 key={music.id}
-                                artistName={music.album.name}
+                                artistName={music.artist.name}
                                 albumCover={music.album.cover}
                                 albumName={music.album.name}
                                 musicName={music.name}

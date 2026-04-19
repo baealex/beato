@@ -2,9 +2,9 @@
 
 .Grid {
     display: grid;
-    grid-gap: 1rem;
+    grid-gap: var.$SPACING_MD;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    padding: 1rem;
+    padding: var.$SPACING_MD var.$SPACING_LG;
     list-style: none;
 
     @media (max-width: var.$BREAKPOINT_TABLET) {

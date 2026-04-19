@@ -23,12 +23,14 @@ const ArtistSummary = ({
                     <Image className={cx('cover-img')} src={cover} alt={name} icon={<User />} />
                 </div>
             </div>
-            <Text as="h1" size="2xl" weight="bold" className={cx('name')}>
+            <Text as="h1" size="xl" weight="bold" className={cx('name')}>
                 {name}
             </Text>
-            <Text variant="tertiary" size="sm">
-                You have listened to songs by this artist {listenedCount} times.
-            </Text>
+            {listenedCount > 0 && (
+                <Text variant="tertiary" size="sm">
+                    {listenedCount} plays
+                </Text>
+            )}
         </div>
     );
 };

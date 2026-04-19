@@ -50,8 +50,6 @@
     background:
         radial-gradient(circle at 12% 16%, rgba(193, 244, 251, 0.08), transparent 28%),
         linear-gradient(180deg, rgba(2, 10, 14, 0.3) 0%, rgba(2, 10, 14, 0.62) 100%);
-    opacity: 0;
-    animation: sub-page-backdrop-in 220ms ease forwards;
 
     @media (min-width: 1024px) {
         display: none;
@@ -78,14 +76,9 @@
         0 -10px 32px rgba(0, 0, 0, 0.22),
         0 0 0 1px rgba(193, 244, 251, 0.03);
 
-    &.stacked {
-        animation: sub-page-stacked-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
     &.sheet {
         border-top-left-radius: 1.5rem;
         border-top-right-radius: 1.5rem;
-        animation: sub-page-sheet-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     &.fullscreen {
@@ -134,45 +127,3 @@
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .subPageBackdrop,
-    .subPageSurface {
-        animation: none;
-        opacity: 1;
-        transform: none;
-    }
-}
-
-@keyframes sub-page-backdrop-in {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes sub-page-stacked-in {
-    from {
-        opacity: 0.74;
-        transform: translate3d(2rem, 0, 0) scale(0.985);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-    }
-}
-
-@keyframes sub-page-sheet-in {
-    from {
-        opacity: 0.78;
-        transform: translate3d(0, 1.75rem, 0);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
-}
