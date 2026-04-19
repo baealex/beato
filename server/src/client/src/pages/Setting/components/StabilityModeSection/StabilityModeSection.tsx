@@ -33,10 +33,10 @@ export const StabilityModeSection = () => {
         <SettingSection
             title="Stability Mode"
             icon={<ShieldIcon />}
-            description="Improve app stability by disabling certain features.">
+            description="Disable heavier audio features when needed.">
             <SettingItem
                 title="Enable Stability Mode"
-                description="Activate this to stop using the audio context feature.">
+                description="Turns off equalizer and visualizer features.">
                 <Toggle
                     value={isStabilityModeEnabled}
                     ariaLabel="Enable stability mode"

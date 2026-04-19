@@ -28,7 +28,7 @@
     color: rgba(198, 238, 244, 0.7);
     font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0;
     text-transform: uppercase;
 }
 
@@ -36,7 +36,7 @@
     margin: 0;
     font-size: clamp(2rem, 5vw, 2.6rem);
     line-height: 0.95;
-    letter-spacing: -0.05em;
+    letter-spacing: 0;
     color: var.$COLOR_TEXT;
 }
 
@@ -70,7 +70,7 @@
 .label {
     font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0;
     text-transform: uppercase;
     color: var.$COLOR_TEXT_MUTED;
 }
@@ -109,7 +109,7 @@
     color: #04202a;
     font: inherit;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.42),
         0 18px 36px rgba(22, 120, 144, 0.28);

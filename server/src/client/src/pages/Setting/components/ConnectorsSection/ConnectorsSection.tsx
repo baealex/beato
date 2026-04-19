@@ -37,11 +37,15 @@ export const ConnectorsSection = () => {
             title="Connected Devices"
             icon={<DevicesIcon />}
             description={appCopy.connectors.description}>
-            <div>
+            <div className={styles.connectorList}>
                 {connectors.map((connector) => (
                     <div key={connector.id} className={styles.connector}>
-                        <span>{connector.userAgent}</span>
-                        <span className={styles.date}>{new Date(connector.connectedAt).toLocaleDateString()}</span>
+                        <div className={styles.connectorCopy}>
+                            <span className={styles.userAgent}>{connector.userAgent}</span>
+                            <span className={styles.date}>
+                                Connected {new Date(connector.connectedAt).toLocaleDateString()}
+                            </span>
+                        </div>
                         {connector.id === socket.id ? (
                             <span className={styles.thisDevice}>This device</span>
                         ) : (

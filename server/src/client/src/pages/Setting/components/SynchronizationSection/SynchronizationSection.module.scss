@@ -5,11 +5,8 @@
 }
 
 .reportCard {
-  margin-top: 20px;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid var(--b-color-border, rgba(255, 255, 255, 0.08));
-  background: rgba(var(--b-color-hover-rgb), 0.04);
+  padding: 0 0 4px;
+  border-top: 1px solid var(--b-color-border-subtle, rgba(255, 255, 255, 0.08));
 }
 
 .reportHeader {
@@ -25,18 +22,17 @@
   padding: 4px 10px;
   border-radius: 999px;
   font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0;
 
   &.success {
-    background: rgba(56, 189, 120, 0.14);
-    color: #38bd78;
+    background: rgba(56, 189, 120, 0.1);
+    color: rgba(129, 222, 168, 0.92);
   }
 
   &.error {
-    background: rgba(244, 63, 94, 0.14);
-    color: #f43f5e;
+    background: rgba(244, 63, 94, 0.1);
+    color: rgba(255, 154, 173, 0.92);
   }
 }
 
@@ -48,9 +44,8 @@
 }
 
 .summaryItem {
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(var(--b-color-hover-rgb), 0.08);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--b-color-border-subtle, rgba(255, 255, 255, 0.08));
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -59,8 +54,7 @@
 .summaryLabel {
   font-size: 0.75rem;
   opacity: 0.75;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 
 .reportMeta {
@@ -78,8 +72,9 @@
 }
 
 .detailGroup {
-  border-radius: 12px;
-  background: rgba(var(--b-color-hover-rgb), 0.06);
+  border-radius: 0;
+  border-top: 1px solid rgba(var(--b-color-hover-rgb), 0.12);
+  background: transparent;
   overflow: hidden;
 
   summary {
@@ -87,7 +82,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 14px;
+    padding: 12px 0;
     cursor: pointer;
     font-weight: 600;
   }
@@ -100,7 +95,7 @@
 .detailList {
   list-style: none;
   margin: 0;
-  padding: 0 14px 14px;
+  padding: 0 0 14px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -118,7 +113,7 @@
 
 .emptyDetail {
   margin: 0;
-  padding: 0 14px 14px;
+  padding: 0 0 14px;
   font-size: 0.9rem;
   opacity: 0.75;
 }

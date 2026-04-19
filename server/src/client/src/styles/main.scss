@@ -113,7 +113,7 @@ body::before {
     color: var.$COLOR_TEXT !important;
     font-size: 0.94rem;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
 }
 
 .app-toast-description {

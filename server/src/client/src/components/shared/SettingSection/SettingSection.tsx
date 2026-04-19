@@ -46,7 +46,7 @@ export const SettingSection = ({ title, description, icon, children }: SettingSe
                     <span>{title}</span>
                 </Text>
                 {description && (
-                    <Text as="p" variant="secondary" size="md" className={styles.sectionDescription}>
+                    <Text as="p" variant="tertiary" size="sm" className={styles.sectionDescription}>
                         {description}
                     </Text>
                 )}

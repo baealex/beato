@@ -5,15 +5,16 @@
     display: flex;
     flex-direction: column;
     background: var.$COLOR_BACKGROUND_LAYER_1;
+    border: 1px solid var.$COLOR_BORDER_SUBTLE;
     border-radius: var.$RADIUS_XL;
     overflow: hidden;
-    box-shadow: var.$SHADOW_MAIN;
     transition: var.$TRANSITION_FAST;
-    transition-property: box-shadow;
+    transition-property: border-color, background-color;
 
     @include var.hover-capable {
         &:hover {
-            box-shadow: var.$SHADOW_HOVER;
+            border-color: var.$COLOR_BORDER;
+            background: rgba(10, 36, 45, 0.78);
         }
     }
 

@@ -1,7 +1,7 @@
 @use '~/styles/var';
 
 .settingSection {
-    background: rgba(8, 28, 36, 0.6);
+    background: rgba(8, 28, 36, 0.34);
     border-radius: var.$RADIUS_LG;
     padding: var.$SPACING_LG;
     border: 1px solid var.$COLOR_BORDER_SUBTLE;
@@ -12,13 +12,11 @@
 }
 
 .sectionHeader {
-    margin-bottom: var.$SPACING_LG;
+    margin-bottom: var.$SPACING_MD;
 }
 
 .sectionTitle {
-    margin-bottom: var.$SPACING_MD;
-    padding-bottom: var.$SPACING_MD;
-    border-bottom: 1px solid var.$COLOR_BORDER;
+    margin-bottom: var.$SPACING_XS;
     display: flex;
     align-items: center;
     gap: var.$SPACING_SM;
@@ -31,7 +29,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var.$COLOR_POINT;
+    color: var.$COLOR_TEXT_TERTIARY;
 
     svg {
         width: 16px;
@@ -41,6 +39,7 @@
 
 .sectionDescription {
     line-height: var.$LINE_HEIGHT_RELAXED;
+    max-width: 36rem;
 }
 
 .sectionContent {
@@ -50,8 +49,7 @@
 }
 
 .settingItem {
-    padding: var.$SPACING_MD;
-    border-radius: var.$RADIUS_MD;
+    padding: var.$SPACING_MD 0;
     border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
 
     &:last-child {
@@ -72,11 +70,8 @@
 }
 
 .settingItemHeader {
-.settingItemTitle {
-    margin-bottom: var.$SPACING_XS;
-}
-
     .description {
+        margin-top: var.$SPACING_XS;
         line-height: var.$LINE_HEIGHT_DEFAULT;
     }
 }
@@ -92,10 +87,10 @@
 }
 
 .infoBox {
-    padding: var.$SPACING_MD var.$SPACING_LG;
+    padding: var.$SPACING_SM var.$SPACING_MD;
     border-radius: var.$RADIUS_MD;
     margin: var.$SPACING_MD 0;
-    border-left: 4px solid;
+    border-left: 2px solid;
     background-color: rgba(239, 248, 251, 0.03);
 
     p {
@@ -111,8 +106,8 @@
     }
 
     &.warning {
-        background-color: rgba(255, 152, 0, 0.08);
-        border-left-color: #ff9800;
+        background-color: rgba(255, 152, 0, 0.06);
+        border-left-color: rgba(255, 152, 0, 0.72);
     }
 
     &.success {

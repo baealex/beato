@@ -7,6 +7,6 @@ export const appCopy = {
         title: 'Settings',
         description: 'Manage sync, playback, audio, and devices.'
     },
-    connectors: { description: `Manage devices currently connected to your ${APP_BRAND_NAME} session.` },
+    connectors: { description: `Devices connected to this ${APP_BRAND_NAME} session.` },
     media: { defaultArtworkPath: '/images/ocean-wave.jpg' }
 } as const;

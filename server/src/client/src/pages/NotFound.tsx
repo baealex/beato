@@ -7,14 +7,14 @@ export default function NotFound() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.dance}>
-                {'(㇏(•̀ᵥᵥ•́)ノ)'}
+            <div className={styles.code}>
+                404
             </div>
             <div className={styles.text}>
-                Why are you here, huh?
+                Page not found
             </div>
             <Button onClick={back}>
-                Take you back
+                Go back
             </Button>
         </div>
     );

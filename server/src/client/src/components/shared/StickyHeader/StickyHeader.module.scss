@@ -14,3 +14,15 @@
         linear-gradient(180deg, rgba(4, 18, 24, 0.95) 0%, rgba(4, 18, 24, 0.82) 72%, rgba(4, 18, 24, 0) 100%);
     backdrop-filter: blur(8px);
 }
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+
+    @media (max-width: 640px) {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}

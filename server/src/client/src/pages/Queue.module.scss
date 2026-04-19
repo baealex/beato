@@ -131,7 +131,7 @@
 }
 
 .eyebrow {
-    letter-spacing: 0.12em;
+    letter-spacing: 0;
     text-transform: uppercase;
 }
 
@@ -172,7 +172,7 @@
 
 .overview-title {
     line-height: 1.05;
-    letter-spacing: -0.03em;
+    letter-spacing: 0;
     text-wrap: balance;
 }
 
@@ -242,7 +242,7 @@
     color: var.$COLOR_TEXT_MUTED;
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
     text-transform: uppercase;
     box-sizing: border-box;
 }

@@ -2,7 +2,7 @@ import styles from './MusicListItem.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
-import { Image } from '~/components/shared';
+import { IconButton, Image } from '~/components/shared';
 import { Heart, VerticalDots } from '~/icon';
 
 interface MusicListItemProps {
@@ -58,14 +58,16 @@ const MusicListItem = ({
                     </div>
                 </div>
                 {onLongPress && (
-                    <button
-                        className={cx('icon-button', { isLiked })}
+                    <IconButton
+                        aria-label={`Open actions for ${musicName}`}
+                        active={isLiked}
+                        className={cx('icon-button')}
                         onClick={(e) => {
                             e.stopPropagation();
                             onLongPress?.();
                         }}>
                         {isLiked ? <Heart /> : <VerticalDots />}
-                    </button>
+                    </IconButton>
                 )}
             </div>
         </div>

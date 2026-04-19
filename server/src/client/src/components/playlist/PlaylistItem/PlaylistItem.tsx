@@ -2,6 +2,7 @@ import styles from './PlaylistItem.module.scss';
 import { useStore } from 'badland-react';
 
 import GridImage from '../../shared/GridImage';
+import { IconButton } from '~/components/shared';
 import { VerticalDots } from '~/icon';
 
 import type { Music } from '~/models/type';
@@ -26,30 +27,34 @@ export default function PlaylistItem({
     const [{ musicMap }] = useStore(musicStore);
 
     return (
-        <div
-            className={`${styles.PlaylistItem} clickable`}
-            onClick={onClick}
-            onContextMenu={(e) => {
-                e.preventDefault();
-                onLongPress?.();
-            }}>
-            <GridImage
-                className={styles.cover}
-                images={headerMusics.map((music) => musicMap.get(music.id)?.album.cover ?? '')}
-            />
-            <div className={styles.title}>
-                <div>{name}</div>
-                <div className={styles.count}>{musicCount} songs</div>
-            </div>
+        <div className={styles.PlaylistItem}>
+            <button
+                type="button"
+                className={styles.mainButton}
+                onClick={onClick}
+                onContextMenu={(e) => {
+                    e.preventDefault();
+                    onLongPress?.();
+                }}>
+                <GridImage
+                    className={styles.cover}
+                    images={headerMusics.map((music) => musicMap.get(music.id)?.album.cover ?? '')}
+                />
+                <div className={styles.title}>
+                    <div className={styles.name}>{name}</div>
+                    <div className={styles.count}>{musicCount} songs</div>
+                </div>
+            </button>
             {onLongPress && (
-                <button
+                <IconButton
+                    aria-label={`Open actions for ${name}`}
                     className={styles['icon-button']}
                     onClick={(e) => {
                         e.stopPropagation();
                         onLongPress();
                     }}>
-                    <VerticalDots style={{ width: '16px' }} />
-                </button>
+                    <VerticalDots />
+                </IconButton>
             )}
         </div>
     );

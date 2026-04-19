@@ -15,9 +15,7 @@
     justify-content: center;
     gap: 0.5rem;
     text-decoration: none;
-    background:
-        linear-gradient(180deg, rgba(10, 36, 45, 0.86) 0%, rgba(7, 27, 35, 0.92) 100%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    background: rgba(10, 36, 45, 0.62);
     transition: var.$TRANSITION_FAST;
     transition-property: background-color, border-color, color, box-shadow;
 
@@ -30,15 +28,13 @@
         outline: none;
         border-color: var.$COLOR_FOCUS;
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.04),
             0 0 0 3px rgba(114, 215, 230, 0.14);
     }
 
     @include var.hover-capable {
         &:hover {
             border-color: var.$COLOR_BORDER;
-            background:
-                linear-gradient(180deg, rgba(12, 44, 55, 0.9) 0%, rgba(9, 33, 42, 0.96) 100%);
+            background: rgba(12, 44, 55, 0.78);
         }
     }
 
@@ -71,7 +67,7 @@
     }
 
     &.variant-secondary {
-        background-color: var.$COLOR_SECONDARY_BUTTON;
+        background: rgba(10, 36, 45, 0.62);
     }
 
     &.variant-danger {

@@ -77,9 +77,12 @@
         left: 44px;
         animation-delay: 0.8s;
     }
-    
-    .sound-wave div:nth-child(5) {
-        left: 55px;
-        animation-delay: 1s;
+
+    @media (prefers-reduced-motion: reduce) {
+        .sound-wave div {
+            animation: none;
+            height: 0.75rem;
+            transform: none;
+        }
     }
 }
