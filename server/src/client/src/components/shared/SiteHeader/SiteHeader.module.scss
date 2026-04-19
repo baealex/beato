@@ -70,19 +70,8 @@
 .utilityGroup {
     @media (min-width: 1024px) {
         margin-top: auto;
-    }
-}
-
-.groupLabel {
-    display: none;
-
-    @media (min-width: 1024px) {
-        display: block;
-        padding: 0 var.$SPACING_SM;
-        font-size: var.$TEXT_SIZE_XS;
-        font-weight: var.$FONT_WEIGHT_SEMIBOLD;
-        text-transform: uppercase;
-        color: var.$COLOR_TEXT_MUTED;
+        padding-top: var.$SPACING_SM;
+        border-top: 1px solid var.$APP_SHELL_BORDER;
     }
 }
 
@@ -104,6 +93,11 @@
         width: 1.25rem;
         height: 1.25rem;
         flex-shrink: 0;
+        transition: color var.$TRANSITION_FAST;
+    }
+
+    @media (min-width: 1024px) {
+        border-radius: var.$RADIUS_MD;
     }
 
     @include var.hover-capable {
@@ -116,6 +110,10 @@
     &.active {
         color: var.$COLOR_TEXT;
         background: var.$COLOR_ACTIVE;
+
+        svg {
+            color: var.$COLOR_POINT;
+        }
     }
 }
 
