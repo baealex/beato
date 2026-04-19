@@ -7,7 +7,6 @@
     flex-direction: row;
     align-items: center;
     gap: var.$SPACING_MD;
-    border-radius: var.$RADIUS_LG;
     transition: var.$TRANSITION_FAST;
     transition-property: background-color;
 
@@ -27,6 +26,7 @@
         border-radius: var.$RADIUS_FULL;
         overflow: hidden;
         flex-shrink: 0;
+        box-shadow: 0 0 0 1.5px var.$COLOR_BORDER;
     }
 
     .image {
@@ -43,23 +43,8 @@
         flex: 1;
     }
 
-    .name {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var.$COLOR_TEXT;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
     .count {
         display: flex;
         gap: var.$SPACING_SM;
-        font-size: 0.75rem;
-        color: var.$COLOR_TEXT_TERTIARY;
-    }
-
-    .separator {
-        color: var.$COLOR_TEXT_MUTED;
     }
 }
