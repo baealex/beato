@@ -6,7 +6,7 @@
     flex-direction: column;
     gap: var.$SPACING_SM;
     padding: 0.75rem;
-    background: rgba(5, 20, 28, 0.92);
+    background: var.$APP_SHELL_BACKGROUND;
     border-bottom: 1px solid var.$APP_SHELL_BORDER;
     backdrop-filter: blur(12px);
 
@@ -54,7 +54,7 @@
     ul {
         display: flex;
         align-items: center;
-        gap: 2px;
+        gap: var.$SPACING_XS;
         list-style: none;
         margin: 0;
         padding: 0;
@@ -81,7 +81,6 @@
         padding: 0 var.$SPACING_SM;
         font-size: var.$TEXT_SIZE_XS;
         font-weight: var.$FONT_WEIGHT_SEMIBOLD;
-        letter-spacing: 0;
         text-transform: uppercase;
         color: var.$COLOR_TEXT_MUTED;
     }
@@ -102,21 +101,21 @@
     transition-property: color, background-color;
 
     svg {
-        width: 18px;
-        height: 18px;
+        width: 1.25rem;
+        height: 1.25rem;
         flex-shrink: 0;
     }
 
     @include var.hover-capable {
         &:hover {
             color: var.$COLOR_TEXT;
-            background-color: rgba(239, 248, 251, 0.06);
+            background-color: var.$COLOR_HOVER;
         }
     }
 
     &.active {
         color: var.$COLOR_TEXT;
-        background: rgba(185, 244, 251, 0.1);
+        background: var.$COLOR_ACTIVE;
     }
 }
 
