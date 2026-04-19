@@ -12,7 +12,6 @@ $SIZE_ICON: 40px;
     align-items: center;
     gap: var.$SPACING_MD;
     width: 100%;
-    border-radius: var.$RADIUS_MD;
     transition: var.$TRANSITION_FAST;
     transition-property: background-color;
 
@@ -67,7 +66,7 @@ $SIZE_ICON: 40px;
         }
 
         .artist {
-            font-size: 0.8125rem;
+            font-size: var.$TEXT_SIZE_SM;
             color: var.$COLOR_TEXT_TERTIARY;
         }
 
@@ -87,13 +86,11 @@ $SIZE_ICON: 40px;
 
             .codec {
                 flex-shrink: 0;
-                border: 1px solid var.$COLOR_BORDER;
-                padding: 1px 6px;
-                border-radius: var.$RADIUS_SM;
                 font-size: 0.625rem;
-                font-weight: 500;
-                color: var.$COLOR_TEXT_TERTIARY;
+                font-weight: 600;
+                color: var.$COLOR_POINT;
                 text-transform: uppercase;
+                letter-spacing: 0.04em;
             }
         }
 
