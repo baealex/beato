@@ -34,7 +34,10 @@ const Card = ({
                 `variant-${variant}`,
                 `padding-${padding}`,
                 `radius-${radius}`,
-                { interactive, overflow },
+                {
+                    interactive,
+                    overflow
+                },
                 className
             )}
             onClick={onClick}>

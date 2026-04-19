@@ -65,7 +65,12 @@ const MusicListItem = ({
                             <span className={cx('codec')}>{musicCodec}</span>
                         )}
                     </div>
-                    <Text as="div" size="sm" variant="tertiary" truncate className={cx('artist')}>
+                    <Text
+                        as="div"
+                        size="sm"
+                        variant="tertiary"
+                        truncate
+                        className={cx('artist')}>
                         {artistName}
                     </Text>
                 </div>

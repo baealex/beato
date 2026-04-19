@@ -29,7 +29,7 @@ const TwoToneLayout = ({
                     rgba(${color.r}, ${color.g}, ${color.b}, 0.18) 45%,
                     transparent 100%
                 )
-            `,
+            `
         }
         : {};
 

@@ -75,7 +75,6 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
             }
             containerRef.current?.removeEventListener('scroll', handleScroll);
         };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [containerRef, isSubPage, location.pathname]);
 
     return (

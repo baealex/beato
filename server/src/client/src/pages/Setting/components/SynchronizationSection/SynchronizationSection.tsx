@@ -48,10 +48,30 @@ const reportSections = (report: SyncReport | null) => {
     }
 
     return [
-        { key: 'created', title: 'Created', count: report.createdCount, items: report.created },
-        { key: 'moved', title: 'Moved', count: report.movedCount, items: report.moved },
-        { key: 'duplicate', title: 'Duplicate', count: report.duplicateCount, items: report.duplicate },
-        { key: 'missing', title: 'Missing', count: report.missingCount, items: report.missing }
+        {
+            key: 'created',
+            title: 'Created',
+            count: report.createdCount,
+            items: report.created
+        },
+        {
+            key: 'moved',
+            title: 'Moved',
+            count: report.movedCount,
+            items: report.moved
+        },
+        {
+            key: 'duplicate',
+            title: 'Duplicate',
+            count: report.duplicateCount,
+            items: report.duplicate
+        },
+        {
+            key: 'missing',
+            title: 'Missing',
+            count: report.missingCount,
+            items: report.missing
+        }
     ];
 };
 
@@ -146,12 +166,30 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
 
                     <div className={styles.summaryGrid}>
                         {([
-                            { label: 'Scanned', value: latestSyncReport.scannedFiles },
-                            { label: 'Indexed', value: latestSyncReport.indexedFiles },
-                            { label: 'Created', value: latestSyncReport.createdCount },
-                            { label: 'Moved', value: latestSyncReport.movedCount },
-                            { label: 'Duplicate', value: latestSyncReport.duplicateCount },
-                            { label: 'Missing', value: latestSyncReport.missingCount },
+                            {
+                                label: 'Scanned',
+                                value: latestSyncReport.scannedFiles
+                            },
+                            {
+                                label: 'Indexed',
+                                value: latestSyncReport.indexedFiles
+                            },
+                            {
+                                label: 'Created',
+                                value: latestSyncReport.createdCount
+                            },
+                            {
+                                label: 'Moved',
+                                value: latestSyncReport.movedCount
+                            },
+                            {
+                                label: 'Duplicate',
+                                value: latestSyncReport.duplicateCount
+                            },
+                            {
+                                label: 'Missing',
+                                value: latestSyncReport.missingCount
+                            }
                         ] as const).map(({ label, value }) => (
                             <div key={label} className={styles.summaryItem}>
                                 <Text as="span" size="xs" variant="muted">{label}</Text>

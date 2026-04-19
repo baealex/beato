@@ -13,7 +13,11 @@ function extractDominantColor(img: HTMLImageElement): RGB {
     canvas.height = size;
 
     const ctx = canvas.getContext('2d');
-    if (!ctx) return { r: 20, g: 20, b: 20 };
+    if (!ctx) return {
+        r: 20,
+        g: 20,
+        b: 20
+    };
 
     ctx.drawImage(img, 0, 0, size, size);
 
@@ -36,12 +40,16 @@ function extractDominantColor(img: HTMLImageElement): RGB {
         count++;
     }
 
-    if (count === 0) return { r: 20, g: 20, b: 20 };
+    if (count === 0) return {
+        r: 20,
+        g: 20,
+        b: 20
+    };
 
     return {
         r: Math.round(r / count),
         g: Math.round(g / count),
-        b: Math.round(b / count),
+        b: Math.round(b / count)
     };
 }
 

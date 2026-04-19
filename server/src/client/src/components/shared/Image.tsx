@@ -1,6 +1,8 @@
 import placeholderStyles from './Image.module.scss';
 
-import { useState, useEffect, useRef, type ImgHTMLAttributes, type ReactNode, type ReactEventHandler } from 'react';
+import {
+    useState, useEffect, useRef, type ImgHTMLAttributes, type ReactNode, type ReactEventHandler
+} from 'react';
 
 interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
     src?: string;
