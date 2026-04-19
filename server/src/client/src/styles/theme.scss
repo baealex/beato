@@ -56,6 +56,10 @@
     --b-app-shell-border: rgba(140, 80, 255, 0.15);
     --b-app-shell-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
 
+    /* GRADIENTS */
+    --b-gradient-page:   radial-gradient(circle at top, rgba(140, 80, 255, 0.06), transparent 32%), linear-gradient(180deg, rgba(9, 9, 11, 0.98) 0%, rgba(6, 6, 8, 1) 100%);
+    --b-gradient-sticky: linear-gradient(180deg, rgba(9, 9, 11, 0.96) 0%, rgba(9, 9, 11, 0.82) 50%, rgba(9, 9, 11, 0) 100%);
+
     /* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
     --b-color-surface-modal:       rgba(18, 18, 22, 0.97);
     --b-color-surface-dropdown:    rgba(18, 18, 22, 0.98);
@@ -63,6 +67,8 @@
     --b-color-surface-input-hover: rgba(28, 28, 34, 0.8);
     --b-color-surface-input-focus: rgba(26, 26, 32, 0.9);
     --b-color-surface-item:        rgba(22, 22, 26, 0.5);
+    --b-color-surface-subtle:      rgba(255, 255, 255, 0.03);
+    --b-color-glow-ambient:        rgba(140, 80, 255, 0.06);
     --b-color-focus-ring:          rgba(140, 80, 255, 0.14);
     --b-gradient-layer:            linear-gradient(180deg, rgba(18, 18, 22, 0.98) 0%, rgba(10, 10, 14, 0.98) 100%);
 }

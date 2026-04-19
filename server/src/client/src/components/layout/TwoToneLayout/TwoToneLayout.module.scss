@@ -40,7 +40,7 @@
             color: var.$COLOR_TEXT;
             cursor: pointer;
             box-shadow:
-                0 8px 24px rgba(29, 153, 178, 0.25),
+                0 8px 24px rgba(140, 80, 255, 0.2),
                 0 4px 12px rgba(0, 0, 0, 0.4);
             transition: var.$TRANSITION_FAST;
             transition-property: box-shadow, filter;
@@ -54,7 +54,7 @@
                 &:hover {
                     filter: brightness(1.1);
                     box-shadow:
-                        0 12px 32px rgba(29, 153, 178, 0.32),
+                        0 12px 32px rgba(140, 80, 255, 0.25),
                         0 6px 16px rgba(0, 0, 0, 0.5);
                 }
             }

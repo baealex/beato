@@ -83,12 +83,12 @@
 
     &[data-highlighted] {
         outline: none;
-        background: rgba(114, 215, 230, 0.12);
+        background: var.$COLOR_ACTIVE;
         color: var.$COLOR_TEXT;
     }
 
     &[data-state='checked'] {
-        background: rgba(114, 215, 230, 0.1);
+        background: var.$COLOR_HOVER;
     }
 }
 

@@ -7,7 +7,7 @@
     min-height: 4.875rem;
     border-radius: 1rem;
     border: 1px solid transparent;
-    background: rgba(238, 249, 252, 0.02);
+    background: var.$COLOR_SURFACE_SUBTLE;
     transition: var.$TRANSITION_FAST;
     transition-property: background-color, border-color, opacity;
 
@@ -62,14 +62,14 @@
     @include var.hover-capable {
         &:hover {
             color: var.$COLOR_TEXT;
-            background: rgba(238, 249, 252, 0.08);
+            background: var.$COLOR_HOVER;
         }
     }
 }
 
 .leading-index {
     margin-left: 0.25rem;
-    background: rgba(238, 249, 252, 0.04);
+    background: var.$COLOR_SURFACE_SUBTLE;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0;
@@ -142,7 +142,7 @@
     flex-shrink: 0;
     padding: 0.2rem 0.45rem;
     border-radius: var.$RADIUS_FULL;
-    background: rgba(193, 244, 251, 0.08);
+    background: var.$COLOR_BORDER_SUBTLE;
     color: var.$COLOR_TEXT_SECONDARY;
     font-size: 0.6875rem;
     font-weight: 600;

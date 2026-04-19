@@ -17,7 +17,7 @@
 
     &:focus-within {
         border-color: var.$COLOR_FOCUS;
-        box-shadow: 0 0 0 3px rgba(114, 215, 230, 0.14);
+        box-shadow: 0 0 0 3px var.$COLOR_FOCUS_RING;
     }
 }
 

@@ -34,7 +34,7 @@
   transition-property: background-color;
 
   &:focus-visible {
-    box-shadow: 0 0 0 3px rgba(114, 215, 230, 0.14);
+    box-shadow: 0 0 0 3px var.$COLOR_FOCUS_RING;
   }
 
   @include var.hover-capable {
@@ -46,7 +46,7 @@
   &::-webkit-slider-thumb {
     width: 1.125rem;
     height: 1.125rem;
-    border: 2px solid rgba(3, 20, 27, 0.96);
+    border: 2px solid var.$COLOR_BACKGROUND;
     border-radius: var.$RADIUS_FULL;
     background: var.$COLOR_POINT;
     cursor: pointer;
@@ -56,7 +56,7 @@
   &::-moz-range-thumb {
     width: 1.125rem;
     height: 1.125rem;
-    border: 2px solid rgba(3, 20, 27, 0.96);
+    border: 2px solid var.$COLOR_BACKGROUND;
     border-radius: var.$RADIUS_FULL;
     background: var.$COLOR_POINT;
     cursor: pointer;

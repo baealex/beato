@@ -95,7 +95,7 @@
     }
 
     &.info {
-        background-color: rgba(114, 215, 230, 0.08);
+        background-color: var.$COLOR_GLOW_AMBIENT;
         border-left-color: var.$COLOR_POINT;
     }
 

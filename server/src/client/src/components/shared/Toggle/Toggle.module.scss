@@ -13,7 +13,7 @@
         outline: none;
 
         .ToggleSwitch {
-            box-shadow: 0 0 0 3px rgba(114, 215, 230, 0.14);
+            box-shadow: 0 0 0 3px var.$COLOR_FOCUS_RING;
             border-color: var.$COLOR_FOCUS;
         }
     }
@@ -53,7 +53,7 @@
 
     .is-toggled & {
         transform: translateX(20px);
-        background: #03212b;
+        background: var.$COLOR_BACKGROUND;
     }
 }
 

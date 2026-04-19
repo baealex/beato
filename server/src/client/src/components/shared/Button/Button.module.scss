@@ -28,13 +28,13 @@
         outline: none;
         border-color: var.$COLOR_FOCUS;
         box-shadow:
-            0 0 0 3px rgba(114, 215, 230, 0.14);
+            0 0 0 3px var.$COLOR_FOCUS_RING;
     }
 
     @include var.hover-capable {
         &:hover {
             border-color: var.$COLOR_BORDER;
-            background: rgba(12, 44, 55, 0.78);
+            background: var.$COLOR_SURFACE_INPUT_HOVER;
         }
     }
 
@@ -48,7 +48,7 @@
     }
 
     &.variant-primary {
-        color: #03212b;
+        color: var.$COLOR_BACKGROUND;
         border-color: transparent;
         background: var(--b-gradient-primary);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -56,7 +56,7 @@
 
     @include var.hover-capable {
         &.variant-primary:hover {
-            color: #03212b;
+            color: var.$COLOR_BACKGROUND;
             border-color: transparent;
             background: var(--b-gradient-primary);
         }
