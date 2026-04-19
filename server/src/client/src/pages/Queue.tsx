@@ -497,7 +497,7 @@ export default function Queue() {
                     </button>
 
                     <div className={cx('page-copy')}>
-                        <Text as="h1" size="lg" weight="semibold">
+                        <Text as="h1" size="title" weight="semibold">
                             Queue
                         </Text>
                         <Text as="p" variant="muted" size="xs">

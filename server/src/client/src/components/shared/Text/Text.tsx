@@ -4,7 +4,7 @@ const cx = classNames.bind(styles);
 
 export type TextElement = 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div';
 export type TextVariant = 'primary' | 'secondary' | 'tertiary' | 'muted';
-export type TextSize = 'xs' | 'sm' | 'md' | 'base' | 'lg' | 'title' | 'xl' | '2xl';
+export type TextSize = 'xs' | 'sm' | 'md' | 'title' | 'xl' | '2xl';
 export type TextWeight = 'normal' | 'medium' | 'semibold' | 'bold';
 
 interface TextProps {

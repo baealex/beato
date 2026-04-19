@@ -166,7 +166,7 @@ export default function PlayerDetail() {
                                 {currentMusic.name}
                             </Text>
 
-                            <Text as="p" variant="secondary" size="lg" weight="medium">
+                            <Text as="p" variant="secondary" size="md" weight="medium">
                                 {currentMusic.artist.name}
                             </Text>
 

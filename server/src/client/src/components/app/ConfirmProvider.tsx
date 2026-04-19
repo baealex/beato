@@ -34,7 +34,7 @@ export default function ConfirmProvider() {
                 <AlertDialog.Content className={styles.content}>
                     <div className={styles.header}>
                         <AlertDialog.Title asChild>
-                            <Text as="h2" size="base" weight="semibold" className={styles.title}>
+                            <Text as="h2" size="md" weight="semibold" className={styles.title}>
                                 {options.title}
                             </Text>
                         </AlertDialog.Title>

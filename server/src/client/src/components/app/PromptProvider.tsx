@@ -51,7 +51,7 @@ export default function PromptProvider() {
                         }}>
                         <div className={styles.header}>
                             <Dialog.Title asChild>
-                                <Text as="h2" size="base" weight="semibold" className={styles.title}>
+                                <Text as="h2" size="md" weight="semibold" className={styles.title}>
                                     {options.title}
                                 </Text>
                             </Dialog.Title>
