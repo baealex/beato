@@ -15,7 +15,8 @@ const io = new Server(server);
 io.use(requireAuthenticatedSocketConnection(authConfig));
 io.on('connection', socketManager);
 
-const PORT = process.env.PORT || 3000;
+const DEFAULT_PORT = 44100;
+const PORT = process.env.PORT || DEFAULT_PORT;
 
 server.listen(PORT, () => {
     process.stdout.write(`http server listen on:${PORT} (auth: ${authConfig.mode}) \n`);

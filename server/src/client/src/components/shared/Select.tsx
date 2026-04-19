@@ -15,7 +15,7 @@ interface SelectProps {
     onChange: (value: string) => void;
 }
 
-const EMPTY_OPTION_VALUE = '__beato-empty-option__';
+const EMPTY_OPTION_VALUE = '__ocean-wave-empty-option__';
 
 const toInternalValue = (value: string) => (value === '' ? EMPTY_OPTION_VALUE : value);
 const fromInternalValue = (value: string) => (value === EMPTY_OPTION_VALUE ? '' : value);
