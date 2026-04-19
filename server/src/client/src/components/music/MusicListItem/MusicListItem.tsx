@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 import { IconButton, Image } from '~/components/shared';
-import { Heart, VerticalDots } from '~/icon';
+import { Disc, Heart, VerticalDots } from '~/icon';
 
 interface MusicListItemProps {
     id?: number;
@@ -39,9 +39,13 @@ const MusicListItem = ({
                 e.preventDefault();
                 onLongPress?.();
             }}>
-            {typeof albumCover === 'string' && (
-                <Image className={cx('album-art')} src={albumCover} alt={albumName} />
-            )}
+            <Image
+                className={cx('album-art')}
+                src={albumCover}
+                alt={albumName}
+                loading="eager"
+                icon={<Disc />}
+            />
             <div className={cx('row')}>
                 <div className={cx('info', { hasMenu: typeof onLongPress === 'function' })}>
                     <div className={cx('title')}>

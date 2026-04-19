@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 import { Card, Image, Text } from '~/components/shared';
+import { Disc } from '~/icon';
 
 interface AlbumListItemProps {
     albumCover: string;
@@ -21,7 +22,7 @@ const AlbumListItem = ({ albumCover, albumName, artistName, onClick }: AlbumList
             overflow
             onClick={onClick}>
             <div className={cx('cover-wrapper')}>
-                <Image className={cx('cover')} src={albumCover} alt={albumName} />
+                <Image className={cx('cover')} src={albumCover} alt={albumName} icon={<Disc />} />
             </div>
             <div className={cx('info')}>
                 <Text as="span" size="sm" weight="semibold" truncate>{albumName}</Text>

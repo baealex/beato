@@ -1,0 +1,14 @@
+@use '~/styles/var';
+
+.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var.$COLOR_ACTIVE;
+
+    svg {
+        width: 38%;
+        height: 38%;
+        color: var.$COLOR_TEXT_MUTED;
+    }
+}

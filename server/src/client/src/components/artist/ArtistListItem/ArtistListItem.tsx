@@ -4,6 +4,7 @@ const cx = classNames.bind(styles);
 
 import Image from '~/components/shared/Image';
 import Text from '~/components/shared/Text';
+import { User } from '~/icon';
 
 interface ArtistListItemProps {
     artistName: string;
@@ -27,6 +28,8 @@ const ArtistListItem = ({
                     className={cx('image')}
                     src={artistCover}
                     alt={artistName}
+                    loading="eager"
+                    icon={<User />}
                 />
             </div>
             <div className={cx('info')}>

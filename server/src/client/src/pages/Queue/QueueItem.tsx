@@ -80,6 +80,8 @@ export default function QueueItem({
                     className={cx('cover')}
                     src={music.album.cover}
                     alt={music.album.name}
+                    loading="eager"
+                    icon={<Icon.Disc />}
                 />
 
                 <div className={cx('copy')}>
