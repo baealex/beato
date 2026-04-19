@@ -44,6 +44,7 @@
         "@types/react-dom": "^18.3.7",
         "@vitejs/plugin-react": "^4.7.0",
         "eslint": "^8.57.1",
+        "react-grab": "^0.1.32",
         "typescript": "^5.9.3",
         "vite": "^5.4.21",
         "vitest": "^1.6.1"

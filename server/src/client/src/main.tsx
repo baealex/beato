@@ -5,6 +5,11 @@ import App from './App.tsx';
 
 import './styles/main.scss';
 
+if (import.meta.env.DEV) {
+    const { init } = await import('react-grab');
+    init();
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <App />
