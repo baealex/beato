@@ -26,10 +26,17 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
 
     const containerRef = useRef<HTMLDivElement>(null);
     const shouldBeScroll = useRef(true);
+    const searchParamsRef = useRef(searchParams);
+    const setSearchParamsRef = useRef(setSearchParams);
     const isSubPage = isSubPagePath(location.pathname);
     const subPagePresentation = resolveSubPagePresentation(location.pathname);
     const hasSubPageHeader = shouldRenderSubPageHeader(location.pathname);
     const hideMiniPlayer = shouldHideMiniPlayer(location.pathname);
+
+    useEffect(() => {
+        searchParamsRef.current = searchParams;
+        setSearchParamsRef.current = setSearchParams;
+    });
 
     useEffect(() => {
         if (containerRef.current && shouldBeScroll.current) {
@@ -54,12 +61,13 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
             }
 
             timer = setTimeout(() => {
-                searchParams.set('py', containerRef.current?.scrollTop.toString() || '0');
-                setSearchParams(searchParams, { replace: true });
-            }, 50);
+                const params = searchParamsRef.current;
+                params.set('py', containerRef.current?.scrollTop.toString() || '0');
+                setSearchParamsRef.current(params, { replace: true });
+            }, 200);
         };
 
-        containerRef.current.addEventListener('scroll', handleScroll);
+        containerRef.current.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
             if (timer) {
@@ -67,7 +75,8 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
             }
             containerRef.current?.removeEventListener('scroll', handleScroll);
         };
-    }, [containerRef, isSubPage, location.pathname, searchParams, setSearchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [containerRef, isSubPage, location.pathname]);
 
     return (
         <main>
