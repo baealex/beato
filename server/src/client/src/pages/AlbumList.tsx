@@ -65,13 +65,14 @@ export default function Album() {
                     onChange={handleSearchChange}
                 />
                 <Button
+                    size="sm"
                     onClick={() => panel.open({
                         title: 'Album Sort',
                         content: (
                             <ItemSortPanelContent items={albumStore.sortItems} />
                         )
                     })}>
-                    <Icon.Sort /> Sort
+                    <Icon.Sort />
                 </Button>
             </StickyHeader>
             {!loaded && (

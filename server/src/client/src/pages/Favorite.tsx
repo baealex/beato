@@ -64,13 +64,14 @@ export default function Music() {
                         <Icon.Play /> Play
                     </Button>
                     <Button
+                        size="sm"
                         onClick={() => panel.open({
                             title: 'Music Sort',
                             content: (
                                 <ItemSortPanelContent items={musicStore.sortItems} />
                             )
                         })}>
-                        <Icon.Sort /> Sort
+                        <Icon.Sort />
                     </Button>
                 </StickyHeaderActions>
             </StickyHeader>

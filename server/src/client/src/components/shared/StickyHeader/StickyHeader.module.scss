@@ -11,8 +11,11 @@
     left: 0;
     z-index: 5;
     background:
-        linear-gradient(180deg, rgba(4, 18, 24, 0.95) 0%, rgba(4, 18, 24, 0.82) 72%, rgba(4, 18, 24, 0) 100%);
-    backdrop-filter: blur(8px);
+        linear-gradient(180deg,
+            rgba(4, 18, 24, 0.96) 0%,
+            rgba(4, 18, 24, 0.82) 50%,
+            rgba(4, 18, 24, 0) 100%
+        );
 }
 
 .actions {
