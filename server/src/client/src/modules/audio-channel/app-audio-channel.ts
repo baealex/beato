@@ -82,6 +82,8 @@ export class AppAudioChannel implements AudioChannel {
     }
 
     load(music: Music) {
+        const albumArt = getImage(music.album.cover);
+
         window.AppChannel.postMessage(
             PostMessageWrapper({
                 actionType: 'setMediaItem',
@@ -91,7 +93,7 @@ export class AppAudioChannel implements AudioChannel {
                     title: music.name,
                     artist: music.artist.name,
                     duration: convertToMillisecond(music.duration),
-                    artUri: location.origin + getImage(music.album.cover)
+                    artUri: albumArt ? location.origin + albumArt : ''
                 }
             })
         );

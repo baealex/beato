@@ -1,8 +1,7 @@
 const RESIZED_SEGMENT = '/resized';
-const DEFAULT_IMAGE = '/images/ocean-wave.jpg';
 
 export const getImage = (src?: string) => {
-    return src || DEFAULT_IMAGE;
+    return src || '';
 };
 
 export const getOriginalImage = (src?: string) => {
