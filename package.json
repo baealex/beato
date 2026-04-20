@@ -17,6 +17,7 @@
         "dev:client": "npm run dev --prefix server/src/client",
         "dev:server": "npm run dev --prefix server/src",
         "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+        "test:metadata": "node --test tests/branding/*.test.mjs",
         "build:client": "npm run build --prefix server/src/client",
         "start:server": "npm run start --prefix server/src",
         "start": "npm run build:client && npm run start:server"
