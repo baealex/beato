@@ -70,10 +70,10 @@ export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps
         <SettingSection
             title="Audio Settings"
             icon={<AudioIcon />}
-            description="Configure audio quality and format settings for music playback.">
+            description="Set playback quality and format.">
             <SettingItem
                 title="Use Original Audio Files"
-                description="When enabled, plays the original audio files without any transcoding. This provides the highest quality but may use more bandwidth.">
+                description="Play source files without transcoding.">
                 <Toggle
                     value={useOriginal}
                     ariaLabel="Use original audio files"
@@ -85,7 +85,7 @@ export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps
                 <>
                     <SettingItem
                         title="Audio Format"
-                        description="Choose the audio format for streaming. MP3 is more compatible, while AAC may offer better quality at the same bitrate.">
+                        description="Choose the streaming format.">
                         <Select
                             selected={AUDIO_FORMATS.find(({ value }) => value === format)}
                             options={AUDIO_FORMATS}
@@ -95,7 +95,7 @@ export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps
 
                     <SettingItem
                         title="Audio Quality"
-                        description="Higher quality uses more data. Choose a lower bitrate to save data or a higher bitrate for better sound quality.">
+                        description="Higher bitrate uses more data.">
                         <Select
                             selected={AUDIO_BITRATES.find(({ value }) => value === bitrate)}
                             options={AUDIO_BITRATES}
@@ -104,7 +104,7 @@ export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps
                     </SettingItem>
 
                     <InfoBox>
-                        <p>Higher quality settings will use more bandwidth and storage space. If you experience playback issues, try using a lower quality setting.</p>
+                        Higher quality settings will use more bandwidth and storage space. If you experience playback issues, try using a lower quality setting.
                     </InfoBox>
                 </>
             )}
@@ -112,7 +112,7 @@ export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps
             {!shouldStable && (
                 <SettingItem
                     title="Equalizer"
-                    description="Fine-tune your audio experience with the equalizer.">
+                    description="Adjust playback tone by frequency band.">
                     <Button onClick={() => navigate('/equalizer')}>Open Equalizer</Button>
                 </SettingItem>
             )}

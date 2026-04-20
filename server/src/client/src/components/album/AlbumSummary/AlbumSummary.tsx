@@ -5,6 +5,7 @@ const cx = classNames.bind(styles);
 import { Link } from 'react-router-dom';
 
 import { Image, Text } from '~/components/shared';
+import { Disc } from '~/icon';
 import { getOriginalImage } from '~/modules/image';
 
 import type { Album } from '~/models/type';
@@ -21,10 +22,10 @@ const AlbumSummary = ({
         <div className={cx('AlbumSummary')}>
             <div className={cx('cover')}>
                 <div className={cx('cover-inner')}>
-                    <Image src={getOriginalImage(cover)} alt={name} />
+                    <Image className={cx('cover-img')} src={getOriginalImage(cover)} alt={name} icon={<Disc />} />
                 </div>
             </div>
-            <Text as="h1" size="2xl" weight="bold" className={cx('title')}>
+            <Text as="h1" size="xl" weight="bold" className={cx('title')}>
                 {name}
             </Text>
             <div className={cx('meta')}>

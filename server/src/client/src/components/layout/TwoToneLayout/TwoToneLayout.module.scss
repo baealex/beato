@@ -6,37 +6,19 @@
 
     .background {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 60vh;
+        inset: 0;
         z-index: 0;
-        overflow: hidden;
         pointer-events: none;
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: blur(40px) saturate(1.5) brightness(0.6);
-            transform: scale(1.1);
-        }
-
-        .overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom,
-                    rgba(5, 5, 5, 0.3) 0%,
-                    rgba(5, 5, 5, 0.7) 50%,
-                    var(--b-color-background) 100%);
-        }
     }
 
     .header {
         position: relative;
+    }
+
+    .headerContent {
+        position: relative;
         z-index: 1;
-        padding: var.$SPACING_XL var.$SPACING_LG;
-        padding-top: var.$SPACING_2XL;
+        padding: calc(var.$SPACING_2XL + var.$SPACING_LG) var.$SPACING_LG;
     }
 
     .primaryAction {
@@ -58,7 +40,7 @@
             color: var.$COLOR_TEXT;
             cursor: pointer;
             box-shadow:
-                0 8px 24px rgba(29, 153, 178, 0.25),
+                0 8px 24px rgba(140, 80, 255, 0.2),
                 0 4px 12px rgba(0, 0, 0, 0.4);
             transition: var.$TRANSITION_FAST;
             transition-property: box-shadow, filter;
@@ -68,11 +50,13 @@
                 height: 28px;
             }
 
-            &:hover {
-                filter: brightness(1.1);
-                box-shadow:
-                    0 12px 32px rgba(29, 153, 178, 0.32),
-                    0 6px 16px rgba(0, 0, 0, 0.5);
+            @include var.hover-capable {
+                &:hover {
+                    filter: brightness(1.1);
+                    box-shadow:
+                        0 12px 32px rgba(140, 80, 255, 0.25),
+                        0 6px 16px rgba(0, 0, 0, 0.5);
+                }
             }
 
             &:active {
@@ -90,7 +74,5 @@
     .content {
         position: relative;
         z-index: 1;
-        padding: var.$SPACING_MD;
-        padding-top: var.$SPACING_MD;
     }
 }

@@ -61,10 +61,6 @@ export default function QueueDndItem({
                     type="button"
                     className={cx('leading-button', 'drag-handle')}
                     aria-label={`Reorder ${music.name}`}
-                    style={{
-                        cursor: 'grab',
-                        touchAction: 'none'
-                    }}
                     {...attributes}
                     {...listeners}>
                     <Icon.Menu />

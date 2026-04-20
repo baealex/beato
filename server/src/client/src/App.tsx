@@ -21,7 +21,7 @@ import { albumStore } from './store/album';
 import { Providers } from './components/app';
 
 const AUTH_RECOVERY_PATH_PREFIX = '/api/auth/';
-const SPLASH_MIN_MS = 1200;
+const SPLASH_MIN_MS = 2000;
 
 export default function App() {
     const [authSession, setAuthSession] = useState<AuthSession | null>(null);
@@ -219,7 +219,7 @@ export default function App() {
     return (
         <>
             {showSplash && <SplashScreen isExiting={splashExiting} />}
-            {appContent()}
+            {(!showSplash || splashExiting) && appContent()}
         </>
     );
 }

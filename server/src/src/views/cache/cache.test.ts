@@ -66,7 +66,7 @@ describe('GET /cache/resized/:albumId.jpg', () => {
             } as never;
         });
 
-        const workspaceDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'beato-cache-view-workspace-'));
+        const workspaceDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'ocean-wave-cache-view-workspace-'));
         workspaceDirectories.push(workspaceDirectory);
         process.env.OCEAN_WAVE_CACHE_PATH = path.join(workspaceDirectory, 'cache');
 
@@ -102,7 +102,7 @@ describe('GET /cache/resized/:albumId.jpg', () => {
     });
 
     it('regenerates a missing cached cover from track metadata on request', async () => {
-        const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'beato-cover-view-'));
+        const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'ocean-wave-cover-view-'));
         tempDirectories.push(tempDirectory);
 
         const trackPath = createTempTrackFile({

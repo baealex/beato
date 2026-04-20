@@ -4,16 +4,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem;
+    padding: 0 var.$SPACING_MD;
     height: 56px;
-    background-color: var.$COLOR_BACKGROUND_LAYER_1;
-    border-bottom: 1px solid var.$COLOR_BORDER;
+    background: var.$COLOR_BACKGROUND;
+    border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
 
     @media (min-width: 1024px) {
         height: 100%;
-        border-right: 1px solid var.$COLOR_BORDER;
         border-bottom: none;
-        background-color: transparent;
+        border-right: 1px solid var.$COLOR_BORDER_SUBTLE;
     }
 
     button {
@@ -27,7 +26,7 @@
 
         .back-text {
             display: none;
-            margin-left: 0.5rem;
+            margin-left: var.$SPACING_SM;
 
             @media (min-width: 1024px) {
                 display: block;

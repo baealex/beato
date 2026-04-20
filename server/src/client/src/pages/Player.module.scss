@@ -6,9 +6,7 @@
     height: 100%;
     min-height: 100%;
     overflow: hidden;
-    background:
-        radial-gradient(circle at top, rgba(114, 215, 230, 0.06), transparent 34%),
-        linear-gradient(180deg, rgba(3, 20, 27, 0.96) 0%, rgba(3, 16, 22, 1) 100%);
+    background: var.$GRADIENT_PAGE;
 
     .background {
         position: absolute;
@@ -29,8 +27,8 @@
             position: absolute;
             inset: 0;
             background:
-                linear-gradient(180deg, rgba(3, 20, 27, 0.24) 0%, rgba(3, 20, 27, 0.66) 52%, rgba(3, 16, 22, 0.96) 100%),
-                radial-gradient(circle at top right, rgba(193, 244, 251, 0.04), transparent 28%);
+                linear-gradient(180deg, rgba(9, 9, 11, 0.24) 0%, rgba(9, 9, 11, 0.66) 52%, rgba(6, 6, 8, 0.96) 100%),
+                radial-gradient(circle at top right, var.$COLOR_GLOW_AMBIENT, transparent 28%);
         }
     }
 
@@ -68,9 +66,11 @@
             height: 1rem;
         }
 
-        &:hover {
-            color: var.$COLOR_TEXT;
-            background: rgba(238, 249, 252, 0.08);
+        @include var.hover-capable {
+            &:hover {
+                color: var.$COLOR_TEXT;
+                background: var.$COLOR_HOVER;
+            }
         }
     }
 
@@ -98,8 +98,8 @@
             border-radius: 2rem;
             overflow: hidden;
             box-shadow:
-                0 24px 48px rgba(2, 8, 11, 0.24),
-                0 0 32px rgba(114, 215, 230, 0.06);
+                0 24px 48px rgba(0, 0, 0, 0.36),
+                0 0 32px var.$COLOR_GLOW_AMBIENT;
 
             &::after {
                 content: '';
@@ -122,13 +122,13 @@
     }
 
     .eyebrow {
-        letter-spacing: 0.12em;
+        letter-spacing: 0;
         text-transform: uppercase;
     }
 
     .title {
         line-height: 1;
-        letter-spacing: -0.04em;
+        letter-spacing: 0;
         text-wrap: balance;
         max-width: 12ch;
     }
@@ -150,7 +150,7 @@
         position: relative;
         width: 100%;
         height: 6px;
-        background: rgba(238, 249, 252, 0.12);
+        background: var.$COLOR_BORDER;
         border-radius: var.$RADIUS_FULL;
         cursor: pointer;
 
@@ -166,7 +166,7 @@
             width: 100%;
             height: 100%;
             border-radius: var.$RADIUS_FULL;
-            background: var(--b-gradient-primary);
+            background: var.$GRADIENT_PRIMARY;
             transform-origin: left;
         }
 
@@ -178,7 +178,7 @@
             border-radius: var.$RADIUS_FULL;
             background: var.$COLOR_TEXT;
             transform: translate(-50%, -50%);
-            box-shadow: 0 4px 12px rgba(2, 8, 11, 0.28);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.36);
         }
     }
 
@@ -217,9 +217,11 @@
             height: 1.25rem;
         }
 
-        &:hover {
-            color: var.$COLOR_TEXT;
-            background: rgba(238, 249, 252, 0.08);
+        @include var.hover-capable {
+            &:hover {
+                color: var.$COLOR_TEXT;
+                background: var.$COLOR_HOVER;
+            }
         }
 
         &.active {
@@ -230,20 +232,22 @@
     .play-button {
         width: clamp(4.25rem, 14vw, 4.75rem);
         height: clamp(4.25rem, 14vw, 4.75rem);
-        color: #03212b;
-        background: var(--b-gradient-primary);
+        color: var.$COLOR_BACKGROUND;
+        background: var.$GRADIENT_PRIMARY;
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.36),
-            0 12px 24px rgba(29, 153, 178, 0.14);
+            0 12px 24px var.$COLOR_FOCUS_RING;
 
         svg {
             width: 1.75rem;
             height: 1.75rem;
         }
 
-        &:hover {
-            color: #03212b;
-            background: var(--b-gradient-primary);
+        @include var.hover-capable {
+            &:hover {
+                color: var.$COLOR_BACKGROUND;
+                background: var.$GRADIENT_PRIMARY;
+            }
         }
     }
 
@@ -259,9 +263,9 @@
     .secondary-action {
         min-height: 2.25rem;
         padding: 0.5rem 0.75rem;
-        border: 1px solid rgba(193, 244, 251, 0.08);
+        border: 1px solid var.$COLOR_BORDER_SUBTLE;
         border-radius: var.$RADIUS_FULL;
-        background: rgba(238, 249, 252, 0.03);
+        background: var.$COLOR_SURFACE_SUBTLE;
         color: var.$COLOR_TEXT_TERTIARY;
         display: inline-flex;
         align-items: center;
@@ -276,10 +280,12 @@
             height: 0.95rem;
         }
 
-        &:hover {
-            color: var.$COLOR_TEXT;
-            background: rgba(238, 249, 252, 0.08);
-            border-color: rgba(193, 244, 251, 0.14);
+        @include var.hover-capable {
+            &:hover {
+                color: var.$COLOR_TEXT;
+                background: var.$COLOR_HOVER;
+                border-color: var.$COLOR_BORDER;
+            }
         }
     }
 
@@ -297,8 +303,8 @@
         width: 5rem;
         height: 5rem;
         border-radius: 1.5rem;
-        border: 1px solid rgba(193, 244, 251, 0.12);
-        background: rgba(7, 27, 35, 0.44);
+        border: 1px solid var.$COLOR_BORDER;
+        background: var.$COLOR_SURFACE_ITEM;
         color: var.$COLOR_POINT_LIGHT;
         display: flex;
         align-items: center;
@@ -327,8 +333,8 @@
         min-height: 44px;
         padding: 0.75rem 1rem;
         border-radius: var.$RADIUS_FULL;
-        border: 1px solid rgba(193, 244, 251, 0.08);
-        background: rgba(7, 27, 35, 0.4);
+        border: 1px solid var.$COLOR_BORDER_SUBTLE;
+        background: var.$COLOR_SURFACE_ITEM;
         color: var.$COLOR_TEXT_SECONDARY;
         display: inline-flex;
         align-items: center;
@@ -342,10 +348,12 @@
             height: 1rem;
         }
 
-        &:hover {
-            color: var.$COLOR_TEXT;
-            background: rgba(10, 36, 45, 0.68);
-            border-color: rgba(193, 244, 251, 0.16);
+        @include var.hover-capable {
+            &:hover {
+                color: var.$COLOR_TEXT;
+                background: var.$COLOR_SURFACE_INPUT;
+                border-color: var.$COLOR_BORDER;
+            }
         }
 
         &.empty-button-primary {

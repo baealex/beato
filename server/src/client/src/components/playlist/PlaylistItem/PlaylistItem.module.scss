@@ -1,52 +1,76 @@
 @use '~/styles/var';
 
-$SIZE_ICON: 40px;
-
 .PlaylistItem {
-    color: var.$COLOR_TEXT;
-    font-size: 0.875rem;
-    padding: 1rem;
+    width: 100%;
+    min-width: 0;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    width: 100%;
+}
 
-    @media (min-width: 1024px) {
+.mainButton {
+    flex: 1;
+    min-width: 0;
+    padding: var.$SPACING_MD;
+    border: 0;
+    border-radius: var.$RADIUS_MD;
+    background: transparent;
+    color: var.$COLOR_TEXT;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var.$SPACING_MD;
+    transition: var.$TRANSITION_FAST;
+    transition-property: background-color;
+
+    @include var.hover-capable {
         &:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var.$COLOR_HOVER;
         }
     }
 
-    .title {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        gap: 0.25rem;
+    &:active {
+        background-color: var.$COLOR_ACTIVE;
     }
 
-    .count {
-        font-size: 0.875rem;
-        color: var.$COLOR_TEXT_TERTIARY;
+    &:focus-visible {
+        outline: 2px solid var.$COLOR_FOCUS;
+        outline-offset: -2px;
     }
+}
 
-    .cover {
-        width: 60px;
-        height: 60px;
-    }
+.title {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var.$SPACING_XS;
+}
 
-    .icon-button {
-        color: var.$COLOR_TEXT;
-        width: $SIZE_ICON;
-        height: $SIZE_ICON;
-        background: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+.name,
+.count {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
-        svg {
-            width: 1.125rem;
-            height: 1.125rem;
-        }
-    }
+.name {
+    font-size: var.$TEXT_SIZE_SM;
+    font-weight: var.$FONT_WEIGHT_MEDIUM;
+}
+
+.count {
+    color: var.$COLOR_TEXT_TERTIARY;
+    font-size: var.$TEXT_SIZE_XS;
+}
+
+.cover {
+    width: 60px;
+    height: 60px;
+    border-radius: var.$RADIUS_MD;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.icon-button {
+    margin-right: var.$SPACING_SM;
 }

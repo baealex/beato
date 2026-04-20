@@ -7,7 +7,6 @@ import { confirm } from '~/modules/confirm';
 import {
     AudioSettingsSection,
     ConnectorsSection,
-    ExperimentalSection,
     PlayModeSection,
     StabilityModeSection,
     SynchronizationSection,
@@ -40,11 +39,8 @@ export default function Setting() {
     return (
         <div className={styles.container}>
             <div className={styles.settingsHeader}>
-                <Text as="h1" size="2xl" weight="bold">
+                <Text as="h1" size="xl" weight="bold">
                     {appCopy.settings.title}
-                </Text>
-                <Text as="p" variant="secondary">
-                    {appCopy.settings.description}
                 </Text>
             </div>
 
@@ -55,7 +51,6 @@ export default function Setting() {
                 <ThemeSection shouldStable={isAppChannel || isStabilityModeEnabled} />
                 <ConnectorsSection />
                 {!isAppChannel && <StabilityModeSection />}
-                <ExperimentalSection />
                 <TroubleshootingSection />
             </div>
 

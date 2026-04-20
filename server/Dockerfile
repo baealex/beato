@@ -30,6 +30,8 @@ WORKDIR /app
 COPY --from=server /app ./
 COPY --from=client /app/dist ./client/dist
 
+EXPOSE 44100
+
 RUN ln -s /app/prisma/data /data
 RUN ln -s /app/cache /cache
 RUN ln -s /app/music /music

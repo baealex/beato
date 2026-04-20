@@ -119,10 +119,10 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
         <SettingSection
             title="Synchronization"
             icon={<SyncIcon />}
-            description="Keep your music library up to date with the server.">
+            description="Update the local library from the server.">
             <SettingItem
                 title="Sync Music from Server"
-                description="Update your local music library with the latest content from the server">
+                description="Run a normal sync, or force one when needed.">
                 <div>
                     {progressMessage && (
                         <div className={styles.progressContainer}>
@@ -131,105 +131,112 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                                     className={`${styles.progressIndicator} ${isSyncing ? styles.animating : ''}`}
                                 />
                             </div>
-                            <p className={styles.progressMessage}>{progressMessage}</p>
+                            <Text as="p" size="sm" variant="secondary" className={styles.progressMessage}>
+                                {progressMessage}
+                            </Text>
                         </div>
                     )}
 
                     <div className={styles.buttonContainer}>
-                        <Button
-                            disabled={isSyncing}
-                            onClick={() => handleSync(false)}>
+                        <Button disabled={isSyncing} onClick={() => handleSync(false)}>
                             Sync
                         </Button>
-                        <Button
-                            disabled={isSyncing}
-                            onClick={() => handleSync(true)}>
+                        <Button disabled={isSyncing} onClick={() => handleSync(true)}>
                             Force Sync
                         </Button>
                     </div>
-
-                    {latestSyncReport && (
-                        <div className={styles.reportCard}>
-                            <div className={styles.reportHeader}>
-                                <div>
-                                    <Text as="h5" size="md" weight="semibold">
-                                        Latest Sync Report
-                                    </Text>
-                                    <Text as="p" variant="tertiary" size="sm">
-                                        Started {formatTimestamp(latestSyncReport.startedAt)}
-                                    </Text>
-                                </div>
-                                <span className={`${styles.statusBadge} ${styles[latestSyncReport.status]}`}>
-                                    {latestSyncReport.status}
-                                </span>
-                            </div>
-
-                            <div className={styles.summaryGrid}>
-                                <div className={styles.summaryItem}>
-                                    <span className={styles.summaryLabel}>Scanned</span>
-                                    <strong>{latestSyncReport.scannedFiles}</strong>
-                                </div>
-                                <div className={styles.summaryItem}>
-                                    <span className={styles.summaryLabel}>Indexed</span>
-                                    <strong>{latestSyncReport.indexedFiles}</strong>
-                                </div>
-                                <div className={styles.summaryItem}>
-                                    <span className={styles.summaryLabel}>Created</span>
-                                    <strong>{latestSyncReport.createdCount}</strong>
-                                </div>
-                                <div className={styles.summaryItem}>
-                                    <span className={styles.summaryLabel}>Moved</span>
-                                    <strong>{latestSyncReport.movedCount}</strong>
-                                </div>
-                                <div className={styles.summaryItem}>
-                                    <span className={styles.summaryLabel}>Duplicate</span>
-                                    <strong>{latestSyncReport.duplicateCount}</strong>
-                                </div>
-                                <div className={styles.summaryItem}>
-                                    <span className={styles.summaryLabel}>Missing</span>
-                                    <strong>{latestSyncReport.missingCount}</strong>
-                                </div>
-                            </div>
-
-                            <div className={styles.reportMeta}>
-                                <Text as="p" variant="tertiary" size="sm">
-                                    Completed {formatTimestamp(latestSyncReport.completedAt)}
-                                </Text>
-                                <Text as="p" variant="tertiary" size="sm">
-                                    Mode: {latestSyncReport.force ? 'Force sync' : 'Normal sync'}
-                                </Text>
-                            </div>
-
-                            <div className={styles.reportDetails}>
-                                {sections.map((section) => (
-                                    <details key={section.key} className={styles.detailGroup}>
-                                        <summary>
-                                            <span>{section.title}</span>
-                                            <span>{section.count}</span>
-                                        </summary>
-                                        {section.items.length === 0 ? (
-                                            <p className={styles.emptyDetail}>No items in this group.</p>
-                                        ) : (
-                                            <ul className={styles.detailList}>
-                                                {section.items.map((item) => (
-                                                    <li key={item.id} className={styles.detailItem}>
-                                                        <Text as="p" size="sm" weight="semibold">
-                                                            {item.musicName}
-                                                        </Text>
-                                                        <Text as="p" variant="tertiary" size="sm">
-                                                            {buildDetailLabel(item)}
-                                                        </Text>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        )}
-                                    </details>
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </div>
             </SettingItem>
+
+            {latestSyncReport && (
+                <div className={styles.reportCard}>
+                    <div className={styles.reportHeader}>
+                        <div>
+                            <Text as="h5" size="sm" weight="semibold">
+                                Latest Sync Report
+                            </Text>
+                            <Text as="p" variant="muted" size="xs">
+                                Started {formatTimestamp(latestSyncReport.startedAt)}
+                            </Text>
+                        </div>
+                        <span className={`${styles.statusBadge} ${styles[latestSyncReport.status]}`}>
+                            {latestSyncReport.status}
+                        </span>
+                    </div>
+
+                    <div className={styles.summaryGrid}>
+                        {([
+                            {
+                                label: 'Scanned',
+                                value: latestSyncReport.scannedFiles
+                            },
+                            {
+                                label: 'Indexed',
+                                value: latestSyncReport.indexedFiles
+                            },
+                            {
+                                label: 'Created',
+                                value: latestSyncReport.createdCount
+                            },
+                            {
+                                label: 'Moved',
+                                value: latestSyncReport.movedCount
+                            },
+                            {
+                                label: 'Duplicate',
+                                value: latestSyncReport.duplicateCount
+                            },
+                            {
+                                label: 'Missing',
+                                value: latestSyncReport.missingCount
+                            }
+                        ] as const).map(({ label, value }) => (
+                            <div key={label} className={styles.summaryItem}>
+                                <Text as="span" size="xs" variant="muted">{label}</Text>
+                                <Text as="strong" size="sm" weight="semibold">{value}</Text>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className={styles.reportMeta}>
+                        <Text as="p" variant="muted" size="xs">
+                            Completed {formatTimestamp(latestSyncReport.completedAt)}
+                        </Text>
+                        <Text as="p" variant="muted" size="xs">
+                            {latestSyncReport.force ? 'Force sync' : 'Normal sync'}
+                        </Text>
+                    </div>
+
+                    <div className={styles.reportDetails}>
+                        {sections.map((section) => (
+                            <details key={section.key} className={styles.detailGroup}>
+                                <summary>
+                                    <Text as="span" size="sm" weight="semibold">{section.title}</Text>
+                                    <Text as="span" size="sm" variant="muted">{section.count}</Text>
+                                </summary>
+                                {section.items.length === 0 ? (
+                                    <Text as="p" size="sm" variant="muted" className={styles.emptyDetail}>
+                                        No items in this group.
+                                    </Text>
+                                ) : (
+                                    <ul className={styles.detailList}>
+                                        {section.items.map((item) => (
+                                            <li key={item.id} className={styles.detailItem}>
+                                                <Text as="p" size="sm" weight="semibold">
+                                                    {item.musicName}
+                                                </Text>
+                                                <Text as="p" size="xs" variant="muted">
+                                                    {buildDetailLabel(item)}
+                                                </Text>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </details>
+                        ))}
+                    </div>
+                </div>
+            )}
         </SettingSection>
     );
 };

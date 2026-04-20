@@ -1,174 +1,162 @@
+@use '~/styles/var';
+
 .buttonContainer {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
+    display: flex;
+    gap: var.$SPACING_SM;
+    margin-top: var.$SPACING_MD;
 }
 
 .reportCard {
-  margin-top: 20px;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid var(--b-color-border, rgba(255, 255, 255, 0.08));
-  background: rgba(var(--b-color-hover-rgb), 0.04);
+    padding: 0 0 var.$SPACING_XS;
+    border-top: 1px solid var.$COLOR_BORDER_SUBTLE;
 }
 
 .reportHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var.$SPACING_SM;
 }
 
 .statusBadge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: var.$RADIUS_FULL;
+    font-size: var.$TEXT_SIZE_XS;
+    font-weight: var.$FONT_WEIGHT_SEMIBOLD;
 
-  &.success {
-    background: rgba(56, 189, 120, 0.14);
-    color: #38bd78;
-  }
+    &.success {
+        background: rgba(56, 189, 120, 0.1);
+        color: rgba(129, 222, 168, 0.92);
+    }
 
-  &.error {
-    background: rgba(244, 63, 94, 0.14);
-    color: #f43f5e;
-  }
+    &.error {
+        background: rgba(244, 63, 94, 0.1);
+        color: rgba(255, 154, 173, 0.92);
+    }
 }
 
 .summaryGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var.$SPACING_SM;
+    margin-top: var.$SPACING_MD;
 }
 
 .summaryItem {
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(var(--b-color-hover-rgb), 0.08);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+    padding: var.$SPACING_SM 0;
+    display: flex;
+    flex-direction: column;
+    gap: var.$SPACING_XS;
 }
 
 .summaryLabel {
-  font-size: 0.75rem;
-  opacity: 0.75;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+    font-size: var.$TEXT_SIZE_XS;
+    color: var.$COLOR_TEXT_MUTED;
 }
 
 .reportMeta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var.$SPACING_SM;
+    margin-top: var.$SPACING_MD;
 }
 
 .reportDetails {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    margin-top: var.$SPACING_MD;
+    display: flex;
+    flex-direction: column;
+    gap: var.$SPACING_SM;
 }
 
 .detailGroup {
-  border-radius: 12px;
-  background: rgba(var(--b-color-hover-rgb), 0.06);
-  overflow: hidden;
+    border-top: 1px solid var.$COLOR_BORDER_SUBTLE;
+    background: transparent;
+    overflow: hidden;
 
-  summary {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 14px;
-    cursor: pointer;
-    font-weight: 600;
-  }
+    summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var.$SPACING_SM 0;
+        cursor: pointer;
+        font-weight: var.$FONT_WEIGHT_SEMIBOLD;
+    }
 
-  summary::-webkit-details-marker {
-    display: none;
-  }
+    summary::-webkit-details-marker {
+        display: none;
+    }
 }
 
 .detailList {
-  list-style: none;
-  margin: 0;
-  padding: 0 14px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 var.$SPACING_MD;
+    display: flex;
+    flex-direction: column;
+    gap: var.$SPACING_SM;
 }
 
 .detailItem {
-  padding-top: 10px;
-  border-top: 1px solid rgba(var(--b-color-hover-rgb), 0.12);
+    padding-top: var.$SPACING_SM;
+    border-top: 1px solid var.$COLOR_BORDER_SUBTLE;
 
-  &:first-child {
-    border-top: 0;
-    padding-top: 0;
-  }
+    &:first-child {
+        border-top: 0;
+        padding-top: 0;
+    }
 }
 
 .emptyDetail {
-  margin: 0;
-  padding: 0 14px 14px;
-  font-size: 0.9rem;
-  opacity: 0.75;
+    margin: 0;
+    padding: 0 0 var.$SPACING_MD;
+    font-size: var.$TEXT_SIZE_SM;
+    color: var.$COLOR_TEXT_MUTED;
 }
 
 .progressContainer {
-  margin: 16px 0;
-  width: 100%;
-  
-  .progressBar {
-    height: 6px;
-    background-color: var(--b-color-hover, rgba(var(--b-color-hover-rgb), 0.1));
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-  
-  .progressIndicator {
-    height: 100%;
-    width: 30%;
-    background: linear-gradient(90deg, var(--b-color-primary-button), var(--b-color-primary-button-hover, var(--b-color-primary-button)));
-    border-radius: 3px;
-    
-    &.animating {
-      animation: progress 1.5s ease-in-out infinite;
+    margin: var.$SPACING_MD 0;
+    width: 100%;
+
+    .progressBar {
+        height: 4px;
+        background-color: var.$COLOR_HOVER;
+        border-radius: var.$RADIUS_FULL;
+        overflow: hidden;
+        margin-bottom: var.$SPACING_SM;
     }
-  }
-  
-  .progressMessage {
-    font-size: 0.85rem;
-    color: var(--b-color-text);
-    opacity: 0.8;
-    margin: 0;
-  }
+
+    .progressIndicator {
+        height: 100%;
+        width: 30%;
+        background: var(--b-gradient-primary);
+        border-radius: var.$RADIUS_FULL;
+
+        &.animating {
+            animation: progress 1.5s ease-in-out infinite;
+        }
+    }
+
+    .progressMessage {
+        font-size: var.$TEXT_SIZE_SM;
+        color: var.$COLOR_TEXT_SECONDARY;
+        margin: 0;
+    }
 }
 
 @keyframes progress {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(300%);
-  }
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(300%); }
 }
 
 @media (max-width: 720px) {
-  .summaryGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+    .summaryGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
-  .reportHeader {
-    flex-direction: column;
-  }
+    .reportHeader {
+        flex-direction: column;
+    }
 }

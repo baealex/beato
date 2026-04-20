@@ -26,16 +26,19 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
 
     const containerRef = useRef<HTMLDivElement>(null);
     const shouldBeScroll = useRef(true);
+    const searchParamsRef = useRef(searchParams);
+    const setSearchParamsRef = useRef(setSearchParams);
     const isSubPage = isSubPagePath(location.pathname);
     const subPagePresentation = resolveSubPagePresentation(location.pathname);
     const hasSubPageHeader = shouldRenderSubPageHeader(location.pathname);
     const hideMiniPlayer = shouldHideMiniPlayer(location.pathname);
 
     useEffect(() => {
-        if (!isSubPage) {
-            return;
-        }
+        searchParamsRef.current = searchParams;
+        setSearchParamsRef.current = setSearchParams;
+    });
 
+    useEffect(() => {
         if (containerRef.current && shouldBeScroll.current) {
             containerRef.current.scrollTop = parseInt(searchParams.get('py') || '0');
             shouldBeScroll.current = false;
@@ -46,7 +49,7 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     }, [containerRef, isSubPage, shouldBeScroll, location.pathname, searchParams]);
 
     useEffect(() => {
-        if (!isSubPage || !containerRef.current) {
+        if (!containerRef.current) {
             return;
         }
 
@@ -58,12 +61,13 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
             }
 
             timer = setTimeout(() => {
-                searchParams.set('py', containerRef.current?.scrollTop.toString() || '0');
-                setSearchParams(searchParams, { replace: true });
-            }, 50);
+                const params = searchParamsRef.current;
+                params.set('py', containerRef.current?.scrollTop.toString() || '0');
+                setSearchParamsRef.current(params, { replace: true });
+            }, 200);
         };
 
-        containerRef.current.addEventListener('scroll', handleScroll);
+        containerRef.current.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
             if (timer) {
@@ -71,14 +75,14 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
             }
             containerRef.current?.removeEventListener('scroll', handleScroll);
         };
-    }, [containerRef, isSubPage, location.pathname, searchParams, setSearchParams]);
+    }, [containerRef, isSubPage, location.pathname]);
 
     return (
         <main>
             {!isSubPage && <SiteHeader />}
             <div className={cx('contentFrame', { hasSubPage: isSubPage })}>
                 {!isSubPage && (
-                    <div className={cx('pageContent', 'main-container')}>
+                    <div ref={containerRef} className={cx('pageContent', 'main-container')}>
                         <Suspense fallback={<Loading />}>
                             <Outlet />
                         </Suspense>

@@ -24,6 +24,8 @@ Ocean Wave is a self-hosted music streaming app for your private library. It is 
 
 ⚠️ **Warning** This application under development may be unstable.
 
+Ocean Wave uses port `44100` by default, matching the 44.1kHz audio sample rate.
+
 ### Use Node.js
 
 Link your music directory into `server/src/music`.
@@ -36,7 +38,7 @@ npm install
 npm start
 ```
 
-Then open `http://localhost:4000`.
+Then open `http://localhost:44100`.
 
 ### Use Docker
 
@@ -47,11 +49,11 @@ docker run \
     -v {YOUR_MUSIC_PATH}:/music \
     -v ./cache:/cache \
     -v ./data:/data \
-    -p 4000:4000 \
+    -p 44100:44100 \
     baealex/ocean-wave
 ```
 
-Then open `http://localhost:4000`.
+Then open `http://localhost:44100`.
 
 ### Password Mode
 
@@ -76,6 +78,6 @@ docker run \
     -v {YOUR_MUSIC_PATH}:/music \
     -v ./cache:/cache \
     -v ./data:/data \
-    -p 4000:4000 \
+    -p 44100:44100 \
     baealex/ocean-wave
 ```

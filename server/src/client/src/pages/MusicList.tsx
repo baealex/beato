@@ -6,6 +6,7 @@ import {
     Button,
     FixedVirtualList,
     StickyHeader,
+    StickyHeaderActions,
     ItemSortPanelContent,
     Loading,
     SearchField
@@ -58,25 +59,21 @@ export default function Music() {
                     ariaLabel="Search music"
                     onChange={handleSearchChange}
                 />
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: '8px'
-                    }}>
+                <StickyHeaderActions>
                     <Button onClick={() => queueStore.reset(filteredMusics.map(music => music.id))}>
                         <Icon.Play /> Play
                     </Button>
                     <Button
+                        size="sm"
                         onClick={() => panel.open({
                             title: 'Music Sort',
                             content: (
                                 <ItemSortPanelContent items={musicStore.sortItems} />
                             )
                         })}>
-                        <Icon.Sort /> Sort
+                        <Icon.Sort />
                     </Button>
-                </div>
+                </StickyHeaderActions>
             </StickyHeader>
             {!loaded && (
                 <Loading />

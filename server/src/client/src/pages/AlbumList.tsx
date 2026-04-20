@@ -16,6 +16,7 @@ import * as Icon from '~/icon';
 import { panel } from '~/modules/panel';
 
 import { albumStore } from '~/store/album';
+import styles from './AlbumList.module.scss';
 
 const RENDER_LIMIT = 100;
 
@@ -64,13 +65,14 @@ export default function Album() {
                     onChange={handleSearchChange}
                 />
                 <Button
+                    size="sm"
                     onClick={() => panel.open({
                         title: 'Album Sort',
                         content: (
                             <ItemSortPanelContent items={albumStore.sortItems} />
                         )
                     })}>
-                    <Icon.Sort /> Sort
+                    <Icon.Sort />
                 </Button>
             </StickyHeader>
             {!loaded && (
@@ -88,12 +90,9 @@ export default function Album() {
                 ))}
             </Grid>
             {loaded && filteredAlbums.length > renderLimit && (
-                <div style={{ padding: '0 16px 16px' }}>
+                <div className={styles.loadMore}>
                     <Button
-                        style={{
-                            width: '100%',
-                            justifyContent: 'center'
-                        }}
+                        fullWidth
                         onClick={handleReadMore}>
                         Load More
                     </Button>

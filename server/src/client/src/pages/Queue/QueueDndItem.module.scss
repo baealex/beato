@@ -7,14 +7,14 @@
     min-height: 4.875rem;
     border-radius: 1rem;
     border: 1px solid transparent;
-    background: rgba(238, 249, 252, 0.02);
+    background: var.$COLOR_SURFACE_SUBTLE;
     transition: var.$TRANSITION_FAST;
     transition-property: background-color, border-color, opacity;
 
     &.current {
-        background: rgba(10, 36, 45, 0.44);
-        border-color: rgba(193, 244, 251, 0.08);
-        box-shadow: 0 12px 28px rgba(2, 8, 11, 0.14);
+        background: var.$COLOR_SURFACE_ITEM;
+        border-color: rgba(160, 100, 255, 0.08);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
     }
 
     &.past {
@@ -22,8 +22,8 @@
     }
 
     &.selected {
-        border-color: rgba(193, 244, 251, 0.18);
-        background: rgba(10, 36, 45, 0.5);
+        border-color: rgba(160, 100, 255, 0.18);
+        background: var.$COLOR_SURFACE_ITEM;
     }
 }
 
@@ -59,18 +59,20 @@
         height: 1rem;
     }
 
-    &:hover {
-        color: var.$COLOR_TEXT;
-        background: rgba(238, 249, 252, 0.08);
+    @include var.hover-capable {
+        &:hover {
+            color: var.$COLOR_TEXT;
+            background: var.$COLOR_HOVER;
+        }
     }
 }
 
 .leading-index {
     margin-left: 0.25rem;
-    background: rgba(238, 249, 252, 0.04);
+    background: var.$COLOR_SURFACE_SUBTLE;
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: 0;
 }
 
 .leading-button {
@@ -140,11 +142,11 @@
     flex-shrink: 0;
     padding: 0.2rem 0.45rem;
     border-radius: var.$RADIUS_FULL;
-    background: rgba(193, 244, 251, 0.08);
+    background: var.$COLOR_BORDER_SUBTLE;
     color: var.$COLOR_TEXT_SECONDARY;
     font-size: 0.6875rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0;
     text-transform: uppercase;
 }
 

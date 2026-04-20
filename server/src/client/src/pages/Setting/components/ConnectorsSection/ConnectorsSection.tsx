@@ -1,6 +1,6 @@
 import { useStore } from 'badland-react';
 
-import { SettingSection } from '~/components/shared';
+import { SettingSection, Text } from '~/components/shared';
 import { appCopy } from '~/config/copy';
 import { ConnectorListener, socket } from '~/socket';
 import { connectorStore } from '~/store/connector';
@@ -37,11 +37,17 @@ export const ConnectorsSection = () => {
             title="Connected Devices"
             icon={<DevicesIcon />}
             description={appCopy.connectors.description}>
-            <div>
+            <div className={styles.connectorList}>
                 {connectors.map((connector) => (
                     <div key={connector.id} className={styles.connector}>
-                        <span>{connector.userAgent}</span>
-                        <span className={styles.date}>{new Date(connector.connectedAt).toLocaleDateString()}</span>
+                        <div className={styles.connectorCopy}>
+                            <Text as="span" size="sm" className={styles.userAgent}>
+                                {connector.userAgent}
+                            </Text>
+                            <Text as="span" size="xs" variant="muted">
+                                Connected {new Date(connector.connectedAt).toLocaleDateString()}
+                            </Text>
+                        </div>
                         {connector.id === socket.id ? (
                             <span className={styles.thisDevice}>This device</span>
                         ) : (

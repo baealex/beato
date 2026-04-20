@@ -55,13 +55,14 @@ export default function ArtistList() {
                     onChange={handleSearchChange}
                 />
                 <Button
+                    size="sm"
                     onClick={() => panel.open({
                         title: 'Artist Sort',
                         content: (
                             <ItemSortPanelContent items={artistStore.sortItems} />
                         )
                     })}>
-                    <Icon.Sort /> Sort
+                    <Icon.Sort />
                 </Button>
             </StickyHeader>
             {!loaded && (

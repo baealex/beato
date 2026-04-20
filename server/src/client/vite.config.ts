@@ -35,14 +35,14 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',
         proxy: {
-            '/api': { target: 'http://localhost:4000' },
-            '/cache': { target: 'http://localhost:4000' },
-            '/graphql': { target: 'http://localhost:4000' },
+            '/api': { target: 'http://localhost:44100' },
+            '/cache': { target: 'http://localhost:44100' },
+            '/graphql': { target: 'http://localhost:44100' },
             '/socket.io': {
-                target: 'http://localhost:4000',
+                target: 'http://localhost:44100',
                 ws: true,
                 onProxyReqWs: (proxyReq) => {
-                    proxyReq.setHeader('Origin', 'http://localhost:4000');
+                    proxyReq.setHeader('Origin', 'http://localhost:44100');
                 }
             }
         }

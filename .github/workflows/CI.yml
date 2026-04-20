@@ -6,11 +6,23 @@ on:
       - main
     paths:
       - 'server/src/**'
+      - 'server/Dockerfile'
+      - 'README.md'
+      - 'docker-compose.yml'
+      - 'package.json'
+      - 'tests/branding/**'
+      - '.github/workflows/**'
   pull_request:
     branches:
       - main
     paths:
       - 'server/src/**'
+      - 'server/Dockerfile'
+      - 'README.md'
+      - 'docker-compose.yml'
+      - 'package.json'
+      - 'tests/branding/**'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 jobs:
@@ -27,6 +39,9 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Test (Repository Metadata)
+      run: npm run test:metadata
 
     - name: Install (Server)
       run: npx pnpm i

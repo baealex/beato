@@ -4,8 +4,7 @@
     position: fixed;
     inset: 0;
     z-index: 122;
-    background: rgba(2, 9, 12, 0.62);
-    backdrop-filter: blur(10px);
+    background: rgba(2, 9, 12, 0.72);
     animation: fade-in 180ms ease;
 }
 
@@ -18,7 +17,7 @@
     z-index: 123;
     border-radius: var.$RADIUS_LG;
     border: 1px solid var.$COLOR_BORDER_SUBTLE;
-    background: rgba(8, 28, 36, 0.97);
+    background: var.$COLOR_SURFACE_MODAL;
     box-shadow: var.$SHADOW_SUB;
     padding: 1rem;
     color: var.$COLOR_TEXT;
@@ -38,7 +37,7 @@
 }
 
 .title {
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
 }
 
 .description {
@@ -51,7 +50,7 @@
     padding: 0.875rem 1rem;
     border-radius: 1rem;
     border: 1px solid var.$COLOR_BORDER_SUBTLE;
-    background: rgba(10, 36, 45, 0.78);
+    background: var.$COLOR_SURFACE_INPUT;
     color: var.$COLOR_TEXT;
     font: inherit;
     font-size: var.$TEXT_SIZE_MD;
@@ -65,8 +64,8 @@
     &:focus {
         outline: none;
         border-color: var.$COLOR_FOCUS;
-        box-shadow: 0 0 0 3px rgba(114, 215, 230, 0.14);
-        background: rgba(12, 42, 53, 0.9);
+        box-shadow: 0 0 0 3px var.$COLOR_FOCUS_RING;
+        background: var.$COLOR_SURFACE_INPUT_FOCUS;
     }
 }
 

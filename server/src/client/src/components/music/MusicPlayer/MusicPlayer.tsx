@@ -73,16 +73,13 @@ const MusicPlayer = () => {
                     className={cx('trackInfo')}
                     onClick={() => currentMusic && navigate('/player')}>
                     <div className={cx('albumArt')}>
-                        {currentMusic?.album.cover ? (
-                            <Image
-                                src={currentMusic.album.cover}
-                                alt={currentMusic.album.name}
-                            />
-                        ) : (
-                            <div className={cx('placeholder')}>
-                                <Icon.Music />
-                            </div>
-                        )}
+                        <Image
+                            className={cx('art')}
+                            src={currentMusic?.album.cover}
+                            alt={currentMusic?.album.name ?? ''}
+                            loading="eager"
+                            icon={<Icon.Disc />}
+                        />
                     </div>
                     <div className={cx('meta')}>
                         <span className={cx('title')}>

@@ -1,50 +1,87 @@
-import { useEffect, useRef, type ImgHTMLAttributes, type ReactEventHandler } from 'react';
-import { getImage } from '~/modules/image';
+import placeholderStyles from './Image.module.scss';
 
-const PLACEHOLDER_IMAGE =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NQV1f/DwACYwF11mMyYQAAAABJRU5ErkJggg==';
-const FALLBACK_APPLIED_FLAG = 'fallbackApplied';
+import {
+    useState, useEffect, useRef, type ImgHTMLAttributes, type ReactNode, type ReactEventHandler
+} from 'react';
 
 interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
     src?: string;
     loading?: 'lazy' | 'eager';
+    icon?: ReactNode;
 }
 
 export default function Image({
     src,
     loading = 'lazy',
+    icon,
+    className,
+    style,
     onError,
     ...props
 }: ImageProps) {
+    const [failed, setFailed] = useState(!src);
     const ref = useRef<HTMLImageElement>(null);
+
+    useEffect(() => {
+        setFailed(!src);
+    }, [src]);
 
     const handleError: ReactEventHandler<HTMLImageElement> = (event) => {
         onError?.(event);
-
-        const image = event.currentTarget;
-        if (image.dataset[FALLBACK_APPLIED_FLAG] === 'true') {
-            return;
-        }
-
-        image.dataset[FALLBACK_APPLIED_FLAG] = 'true';
-        image.src = getImage();
+        setFailed(true);
     };
 
-    useEffect(() => {
-        if (ref.current) {
-            delete ref.current.dataset[FALLBACK_APPLIED_FLAG];
+    if (failed) {
+        if (icon) {
+            const classes = [placeholderStyles.placeholder, className].filter(Boolean).join(' ');
+            return <div className={classes} style={style}>{icon}</div>;
         }
-    }, [src]);
+        return null;
+    }
+
+    if (loading !== 'lazy') {
+        return (
+            <img
+                ref={ref}
+                src={src}
+                loading={loading}
+                className={className}
+                style={style}
+                onError={handleError}
+                {...props}
+            />
+        );
+    }
+
+    return (
+        <LazyImage
+            ref={ref}
+            src={src!}
+            className={className}
+            style={style}
+            onError={handleError}
+            {...props}
+        />
+    );
+}
+
+interface LazyImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
+    src: string;
+}
+
+const PLACEHOLDER_IMAGE =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NQV1f/DwACYwF11mMyYQAAAABJRU5ErkJggg==';
+
+function LazyImage({ src, onError, ...props }: LazyImageProps & { ref?: React.Ref<HTMLImageElement> }) {
+    const ref = useRef<HTMLImageElement>(null);
 
     useEffect(() => {
-        if (!ref.current || loading !== 'lazy') {
-            return;
-        }
+        if (!ref.current) return;
 
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
                 const img = entry.target as HTMLImageElement;
-                img.src = getImage(src);
+                img.src = src;
                 observer.unobserve(img);
             }
         });
@@ -54,27 +91,15 @@ export default function Image({
         return () => {
             observer.disconnect();
         };
-    }, [loading, src]);
+    }, [src]);
 
     return (
-        <>
-            {loading !== 'lazy' ? (
-                <img
-                    ref={ref}
-                    src={getImage(src)}
-                    loading={loading}
-                    onError={handleError}
-                    {...props}
-                />
-            ) : (
-                <img
-                    ref={ref}
-                    src={PLACEHOLDER_IMAGE}
-                    loading={loading}
-                    onError={handleError}
-                    {...props}
-                />
-            )}
-        </>
+        <img
+            ref={ref}
+            src={PLACEHOLDER_IMAGE}
+            loading="lazy"
+            onError={onError}
+            {...props}
+        />
     );
 }

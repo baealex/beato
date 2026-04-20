@@ -129,7 +129,7 @@ const Equalizer = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <h1 className={styles.title}>Audio Equalizer</h1>
-                <p className={styles.description}>Adjust the sliders to fine-tune your audio experience</p>
+                <p className={styles.description}>Adjust playback tone by frequency band.</p>
             </div>
 
             <EqualizerPreset

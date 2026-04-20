@@ -33,8 +33,7 @@ const EqualizerPreset = ({
         onSelectPreset(preset);
     };
 
-    const handleDeleteClick = (e: React.MouseEvent, presetId: string) => {
-        e.stopPropagation(); // Prevent triggering the preset selection
+    const handleDeleteClick = (presetId: string) => {
         if (onDeletePreset) {
             onDeletePreset(presetId);
             if (activePreset === presetId) {
@@ -49,22 +48,27 @@ const EqualizerPreset = ({
         <div className={styles.presetContainer}>
             <div className={styles.presetButtonGroup}>
                 {presets.map((preset) => (
-                    <button
-                        key={preset.id}
-                        className={`${styles.presetButton} ${activePreset === preset.id ? styles.active : ''}`}
-                        onClick={() => handlePresetClick(preset)}>
-                        {preset.name}
+                    <div key={preset.id} className={styles.presetItem}>
+                        <button
+                            type="button"
+                            className={`${styles.presetButton} ${activePreset === preset.id ? styles.active : ''}`}
+                            aria-pressed={activePreset === preset.id}
+                            onClick={() => handlePresetClick(preset)}>
+                            {preset.name}
+                        </button>
                         {isCustomPreset(preset.id) && onDeletePreset && (
-                            <span
-                                className={styles.deleteIcon}
-                                onClick={(e) => handleDeleteClick(e, preset.id)}
-                                title="Delete preset">
+                            <button
+                                type="button"
+                                className={styles.deleteButton}
+                                aria-label={`Delete ${preset.name} preset`}
+                                onClick={() => handleDeleteClick(preset.id)}>
                                 ✕
-                            </span>
+                            </button>
                         )}
-                    </button>
+                    </div>
                 ))}
                 <button
+                    type="button"
                     className={styles.saveButton}
                     onClick={onSaveCurrentAsPreset}>
                     Save Current

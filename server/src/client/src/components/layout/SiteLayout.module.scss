@@ -35,7 +35,7 @@
     &.fullscreen {
         padding-top: 0;
         background:
-            linear-gradient(180deg, rgba(3, 20, 27, 0.98) 0%, rgba(4, 16, 22, 1) 100%);
+            linear-gradient(180deg, rgba(9, 9, 11, 0.98) 0%, rgba(6, 6, 8, 1) 100%);
     }
 
     @media (min-width: 1024px) {
@@ -48,10 +48,8 @@
     inset: 0;
     pointer-events: none;
     background:
-        radial-gradient(circle at 12% 16%, rgba(193, 244, 251, 0.08), transparent 28%),
-        linear-gradient(180deg, rgba(2, 10, 14, 0.3) 0%, rgba(2, 10, 14, 0.62) 100%);
-    opacity: 0;
-    animation: sub-page-backdrop-in 220ms ease forwards;
+        radial-gradient(circle at 12% 16%, rgba(140, 80, 255, 0.05), transparent 28%),
+        linear-gradient(180deg, rgba(9, 9, 11, 0.3) 0%, rgba(9, 9, 11, 0.62) 100%);
 
     @media (min-width: 1024px) {
         display: none;
@@ -72,20 +70,15 @@
     flex-direction: column;
     overflow: hidden;
     background:
-        linear-gradient(180deg, rgba(8, 28, 36, 0.98) 0%, rgba(4, 18, 24, 0.98) 100%);
+        var(--b-gradient-layer);
     border-top: 1px solid var.$COLOR_BORDER_SUBTLE;
     box-shadow:
         0 -10px 32px rgba(0, 0, 0, 0.22),
-        0 0 0 1px rgba(193, 244, 251, 0.03);
-
-    &.stacked {
-        animation: sub-page-stacked-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
+        0 0 0 1px rgba(140, 80, 255, 0.04);
 
     &.sheet {
         border-top-left-radius: 1.5rem;
         border-top-right-radius: 1.5rem;
-        animation: sub-page-sheet-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     &.fullscreen {
@@ -118,7 +111,7 @@
 .subPageContent {
     min-height: 0;
     background:
-        linear-gradient(180deg, rgba(7, 25, 33, 0.52) 0%, rgba(4, 18, 24, 0) 100%);
+        linear-gradient(180deg, rgba(9, 9, 11, 0.52) 0%, rgba(9, 9, 11, 0) 100%);
 
     &.fullscreen {
         flex: 1;
@@ -134,45 +127,3 @@
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .subPageBackdrop,
-    .subPageSurface {
-        animation: none;
-        opacity: 1;
-        transform: none;
-    }
-}
-
-@keyframes sub-page-backdrop-in {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes sub-page-stacked-in {
-    from {
-        opacity: 0.74;
-        transform: translate3d(2rem, 0, 0) scale(0.985);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) scale(1);
-    }
-}
-
-@keyframes sub-page-sheet-in {
-    from {
-        opacity: 0.78;
-        transform: translate3d(0, 1.75rem, 0);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate3d(0, 0, 0);
-    }
-}

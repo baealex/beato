@@ -63,10 +63,10 @@ export const ThemeSection = ({ shouldStable }: ThemeSectionProps) => {
         <SettingSection
             title="Theme"
             icon={<ThemeIcon />}
-            description="Customize the appearance of the application.">
+            description="Choose how the player presents artwork.">
             <SettingItem
                 title="Player Cover"
-                description="Select how album artwork is displayed in the music player.">
+                description="Select the artwork style.">
                 <Select
                     selected={PLAYER_ALBUM_ART_STYLES.find(({ value }) => value === playerAlbumArtStyle)}
                     options={PLAYER_ALBUM_ART_STYLES.filter(({ value }) => shouldStable ? !value.startsWith('visualizer') : true)}

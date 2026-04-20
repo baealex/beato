@@ -147,7 +147,7 @@ describe('sync music identity', () => {
             } as never;
         });
 
-        const workspaceDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'beato-sync-workspace-'));
+        const workspaceDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'ocean-wave-sync-workspace-'));
         workspaceDirectories.push(workspaceDirectory);
         process.env.OCEAN_WAVE_CACHE_PATH = path.join(workspaceDirectory, 'cache');
 
@@ -184,7 +184,7 @@ describe('sync music identity', () => {
 
     it('moves a track to a new path without losing linked data', async () => {
         const contents = createTrackFixture();
-        const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'beato-sync-move-'));
+        const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'ocean-wave-sync-move-'));
         tempDirectories.push(tempDirectory);
 
         const movedPath = createTempTrackFile({
@@ -247,7 +247,7 @@ describe('sync music identity', () => {
 
     it('creates a duplicate row but keeps the normal library scoped to active tracks', async () => {
         const contents = createTrackFixture({ fingerprint: 'duplicate-hash' });
-        const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'beato-sync-duplicate-'));
+        const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'ocean-wave-sync-duplicate-'));
         tempDirectories.push(tempDirectory);
 
         const originalPath = createTempTrackFile({
@@ -315,7 +315,7 @@ describe('sync music identity', () => {
             fingerprint: 'cover-repair-hash',
             picture: 'cover-art-a'
         });
-        const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'beato-sync-cover-repair-'));
+        const tempDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'ocean-wave-sync-cover-repair-'));
         tempDirectories.push(tempDirectory);
 
         const existingPath = createTempTrackFile({

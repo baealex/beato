@@ -4,11 +4,12 @@ const cx = classNames.bind(styles);
 
 import { useEffect, useState } from 'react';
 import { Image } from '~/components/shared';
+import { Disc } from '~/icon';
 import { getOriginalImage } from '~/modules/image';
 
 interface MusicPlayerFluffyStyleProps {
     isPlaying: boolean;
-    src: string;
+    src?: string;
     alt: string;
 }
 
@@ -55,6 +56,7 @@ const MusicPlayerFluffyStyle = ({ isPlaying, src, alt }: MusicPlayerFluffyStyleP
                     style={{ borderRadius }}
                     src={getOriginalImage(src)}
                     alt={alt}
+                    icon={<Disc />}
                 />
             </div>
         </div>

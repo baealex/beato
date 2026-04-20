@@ -3,6 +3,8 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 import Image from '~/components/shared/Image';
+import Text from '~/components/shared/Text';
+import { User } from '~/icon';
 
 interface ArtistListItemProps {
     artistName: string;
@@ -26,16 +28,18 @@ const ArtistListItem = ({
                     className={cx('image')}
                     src={artistCover}
                     alt={artistName}
+                    loading="eager"
+                    icon={<User />}
                 />
             </div>
             <div className={cx('info')}>
-                <div className={cx('name')}>
+                <Text as="div" size="md" weight="semibold" truncate>
                     {artistName}
-                </div>
+                </Text>
                 <div className={cx('count')}>
-                    <span>{albumCount} albums</span>
-                    <span className={cx('separator')}>/</span>
-                    <span>{musicCount} songs</span>
+                    <Text size="xs" variant="tertiary">{albumCount} {albumCount === 1 ? 'album' : 'albums'}</Text>
+                    <Text size="xs" variant="muted">·</Text>
+                    <Text size="xs" variant="tertiary">{musicCount} {musicCount === 1 ? 'song' : 'songs'}</Text>
                 </div>
             </div>
         </div>

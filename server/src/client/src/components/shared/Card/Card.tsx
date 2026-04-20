@@ -2,7 +2,7 @@ import styles from './Card.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
-type CardVariant = 'elevated' | 'flat' | 'glass';
+type CardVariant = 'elevated' | 'flat' | 'outlined';
 type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 type CardRadius = 'md' | 'lg' | 'xl' | '2xl';
 
@@ -11,6 +11,7 @@ interface CardProps {
     padding?: CardPadding;
     radius?: CardRadius;
     interactive?: boolean;
+    overflow?: boolean;
     className?: string;
     onClick?: () => void;
     children: React.ReactNode;
@@ -21,6 +22,7 @@ const Card = ({
     padding = 'md',
     radius = 'lg',
     interactive = false,
+    overflow = false,
     className,
     onClick,
     children
@@ -32,7 +34,10 @@ const Card = ({
                 `variant-${variant}`,
                 `padding-${padding}`,
                 `radius-${radius}`,
-                { interactive },
+                {
+                    interactive,
+                    overflow
+                },
                 className
             )}
             onClick={onClick}>

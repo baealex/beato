@@ -14,14 +14,12 @@ $COLOR_TEXT_SECONDARY: var(--b-color-text-secondary);
 $COLOR_TEXT_TERTIARY: var(--b-color-text-tertiary);
 $COLOR_TEXT_MUTED: var(--b-color-text-muted);
 
-$TEXT_SIZE_XS: 0.6875rem;
-$TEXT_SIZE_SM: 0.8125rem;
-$TEXT_SIZE_MD: 0.9375rem;
-$TEXT_SIZE_BASE: 1rem;
-$TEXT_SIZE_LG: 1.0625rem;
+$TEXT_SIZE_XS: 0.75rem;
+$TEXT_SIZE_SM: 0.875rem;
+$TEXT_SIZE_MD: 1rem;
 $TEXT_SIZE_TITLE: 1.25rem;
-$TEXT_SIZE_XL: 1.375rem;
-$TEXT_SIZE_2XL: clamp(1.75rem, 2vw, 2.125rem);
+$TEXT_SIZE_XL: 1.5rem;
+$TEXT_SIZE_2XL: 2rem;
 
 $LINE_HEIGHT_DEFAULT: 1.45;
 $LINE_HEIGHT_TIGHT: 1.35;
@@ -63,6 +61,23 @@ $APP_SHELL_BACKGROUND: var(--b-app-shell-background);
 $APP_SHELL_BORDER: var(--b-app-shell-border);
 $APP_SHELL_SHADOW: var(--b-app-shell-shadow);
 
+/* GRADIENTS */
+$GRADIENT_PRIMARY: var(--b-gradient-primary);
+$GRADIENT_PAGE:    var(--b-gradient-page);
+$GRADIENT_STICKY:  var(--b-gradient-sticky);
+
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+$COLOR_SURFACE_MODAL: var(--b-color-surface-modal);
+$COLOR_SURFACE_DROPDOWN: var(--b-color-surface-dropdown);
+$COLOR_SURFACE_INPUT: var(--b-color-surface-input);
+$COLOR_SURFACE_INPUT_HOVER: var(--b-color-surface-input-hover);
+$COLOR_SURFACE_INPUT_FOCUS: var(--b-color-surface-input-focus);
+$COLOR_SURFACE_ITEM:        var(--b-color-surface-item);
+$COLOR_SURFACE_SUBTLE:      var(--b-color-surface-subtle);
+$COLOR_GLOW_AMBIENT:        var(--b-color-glow-ambient);
+$COLOR_FOCUS_RING:          var(--b-color-focus-ring);
+$GRADIENT_LAYER:            var(--b-gradient-layer);
+
 /* TRANSITIONS */
 $TRANSITION_FAST: var(--b-transition-fast);
 $TRANSITION_NORMAL: var(--b-transition-normal);
@@ -93,3 +108,9 @@ $CONTROL_HEIGHT_LG: 48px;
 /* LEGACY - deprecated, use new variables */
 $OPACITY_SUB_TEXT: 0.72;
 $OPACITY_TERTIARY_TEXT: 0.48;
+
+@mixin hover-capable {
+    @media (hover: hover) and (pointer: fine) {
+        @content;
+    }
+}

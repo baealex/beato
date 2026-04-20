@@ -10,7 +10,8 @@ import {
     Button,
     StickyHeader,
     VerticalSortable,
-    Flex
+    Flex,
+    IconButton
 } from '~/components/shared';
 import { PlaylistActionPanelContent, PlaylistItem } from '~/components/playlist';
 import { Menu } from '~/icon';
@@ -22,6 +23,7 @@ import { PlaylistListener } from '~/socket';
 import { prompt } from '~/modules/prompt';
 import { playlistStore } from '~/store/playlist';
 import { panel } from '~/modules/panel';
+import styles from './Playlist.module.scss';
 
 function PlaylistDndItem({
     playlist,
@@ -45,23 +47,16 @@ function PlaylistDndItem({
             ref={setNodeRef}
             direction="row"
             align="center"
+            className={styles.playlistRow}
             style={style}
             {...attributes}>
-            <div
-                className="icon-button"
-                {...listeners}
-                style={{
-                    cursor: 'grab',
-                    touchAction: 'none',
-                    marginLeft: '16px'
-                }}>
-                <Menu style={{ width: '16px' }} />
-            </div>
-            <div
-                style={{
-                    flex: 1,
-                    maxWidth: 'calc(100% - 64px)'
-                }}>
+            <IconButton
+                aria-label={`Reorder ${playlist.name}`}
+                className={styles.dragHandle}
+                {...listeners}>
+                <Menu />
+            </IconButton>
+            <div className={styles.playlistItemShell}>
                 <PlaylistItem
                     key={playlist.id}
                     {...playlist}

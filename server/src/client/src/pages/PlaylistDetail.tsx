@@ -8,7 +8,9 @@ import { arrayMove } from '@dnd-kit/sortable';
 
 import {
     ActionBar,
+    ActionBarButton,
     Button,
+    IconButton,
     SortableItem,
     StickyHeader,
     VerticalSortable
@@ -96,12 +98,7 @@ export default function PlaylistDetail() {
                 <PlaylistSummary {...playlist} />
             )}>
             <StickyHeader>
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem'
-                    }}>
+                <div className={styles.headerControl}>
                     <MusicSelector
                         active={isSelectMode}
                         label={isSelectMode ? `${selectedItems.length} selected` : `${playlist.musics.length} musics`}
@@ -113,7 +110,7 @@ export default function PlaylistDetail() {
                     <Icon.Play /> Play
                 </Button>
             </StickyHeader >
-            <div style={{ flex: 1 }}>
+            <div className={styles.listContent}>
                 <VerticalSortable items={playlist.musics.map(({ id }) => id)} onDragEnd={handleDragEnd}>
                     {playlist.musics.map(({ id }) => {
                         const music = musicMap.get(id);
@@ -141,8 +138,11 @@ export default function PlaylistDetail() {
                                 render={({ listeners }) => (
                                     <div className={styles.item}>
                                         {isSelectMode ? (
-                                            <button
-                                                className={`icon-button ${styles.checkbox} ${isSelected ? styles.active : ''}`}
+                                            <IconButton
+                                                aria-label={isSelected ? `Unselect ${music.name}` : `Select ${music.name}`}
+                                                aria-pressed={isSelected}
+                                                active={isSelected}
+                                                className={styles.rowControl}
                                                 onClick={() => {
                                                     if (selectedItems.includes(music.id)) {
                                                         setSelectedItems(selectedItems.filter(item => item !== music.id));
@@ -151,23 +151,16 @@ export default function PlaylistDetail() {
                                                     }
                                                 }}>
                                                 <Icon.CheckBox />
-                                            </button>
+                                            </IconButton>
                                         ) : (
-                                            <div
-                                                className={`icon-button ${styles.checkbox}`}
-                                                {...listeners}
-                                                style={{
-                                                    cursor: 'grab',
-                                                    touchAction: 'none'
-                                                }}>
+                                            <IconButton
+                                                aria-label={`Reorder ${music.name}`}
+                                                className={`${styles.rowControl} ${styles.dragControl}`}
+                                                {...listeners}>
                                                 <Icon.Menu />
-                                            </div>
+                                            </IconButton>
                                         )}
-                                        <div
-                                            style={{
-                                                flex: 1,
-                                                maxWidth: 'calc(100% - 4rem)'
-                                            }}>
+                                        <div className={styles.musicItemShell}>
                                             <MusicListItem
                                                 albumName={music.album.name}
                                                 albumCover={music.album.cover}
@@ -197,17 +190,15 @@ export default function PlaylistDetail() {
             </div>
             {isSelectMode && selectedItems.length > 0 && (
                 <ActionBar>
-                    <button
-                        className="clickable"
+                    <ActionBarButton
                         onClick={() => {
                             selectedItems.forEach(id => queueStore.add(id));
                             setIsSelectMode(false);
                         }}>
                         <Icon.Play />
                         <span>Play</span>
-                    </button>
-                    <button
-                        className="clickable"
+                    </ActionBarButton>
+                    <ActionBarButton
                         onClick={() => panel.open({
                             title: 'Move to playlist',
                             content: (
@@ -222,16 +213,15 @@ export default function PlaylistDetail() {
                         })}>
                         <Icon.Download />
                         <span>Move</span>
-                    </button>
-                    <button
-                        className="clickable"
+                    </ActionBarButton>
+                    <ActionBarButton
                         onClick={async () => {
                             PlaylistListener.removeMusic(playlist.id, selectedItems);
                             setIsSelectMode(false);
                         }}>
                         <Icon.TrashCan />
                         <span>Delete</span>
-                    </button>
+                    </ActionBarButton>
                 </ActionBar>
             )}
         </TwoToneLayout>

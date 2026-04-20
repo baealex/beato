@@ -1,4 +1,5 @@
 version: "2.0"
+name: ocean-wave
 
 services:
   app:
@@ -8,4 +9,4 @@ services:
       - ./cache:/cache
       - ./music:/music
     ports:
-      - 4000:4000
+      - 44100:44100

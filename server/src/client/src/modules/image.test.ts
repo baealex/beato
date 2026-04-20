@@ -3,22 +3,14 @@ import { describe, expect, it } from 'vitest';
 import { getImage, getOriginalImage } from './image';
 
 describe('getImage', () => {
-    it('returns the default artwork when the source is empty', () => {
-        expect(getImage()).toBe('/images/ocean-wave.jpg');
-        expect(getImage('')).toBe('/images/ocean-wave.jpg');
+    it('does not provide default artwork for an empty source', () => {
+        expect(getImage()).toBe('');
+        expect(getImage('')).toBe('');
+        expect(getOriginalImage()).toBe('');
     });
 
-    it('returns the provided source when it exists', () => {
+    it('keeps provided artwork paths and removes resized segments for original artwork surfaces', () => {
         expect(getImage('/cache/resized/42.jpg')).toBe('/cache/resized/42.jpg');
-    });
-});
-
-describe('getOriginalImage', () => {
-    it('keeps the default artwork path intact', () => {
-        expect(getOriginalImage()).toBe('/images/ocean-wave.jpg');
-    });
-
-    it('removes the resized path segment for original artwork surfaces', () => {
         expect(getOriginalImage('/cache/resized/42.jpg')).toBe('/cache/42.jpg');
     });
 });

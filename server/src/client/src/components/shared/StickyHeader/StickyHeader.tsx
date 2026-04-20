@@ -8,9 +8,19 @@ interface StickyHeaderProps {
     children?: React.ReactNode;
 }
 
+interface StickyHeaderActionsProps {
+    children?: React.ReactNode;
+}
+
 const StickyHeader = ({ children }: StickyHeaderProps) => {
     return (
         <div className={cx('StickyHeader')}>{children}</div>
+    );
+};
+
+export const StickyHeaderActions = ({ children }: StickyHeaderActionsProps) => {
+    return (
+        <div className={cx('actions')}>{children}</div>
     );
 };
 

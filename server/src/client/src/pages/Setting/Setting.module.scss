@@ -9,21 +9,8 @@
 
 .settingsHeader {
     margin-bottom: var.$SPACING_XL;
-    padding: 0 0 var.$SPACING_MD;
-    border-bottom: 1px solid rgba(193, 244, 251, 0.1);
-
-    h1 {
-        margin: 0 0 var.$SPACING_SM;
-        font-weight: 700;
-        color: var.$COLOR_TEXT;
-    }
-
-    p {
-        max-width: 540px;
-        font-size: 0.875rem;
-        line-height: 1.5;
-        margin: 0;
-    }
+    padding-bottom: var.$SPACING_MD;
+    border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
 }
 
 .settingsContent {
@@ -34,18 +21,7 @@
 
 .poweredBy {
     margin: var.$SPACING_2XL 0 0;
-    font-size: 0.75rem;
+    font-size: var.$TEXT_SIZE_XS;
     color: var.$COLOR_TEXT_MUTED;
     text-align: center;
-}
-
-@media (max-width: 768px) {
-    .settingsHeader {
-        margin-bottom: var.$SPACING_LG;
-        padding-bottom: var.$SPACING_SM;
-
-        p {
-            display: none;
-        }
-    }
 }

@@ -7,12 +7,10 @@ import { appShell } from '~/config/app-shell';
 const NAVIGATION_GROUPS = [
     {
         id: 'primary',
-        label: 'Listen',
         items: appShell.navigation.primary
     },
     {
         id: 'utility',
-        label: 'System',
         items: appShell.navigation.utility
     }
 ];
@@ -58,7 +56,6 @@ export default function SiteHeader() {
                             styles.group,
                             group.id === 'utility' ? styles.utilityGroup : ''
                         ].join(' ')}>
-                        <span className={styles.groupLabel}>{group.label}</span>
                         <ul>
                             {group.items.map((item) => (
                                 <li key={item.id}>
