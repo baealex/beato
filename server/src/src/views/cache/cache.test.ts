@@ -6,6 +6,7 @@ import request from 'supertest';
 
 import models from '~/models';
 import { createApp } from '~/app';
+import { AUTH_SESSION_COOKIE_NAME, type AuthConfig } from '~/modules/auth-mode';
 import { resolveCachePath } from '~/modules/storage-paths';
 
 jest.mock('music-metadata', () => ({ parseBuffer: jest.fn() }));
@@ -20,6 +21,11 @@ jest.mock('sharp', () => {
 });
 
 const parseBufferMock = jest.mocked(parseBuffer);
+const openAuthConfig: AuthConfig = {
+    mode: 'open',
+    source: 'explicit-open',
+    cookieName: AUTH_SESSION_COOKIE_NAME
+};
 
 const createTempTrackFile = ({
     directory,
@@ -135,7 +141,7 @@ describe('GET /cache/resized/:albumId.jpg', () => {
             }
         });
 
-        const app = createApp({ mode: 'open' });
+        const app = createApp(openAuthConfig);
         const response = await request(app).get(`/cache/resized/${album.id}.jpg`);
 
         expect(response.status).toBe(200);

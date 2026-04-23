@@ -1,7 +1,14 @@
 import request from 'supertest';
 
-import app from '~/app';
+import { createApp } from '~/app';
+import { AUTH_SESSION_COOKIE_NAME } from '~/modules/auth-mode';
 import models from '~/models';
+
+const app = createApp({
+    mode: 'open',
+    source: 'explicit-open',
+    cookieName: AUTH_SESSION_COOKIE_NAME
+});
 
 beforeEach(async () => {
     await models.__NAME__.create({
