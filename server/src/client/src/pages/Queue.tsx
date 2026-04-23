@@ -486,8 +486,8 @@ export default function Queue() {
 
     return (
         <div className={cx('Queue')} ref={scrollRef}>
-            <div className={cx('container')}>
-                <div className={cx('top-bar')}>
+            <div className={cx('top-bar')}>
+                <div className={cx('top-bar-inner')}>
                     <button
                         type="button"
                         className={cx('utility-button')}
@@ -497,8 +497,17 @@ export default function Queue() {
                     </button>
 
                     <div className={cx('page-copy')}>
-                        <Text as="h1" size="title" weight="semibold" className={cx('page-title')}>
-                            Queue
+                        <Text
+                            as="h1"
+                            size="title"
+                            weight="semibold"
+                            className={cx('page-title', { 'page-title-selecting': isSelectMode })}>
+                            {isSelectMode && (
+                                <span className={cx('page-title-selection')}>
+                                    {selectedItems.length} selected
+                                </span>
+                            )}
+                            <span className={cx('page-title-default')}>Queue</span>
                         </Text>
                         <Text as="p" variant="muted" size="xs" className={cx('page-summary')}>
                             {isSelectMode
@@ -538,7 +547,9 @@ export default function Queue() {
                         <div className={cx('top-bar-spacer')} />
                     )}
                 </div>
+            </div>
 
+            <div className={cx('container')}>
                 {items.length > 0 ? (
                     <>
                         <div className={cx('list-shell')} ref={listRef}>
