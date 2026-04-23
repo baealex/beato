@@ -5,13 +5,16 @@
     display: flex;
     flex-direction: column;
     gap: var.$SPACING_SM;
-    padding: 0.75rem;
+    justify-content: center;
+    height: var.$APP_HEADER_HEIGHT_MOBILE;
+    padding: 0 var.$APP_HEADER_PADDING_INLINE_MOBILE;
     background: var.$COLOR_BACKGROUND;
     border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
 
     @media (min-width: 1024px) {
         height: 100%;
         gap: var.$SPACING_MD;
+        justify-content: flex-start;
         padding: var.$SPACING_LG 0.75rem;
         border-right: 1px solid var.$COLOR_BORDER_SUBTLE;
         border-bottom: none;

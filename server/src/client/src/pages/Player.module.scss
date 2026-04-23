@@ -42,15 +42,17 @@
     }
 
     .top-bar {
-        width: min(100%, 30rem);
-        margin: 0 auto 0.875rem;
+        width: 100%;
+        min-width: 0;
+        flex-shrink: 0;
+        margin: 0 0 0.875rem;
         display: flex;
         align-items: center;
     }
 
     .utility-button {
-        width: 2.25rem;
-        height: 2.25rem;
+        width: var.$CONTROL_HEIGHT_MD;
+        height: var.$CONTROL_HEIGHT_MD;
         border: none;
         border-radius: var.$RADIUS_FULL;
         background: transparent;
@@ -62,8 +64,13 @@
         transition-property: color, background-color;
 
         svg {
-            width: 1rem;
-            height: 1rem;
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var.$COLOR_FOCUS;
+            outline-offset: 2px;
         }
 
         @include var.hover-capable {
@@ -358,6 +365,32 @@
 
         &.empty-button-primary {
             color: var.$COLOR_TEXT;
+        }
+    }
+
+    @media (max-width: 1023px) {
+        .container {
+            padding-top: 0;
+        }
+
+        .top-bar {
+            width: auto;
+            height: var.$APP_HEADER_HEIGHT_MOBILE;
+            margin: 0 -1rem 0.875rem;
+            padding: 0 var.$APP_HEADER_PADDING_INLINE_MOBILE;
+            background: var.$COLOR_BACKGROUND;
+            border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
+        }
+
+        .utility-button {
+            width: var.$CONTROL_HEIGHT_SM;
+            height: var.$CONTROL_HEIGHT_SM;
+            color: inherit;
+
+            svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
         }
     }
 
