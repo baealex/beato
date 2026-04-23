@@ -25,6 +25,7 @@
     },
     "homepage": "https://github.com/baealex/ocean-wave#readme",
     "dependencies": {
+        "@baejino/auth": "^0.1.1",
         "@prisma/client": "^5.22.0",
         "bcrypt": "^5.1.1",
         "express": "^4.22.1",

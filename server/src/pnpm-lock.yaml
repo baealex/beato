@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@baejino/auth':
+        specifier: ^0.1.1
+        version: 0.1.1
       '@prisma/client':
         specifier: ^5.22.0
         version: 5.22.0(prisma@5.22.0)
@@ -264,6 +267,9 @@ packages:
   '@babel/types@7.29.0':
     resolution: {integrity: sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A==}
     engines: {node: '>=6.9.0'}
+
+  '@baejino/auth@0.1.1':
+    resolution: {integrity: sha512-2Z3AcM3JFsL4DKYu/ajv0+6zL1D7q18axaBWfWRg6eK/JYE4p6oMUmt7k6RwwiqbB2bO0doyr0anmRQ22q+Gpg==}
 
   '@baejino/eslint-config@0.0.1':
     resolution: {integrity: sha512-MPDrQYORWBJxpdKfaAVJEoUdIZZn6n/XkTEmk8Oalxp6R+c6bJjKckb/WbLUndqAsw2x7OGafxS6a0Bk4USwIA==}
@@ -3176,6 +3182,8 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
+
+  '@baejino/auth@0.1.1': {}
 
   '@baejino/eslint-config@0.0.1(eslint@8.57.1)(typescript@5.9.3)':
     dependencies:

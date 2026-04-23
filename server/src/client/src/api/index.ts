@@ -8,7 +8,7 @@ import type {
     SyncReportItem
 } from '~/models/type';
 
-export type AuthMode = 'open' | 'password-protected';
+export type AuthMode = 'open' | 'password';
 
 export interface AuthSession {
     mode: AuthMode;

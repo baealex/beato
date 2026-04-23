@@ -38,4 +38,4 @@ export const createApp = (authConfig: AuthConfig = resolveAuthConfig(process.env
         });
 };
 
-export default createApp();
+export default createApp;

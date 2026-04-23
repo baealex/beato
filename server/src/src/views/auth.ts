@@ -27,7 +27,7 @@ export const createSessionStatusHandler = (authConfig: AuthConfig): Controller =
 
 export const createLoginHandler = (authConfig: AuthConfig): Controller => {
     return async (req, res) => {
-        if (authConfig.mode !== 'password-protected' || !authConfig.password) {
+        if (authConfig.mode !== 'password') {
             res.status(409).json(AUTH_DISABLED_RESPONSE).end();
             return;
         }
@@ -48,7 +48,7 @@ export const createLoginHandler = (authConfig: AuthConfig): Controller => {
 
 export const createLogoutHandler = (authConfig: AuthConfig): Controller => {
     return async (_req, res) => {
-        clearAuthenticatedSession(res);
+        clearAuthenticatedSession(authConfig, res);
         res.status(200).json(buildAuthSessionResponse(authConfig, false)).end();
     };
 };

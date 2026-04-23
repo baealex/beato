@@ -1,10 +1,25 @@
 import request from 'supertest';
 
 import { createApp } from '~/app';
+import { AUTH_SESSION_COOKIE_NAME, type AuthConfig } from '~/modules/auth-mode';
+
+const openAuthConfig: AuthConfig = {
+    mode: 'open',
+    source: 'explicit-open',
+    cookieName: AUTH_SESSION_COOKIE_NAME
+};
+
+const passwordAuthConfig: AuthConfig = {
+    mode: 'password',
+    source: 'password',
+    cookieName: AUTH_SESSION_COOKIE_NAME,
+    password: 'secret',
+    sessionSecret: 'session-secret'
+};
 
 describe('auth http flow', () => {
-    it('keeps existing open-mode behavior when no password is configured', async () => {
-        const app = createApp({ mode: 'open' });
+    it('keeps explicit open-mode behavior when no-auth is allowed', async () => {
+        const app = createApp(openAuthConfig);
 
         const session = await request(app).get('/api/auth/session');
         expect(session.status).toBe(200);
@@ -34,18 +49,14 @@ describe('auth http flow', () => {
     });
 
     it('protects api and graphql in password mode until login, then clears access on logout', async () => {
-        const app = createApp({
-            mode: 'password-protected',
-            password: 'secret',
-            sessionSecret: 'session-secret'
-        });
+        const app = createApp(passwordAuthConfig);
 
         const agent = request.agent(app);
 
         const anonymousSession = await agent.get('/api/auth/session');
         expect(anonymousSession.status).toBe(200);
         expect(anonymousSession.body).toEqual({
-            mode: 'password-protected',
+            mode: 'password',
             authRequired: true,
             authenticated: false
         });
@@ -74,7 +85,7 @@ describe('auth http flow', () => {
 
         expect(login.status).toBe(200);
         expect(login.body).toEqual({
-            mode: 'password-protected',
+            mode: 'password',
             authRequired: true,
             authenticated: true
         });
@@ -82,7 +93,7 @@ describe('auth http flow', () => {
         const authenticatedSession = await agent.get('/api/auth/session');
         expect(authenticatedSession.status).toBe(200);
         expect(authenticatedSession.body).toEqual({
-            mode: 'password-protected',
+            mode: 'password',
             authRequired: true,
             authenticated: true
         });
@@ -104,7 +115,7 @@ describe('auth http flow', () => {
 
         expect(logout.status).toBe(200);
         expect(logout.body).toEqual({
-            mode: 'password-protected',
+            mode: 'password',
             authRequired: true,
             authenticated: false
         });

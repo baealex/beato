@@ -1,85 +1,30 @@
-import crypto from 'crypto';
 import type { Request, Response, RequestHandler } from 'express';
 import type { Socket } from 'socket.io';
+import {
+    buildAuthSessionResponse,
+    buildUnauthorizedGraphqlPayload,
+    buildUnauthorizedPayload
+} from '@baejino/auth';
+import { parseCookieHeader } from '@baejino/auth/cookies';
+import {
+    compareSharedSecret,
+    createAuthenticatedSessionValue as createCommonAuthenticatedSessionValue,
+    verifyAuthenticatedSessionValue
+} from '@baejino/auth/crypto';
 
-import type { AuthConfig, AuthMode } from './auth-mode';
+import type { AuthConfig } from './auth-mode';
 
-export interface AuthSessionResponse {
-    mode: AuthMode;
-    authRequired: boolean;
-    authenticated: boolean;
-}
+export type { AuthSessionResponse } from '@baejino/auth';
+export { buildAuthSessionResponse, compareSharedSecret };
 
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
-const SESSION_COOKIE_NAME = 'ocean-wave.sid';
-const AUTHENTICATED_SESSION_VALUE = 'authenticated';
-
-const UNAUTHORIZED_PAYLOAD = {
-    code: 'UNAUTHORIZED',
-    message: 'Authentication required'
-} as const;
-
-const UNAUTHORIZED_GRAPHQL_PAYLOAD = {
-    errors: [{
-        message: 'Authentication required',
-        extensions: { code: 'UNAUTHORIZED' }
-    }]
-} as const;
-
-const normalizeCookieHeader = (cookieHeader?: string | string[]) => {
-    if (!cookieHeader) {
-        return '';
-    }
-
-    return Array.isArray(cookieHeader)
-        ? cookieHeader.join(';')
-        : cookieHeader;
-};
-
-const parseCookieHeader = (cookieHeader?: string | string[]) => {
-    const normalizedCookieHeader = normalizeCookieHeader(cookieHeader);
-
-    return normalizedCookieHeader
-        .split(';')
-        .map((segment) => segment.trim())
-        .filter(Boolean)
-        .reduce<Record<string, string>>((cookies, segment) => {
-        const separatorIndex = segment.indexOf('=');
-
-        if (separatorIndex === -1) {
-            return cookies;
-        }
-
-        const key = decodeURIComponent(segment.slice(0, separatorIndex).trim());
-        const value = decodeURIComponent(segment.slice(separatorIndex + 1).trim());
-
-        cookies[key] = value;
-        return cookies;
-    }, {});
-};
-
-const getSigningSecret = (authConfig: AuthConfig) => authConfig.sessionSecret || authConfig.password || '';
-
-const signSessionValue = (value: string, authConfig: AuthConfig) => {
-    return crypto
-        .createHmac('sha256', getSigningSecret(authConfig))
-        .update(value)
-        .digest('base64url');
-};
-
-export const compareSharedSecret = (expected: string, actual: string) => {
-    const expectedBuffer = Buffer.from(expected, 'utf8');
-    const actualBuffer = Buffer.from(actual, 'utf8');
-
-    if (expectedBuffer.length !== actualBuffer.length) {
-        return false;
-    }
-
-    return crypto.timingSafeEqual(expectedBuffer, actualBuffer);
-};
 
 export const createAuthenticatedSessionValue = (authConfig: AuthConfig) => {
-    return `${AUTHENTICATED_SESSION_VALUE}.${signSessionValue(AUTHENTICATED_SESSION_VALUE, authConfig)}`;
+    if (authConfig.mode !== 'password') {
+        throw new Error('Authenticated session can only be created in password auth mode.');
+    }
+
+    return createCommonAuthenticatedSessionValue(authConfig);
 };
 
 export const isAuthenticatedCookieHeader = (
@@ -90,43 +35,17 @@ export const isAuthenticatedCookieHeader = (
         return true;
     }
 
-    const sessionCookie = parseCookieHeader(cookieHeader)[SESSION_COOKIE_NAME];
+    const sessionCookie = parseCookieHeader(cookieHeader ?? null)[authConfig.cookieName];
 
     if (!sessionCookie) {
         return false;
     }
 
-    const separatorIndex = sessionCookie.indexOf('.');
-
-    if (separatorIndex === -1) {
-        return false;
-    }
-
-    const value = sessionCookie.slice(0, separatorIndex);
-    const signature = sessionCookie.slice(separatorIndex + 1);
-
-    if (value !== AUTHENTICATED_SESSION_VALUE || !signature) {
-        return false;
-    }
-
-    return compareSharedSecret(signSessionValue(value, authConfig), signature);
+    return verifyAuthenticatedSessionValue(sessionCookie, authConfig);
 };
 
 export const isAuthenticatedRequest = (authConfig: AuthConfig, req: Request) => {
     return isAuthenticatedCookieHeader(authConfig, req.headers.cookie);
-};
-
-export const buildAuthSessionResponse = (
-    authConfig: AuthConfig,
-    authenticated: boolean
-): AuthSessionResponse => {
-    return {
-        mode: authConfig.mode,
-        authRequired: authConfig.mode === 'password-protected',
-        authenticated: authConfig.mode === 'password-protected'
-            ? authenticated
-            : false
-    };
 };
 
 export const resolveAuthSessionResponse = (
@@ -137,7 +56,7 @@ export const resolveAuthSessionResponse = (
 };
 
 export const setAuthenticatedSession = (authConfig: AuthConfig, res: Response) => {
-    res.cookie(SESSION_COOKIE_NAME, createAuthenticatedSessionValue(authConfig), {
+    res.cookie(authConfig.cookieName, createAuthenticatedSessionValue(authConfig), {
         httpOnly: true,
         sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production',
@@ -145,8 +64,8 @@ export const setAuthenticatedSession = (authConfig: AuthConfig, res: Response) =
     });
 };
 
-export const clearAuthenticatedSession = (res: Response) => {
-    res.clearCookie(SESSION_COOKIE_NAME, {
+export const clearAuthenticatedSession = (authConfig: AuthConfig, res: Response) => {
+    res.clearCookie(authConfig.cookieName, {
         httpOnly: true,
         sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production',
@@ -161,7 +80,7 @@ export const requireAuthenticatedRequest = (authConfig: AuthConfig): RequestHand
             return;
         }
 
-        res.status(401).set(JSON_HEADERS).json(UNAUTHORIZED_PAYLOAD).end();
+        res.status(401).set(JSON_HEADERS).json(buildUnauthorizedPayload()).end();
     };
 };
 
@@ -172,7 +91,7 @@ export const requireAuthenticatedGraphqlRequest = (authConfig: AuthConfig): Requ
             return;
         }
 
-        res.status(401).set(JSON_HEADERS).json(UNAUTHORIZED_GRAPHQL_PAYLOAD).end();
+        res.status(401).set(JSON_HEADERS).json(buildUnauthorizedGraphqlPayload()).end();
     };
 };
 

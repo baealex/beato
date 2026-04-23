@@ -57,9 +57,14 @@ Then open `http://localhost:44100`.
 
 ### Password Mode
 
-Ocean Wave runs in open mode by default. To require a shared password, set `OCEAN_WAVE_AUTH_PASSWORD`.
+Ocean Wave fails closed when auth mode is not configured. Use password mode for normal deployments.
 
-`OCEAN_WAVE_SESSION_SECRET` is recommended as a dedicated signing secret for the session cookie. If you omit it, Ocean Wave falls back to `OCEAN_WAVE_AUTH_PASSWORD`.
+Password mode requires both values:
+
+- `OCEAN_WAVE_AUTH_PASSWORD`: shared password for unlocking the app.
+- `OCEAN_WAVE_SESSION_SECRET`: dedicated signing secret for the session cookie.
+
+Ocean Wave does not fall back to the password as the session secret.
 
 Node.js:
 
@@ -81,3 +86,13 @@ docker run \
     -p 44100:44100 \
     baealex/ocean-wave
 ```
+
+### Explicit Open Mode
+
+Open mode is only allowed when you explicitly accept no-auth access:
+
+```bash
+OCEAN_WAVE_ALLOW_INSECURE_NO_AUTH=true npm start
+```
+
+Do not set `OCEAN_WAVE_ALLOW_INSECURE_NO_AUTH=true` together with `OCEAN_WAVE_AUTH_PASSWORD`.
