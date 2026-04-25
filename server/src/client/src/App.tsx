@@ -12,7 +12,6 @@ import { appCopy } from './config/copy';
 
 import {
     getAuthSession,
-    loginWithPassword,
     type AuthSession
 } from './api';
 import { musicStore } from './store/music';
@@ -22,13 +21,21 @@ import { Providers } from './components/app';
 
 const AUTH_RECOVERY_PATH_PREFIX = '/api/auth/';
 const SPLASH_MIN_MS = 2000;
+const LOGIN_PATH = '/login';
+
+const buildLoginRedirectUrl = () => {
+    const redirectTo = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    return `${LOGIN_PATH}?redirectTo=${encodeURIComponent(redirectTo)}`;
+};
+
+const redirectToLogin = () => {
+    window.location.assign(buildLoginRedirectUrl());
+};
 
 export default function App() {
     const [authSession, setAuthSession] = useState<AuthSession | null>(null);
     const [authBootstrapError, setAuthBootstrapError] = useState<string | null>(null);
-    const [authErrorMessage, setAuthErrorMessage] = useState<string | null>(null);
     const [isAuthLoading, setIsAuthLoading] = useState(true);
-    const [isSubmittingPassword, setIsSubmittingPassword] = useState(false);
     const [showSplash, setShowSplash] = useState(true);
     const [splashExiting, setSplashExiting] = useState(false);
     const splashStartTime = useRef(Date.now());
@@ -48,7 +55,6 @@ export default function App() {
             const session = await getAuthSession();
 
             setAuthSession(session);
-            setAuthErrorMessage(null);
         } catch (error) {
             setAuthBootstrapError('Unable to verify the current session. Retry once the server is reachable.');
         } finally {
@@ -84,7 +90,7 @@ export default function App() {
                     : '';
 
                 if (error.response?.status === 401 && !requestUrl.startsWith(AUTH_RECOVERY_PATH_PREFIX)) {
-                    window.location.reload();
+                    redirectToLogin();
                 }
 
                 return Promise.reject(error);
@@ -138,7 +144,7 @@ export default function App() {
 
         const handleConnectError = (error: Error) => {
             if (error.message === 'Authentication required') {
-                window.location.reload();
+                redirectToLogin();
             }
         };
 
@@ -161,27 +167,15 @@ export default function App() {
         };
     }, [canAccessApp]);
 
-    const handlePasswordSubmit = async (password: string) => {
-        setIsSubmittingPassword(true);
-        setAuthErrorMessage(null);
-
-        try {
-            await loginWithPassword(password);
-            window.location.reload();
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const message = typeof error.response?.data?.message === 'string'
-                    ? error.response.data.message
-                    : 'Unable to unlock this session with that password.';
-
-                setAuthErrorMessage(message);
-            } else {
-                setAuthErrorMessage('Unable to unlock this session right now.');
-            }
-        } finally {
-            setIsSubmittingPassword(false);
+    useEffect(() => {
+        if (isAuthLoading || !authSession) {
+            return;
         }
-    };
+
+        if (authSession.authRequired && !authSession.authenticated) {
+            redirectToLogin();
+        }
+    }, [authSession, isAuthLoading]);
 
     const appContent = () => {
         if (authBootstrapError || (!isAuthLoading && !authSession)) {
@@ -195,14 +189,7 @@ export default function App() {
         }
 
         if (!isAuthLoading && authSession?.authRequired && !authSession.authenticated) {
-            return (
-                <AuthGate
-                    state="login"
-                    errorMessage={authErrorMessage}
-                    isSubmitting={isSubmittingPassword}
-                    onSubmit={handlePasswordSubmit}
-                />
-            );
+            return <AuthGate state="loading" />;
         }
 
         if (canAccessApp) {
