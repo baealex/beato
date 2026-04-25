@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
-import { socket } from '~/socket';
+import { useModal } from '~/components/app/ModalProvider';
+import Text from '~/components/shared/Text';
 import { appCopy } from '~/config/copy';
-import { confirm } from '~/modules/confirm';
+import { appShell } from '~/config/app-shell';
+import { socket } from '~/socket';
 
 import {
     AudioSettingsSection,
@@ -13,12 +15,11 @@ import {
     ThemeSection,
     TroubleshootingSection
 } from './components';
-import Text from '~/components/shared/Text';
-import { appShell } from '~/config/app-shell';
 
 import styles from './Setting.module.scss';
 
 export default function Setting() {
+    const { confirm } = useModal();
     const [isStabilityModeEnabled] = useState(Boolean(localStorage.getItem('stability-mode::on')));
     const isAppChannel = Boolean(window.AppChannel);
 
@@ -33,6 +34,7 @@ export default function Setting() {
         ) {
             return;
         }
+
         socket.emit('sync-music', { force });
     };
 

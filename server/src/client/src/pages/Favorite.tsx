@@ -15,6 +15,7 @@ import { MusicListItem, MusicActionPanelContent } from '~/components/music';
 import * as Icon from '~/icon';
 
 import { panel } from '~/modules/panel';
+import { useResetQueue } from '~/hooks';
 
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
@@ -23,6 +24,7 @@ const FAVORITE_LIST_ROW_HEIGHT = 80;
 
 export default function Music() {
     const navigate = useNavigate();
+    const resetQueue = useResetQueue();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [{ musics, loaded }] = useStore(musicStore);
@@ -60,7 +62,7 @@ export default function Music() {
                     onChange={handleSearchChange}
                 />
                 <StickyHeaderActions>
-                    <Button onClick={() => queueStore.reset(filteredMusics.map(music => music.id))}>
+                    <Button onClick={() => void resetQueue(filteredMusics.map(music => music.id))}>
                         <Icon.Play /> Play
                     </Button>
                     <Button

@@ -1,4 +1,4 @@
-import * as RadixSelect from '@radix-ui/react-select';
+import * as SelectPrimitive from '@baejino/react-ui/select';
 
 import * as Icon from '~/icon';
 
@@ -22,38 +22,38 @@ const fromInternalValue = (value: string) => (value === EMPTY_OPTION_VALUE ? '' 
 
 export default function Select({ selected, options, onChange }: SelectProps) {
     return (
-        <RadixSelect.Root
+        <SelectPrimitive.Root
             value={selected ? toInternalValue(selected.value) : undefined}
             onValueChange={(value) => onChange(fromInternalValue(value))}>
-            <RadixSelect.Trigger className={styles.trigger}>
-                <RadixSelect.Value placeholder="Select an option" />
-                <RadixSelect.Icon className={styles.triggerIcon}>
+            <SelectPrimitive.Trigger className={styles.trigger}>
+                <SelectPrimitive.Value placeholder="Select an option" />
+                <SelectPrimitive.Icon className={styles.triggerIcon}>
                     <Icon.ChevronDown />
-                </RadixSelect.Icon>
-            </RadixSelect.Trigger>
+                </SelectPrimitive.Icon>
+            </SelectPrimitive.Trigger>
 
-            <RadixSelect.Portal>
-                <RadixSelect.Content
+            <SelectPrimitive.Portal>
+                <SelectPrimitive.Content
                     className={styles.content}
                     position="popper"
                     sideOffset={8}>
-                    <RadixSelect.Viewport className={styles.viewport}>
+                    <SelectPrimitive.Viewport className={styles.viewport}>
                         {options.map((option) => (
-                            <RadixSelect.Item
+                            <SelectPrimitive.Item
                                 key={option.value || EMPTY_OPTION_VALUE}
                                 value={toInternalValue(option.value)}
                                 className={styles.item}>
-                                <RadixSelect.ItemText>
+                                <SelectPrimitive.ItemText>
                                     {option.label}
-                                </RadixSelect.ItemText>
-                                <RadixSelect.ItemIndicator className={styles.itemIndicator}>
+                                </SelectPrimitive.ItemText>
+                                <SelectPrimitive.ItemIndicator className={styles.itemIndicator}>
                                     <Icon.Check />
-                                </RadixSelect.ItemIndicator>
-                            </RadixSelect.Item>
+                                </SelectPrimitive.ItemIndicator>
+                            </SelectPrimitive.Item>
                         ))}
-                    </RadixSelect.Viewport>
-                </RadixSelect.Content>
-            </RadixSelect.Portal>
-        </RadixSelect.Root>
+                    </SelectPrimitive.Viewport>
+                </SelectPrimitive.Content>
+            </SelectPrimitive.Portal>
+        </SelectPrimitive.Root>
     );
 }

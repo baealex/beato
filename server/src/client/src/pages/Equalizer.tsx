@@ -1,11 +1,13 @@
 import { useStore } from 'badland-react';
 import { useState, useEffect, useCallback } from 'react';
-import EqualizerSlider from '~/components/shared/EqualizerSlider';
-import type { Preset } from '~/components/shared/EqualizerPreset';
+
+import { useModal } from '~/components/app/ModalProvider';
 import EqualizerPreset from '~/components/shared/EqualizerPreset';
-import { confirm } from '~/modules/confirm';
-import { prompt } from '~/modules/prompt';
+import type { Preset } from '~/components/shared/EqualizerPreset';
+import EqualizerSlider from '~/components/shared/EqualizerSlider';
+import { TextEntryDialog } from '~/components/shared/Modal';
 import { equalizerStore } from '~/store/equalizer';
+
 import styles from './Equalizer.module.scss';
 
 const DEFAULT_PRESETS: Preset[] = [
@@ -56,9 +58,12 @@ const DEFAULT_PRESETS: Preset[] = [
 ];
 
 const Equalizer = () => {
+    const { confirm } = useModal();
     const [isStabilityModeEnabled] = useState(Boolean(localStorage.getItem('stability-mode::on')));
     const [equalizerState, setEqState] = useStore(equalizerStore);
     const [presets, setPresets] = useState<Preset[]>([]);
+    const [isSavePresetDialogOpen, setIsSavePresetDialogOpen] = useState(false);
+    const [presetNameDraft, setPresetNameDraft] = useState('');
     const loadPresets = useCallback(() => {
         const savedPresets = localStorage.getItem('audio::eq::presets');
         if (savedPresets) {
@@ -88,15 +93,17 @@ const Equalizer = () => {
         setEqState(() => ({ ...preset.values }));
     };
 
-    const handleSaveCurrentAsPreset = async () => {
-        const presetName = await prompt({
-            title: 'Save preset',
-            description: 'Store the current equalizer curve as a reusable preset.',
-            placeholder: 'Late night',
-            confirmLabel: 'Save preset'
-        });
-        if (!presetName) return;
+    const handleOpenSavePresetDialog = () => {
+        setPresetNameDraft('');
+        setIsSavePresetDialogOpen(true);
+    };
 
+    const handleCloseSavePresetDialog = () => {
+        setIsSavePresetDialogOpen(false);
+        setPresetNameDraft('');
+    };
+
+    const handleSaveCurrentAsPreset = (presetName: string) => {
         const newPreset: Preset = {
             id: `custom-${Date.now()}`,
             name: presetName,
@@ -107,6 +114,7 @@ const Equalizer = () => {
         localStorage.setItem('audio::eq::presets', JSON.stringify(customPresets));
 
         setPresets([...DEFAULT_PRESETS, ...customPresets]);
+        handleCloseSavePresetDialog();
     };
 
     const handleDeletePreset = async (presetId: string) => {
@@ -135,7 +143,7 @@ const Equalizer = () => {
             <EqualizerPreset
                 presets={presets}
                 onSelectPreset={handlePresetSelect}
-                onSaveCurrentAsPreset={handleSaveCurrentAsPreset}
+                onSaveCurrentAsPreset={handleOpenSavePresetDialog}
                 onDeletePreset={handleDeletePreset}
             />
 
@@ -155,6 +163,18 @@ const Equalizer = () => {
                     You're in stability mode.
                 </div>
             )}
+
+            <TextEntryDialog
+                open={isSavePresetDialogOpen}
+                title="Save preset"
+                description="Store the current equalizer curve as a reusable preset."
+                value={presetNameDraft}
+                placeholder="Late night"
+                confirmLabel="Save preset"
+                onValueChange={setPresetNameDraft}
+                onConfirm={handleSaveCurrentAsPreset}
+                onClose={handleCloseSavePresetDialog}
+            />
         </div>
     );
 };

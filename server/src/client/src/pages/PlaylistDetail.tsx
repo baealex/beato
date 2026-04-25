@@ -20,6 +20,7 @@ import { PlaylistPanelContent, PlaylistSummary } from '~/components/playlist';
 import * as Icon from '~/icon';
 
 import { panel } from '~/modules/panel';
+import { useResetQueue } from '~/hooks';
 
 import { getPlaylist } from '~/api';
 import { toast } from '~/modules/toast';
@@ -38,6 +39,7 @@ import styles from './PlaylistDetail.module.scss';
 
 export default function PlaylistDetail() {
     const navigate = useNavigate();
+    const resetQueue = useResetQueue();
 
     const { id } = useParams<{ id: string }>();
 
@@ -106,7 +108,7 @@ export default function PlaylistDetail() {
                         onSelectAll={() => setSelectedItems(playlist.musics.map(({ id }) => id))}
                     />
                 </div>
-                <Button onClick={() => queueStore.reset(playlist.musics.map(({ id }) => id))}>
+                <Button onClick={() => void resetQueue(playlist.musics.map(({ id }) => id))}>
                     <Icon.Play /> Play
                 </Button>
             </StickyHeader >

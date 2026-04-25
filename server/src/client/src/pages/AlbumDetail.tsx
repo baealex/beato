@@ -13,9 +13,11 @@ import { getOriginalImage } from '~/modules/image';
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 import { panel } from '~/modules/panel';
+import { useResetQueue } from '~/hooks';
 
 export default function AlbumDetail() {
     const navigate = useNavigate();
+    const resetQueue = useResetQueue();
 
     const { id } = useParams<{ id: string }>();
 
@@ -37,7 +39,7 @@ export default function AlbumDetail() {
                 <AlbumSummary {...album} />
             )}
             primaryAction={(
-                <button onClick={() => queueStore.reset(album.musics.map(music => music.id))}>
+                <button onClick={() => void resetQueue(album.musics.map(music => music.id))}>
                     <Play />
                 </button>
             )}>
