@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 import { useStore } from 'badland-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { AlbumListItem } from '~/components/album';
@@ -27,10 +27,14 @@ export default function ArtistDetail() {
 
     const { id } = useParams<{ id: string }>();
 
-    const { data: artist } = useQuery(queryKeys.artists.detail(id), async () => {
-        const { data } = await getArtist(id!);
-        return data.artist;
-    }, { enabled: !!id });
+    const { data: artist } = useQuery({
+        queryKey: queryKeys.artists.detail(id),
+        queryFn: async () => {
+            const { data } = await getArtist(id!);
+            return data.artist;
+        },
+        enabled: !!id
+    });
 
     const [{ musicMap }] = useStore(musicStore);
 

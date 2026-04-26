@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useStore } from 'badland-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -48,7 +48,11 @@ export default function PlaylistDetail() {
 
     const playlistQueryKey = queryKeys.playlists.detail(id);
 
-    const { data: playlist } = useQuery(playlistQueryKey, () => getPlaylist(id!).then(res => res.data.playlist), { enabled: !!id });
+    const { data: playlist } = useQuery({
+        queryKey: playlistQueryKey,
+        queryFn: () => getPlaylist(id!).then(res => res.data.playlist),
+        enabled: !!id
+    });
 
     const [{ musicMap }] = useStore(musicStore);
 
@@ -79,7 +83,10 @@ export default function PlaylistDetail() {
                 return;
             }
 
-            queryClient.invalidateQueries(queryKeys.playlists.detail(id), { exact: true });
+            queryClient.invalidateQueries({
+                queryKey: queryKeys.playlists.detail(id),
+                exact: true
+            });
         };
 
         socket.on(PLAYLIST_MOVE_MUSIC, invalidateQueries);
