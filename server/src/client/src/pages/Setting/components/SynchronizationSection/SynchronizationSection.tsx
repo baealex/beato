@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from 'react-query';
 
 import { Button, SettingSection, SettingItem, Text } from '~/components/shared';
 import { getLatestSyncReport } from '~/api';
+import { queryKeys } from '~/api/query-keys';
 import { toast } from '~/modules/toast';
 import { socket } from '~/socket';
 import type { SyncReport, SyncReportItem } from '~/models/type';
@@ -80,7 +81,7 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
     const [isSyncing, setIsSyncing] = useState(false);
     const queryClient = useQueryClient();
     const { data: latestSyncReport } = useQuery(
-        ['sync-report'],
+        queryKeys.syncReports.latest(),
         () => getLatestSyncReport().then((response) => response.data.latestSyncReport)
     );
     const sections = useMemo(() => reportSections(latestSyncReport ?? null), [latestSyncReport]);
@@ -95,7 +96,7 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                 }
 
                 setIsSyncing(false);
-                queryClient.invalidateQueries(['sync-report']);
+                queryClient.invalidateQueries(queryKeys.syncReports.listAll(), { exact: false });
                 setTimeout(() => {
                     setProgressMessage('');
                 }, 1000);

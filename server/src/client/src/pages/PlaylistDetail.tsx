@@ -22,6 +22,7 @@ import * as Icon from '~/icon';
 import { panel } from '~/modules/panel';
 
 import { getPlaylist } from '~/api';
+import { queryKeys } from '~/api/query-keys';
 import { toast } from '~/modules/toast';
 import {
     PLAYLIST_CHANGE_MUSIC_ORDER,
@@ -43,7 +44,9 @@ export default function PlaylistDetail() {
 
     const queryClient = useQueryClient();
 
-    const { data: playlist } = useQuery(['playlist', id], () => getPlaylist(id!).then(res => res.data.playlist), { enabled: !!id });
+    const playlistQueryKey = queryKeys.playlists.detail(id);
+
+    const { data: playlist } = useQuery(playlistQueryKey, () => getPlaylist(id!).then(res => res.data.playlist), { enabled: !!id });
 
     const [{ musicMap }] = useStore(musicStore);
 
@@ -59,7 +62,7 @@ export default function PlaylistDetail() {
             const newMusics = arrayMove(playlist.musics, oldIndex, newIndex);
             PlaylistListener.changeMusicOrder(playlist.id, newMusics.map(({ id }) => id));
 
-            queryClient.setQueryData(['playlist', id], () => {
+            queryClient.setQueryData(playlistQueryKey, () => {
                 return {
                     ...playlist,
                     musics: newMusics
@@ -70,7 +73,11 @@ export default function PlaylistDetail() {
 
     useEffect(() => {
         const invalidateQueries = () => {
-            queryClient.invalidateQueries(['playlist', id]);
+            if (!id) {
+                return;
+            }
+
+            queryClient.invalidateQueries(queryKeys.playlists.detail(id), { exact: true });
         };
 
         socket.on(PLAYLIST_MOVE_MUSIC, invalidateQueries);
