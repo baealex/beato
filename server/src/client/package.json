@@ -33,15 +33,15 @@
         "react-router-dom": "^7.14.2",
         "sass": "^1.97.3",
         "socket.io-client": "^4.8.3",
-        "vite-plugin-svgr": "^4.5.0"
+        "vite-plugin-svgr": "^5.2.0"
     },
     "devDependencies": {
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
-        "@vitejs/plugin-react": "^4.7.0",
+        "@vitejs/plugin-react": "^6.0.1",
         "react-grab": "^0.1.32",
         "typescript": "^6.0.3",
-        "vite": "^5.4.21",
-        "vitest": "^1.6.1"
+        "vite": "^8.0.10",
+        "vitest": "^4.1.5"
     }
 }
