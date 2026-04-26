@@ -1,4 +1,4 @@
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 
 import BottomPanel from '~/components/shared/BottomPanel';
 

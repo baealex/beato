@@ -6,7 +6,7 @@ import type {
     CSSProperties,
     PointerEvent as ReactPointerEvent
 } from 'react';
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Text } from '~/components/shared';

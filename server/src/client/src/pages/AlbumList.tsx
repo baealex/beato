@@ -1,4 +1,4 @@
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 

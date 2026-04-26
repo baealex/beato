@@ -1,4 +1,4 @@
-import Store from 'badland';
+import { BaseStore } from './base-store';
 
 interface EqualizerState {
     bass: number;
@@ -8,7 +8,7 @@ interface EqualizerState {
     treble: number;
 }
 
-class EqualizerStore extends Store<EqualizerState> {
+class EqualizerStore extends BaseStore<EqualizerState> {
     saveTimer: ReturnType<typeof setTimeout> | null;
 
     constructor() {

@@ -1,4 +1,4 @@
-import Store from 'badland';
+import { BaseStore } from './base-store';
 
 import type { Artist } from '~/models/type';
 
@@ -23,7 +23,7 @@ interface ArtistStoreState {
     sortedFrom: typeof SORT_STATE[keyof typeof SORT_STATE];
 }
 
-class ArtistStore extends Store<ArtistStoreState> {
+class ArtistStore extends BaseStore<ArtistStoreState> {
     init = false;
 
     constructor() {

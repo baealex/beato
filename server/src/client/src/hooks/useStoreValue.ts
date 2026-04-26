@@ -1,6 +1,8 @@
-import type Store from 'badland';
-import { useValue } from 'badland-react';
+import { type BaseStore, useAppStoreValue } from '~/store/base-store';
 
-export default function useStoreValue<T, K extends keyof T>(store: Store<T>, name: K) {
-    return useValue(store, name) as unknown as [T[K], (value: T[K]) => Promise<T>];
+export default function useStoreValue<T extends object, K extends keyof T>(
+    store: BaseStore<T>,
+    name: K
+) {
+    return useAppStoreValue(store, name);
 }

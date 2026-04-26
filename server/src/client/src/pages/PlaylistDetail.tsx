@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import type { DragEndEvent } from '@dnd-kit/core';

@@ -2,7 +2,7 @@ import styles from './ArtistDetail.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 

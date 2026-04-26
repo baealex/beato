@@ -141,12 +141,6 @@ importers:
       axios:
         specifier: ^1.13.4
         version: 1.15.2
-      badland:
-        specifier: ^0.2.4
-        version: 0.2.4
-      badland-react:
-        specifier: ^0.0.7
-        version: 0.0.7
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -174,6 +168,9 @@ importers:
       vite-plugin-svgr:
         specifier: ^5.2.0
         version: 5.2.0(rollup@4.60.2)(typescript@6.0.3)(vite@8.0.10(@types/node@25.6.0)(sass@1.99.0))
+      zustand:
+        specifier: ^5.0.12
+        version: 5.0.12(@types/react@19.2.14)(react@19.2.5)
     devDependencies:
       '@types/react':
         specifier: ^19.2.14
@@ -1880,12 +1877,6 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
       '@babel/core': ^7.0.0
-
-  badland-react@0.0.7:
-    resolution: {integrity: sha512-cA4/9TQWNovVSeIULlJ1n21Z+4TZz4+kmOEXyIOxyUpQek697zjAc3clQBK6j6PJOby8TH5RJe/evq+8vLtdUw==}
-
-  badland@0.2.4:
-    resolution: {integrity: sha512-PTQ6S7Fb1A3yLZR+kV/bP1O3jUqmWvA9j5xro5rQEjG4gZJMAEoRCndgpufOBNy+Tgz2+pWdkfltekAZTnlOsA==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -4293,6 +4284,24 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zustand@5.0.12:
+    resolution: {integrity: sha512-i77ae3aZq4dhMlRhJVCYgMLKuSiZAaUPAct2AksxQ+gOtimhGMdXljRT21P5BNpeT4kXlLIckvkPM029OljD7g==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      immer: '>=9.0.6'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+
 snapshots:
 
   '@antfu/ni@0.23.2': {}
@@ -6039,10 +6048,6 @@ snapshots:
       '@babel/core': 7.29.0
       babel-plugin-jest-hoist: 29.6.3
       babel-preset-current-node-syntax: 1.2.0(@babel/core@7.29.0)
-
-  badland-react@0.0.7: {}
-
-  badland@0.2.4: {}
 
   balanced-match@1.0.2: {}
 
@@ -8666,3 +8671,8 @@ snapshots:
   yn@3.1.1: {}
 
   yocto-queue@0.1.0: {}
+
+  zustand@5.0.12(@types/react@19.2.14)(react@19.2.5):
+    optionalDependencies:
+      '@types/react': 19.2.14
+      react: 19.2.5
