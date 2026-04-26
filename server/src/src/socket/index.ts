@@ -8,7 +8,7 @@ import { playlistListener } from './playlist';
 export const socketManager = (socket: Socket) => {
     console.log(`${socket.id} : a user connected`);
     connectors.append(Object.assign(socket, {
-        userAgent: socket.handshake.headers['user-agent'],
+        userAgent: socket.handshake.headers['user-agent'] ?? '',
         connectedAt: Date.now()
     }));
     connectors.broadcast('get-connectors', connectors.get().map((c) => ({

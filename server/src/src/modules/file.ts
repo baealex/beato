@@ -9,7 +9,7 @@ export function walk(directoryPath: string): Promise<string[]> {
                 return;
             }
 
-            const filePromises = files.map((file) => {
+            const filePromises = files.map((file): Promise<string | string[]> => {
                 const filePath = path.join(directoryPath, file);
 
                 return new Promise((resolve, reject) => {
@@ -32,8 +32,7 @@ export function walk(directoryPath: string): Promise<string[]> {
 
             Promise.all(filePromises)
                 .then((results) => {
-                    const filePaths = results.reduce<string[]>((acc, files: string[]) => acc.concat(files), []);
-                    resolve(filePaths);
+                    resolve(results.flat());
                 })
                 .catch(reject);
         });

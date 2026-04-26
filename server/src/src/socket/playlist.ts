@@ -13,6 +13,33 @@ const PLAYLIST_MOVE_MUSIC = 'playlist-move-music';
 const PLAYLIST_REMOVE_MUSIC = 'playlist-remove-music';
 const PLAYLIST_CHANGE_MUSIC_ORDER = 'playlist-change-music-order';
 
+type PlaylistCreatePayload = {
+    name?: string;
+    musics?: string[];
+};
+
+type PlaylistIdPayload = {
+    id?: string;
+};
+
+type PlaylistUpdatePayload = PlaylistIdPayload & {
+    name?: string;
+};
+
+type PlaylistMusicIdsPayload = PlaylistIdPayload & {
+    musicIds?: string[];
+};
+
+type PlaylistMoveMusicPayload = {
+    toId?: string;
+    fromId?: string;
+    musicIds?: string[];
+};
+
+type PlaylistOrderPayload = {
+    ids?: string[];
+};
+
 export const playlistListener = (socket: Socket) => {
     socket.on(PLAYLIST_CREATE, createPlaylist);
     socket.on(PLAYLIST_DELETE, deletePlaylist);
@@ -24,7 +51,7 @@ export const playlistListener = (socket: Socket) => {
     socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, changePlaylistMusicOrder);
 };
 
-const createPlaylist = async ({ name = '', musics = [] }) => {
+const createPlaylist = async ({ name = '', musics = [] }: PlaylistCreatePayload) => {
     if (!name) {
         return;
     }
@@ -49,7 +76,7 @@ const createPlaylist = async ({ name = '', musics = [] }) => {
     });
 };
 
-const deletePlaylist = async ({ id = '' }) => {
+const deletePlaylist = async ({ id = '' }: PlaylistIdPayload) => {
     try {
         await models.playlistMusic.deleteMany({ where: { playlistId: Number(id) } });
         await models.playlist.delete({ where: { id: Number(id) } });
@@ -59,7 +86,7 @@ const deletePlaylist = async ({ id = '' }) => {
     }
 };
 
-const changePlaylistMusicOrder = async ({ id = '', musicIds = [] }) => {
+const changePlaylistMusicOrder = async ({ id = '', musicIds = [] }: PlaylistMusicIdsPayload) => {
     if (!id || !musicIds.length) {
         return;
     }
@@ -98,7 +125,7 @@ const changePlaylistMusicOrder = async ({ id = '', musicIds = [] }) => {
 const updatePlaylist = async ({
     id = '',
     name = ''
-}) => {
+}: PlaylistUpdatePayload) => {
     if (!id || !name) {
         return;
     }
@@ -116,7 +143,7 @@ const updatePlaylist = async ({
 const addMusicToPlaylist = async ({
     id = '',
     musicIds = []
-}) => {
+}: PlaylistMusicIdsPayload) => {
     if (!id || !musicIds.length) {
         return;
     }
@@ -164,7 +191,7 @@ const moveMusicToPlaylist = async ({
     toId = '',
     fromId = '',
     musicIds = []
-}) => {
+}: PlaylistMoveMusicPayload) => {
     if (!toId || !fromId || !musicIds.length) {
         return;
     }
@@ -226,7 +253,7 @@ const moveMusicToPlaylist = async ({
 const removeMusicFromPlaylist = async ({
     id = '',
     musicIds = []
-}) => {
+}: PlaylistMusicIdsPayload) => {
     if (!id || !musicIds.length) {
         return;
     }
@@ -248,7 +275,7 @@ const removeMusicFromPlaylist = async ({
     });
 };
 
-const changePlaylistOrder = async ({ ids = [] }) => {
+const changePlaylistOrder = async ({ ids = [] }: PlaylistOrderPayload) => {
     if (!ids.length) {
         return;
     }

@@ -8,6 +8,28 @@ import models from '~/models';
 import type { Controller } from '~/types';
 import type { Response } from 'express';
 
+const validBitrates = ['64k', '96k', '128k', '192k', '256k', '320k'];
+const validTranscodeFormats = ['mp3', 'aac'] as const;
+
+type TranscodeFormat = typeof validTranscodeFormats[number];
+
+const contentTypeMap: Record<TranscodeFormat, string> = {
+    mp3: 'audio/mpeg',
+    aac: 'audio/aac'
+};
+
+const directStreamMimeTypes: Record<string, string> = {
+    mp3: 'audio/mpeg',
+    flac: 'audio/flac',
+    aac: 'audio/aac',
+    ogg: 'audio/ogg',
+    wav: 'audio/wav'
+};
+
+function isTranscodeFormat(format: string): format is TranscodeFormat {
+    return validTranscodeFormats.includes(format as TranscodeFormat);
+}
+
 const streamFile = (filePath: string, res: Response): void => {
     try {
         const stat = fs.statSync(filePath);
@@ -65,11 +87,8 @@ export const audio: Controller = async (req, res) => {
     const requestedBitrate = (req.query.bitrate as string) || '128k';
     const requestedFormat = (req.query.format as string) || 'mp3';
 
-    const validBitrates = ['64k', '96k', '128k', '192k', '256k', '320k'];
     const bitrate = validBitrates.includes(requestedBitrate) ? requestedBitrate : '128k';
-
-    const validFormats = ['mp3', 'aac'];
-    const outputFormat = validFormats.includes(requestedFormat) ? requestedFormat : 'mp3';
+    const outputFormat = isTranscodeFormat(requestedFormat) ? requestedFormat : 'mp3';
 
     if (!id || !Number.isInteger(Number(id))) {
         res.status(400).send('Bad Request').end();
@@ -93,23 +112,10 @@ export const audio: Controller = async (req, res) => {
 
         const fileExtension = $music.filePath.split('.').pop()?.toLowerCase() || '';
 
-        const contentTypeMap = {
-            'mp3': 'audio/mpeg',
-            'aac': 'audio/aac'
-        };
-
         const noTranscode = req.query.notranscode === 'true';
 
         if (noTranscode) {
-            const mimeTypes = {
-                'mp3': 'audio/mpeg',
-                'flac': 'audio/flac',
-                'aac': 'audio/aac',
-                'ogg': 'audio/ogg',
-                'wav': 'audio/wav'
-            };
-
-            res.setHeader('Content-Type', mimeTypes[fileExtension] || 'audio/mpeg');
+            res.setHeader('Content-Type', directStreamMimeTypes[fileExtension] || 'audio/mpeg');
             res.setHeader('Accept-Ranges', 'bytes');
             res.setHeader('Cache-Control', 'max-age=604800');
 
@@ -142,7 +148,7 @@ export const audio: Controller = async (req, res) => {
                     console.error('Error during transcoding:', err);
                     if (!res.headersSent) {
                         console.log('Falling back to direct streaming');
-                        res.setHeader('Content-Type', contentTypeMap[fileExtension] || 'audio/mpeg');
+                        res.setHeader('Content-Type', directStreamMimeTypes[fileExtension] || 'audio/mpeg');
                         res.setHeader('Accept-Ranges', 'bytes');
                         streamFile(filePath, res);
                     } else if (!res.writableEnded) {
