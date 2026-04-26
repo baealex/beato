@@ -1,4 +1,4 @@
-import Store from 'badland';
+import { BaseStore } from './base-store';
 
 export interface AudioSettings {
     format: 'mp3' | 'aac';
@@ -6,7 +6,7 @@ export interface AudioSettings {
     useOriginal: boolean;
 }
 
-class AudioSettingsStore extends Store<AudioSettings> {
+class AudioSettingsStore extends BaseStore<AudioSettings> {
     constructor() {
         super();
 

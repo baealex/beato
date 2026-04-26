@@ -1,10 +1,10 @@
-import Store from 'badland';
+import { BaseStore } from './base-store';
 
 interface ThemeState {
     playerAlbumArtStyle: string;
 }
 
-class ThemeStore extends Store<ThemeState> {
+class ThemeStore extends BaseStore<ThemeState> {
     constructor() {
         super();
         this.state = { playerAlbumArtStyle: localStorage.getItem('theme:playerAlbumArtStyle') || '' };

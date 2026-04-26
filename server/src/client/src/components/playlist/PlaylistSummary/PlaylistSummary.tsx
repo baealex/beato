@@ -2,7 +2,7 @@ import styles from './PlaylistSummary.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 
 import { GridImage, SummaryTitle } from '~/components/shared';
 

@@ -1,4 +1,4 @@
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 

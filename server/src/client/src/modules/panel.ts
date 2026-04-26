@@ -1,4 +1,4 @@
-import Store from 'badland';
+import { BaseStore } from '~/store/base-store';
 
 interface PanelStoreState {
     title: string;
@@ -6,7 +6,7 @@ interface PanelStoreState {
     content: React.ReactNode;
 }
 
-class PanelStore extends Store<PanelStoreState> {
+class PanelStore extends BaseStore<PanelStoreState> {
     constructor() {
         super();
         this.state = {

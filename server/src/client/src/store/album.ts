@@ -1,4 +1,4 @@
-import Store from 'badland';
+import { BaseStore } from './base-store';
 
 import type { Album } from '~/models/type';
 
@@ -23,7 +23,7 @@ interface AlbumStoreState {
     sortedFrom: typeof SORT_STATE[keyof typeof SORT_STATE];
 }
 
-class AlbumStore extends Store<AlbumStoreState> {
+class AlbumStore extends BaseStore<AlbumStoreState> {
     init = false;
 
     constructor() {

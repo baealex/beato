@@ -1,5 +1,5 @@
 import styles from './PlaylistItem.module.scss';
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 
 import GridImage from '../../shared/GridImage';
 import { IconButton } from '~/components/shared';

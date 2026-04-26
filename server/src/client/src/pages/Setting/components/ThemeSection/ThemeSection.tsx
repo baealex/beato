@@ -1,4 +1,4 @@
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 
 import { Select, SettingSection, SettingItem } from '~/components/shared';
 import { themeStore } from '~/store/theme';

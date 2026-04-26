@@ -2,7 +2,7 @@ import styles from './MusicPlayer.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 import { useNavigate } from 'react-router-dom';
 
 import { Image } from '~/components/shared';

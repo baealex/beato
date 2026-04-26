@@ -1,4 +1,4 @@
-import Store from 'badland';
+import { BaseStore } from './base-store';
 import type { Connector } from '~/socket';
 import { ConnectorListener, socket } from '~/socket';
 
@@ -6,7 +6,7 @@ interface ConnectorStoreState {
     connectors: Connector[];
 }
 
-class ConnectorStore extends Store<ConnectorStoreState> {
+class ConnectorStore extends BaseStore<ConnectorStoreState> {
     init = false;
     listener: ConnectorListener;
 

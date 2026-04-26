@@ -1,4 +1,4 @@
-import Store from 'badland';
+import { BaseStore } from './base-store';
 
 import { musicStore } from './music';
 
@@ -53,7 +53,7 @@ const createQueueState = (items: string[], selected: number | null) => ({
     ...deriveQueueState(items, selected)
 });
 
-class QueueStore extends Store<QueueStoreState> {
+class QueueStore extends BaseStore<QueueStoreState> {
     saveTimer: ReturnType<typeof setTimeout> | null = null;
     audioChannel: AudioChannel;
     playbackSessionTracker: PlaybackSessionTracker;

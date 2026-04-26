@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 import { RouterProvider } from 'react-router-dom';
 
 import AuthGate from './components/auth/AuthGate';

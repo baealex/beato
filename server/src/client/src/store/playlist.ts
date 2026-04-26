@@ -1,4 +1,4 @@
-import Store from 'badland';
+import { BaseStore } from './base-store';
 import { getPlaylists } from '~/api';
 import type { Playlist } from '~/models/type';
 import { PlaylistListener } from '~/socket';
@@ -8,7 +8,7 @@ interface PlaylistStoreState {
     playlists: Playlist[];
 }
 
-class PlaylistStore extends Store<PlaylistStoreState> {
+class PlaylistStore extends BaseStore<PlaylistStoreState> {
     init = false;
     listener: PlaylistListener;
 

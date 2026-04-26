@@ -1,4 +1,4 @@
-import Store from 'badland';
+import { BaseStore } from './base-store';
 
 import type { Music } from '~/models/type';
 
@@ -27,7 +27,7 @@ interface MusicStoreState {
     sortedFrom: typeof SORT_STATE[keyof typeof SORT_STATE];
 }
 
-class MusicStore extends Store<MusicStoreState> {
+class MusicStore extends BaseStore<MusicStoreState> {
     init = false;
     listener: MusicListener;
 

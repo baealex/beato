@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 import { useNavigate } from 'react-router-dom';
-import { useStore } from 'badland-react';
+import { useAppStore as useStore } from '~/store/base-store';
 
 import { MusicPlayerDiskStyle, MusicPlayerFluffyStyle, MusicPlayerVisualizerStyle } from '~/components/music';
 import { Image, Text } from '~/components/shared';
