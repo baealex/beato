@@ -18,7 +18,7 @@ export interface AuthSession {
 
 type QueryName = 'query' | 'mutation';
 
-export function wrapper(queryName: QueryName, query: string): string {
+export function wrapper(queryName: QueryName | string, query: string): string {
     return queryName + ' { ' + query + ' }';
 }
 
@@ -34,11 +34,23 @@ interface GraphqlResponse<T extends string, K> {
     };
 }
 
-export async function graphQLRequest<T extends string, K>(query: string): Promise<GraphqlResponse<T, K>> {
+type GraphqlVariables = Record<string, unknown>;
+
+interface GraphqlRequestOptions<TVariables extends GraphqlVariables = GraphqlVariables> {
+    query: string;
+    variables?: TVariables;
+    operationName?: string;
+}
+
+export async function graphQLRequest<T extends string, K, TVariables extends GraphqlVariables = GraphqlVariables>({
+    query,
+    variables,
+    operationName
+}: GraphqlRequestOptions<TVariables>): Promise<GraphqlResponse<T, K>> {
     const { data } = await axios.request<GraphqlResponse<T, K>>({
         url: '/graphql',
         method: 'POST',
-        data: { query }
+        data: { query, variables, operationName }
     });
     return data;
 }
@@ -63,8 +75,9 @@ export async function logoutSession() {
 }
 
 export function getMusics() {
-    return graphQLRequest<'allMusics', Music[]>(
-        wrapper('query', (createQuery<Music>('allMusics', [
+    return graphQLRequest<'allMusics', Music[]>({
+        operationName: 'AllMusics',
+        query: wrapper('query AllMusics', (createQuery<Music>('allMusics', [
             'id',
             'name',
             'filePath',
@@ -88,12 +101,13 @@ export function getMusics() {
                 'publishedYear'
             ])
         ])))
-    );
+    });
 }
 
 export function getArtists() {
-    return graphQLRequest<'allArtists', Artist[]>(
-        wrapper('query', createQuery<Artist>('allArtists', [
+    return graphQLRequest<'allArtists', Artist[]>({
+        operationName: 'AllArtists',
+        query: wrapper('query AllArtists', createQuery<Artist>('allArtists', [
             'id',
             'name',
             'createdAt',
@@ -103,12 +117,14 @@ export function getArtists() {
                 'cover'
             ])
         ]))
-    );
+    });
 }
 
 export function getArtist(id: string) {
-    return graphQLRequest<'artist', Artist>(
-        wrapper('query', createQuery<Artist>(`artist(id: "${id}")`, [
+    return graphQLRequest<'artist', Artist, { id: string }>({
+        operationName: 'Artist',
+        variables: { id },
+        query: wrapper('query Artist($id: ID!)', createQuery<Artist>('artist(id: $id)', [
             'id',
             'name',
             'albumCount',
@@ -127,12 +143,13 @@ export function getArtist(id: string) {
                 'id'
             ])
         ]))
-    );
+    });
 }
 
 export function getAlbums() {
-    return graphQLRequest<'allAlbums', Album[]>(
-        wrapper('query', createQuery<Album>('allAlbums', [
+    return graphQLRequest<'allAlbums', Album[]>({
+        operationName: 'AllAlbums',
+        query: wrapper('query AllAlbums', createQuery<Album>('allAlbums', [
             'id',
             'name',
             'cover',
@@ -143,12 +160,14 @@ export function getAlbums() {
                 'name'
             ])
         ]))
-    );
+    });
 }
 
 export function getAlbum(id: string) {
-    return graphQLRequest<'album', Album>(
-        wrapper('query', createQuery<Album>(`album(id: "${id}")`, [
+    return graphQLRequest<'album', Album, { id: string }>({
+        operationName: 'Album',
+        variables: { id },
+        query: wrapper('query Album($id: ID!)', createQuery<Album>('album(id: $id)', [
             'id',
             'name',
             'cover',
@@ -161,12 +180,13 @@ export function getAlbum(id: string) {
                 'id'
             ])
         ]))
-    );
+    });
 }
 
 export function getPlaylists() {
-    return graphQLRequest<'allPlaylist', Playlist[]>(
-        wrapper('query', createQuery<Playlist>('allPlaylist', [
+    return graphQLRequest<'allPlaylist', Playlist[]>({
+        operationName: 'AllPlaylists',
+        query: wrapper('query AllPlaylists', createQuery<Playlist>('allPlaylist', [
             'id',
             'name',
             'musicCount',
@@ -176,12 +196,14 @@ export function getPlaylists() {
                 'id'
             ])
         ]))
-    );
+    });
 }
 
 export function getPlaylist(id: string) {
-    return graphQLRequest<'playlist', Playlist>(
-        wrapper('query', createQuery<Playlist>(`playlist(id: "${id}")`, [
+    return graphQLRequest<'playlist', Playlist, { id: string }>({
+        operationName: 'Playlist',
+        variables: { id },
+        query: wrapper('query Playlist($id: ID!)', createQuery<Playlist>('playlist(id: $id)', [
             'id',
             'name',
             'musicCount',
@@ -191,7 +213,7 @@ export function getPlaylist(id: string) {
                 'id'
             ])
         ]))
-    );
+    });
 }
 
 export function getAudio(id: string) {
@@ -203,8 +225,9 @@ export function getAudio(id: string) {
 }
 
 export function getLatestSyncReport() {
-    return graphQLRequest<'latestSyncReport', SyncReport | null>(
-        wrapper('query', createQuery<SyncReport>('latestSyncReport', [
+    return graphQLRequest<'latestSyncReport', SyncReport | null>({
+        operationName: 'LatestSyncReport',
+        query: wrapper('query LatestSyncReport', createQuery<SyncReport>('latestSyncReport', [
             'id',
             'createdAt',
             'startedAt',
@@ -254,5 +277,5 @@ export function getLatestSyncReport() {
                 'createdAt'
             ])
         ]))
-    );
+    });
 }

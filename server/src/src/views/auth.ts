@@ -38,25 +38,27 @@ const renderLoginPage = (input: {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#03141b" />
+    <meta name="theme-color" content="#09090b" />
     <title>Ocean Wave Sign In</title>
     <style>
         :root {
             color-scheme: dark;
-            --bg: #03141b;
-            --panel: rgba(12, 30, 40, 0.92);
-            --panel-border: rgba(135, 181, 200, 0.18);
-            --text-primary: #ecf8ff;
-            --text-secondary: #98b4c2;
-            --text-muted: #6f8a98;
-            --accent: #56b7ff;
-            --accent-hover: #7ac7ff;
-            --accent-text: #02131c;
-            --input-bg: rgba(2, 15, 21, 0.9);
-            --input-border: rgba(135, 181, 200, 0.2);
-            --error-bg: rgba(171, 74, 74, 0.16);
-            --error-border: rgba(229, 112, 112, 0.38);
-            --error-text: #ffb7b7;
+            --bg: #09090b;
+            --page: radial-gradient(circle at top, rgba(140, 80, 255, 0.06), transparent 32%), linear-gradient(180deg, rgba(9, 9, 11, 0.98) 0%, rgba(6, 6, 8, 1) 100%);
+            --panel: linear-gradient(180deg, rgba(18, 18, 22, 0.98) 0%, rgba(10, 10, 14, 0.98) 100%);
+            --panel-border: rgba(160, 100, 255, 0.1);
+            --text-primary: rgba(255, 255, 255, 0.9);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.32);
+            --accent: #8c50ff;
+            --accent-light: #c8a0ff;
+            --accent-text: #09090b;
+            --focus-ring: rgba(140, 80, 255, 0.14);
+            --input-bg: rgba(24, 24, 28, 0.7);
+            --input-focus: rgba(26, 26, 32, 0.9);
+            --error-bg: rgba(78, 18, 22, 0.58);
+            --error-border: rgba(247, 113, 113, 0.28);
+            --error-text: #ffd9d9;
             font-family: Inter, "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
@@ -70,90 +72,131 @@ const renderLoginPage = (input: {
             display: grid;
             place-items: center;
             padding: 24px;
-            background:
-                radial-gradient(circle at top, rgba(86, 183, 255, 0.12), transparent 36%),
-                linear-gradient(180deg, #04131a 0%, #03141b 100%);
+            background: var(--page);
             color: var(--text-primary);
         }
 
         .shell {
-            width: min(420px, 100%);
+            width: min(440px, 100%);
         }
 
-        .brand {
-            margin-bottom: 12px;
-            color: var(--text-muted);
+        .brandLockup {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #dcc0ff 0%, #c8a0ff 34%, #8c50ff 100%);
+            color: var(--accent-text);
+            font-size: 13px;
+            font-weight: 800;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                0 16px 32px var(--focus-ring);
+        }
+
+        .eyebrow {
+            color: var(--accent-light);
             font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: 0;
             text-transform: uppercase;
         }
 
         .panel {
-            padding: 24px;
+            padding: 32px;
             border: 1px solid var(--panel-border);
-            border-radius: 20px;
+            border-radius: 28px;
             background: var(--panel);
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+            box-shadow:
+                0 22px 50px rgba(0, 0, 0, 0.5),
+                0 0 52px rgba(140, 80, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(18px);
         }
 
         h1 {
             margin: 0;
-            font-size: 28px;
-            line-height: 1.15;
+            color: var(--text-primary);
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            line-height: 1.12;
+            letter-spacing: 0;
         }
 
         .description {
-            margin: 10px 0 24px;
+            margin: 16px 0 0;
             color: var(--text-secondary);
-            font-size: 15px;
             line-height: 1.6;
         }
 
         form {
+            margin-top: 24px;
             display: grid;
-            gap: 16px;
+            gap: 12px;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: uppercase;
         }
 
         input {
             width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--input-border);
-            border-radius: 14px;
+            min-height: 48px;
+            padding: 0 16px;
+            border: 1px solid var(--panel-border);
+            border-radius: 9999px;
             background: var(--input-bg);
             color: var(--text-primary);
             font-size: 16px;
+            transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            transition-property: border-color, box-shadow, background-color;
         }
 
         input:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(86, 183, 255, 0.14);
+            background: var(--input-focus);
+            box-shadow: 0 0 0 3px var(--focus-ring);
         }
 
         button {
             width: 100%;
-            padding: 14px 18px;
+            min-height: 48px;
+            padding: 0 18px;
             border: none;
-            border-radius: 14px;
-            background: var(--accent);
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #dcc0ff 0%, #c8a0ff 34%, #8c50ff 100%);
             color: var(--accent-text);
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.32),
+                0 16px 32px var(--focus-ring);
+            transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            transition-property: filter, box-shadow;
         }
 
         button:hover {
-            background: var(--accent-hover);
+            filter: saturate(1.04) brightness(1.04);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.36),
+                0 20px 40px rgba(140, 80, 255, 0.2);
         }
 
         .hint {
@@ -164,14 +207,14 @@ const renderLoginPage = (input: {
         }
 
         .error {
-            margin-bottom: 18px;
-            padding: 12px 14px;
+            margin-top: 24px;
+            padding: 14px 16px;
             border: 1px solid var(--error-border);
             border-radius: 14px;
             background: var(--error-bg);
             color: var(--error-text);
             font-size: 14px;
-            font-weight: 600;
+            line-height: 1.45;
         }
 
         @media (max-width: 640px) {
@@ -187,10 +230,13 @@ const renderLoginPage = (input: {
 </head>
 <body>
     <main class="shell">
-        <div class="brand">Ocean Wave</div>
         <section class="panel" aria-labelledby="login-title">
-            <h1 id="login-title">Sign in</h1>
-            <p class="description">Enter the shared password before the Ocean Wave app loads.</p>
+            <div class="brandLockup">
+                <span class="mark" aria-hidden="true">OW</span>
+                <span class="eyebrow">Protected Session</span>
+            </div>
+            <h1 id="login-title">Ocean Wave</h1>
+            <p class="description">Password mode is enabled. Sign in before the listening surface, GraphQL API, and live connectors unlock.</p>
             ${errorSection}
             <form method="post" action="/login">
                 <input type="hidden" name="redirectTo" value="${escapeHtml(input.redirectTo)}" />

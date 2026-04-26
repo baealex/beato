@@ -1,10 +1,10 @@
 ```
-npm i
+pnpm install
 
 // development
-npm run dev
+pnpm dev
 
 // deploy
-npm run build
-npm run start
+pnpm build
+pnpm start
 ```

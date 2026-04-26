@@ -3,13 +3,15 @@
     "version": "1.0.0",
     "description": "Ocean Wave server",
     "scripts": {
+        "postinstall": "prisma generate --schema prisma/schema.prisma",
         "dev": "cross-env PORT=44100 ts-node script/_dev.ts",
-        "dev:client": "npm run dev --prefix client",
-        "dev:with": "concurrently \"npm run dev\" \"npm run dev:client\"",
+        "dev:client": "pnpm --filter ocean-wave-client dev",
+        "dev:with": "pnpm --workspace-root dev",
         "start": "cross-env PORT=44100 ts-node script/_start.ts",
         "build": "tsc",
-        "build:client": "npm run build --prefix client",
-        "lint": "eslint src",
+        "build:client": "pnpm --filter ocean-wave-client build",
+        "type-check": "tsc --noEmit",
+        "lint": "pnpm --workspace-root exec biome lint server/src/src server/src/script server/src/cli server/src/jest.config.ts server/src/jest.setup.ts",
         "test": "DATABASE_URL=file:./test.sqlite3 ts-node script/_test.ts",
         "create-schema": "ts-node cli/create-schema.ts",
         "create-component": "ts-node cli/create-component.ts"
@@ -24,6 +26,9 @@
         "url": "https://github.com/baealex/ocean-wave/issues"
     },
     "homepage": "https://github.com/baealex/ocean-wave#readme",
+    "prisma": {
+        "schema": "prisma/schema.prisma"
+    },
     "dependencies": {
         "@baejino/auth": "^0.1.1",
         "@prisma/client": "^5.22.0",
@@ -41,16 +46,12 @@
         "winston": "^3.19.0"
     },
     "devDependencies": {
-        "@baejino/eslint-config": "^0.0.1",
         "@graphql-tools/schema": "^10.0.31",
         "@graphql-tools/utils": "^10.11.0",
         "@types/express": "^4.17.25",
         "@types/jest": "^29.5.14",
         "@types/supertest": "^6.0.3",
-        "concurrently": "^8.2.2",
         "cross-env": "^7.0.3",
-        "eslint": "^8.57.1",
-        "eslint-plugin-jest": "^28.14.0",
         "jest": "^29.7.0",
         "nodemon": "^3.1.11",
         "supertest": "^7.2.2",

@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 
 import { appShell } from '~/config/app-shell';
+import { Music } from '~/icon';
 
 import styles from './AuthGate.module.scss';
 
@@ -22,11 +23,16 @@ export default function AuthGate({
     return (
         <div className={cx('AuthGate')}>
             <section className={cx('panel')}>
-                <span className={cx('eyebrow')}>
-                    {state === 'loading'
-                        ? 'Checking Session'
-                        : 'Session Check Failed'}
-                </span>
+                <div className={cx('brandLockup')}>
+                    <span className={cx('mark')} aria-hidden="true">
+                        <Music />
+                    </span>
+                    <span className={cx('eyebrow')}>
+                        {state === 'loading'
+                            ? 'Checking Session'
+                            : 'Session Check Failed'}
+                    </span>
+                </div>
                 <h1 className={cx('title')}>{appShell.brand.name}</h1>
                 <p className={cx('description')}>
                     {state === 'loading'
