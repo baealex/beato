@@ -26,6 +26,7 @@ import { getPlaylist } from '~/api';
 import { queryKeys } from '~/api/query-keys';
 import { toast } from '~/modules/toast';
 import {
+    PLAYLIST_ADD_MUSIC,
     PLAYLIST_CHANGE_MUSIC_ORDER,
     PLAYLIST_MOVE_MUSIC,
     PLAYLIST_REMOVE_MUSIC,
@@ -89,11 +90,13 @@ export default function PlaylistDetail() {
             });
         };
 
+        socket.on(PLAYLIST_ADD_MUSIC, invalidateQueries);
         socket.on(PLAYLIST_MOVE_MUSIC, invalidateQueries);
         socket.on(PLAYLIST_REMOVE_MUSIC, invalidateQueries);
         socket.on(PLAYLIST_CHANGE_MUSIC_ORDER, invalidateQueries);
 
         return () => {
+            socket.off(PLAYLIST_ADD_MUSIC, invalidateQueries);
             socket.off(PLAYLIST_MOVE_MUSIC, invalidateQueries);
             socket.off(PLAYLIST_REMOVE_MUSIC, invalidateQueries);
             socket.off(PLAYLIST_CHANGE_MUSIC_ORDER, invalidateQueries);

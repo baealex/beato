@@ -3,6 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { queryKeys } from './query-keys';
 
 describe('queryKeys', () => {
+    it('provides an auth session key', () => {
+        expect(queryKeys.auth.session()).toEqual(['auth', { scope: 'session' }]);
+    });
+
     it('uses stable object payloads for detail keys', () => {
         expect(queryKeys.albums.detail('3')).toEqual(['album', { id: '3' }]);
         expect(queryKeys.artists.detail('5')).toEqual(['artist', { id: '5' }]);

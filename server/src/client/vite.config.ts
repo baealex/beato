@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import svgr from 'vite-plugin-svgr';
@@ -30,7 +31,8 @@ function getManualChunk(id: string) {
 export default defineConfig({
     plugins: [
         react(),
-        svgr()
+        svgr(),
+        tailwindcss()
     ],
     css: { preprocessorOptions: { scss: { api: 'modern' } } },
     resolve: { alias: { '~': path.resolve(__dirname, './src') } },

@@ -35,10 +35,10 @@
             "@prisma/client",
             "@prisma/engines",
             "bcrypt",
+            "better-sqlite3",
             "esbuild",
             "prisma",
-            "sharp",
-            "sqlite3"
+            "sharp"
         ],
         "ignoredBuiltDependencies": [
             "lefthook"

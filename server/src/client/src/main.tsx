@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App.tsx';
 
+import './styles/tailwind.css';
 import './styles/main.scss';
 
 if (import.meta.env.DEV) {
