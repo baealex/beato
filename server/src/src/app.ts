@@ -42,7 +42,7 @@ export const createApp = (authConfig: AuthConfig = resolveAuthConfig(process.env
         .use('/api', createApiRouter(authConfig))
         .use(express.static(clientDistPath, { index: false }))
         .use(requireAuthenticatedHtmlRequest(authConfig))
-        .get('*', (req, res) => {
+        .get('/{*splat}', (req, res) => {
             if (req.path.startsWith('/api/')) {
                 return res.status(404).json({ message: 'Not Found' });
             }
