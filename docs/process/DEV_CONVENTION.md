@@ -3,7 +3,7 @@
 Updated: 2026-03-06
 
 ## 1. Base Environment
-- Node.js: `22`
+- Node.js: `22.12+`
 - Package manager: `pnpm@10.25.0`
 - Workspace: `packages/*` (pnpm workspace)
 

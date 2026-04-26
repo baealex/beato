@@ -3,6 +3,29 @@ import path from 'path';
 import svgr from 'vite-plugin-svgr';
 import { defineConfig } from 'vitest/config';
 
+const vendorModules = [
+    'react',
+    'react-dom',
+    'react-router-dom',
+    'react-router',
+    '@tanstack/react-query',
+    '@dnd-kit/core',
+    '@dnd-kit/sortable',
+    '@dnd-kit/modifiers',
+    '@dnd-kit/utilities'
+];
+
+function getManualChunk(id: string) {
+    const normalizedId = id.replaceAll('\\', '/');
+    if (!normalizedId.includes('/node_modules/')) return undefined;
+
+    if (vendorModules.some((moduleName) => normalizedId.includes(`/node_modules/${moduleName}/`))) {
+        return 'vendor';
+    }
+
+    return undefined;
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
@@ -15,19 +38,7 @@ export default defineConfig({
         sourcemap: false,
         rollupOptions: {
             output: {
-                manualChunks: {
-                    vendor: [
-                        'react',
-                        'react-dom',
-                        'react-router-dom',
-                        'react-router',
-                        '@tanstack/react-query',
-                        '@dnd-kit/core',
-                        '@dnd-kit/sortable',
-                        '@dnd-kit/modifiers',
-                        '@dnd-kit/utilities'
-                    ]
-                }
+                manualChunks: getManualChunk
             }
         }
     },
