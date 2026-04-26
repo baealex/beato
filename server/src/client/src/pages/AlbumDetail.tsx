@@ -8,6 +8,7 @@ import { AlbumSummary } from '~/components/album';
 import { Play } from '~/icon';
 
 import { getAlbum } from '~/api';
+import { queryKeys } from '~/api/query-keys';
 
 import { getOriginalImage } from '~/modules/image';
 import { musicStore } from '~/store/music';
@@ -19,7 +20,7 @@ export default function AlbumDetail() {
 
     const { id } = useParams<{ id: string }>();
 
-    const { data: album } = useQuery(['album', id], async () => {
+    const { data: album } = useQuery(queryKeys.albums.detail(id), async () => {
         const { data } = await getAlbum(id!);
         return data.album;
     }, { enabled: !!id });

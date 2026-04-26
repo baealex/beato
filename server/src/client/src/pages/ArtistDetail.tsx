@@ -14,6 +14,7 @@ import { Grid, Text } from '~/components/shared';
 import { Play } from '~/icon';
 
 import { getArtist } from '~/api';
+import { queryKeys } from '~/api/query-keys';
 
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
@@ -24,7 +25,7 @@ export default function ArtistDetail() {
 
     const { id } = useParams<{ id: string }>();
 
-    const { data: artist } = useQuery(['artist', id], async () => {
+    const { data: artist } = useQuery(queryKeys.artists.detail(id), async () => {
         const { data } = await getArtist(id!);
         return data.artist;
     }, { enabled: !!id });
