@@ -24,6 +24,7 @@
         "types": [
             "vite-plugin-svgr/client"
         ],
+        "ignoreDeprecations": "6.0",
         "baseUrl": "./src",
         "paths": {
             "~/*": [
