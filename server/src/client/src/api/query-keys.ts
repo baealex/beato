@@ -1,4 +1,7 @@
 export const queryKeys = {
+    auth: {
+        session: () => ['auth', { scope: 'session' }] as const
+    },
     albums: {
         all: () => ['albums'] as const,
         detail: (id?: string) => ['album', { id }] as const

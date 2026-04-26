@@ -91,7 +91,7 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
     const sections = useMemo(() => reportSections(latestSyncReport ?? null), [latestSyncReport]);
 
     useEffect(() => {
-        socket.on('sync-music', (serverMessage: string | 'done' | 'error') => {
+        const handleSyncMusic = (serverMessage: string | 'done' | 'error') => {
             if (serverMessage === 'done' || serverMessage === 'error') {
                 if (serverMessage === 'done') {
                     toast.success('Completed sync music');
@@ -111,10 +111,12 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                 setIsSyncing(true);
             }
             setProgressMessage(serverMessage);
-        });
+        };
+
+        socket.on('sync-music', handleSyncMusic);
 
         return () => {
-            socket.off('sync-music');
+            socket.off('sync-music', handleSyncMusic);
         };
     }, [queryClient]);
 

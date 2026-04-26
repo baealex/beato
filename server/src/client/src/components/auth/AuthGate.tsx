@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 
 import { appShell } from '~/config/app-shell';
+import { Button, Tag, Text } from '~/components/shared';
 import { Music } from '~/icon';
 
 import styles from './AuthGate.module.scss';
@@ -27,28 +28,30 @@ export default function AuthGate({
                     <span className={cx('mark')} aria-hidden="true">
                         <Music />
                     </span>
-                    <span className={cx('eyebrow')}>
+                    <Text as="span" variant="secondary" size="xs" weight="bold" className={cx('eyebrow')}>
                         {state === 'loading'
                             ? 'Checking Session'
                             : 'Session Check Failed'}
-                    </span>
+                    </Text>
                 </div>
-                <h1 className={cx('title')}>{appShell.brand.name}</h1>
-                <p className={cx('description')}>
+                <Text as="h1" size="2xl" weight="bold" className={cx('title')}>
+                    {appShell.brand.name}
+                </Text>
+                <Text as="p" variant="secondary" className={cx('description')}>
                     {state === 'loading'
                         ? 'Checking whether this listening space is open or requires the shared password.'
                         : state === 'error'
                             ? 'Ocean Wave could not verify the current auth state yet. Retry once the server is reachable.'
                             : null}
-                </p>
+                </Text>
                 {errorMessage && <div className={cx('error')}>{errorMessage}</div>}
                 <div className={cx('actions')}>
                     {state === 'loading' ? (
-                        <div className={cx('loadingPill')}>Verifying session…</div>
+                        <Tag tone="accent" selected>Verifying session...</Tag>
                     ) : (
-                        <button className={cx('button')} type="button" onClick={() => void onRetry?.()}>
+                        <Button variant="primary" fullWidth onClick={() => void onRetry?.()}>
                             Retry Session Check
-                        </button>
+                        </Button>
                     )}
                 </div>
             </section>
