@@ -3,9 +3,10 @@ import childProcess from 'child_process';
 import path from 'path';
 
 const prismaPath = path.resolve(__dirname, '../prisma');
+type MigrationMode = 'dev' | 'deploy';
 
-export const createDatabase = async () => {
-    childProcess.execSync('npx prisma migrate dev', {
+export const createDatabase = async (mode: MigrationMode = 'dev') => {
+    childProcess.execSync(`pnpm exec prisma migrate ${mode}`, {
         stdio: 'inherit',
     });
 };
