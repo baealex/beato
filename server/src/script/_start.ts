@@ -3,7 +3,7 @@ import { createDatabase } from './shared';
 
 const main = async () => {
     try {
-        await createDatabase();
+        await createDatabase('deploy');
         childProcess.execSync('ts-node src/main.ts', {
             stdio: 'inherit',
         });

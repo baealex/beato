@@ -48,31 +48,6 @@
     line-height: var.$LINE_HEIGHT_DEFAULT;
 }
 
-.input {
-    width: 100%;
-    min-height: var.$CONTROL_HEIGHT_LG;
-    padding: 0.875rem 1rem;
-    border-radius: 1rem;
-    border: 1px solid var.$COLOR_BORDER_SUBTLE;
-    background: var.$COLOR_SURFACE_INPUT;
-    color: var.$COLOR_TEXT;
-    font: inherit;
-    font-size: var.$TEXT_SIZE_MD;
-    transition: var.$TRANSITION_FAST;
-    transition-property: border-color, box-shadow, background-color;
-
-    &::placeholder {
-        color: var.$COLOR_TEXT_MUTED;
-    }
-
-    &:focus {
-        outline: none;
-        border-color: var.$COLOR_FOCUS;
-        box-shadow: 0 0 0 3px var.$COLOR_FOCUS_RING;
-        background: var.$COLOR_SURFACE_INPUT_FOCUS;
-    }
-}
-
 .actions {
     display: flex;
     justify-content: flex-end;

@@ -1,4 +1,5 @@
 import Button from '~/components/shared/Button';
+import Input from '~/components/shared/Input';
 import Text from '~/components/shared/Text';
 
 import * as Dialog from '@baejino/react-ui/modal/dialog';
@@ -70,10 +71,10 @@ export default function TextEntryDialog({
                             )}
                         </div>
 
-                        <input
+                        <Input
                             autoFocus
                             value={value}
-                            className={styles.input}
+                            inputSize="lg"
                             placeholder={placeholder}
                             onChange={(event) => onValueChange(event.currentTarget.value)}
                         />

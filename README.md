@@ -33,9 +33,11 @@ Link your music directory into `server/src/music`.
 ```bash
 git clone <repository-url> ocean-wave
 cd ocean-wave
+nvm use
+corepack enable
 ln -s {YOUR_MUSIC_PATH} server/src/music
-npm install
-npm start
+pnpm install
+pnpm start
 ```
 
 Then open `http://localhost:44100`.
@@ -71,7 +73,7 @@ Node.js:
 ```bash
 OCEAN_WAVE_AUTH_PASSWORD=listen-safe \
 OCEAN_WAVE_SESSION_SECRET=replace-this-secret \
-npm start
+pnpm start
 ```
 
 Docker:
@@ -92,7 +94,7 @@ docker run \
 Open mode is only allowed when you explicitly accept no-auth access:
 
 ```bash
-OCEAN_WAVE_ALLOW_INSECURE_NO_AUTH=true npm start
+OCEAN_WAVE_ALLOW_INSECURE_NO_AUTH=true pnpm start
 ```
 
 Do not set `OCEAN_WAVE_ALLOW_INSECURE_NO_AUTH=true` together with `OCEAN_WAVE_AUTH_PASSWORD`.

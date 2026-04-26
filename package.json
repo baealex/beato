@@ -2,30 +2,46 @@
     "name": "ocean-wave",
     "private": true,
     "version": "1.0.0",
+    "packageManager": "pnpm@10.25.0",
     "scripts": {
-        "outdated:client": "pnpm outdated --prefix server/src/client",
-        "outdated:server": "pnpm outdated --prefix server/src",
-        "update": "npm run update:client && npm run update:server",
-        "update:client": "pnpm update --save --prefix server/src/client",
-        "update:server": "pnpm update --save --prefix server/src",
-        "upgrade": "npm run upgrade:client && npm run upgrade:server",
-        "upgrade:client": "pnpm upgrade --save --prefix server/src/client",
-        "upgrade:server": "pnpm upgrade --save --prefix server/src",
-        "install:client": "pnpm install --prefix server/src/client",
-        "install:server": "pnpm install --prefix server/src",
-        "install": "npm run install:client && npm run install:server",
-        "dev:client": "npm run dev --prefix server/src/client",
-        "dev:server": "npm run dev --prefix server/src",
-        "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+        "outdated": "pnpm -r outdated",
+        "update": "pnpm -r update --save",
+        "upgrade": "pnpm -r upgrade --save",
+        "dev:client": "pnpm --filter ocean-wave-client dev",
+        "dev:server": "pnpm --filter ocean-wave-server dev",
+        "dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\"",
         "test:metadata": "node --test tests/branding/*.test.mjs",
-        "build:client": "npm run build --prefix server/src/client",
-        "start:server": "npm run start --prefix server/src",
-        "start": "npm run build:client && npm run start:server"
-    },
-    "dependencies": {
-        "pnpm": "^10.12.1"
+        "test:server": "pnpm --filter ocean-wave-server test",
+        "test:client": "pnpm --filter ocean-wave-client test",
+        "test:ci": "pnpm test:metadata && pnpm test:server && pnpm test:client",
+        "lint": "biome lint .",
+        "type-check": "pnpm --filter ocean-wave-server type-check && pnpm --filter ocean-wave-client type-check",
+        "build:server": "pnpm --filter ocean-wave-server build",
+        "build:client": "pnpm --filter ocean-wave-client build",
+        "build": "pnpm build:server && pnpm build:client",
+        "check": "pnpm lint && pnpm type-check && pnpm build",
+        "start:server": "pnpm --filter ocean-wave-server start",
+        "start": "pnpm build:client && pnpm start:server",
+        "prepare": "node scripts/setup/install-lefthook.mjs"
     },
     "devDependencies": {
-        "concurrently": "^9.1.2"
+        "@biomejs/biome": "^2.4.13",
+        "concurrently": "^9.1.2",
+        "lefthook": "^2.1.6"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@parcel/watcher",
+            "@prisma/client",
+            "@prisma/engines",
+            "bcrypt",
+            "esbuild",
+            "prisma",
+            "sharp",
+            "sqlite3"
+        ],
+        "ignoredBuiltDependencies": [
+            "lefthook"
+        ]
     }
 }

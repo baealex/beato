@@ -5,6 +5,7 @@ import {
     type ConfirmComponentProps
 } from '@baejino/react-ui/modal';
 import * as AlertDialog from '@baejino/react-ui/modal/alert-dialog';
+import type { ReactNode } from 'react';
 
 import { Button, Text } from '~/components/shared';
 
@@ -119,7 +120,7 @@ const ConfirmModal = ({ open, options, onCancel, onConfirm }: ConfirmComponentPr
 
 export { useModal };
 
-export default function ModalProvider({ children }: { children?: React.ReactNode }) {
+export default function ModalProvider({ children }: { children?: ReactNode }) {
     return (
         <BaseModalProvider
             components={{
