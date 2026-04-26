@@ -4,7 +4,12 @@
         "esModuleInterop": true,
         "moduleResolution": "Node",
         "baseUrl": "src",
+        "ignoreDeprecations": "6.0",
         "target": "esnext",
+        "types": [
+            "node",
+            "jest"
+        ],
         "paths": {
             "~/*": [
                 "./*"

@@ -6,7 +6,7 @@ import { TRACK_SYNC_STATUS } from '~/modules/track-identity';
 import { artistType } from '../artist';
 import { albumType } from '../album';
 
-export const musicType = gql`
+export const musicType: string = gql`
     type Music {
         id: ID!
         name: String!
