@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import classNames from 'classnames/bind';
 
+import { Input } from '~/components/shared';
 import { appShell } from '~/config/app-shell';
 import { Music } from '~/icon';
 
@@ -66,10 +67,10 @@ export default function AuthGate({
                         <label className={cx('label')} htmlFor="auth-password">
                             Shared password
                         </label>
-                        <input
+                        <Input
                             id="auth-password"
-                            className={cx('input')}
                             type="password"
+                            inputSize="lg"
                             autoComplete="current-password"
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}

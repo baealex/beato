@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 
-import { Button, SettingSection, SettingItem, Text } from '~/components/shared';
+import { Badge, Button, SettingSection, SettingItem, Tag, Text } from '~/components/shared';
 import { getLatestSyncReport } from '~/api';
 import { queryKeys } from '~/api/query-keys';
 import { toast } from '~/modules/toast';
@@ -41,6 +41,10 @@ const buildDetailLabel = (item: SyncReportItem) => {
     }
 
     return item.filePath;
+};
+
+const syncStatusTone = (status: SyncReport['status']) => {
+    return status === 'success' ? 'success' : 'danger';
 };
 
 const reportSections = (report: SyncReport | null) => {
@@ -160,9 +164,9 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                                 Started {formatTimestamp(latestSyncReport.startedAt)}
                             </Text>
                         </div>
-                        <span className={`${styles.statusBadge} ${styles[latestSyncReport.status]}`}>
+                        <Badge tone={syncStatusTone(latestSyncReport.status)}>
                             {latestSyncReport.status}
-                        </span>
+                        </Badge>
                     </div>
 
                     <div className={styles.summaryGrid}>
@@ -213,7 +217,11 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                             <details key={section.key} className={styles.detailGroup}>
                                 <summary>
                                     <Text as="span" size="sm" weight="semibold">{section.title}</Text>
-                                    <Text as="span" size="sm" variant="muted">{section.count}</Text>
+                                    <Tag
+                                        tone={section.count > 0 ? 'accent' : 'neutral'}
+                                        selected={section.count > 0}>
+                                        {section.count}
+                                    </Tag>
                                 </summary>
                                 {section.items.length === 0 ? (
                                     <Text as="p" size="sm" variant="muted" className={styles.emptyDetail}>

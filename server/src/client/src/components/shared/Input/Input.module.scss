@@ -1,0 +1,54 @@
+@use '~/styles/var';
+
+.Input {
+    min-width: 0;
+    min-height: var.$CONTROL_HEIGHT_MD;
+    padding: 0 1rem;
+    border: 1px solid var.$COLOR_BORDER_SUBTLE;
+    border-radius: var.$RADIUS_FULL;
+    background: var.$COLOR_SURFACE_INPUT;
+    color: var.$COLOR_TEXT;
+    font: inherit;
+    font-size: var.$TEXT_SIZE_SM;
+    line-height: var.$LINE_HEIGHT_HEADING;
+    transition: var.$TRANSITION_FAST;
+    transition-property: border-color, background-color, box-shadow;
+
+    &::placeholder {
+        color: var.$COLOR_TEXT_MUTED;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        border-color: var.$COLOR_FOCUS;
+        background: var.$COLOR_SURFACE_INPUT_FOCUS;
+        box-shadow: 0 0 0 3px var.$COLOR_FOCUS_RING;
+    }
+
+    @include var.hover-capable {
+        &:hover:not(:disabled) {
+            border-color: var.$COLOR_BORDER;
+            background: var.$COLOR_SURFACE_INPUT_HOVER;
+        }
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.48;
+    }
+
+    &.fullWidth {
+        width: 100%;
+    }
+
+    &.size-lg {
+        min-height: var.$CONTROL_HEIGHT_LG;
+    }
+
+    &.tone-panel {
+        background: var.$COLOR_SURFACE_SUBTLE;
+    }
+}
