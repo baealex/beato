@@ -19,9 +19,11 @@ import { queryKeys } from '~/api/query-keys';
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 import { panel } from '~/modules/panel';
+import { useResetQueue } from '~/hooks';
 
 export default function ArtistDetail() {
     const navigate = useNavigate();
+    const resetQueue = useResetQueue();
 
     const { id } = useParams<{ id: string }>();
 
@@ -49,7 +51,7 @@ export default function ArtistDetail() {
                 />
             )}
             primaryAction={(
-                <button onClick={() => queueStore.reset(artist.musics.map(music => music.id))}>
+                <button onClick={() => void resetQueue(artist.musics.map(music => music.id))}>
                     <Play />
                 </button>
             )}>

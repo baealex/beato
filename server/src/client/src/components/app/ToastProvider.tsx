@@ -1,8 +1,8 @@
-import { Toaster } from 'sonner';
+import { ToastProvider as BaseToastProvider } from '@baejino/react-ui/toast';
 
 export default function ToastProvider() {
     return (
-        <Toaster
+        <BaseToastProvider
             theme="dark"
             position="top-center"
             expand={false}

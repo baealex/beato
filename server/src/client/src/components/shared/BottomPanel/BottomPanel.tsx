@@ -1,4 +1,4 @@
-import * as Dialog from '@radix-ui/react-dialog';
+import * as Dialog from '@baejino/react-ui/modal/dialog';
 import type { CSSProperties } from 'react';
 import { useEffect, useRef } from 'react';
 

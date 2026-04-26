@@ -1,37 +1,31 @@
 import {
-    beforeEach,
     describe,
     expect,
     it,
     vi
 } from 'vitest';
 
-vi.mock('sonner', () => ({
-    toast: Object.assign(vi.fn(), {
+const { mockCreateToast, mockToast } = vi.hoisted(() => {
+    const createdToast = Object.assign(vi.fn(), {
         success: vi.fn(),
         error: vi.fn()
-    })
-}));
+    });
 
-import { toast as sonnerToast } from 'sonner';
+    return {
+        mockToast: createdToast,
+        mockCreateToast: vi.fn(() => createdToast)
+    };
+});
+
+vi.mock('@baejino/react-ui/toast', () => ({ createToast: mockCreateToast }));
+
+import { createToast } from '@baejino/react-ui/toast';
 import { toast } from './toast';
 
 describe('toast wrapper', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-    });
-
-    it('applies default duration to basic toasts', () => {
-        toast('Added to queue');
-
-        expect(sonnerToast).toHaveBeenCalledWith('Added to queue', expect.objectContaining({ duration: 2400 }));
-    });
-
-    it('applies default duration to success and error toasts', () => {
-        toast.success('Completed sync music');
-        toast.error('Error while sync music');
-
-        expect(sonnerToast.success).toHaveBeenCalledWith('Completed sync music', expect.objectContaining({ duration: 2400 }));
-        expect(sonnerToast.error).toHaveBeenCalledWith('Error while sync music', expect.objectContaining({ duration: 2400 }));
+    it('creates app toast api with the Ocean Wave default duration', () => {
+        expect(createToast).toBe(mockCreateToast);
+        expect(createToast).toHaveBeenCalledWith({ duration: 2400 });
+        expect(toast).toBe(mockToast);
     });
 });

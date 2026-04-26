@@ -1,4 +1,5 @@
 import { useStore } from 'badland-react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import type { DragEndEvent } from '@dnd-kit/core';
@@ -13,6 +14,7 @@ import {
     Flex,
     IconButton
 } from '~/components/shared';
+import { TextEntryDialog } from '~/components/shared/Modal';
 import { PlaylistActionPanelContent, PlaylistItem } from '~/components/playlist';
 import { Menu } from '~/icon';
 
@@ -20,7 +22,6 @@ import type { Playlist as PlaylistModel } from '~/models/type';
 
 import { PlaylistListener } from '~/socket';
 
-import { prompt } from '~/modules/prompt';
 import { playlistStore } from '~/store/playlist';
 import { panel } from '~/modules/panel';
 import styles from './Playlist.module.scss';
@@ -70,20 +71,23 @@ function PlaylistDndItem({
 
 export default function Playlist() {
     const navigate = useNavigate();
-
     const [{ playlists, loaded }, setState] = useStore(playlistStore);
+    const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+    const [createName, setCreateName] = useState('');
 
-    const handleCreate = async () => {
-        const name = await prompt({
-            title: 'Create playlist',
-            description: 'Give this playlist a short name so you can find it later.',
-            placeholder: 'Night drive',
-            confirmLabel: 'Create'
-        });
-        if (!name) {
-            return;
-        }
+    const handleOpenCreateDialog = () => {
+        setCreateName('');
+        setIsCreateDialogOpen(true);
+    };
+
+    const handleCloseCreateDialog = () => {
+        setIsCreateDialogOpen(false);
+        setCreateName('');
+    };
+
+    const handleCreateConfirm = (name: string) => {
         PlaylistListener.create(name);
+        handleCloseCreateDialog();
     };
 
     const handleDragEnd = (e: DragEndEvent) => {
@@ -106,7 +110,7 @@ export default function Playlist() {
         <>
             <StickyHeader>
                 <div />
-                <Button onClick={handleCreate}>
+                <Button onClick={handleOpenCreateDialog}>
                     Create
                 </Button>
             </StickyHeader>
@@ -130,6 +134,17 @@ export default function Playlist() {
                     />
                 ))}
             </VerticalSortable>
+            <TextEntryDialog
+                open={isCreateDialogOpen}
+                title="Create playlist"
+                description="Give this playlist a short name so you can find it later."
+                value={createName}
+                placeholder="Night drive"
+                confirmLabel="Create"
+                onValueChange={setCreateName}
+                onConfirm={handleCreateConfirm}
+                onClose={handleCloseCreateDialog}
+            />
         </>
     );
 }

@@ -8,7 +8,6 @@ import {
     WebAudioChannel,
     AppAudioChannel
 } from '~/modules/audio-channel';
-import { confirm } from '~/modules/confirm';
 import { getNextSelectedIndexAfterRemovingCurrent } from '~/modules/queue-selection';
 import {
     deriveQueueState,
@@ -235,15 +234,6 @@ class QueueStore extends Store<QueueStoreState> {
     }
 
     async reset(ids: string[]) {
-        if (this.state.items.length > 0 && !(await confirm({
-            title: 'Reset queue?',
-            description: 'Current queue will be replaced with the selected tracks.',
-            confirmLabel: 'Reset queue',
-            tone: 'danger'
-        }))) {
-            return;
-        }
-
         this.commitPlaybackEvent('queue-reset');
 
         await this.set({

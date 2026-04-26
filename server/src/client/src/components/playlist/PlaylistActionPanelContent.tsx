@@ -1,11 +1,12 @@
 import { useStore } from 'badland-react';
+import { useState } from 'react';
 
+import { useModal } from '~/components/app/ModalProvider';
 import { GridImage, PanelContent } from '~/components/shared';
+import { TextEntryDialog } from '~/components/shared/Modal';
 import * as Icon from '~/icon';
 
 import { panel } from '~/modules/panel';
-import { confirm } from '~/modules/confirm';
-import { prompt } from '~/modules/prompt';
 
 import { PlaylistListener } from '~/socket';
 
@@ -21,8 +22,11 @@ export default function PlaylistActionPanelContent({
     id,
     onPlaylistClick
 }: PlaylistActionPanelContentProps) {
+    const { confirm } = useModal();
     const [{ musicMap }] = useStore(musicStore);
     const [{ playlists }] = useStore(playlistStore);
+    const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
+    const [renameValue, setRenameValue] = useState('');
 
     const playlist = playlists.find(playlist => playlist.id === id);
 
@@ -30,63 +34,80 @@ export default function PlaylistActionPanelContent({
         return null;
     }
 
-    return (
-        <PanelContent
-            header={onPlaylistClick && (
-                <button
-                    className="panel-album clickable linkable"
-                    onClick={() => {
-                        panel.close();
-                        setTimeout(onPlaylistClick, 100);
-                    }}>
-                    <GridImage
-                        className="album-cover-grid"
-                        images={playlist.headerMusics.map(music => musicMap.get(music.id)?.album.cover ?? '')}
-                    />
-                    <div>
-                        <div className="panel-sub-title">
-                            {playlist.musicCount} songs
-                        </div>
-                        <div className="panel-sub-content">
-                            {playlist.name}
-                        </div>
-                    </div>
-                </button>
+    const handleCloseRenameDialog = () => {
+        setIsRenameDialogOpen(false);
+        setRenameValue('');
+        panel.close();
+    };
 
-            )}
-            items={[
-                {
-                    icon: <Icon.Pencil />,
-                    text: 'Rename',
-                    onClick: async () => {
-                        const name = await prompt({
-                            title: 'Rename playlist',
-                            placeholder: 'Playlist name',
-                            confirmLabel: 'Rename'
-                        }, playlist.name);
-                        if (name) {
-                            PlaylistListener.update(id, name);
+    const handleRenamePlaylist = (name: string) => {
+        PlaylistListener.update(id, name);
+        handleCloseRenameDialog();
+    };
+
+    return (
+        <>
+            <PanelContent
+                header={onPlaylistClick && (
+                    <button
+                        className="panel-album clickable linkable"
+                        onClick={() => {
+                            panel.close();
+                            setTimeout(onPlaylistClick, 100);
+                        }}>
+                        <GridImage
+                            className="album-cover-grid"
+                            images={playlist.headerMusics.map(music => musicMap.get(music.id)?.album.cover ?? '')}
+                        />
+                        <div>
+                            <div className="panel-sub-title">
+                                {playlist.musicCount} songs
+                            </div>
+                            <div className="panel-sub-content">
+                                {playlist.name}
+                            </div>
+                        </div>
+                    </button>
+
+                )}
+                items={[
+                    {
+                        icon: <Icon.Pencil />,
+                        text: 'Rename',
+                        onClick: () => {
+                            setRenameValue(playlist.name);
+                            setIsRenameDialogOpen(true);
                         }
-                        panel.close();
-                    }
-                },
-                {
-                    icon: <Icon.TrashCan />,
-                    text: 'Delete',
-                    onClick: async () => {
-                        if (!(await confirm({
-                            title: 'Delete playlist?',
-                            description: `“${playlist.name}” will be removed from your library.`,
-                            confirmLabel: 'Delete playlist',
-                            tone: 'danger'
-                        }))) {
-                            return;
+                    },
+                    {
+                        icon: <Icon.TrashCan />,
+                        text: 'Delete',
+                        onClick: async () => {
+                            if (!(await confirm({
+                                title: 'Delete playlist?',
+                                description: `“${playlist.name}” will be removed from your library.`,
+                                confirmLabel: 'Delete playlist',
+                                tone: 'danger'
+                            }))) {
+                                return;
+                            }
+                            PlaylistListener.delete(id);
+                            panel.close();
                         }
-                        PlaylistListener.delete(id);
-                        panel.close();
                     }
-                }
-            ]}
-        />
+                ]}
+            />
+            <TextEntryDialog
+                open={isRenameDialogOpen}
+                title="Rename playlist"
+                description="Update the playlist name shown in your library."
+                value={renameValue}
+                placeholder="Playlist name"
+                confirmLabel="Rename"
+                onValueChange={setRenameValue}
+                onConfirm={handleRenamePlaylist}
+                onClose={handleCloseRenameDialog}
+            />
+        </>
     );
 }
