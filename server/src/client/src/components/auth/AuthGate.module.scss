@@ -84,22 +84,8 @@
     line-height: var.$LINE_HEIGHT_DEFAULT;
 }
 
-.form,
 .actions {
     margin-top: var.$SPACING_LG;
-}
-
-.form {
-    display: grid;
-    gap: 12px;
-}
-
-.label {
-    font-size: var.$TEXT_SIZE_XS;
-    font-weight: var.$FONT_WEIGHT_BOLD;
-    letter-spacing: 0;
-    text-transform: uppercase;
-    color: var.$COLOR_TEXT_MUTED;
 }
 
 .button {

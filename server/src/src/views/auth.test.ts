@@ -18,7 +18,7 @@ const passwordAuthConfig: AuthConfig = {
 };
 
 describe('auth http flow', () => {
-    it('keeps explicit open-mode behavior when no-auth is allowed', async () => {
+    it('uses only the canonical auth routes in open mode', async () => {
         const app = createApp(openAuthConfig);
 
         const session = await request(app).get('/api/auth/session');
@@ -29,66 +29,64 @@ describe('auth http flow', () => {
             authenticated: false
         });
 
-        const home = await request(app).get('/api/home');
-        expect(home.status).toBe(200);
-        expect(home.text).toContain('Hello, My Express JS!');
+        const loginPage = await request(app).get('/login?redirectTo=%2Flibrary');
+        expect(loginPage.status).toBe(303);
+        expect(loginPage.headers.location).toBe('/library');
 
-        const graphql = await request(app)
-            .post('/graphql')
-            .send({ query: 'query { __typename }' });
+        const loginSubmit = await request(app)
+            .post('/login')
+            .type('form')
+            .send({ password: 'secret', redirectTo: '/library' });
 
-        expect(graphql.status).toBe(200);
-        expect(graphql.body.data.__typename).toBe('Query');
+        expect(loginSubmit.status).toBe(303);
+        expect(loginSubmit.headers.location).toBe('/library');
 
-        const login = await request(app)
+        const logout = await request(app)
+            .post('/logout')
+            .type('form')
+            .send({});
+
+        expect(logout.status).toBe(303);
+        expect(logout.headers.location).toBe('/');
+
+        const legacyApiLogin = await request(app)
             .post('/api/auth/login')
             .send({ password: 'secret' });
 
-        expect(login.status).toBe(409);
-        expect(login.body.code).toBe('AUTH_DISABLED');
+        expect(legacyApiLogin.status).toBe(404);
     });
 
-    it('protects api and graphql in password mode until login, then clears access on logout', async () => {
+    it('serves a server-owned login page and gates protected html routes in password mode', async () => {
         const app = createApp(passwordAuthConfig);
-
         const agent = request.agent(app);
 
-        const anonymousSession = await agent.get('/api/auth/session');
-        expect(anonymousSession.status).toBe(200);
-        expect(anonymousSession.body).toEqual({
-            mode: 'password',
-            authRequired: true,
-            authenticated: false
-        });
+        const protectedHtml = await agent.get('/?tab=queue');
+        expect(protectedHtml.status).toBe(303);
+        expect(protectedHtml.headers.location).toBe('/login?redirectTo=%2F%3Ftab%3Dqueue');
 
-        const anonymousHome = await agent.get('/api/home');
-        expect(anonymousHome.status).toBe(401);
-        expect(anonymousHome.body.code).toBe('UNAUTHORIZED');
-
-        const anonymousGraphql = await agent
-            .post('/graphql')
-            .send({ query: 'query { __typename }' });
-
-        expect(anonymousGraphql.status).toBe(401);
-        expect(anonymousGraphql.body.errors[0].extensions.code).toBe('UNAUTHORIZED');
+        const loginPage = await agent.get('/login?redirectTo=%2Fplaylist%2F7');
+        expect(loginPage.status).toBe(200);
+        expect(loginPage.headers['content-type']).toContain('text/html');
+        expect(loginPage.text).toContain('<form method="post" action="/login">');
+        expect(loginPage.text).toContain('name="redirectTo" value="/playlist/7"');
+        expect(loginPage.text).toContain('Unlock Ocean Wave');
 
         const wrongPassword = await agent
-            .post('/api/auth/login')
-            .send({ password: 'wrong' });
+            .post('/login')
+            .type('form')
+            .send({ password: 'wrong', redirectTo: '/playlist/7' });
 
         expect(wrongPassword.status).toBe(401);
-        expect(wrongPassword.body.code).toBe('UNAUTHORIZED');
+        expect(wrongPassword.headers['content-type']).toContain('text/html');
+        expect(wrongPassword.text).toContain('Invalid password');
 
         const login = await agent
-            .post('/api/auth/login')
-            .send({ password: 'secret' });
+            .post('/login')
+            .type('form')
+            .send({ password: 'secret', redirectTo: '/playlist/7' });
 
-        expect(login.status).toBe(200);
-        expect(login.body).toEqual({
-            mode: 'password',
-            authRequired: true,
-            authenticated: true
-        });
+        expect(login.status).toBe(303);
+        expect(login.headers.location).toBe('/playlist/7');
 
         const authenticatedSession = await agent.get('/api/auth/session');
         expect(authenticatedSession.status).toBe(200);
@@ -97,6 +95,10 @@ describe('auth http flow', () => {
             authRequired: true,
             authenticated: true
         });
+
+        const authenticatedLoginPage = await agent.get('/login?redirectTo=%2Fplaylist%2F7');
+        expect(authenticatedLoginPage.status).toBe(303);
+        expect(authenticatedLoginPage.headers.location).toBe('/playlist/7');
 
         const authenticatedHome = await agent.get('/api/home');
         expect(authenticatedHome.status).toBe(200);
@@ -109,19 +111,49 @@ describe('auth http flow', () => {
         expect(authenticatedGraphql.status).toBe(200);
         expect(authenticatedGraphql.body.data.__typename).toBe('Query');
 
-        const logout = await agent
-            .post('/api/auth/logout')
+        const logoutPage = await agent
+            .post('/logout')
+            .type('form')
             .send({});
 
-        expect(logout.status).toBe(200);
-        expect(logout.body).toEqual({
-            mode: 'password',
-            authRequired: true,
-            authenticated: false
-        });
+        expect(logoutPage.status).toBe(303);
+        expect(logoutPage.headers.location).toBe('/login');
 
         const postLogoutHome = await agent.get('/api/home');
         expect(postLogoutHome.status).toBe(401);
         expect(postLogoutHome.body.code).toBe('UNAUTHORIZED');
+    });
+
+    it('keeps session and logout api routes while removing the legacy login alias', async () => {
+        const app = createApp(passwordAuthConfig);
+        const agent = request.agent(app);
+
+        const legacyApiLogin = await agent
+            .post('/api/auth/login')
+            .send({ password: 'secret' });
+
+        expect(legacyApiLogin.status).toBe(404);
+
+        const login = await agent
+            .post('/login')
+            .type('form')
+            .send({
+                password: 'secret',
+                redirectTo: 'https://evil.example/path'
+            });
+
+        expect(login.status).toBe(303);
+        expect(login.headers.location).toBe('/');
+
+        const apiLogout = await agent
+            .post('/api/auth/logout')
+            .send({});
+
+        expect(apiLogout.status).toBe(200);
+        expect(apiLogout.body).toEqual({
+            mode: 'password',
+            authRequired: true,
+            authenticated: false
+        });
     });
 });

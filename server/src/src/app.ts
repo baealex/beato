@@ -4,6 +4,7 @@ import path from 'path';
 
 import {
     requireAuthenticatedGraphqlRequest,
+    requireAuthenticatedHtmlRequest,
     requireAuthenticatedRequest
 } from './modules/auth';
 import { resolveAuthConfig, type AuthConfig } from './modules/auth-mode';
@@ -12,29 +13,45 @@ import { resolveCachePath } from './modules/storage-paths';
 import useAsync from './modules/use-async';
 import schema from './schema';
 import { createApiRouter } from './urls';
-import { cacheAsset } from './views';
+import * as views from './views';
 
 export const createApp = (authConfig: AuthConfig = resolveAuthConfig(process.env)) => {
+    const clientDistPath = path.resolve('client/dist');
+    const clientIndexPath = path.resolve(clientDistPath, 'index.html');
+
     return express()
         .use(logger)
-        .use(express.static(path.resolve('client/dist'), { extensions: ['html'] }))
+        .use(express.urlencoded({ extended: false }))
+        .use(express.json())
+        .get('/login', useAsync(views.createLoginPageHandler(authConfig)))
+        .post('/login', useAsync(views.createLoginPageSubmitHandler(authConfig)))
+        .post('/logout', useAsync(views.createLogoutPageHandler(authConfig)))
+        .get('/logout', (_req, res) => {
+            res.status(404).end();
+        })
         .use(
             '/cache',
             requireAuthenticatedRequest(authConfig),
-            useAsync(cacheAsset),
+            useAsync(views.cacheAsset),
             express.static(resolveCachePath(), {
                 cacheControl: true,
                 maxAge: 31536000
             })
         )
-        .use(express.json())
         .use('/graphql', requireAuthenticatedGraphqlRequest(authConfig), createHandler({ schema }))
         .use('/api', createApiRouter(authConfig))
+        .use(express.static(clientDistPath, { index: false }))
+        .use(requireAuthenticatedHtmlRequest(authConfig))
         .get('*', (req, res) => {
             if (req.path.startsWith('/api/')) {
                 return res.status(404).json({ message: 'Not Found' });
             }
-            res.sendFile(path.resolve('client/dist/index.html'));
+
+            if (path.extname(req.path)) {
+                return res.status(404).end();
+            }
+
+            res.sendFile(clientIndexPath);
         });
 };
 

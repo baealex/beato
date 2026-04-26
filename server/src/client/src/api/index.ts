@@ -64,16 +64,6 @@ export async function getAuthSession() {
     return data;
 }
 
-export async function loginWithPassword(password: string) {
-    const { data } = await axios.request<AuthSession>({
-        url: '/api/auth/login',
-        method: 'POST',
-        data: { password }
-    });
-
-    return data;
-}
-
 export async function logoutSession() {
     const { data } = await axios.request<AuthSession>({
         url: '/api/auth/logout',
