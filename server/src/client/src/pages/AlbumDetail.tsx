@@ -1,5 +1,5 @@
 import { useStore } from 'badland-react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { MusicActionPanelContent, MusicListItem } from '~/components/music';
@@ -22,10 +22,14 @@ export default function AlbumDetail() {
 
     const { id } = useParams<{ id: string }>();
 
-    const { data: album } = useQuery(queryKeys.albums.detail(id), async () => {
-        const { data } = await getAlbum(id!);
-        return data.album;
-    }, { enabled: !!id });
+    const { data: album } = useQuery({
+        queryKey: queryKeys.albums.detail(id),
+        queryFn: async () => {
+            const { data } = await getAlbum(id!);
+            return data.album;
+        },
+        enabled: !!id
+    });
 
     const [{ musicMap }] = useStore(musicStore);
 

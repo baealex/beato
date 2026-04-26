@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { Badge, Button, SettingSection, SettingItem, Tag, Text } from '~/components/shared';
 import { getLatestSyncReport } from '~/api';
@@ -84,10 +84,10 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
     const [progressMessage, setProgressMessage] = useState('');
     const [isSyncing, setIsSyncing] = useState(false);
     const queryClient = useQueryClient();
-    const { data: latestSyncReport } = useQuery(
-        queryKeys.syncReports.latest(),
-        () => getLatestSyncReport().then((response) => response.data.latestSyncReport)
-    );
+    const { data: latestSyncReport } = useQuery({
+        queryKey: queryKeys.syncReports.latest(),
+        queryFn: () => getLatestSyncReport().then((response) => response.data.latestSyncReport)
+    });
     const sections = useMemo(() => reportSections(latestSyncReport ?? null), [latestSyncReport]);
 
     useEffect(() => {
@@ -100,7 +100,10 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                 }
 
                 setIsSyncing(false);
-                queryClient.invalidateQueries(queryKeys.syncReports.listAll(), { exact: false });
+                queryClient.invalidateQueries({
+                    queryKey: queryKeys.syncReports.listAll(),
+                    exact: false
+                });
                 setTimeout(() => {
                     setProgressMessage('');
                 }, 1000);
