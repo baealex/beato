@@ -2,28 +2,28 @@
 
 .presetContainer {
   width: 100%;
-  margin-bottom: var.$SPACING_LG;
 }
 
 .presetButtonGroup {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.625rem;
 }
 
 .presetItem {
-  display: inline-flex;
-  align-items: center;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   overflow: hidden;
   border: 1px solid var.$COLOR_BORDER_SUBTLE;
-  border-radius: var.$RADIUS_FULL;
+  border-radius: var.$RADIUS_LG;
   background: var.$COLOR_SURFACE_ITEM;
 }
 
 .presetButton,
 .deleteButton,
 .saveButton {
-  min-height: var.$CONTROL_HEIGHT_SM;
+  min-height: var.$CONTROL_HEIGHT_MD;
   border: 0;
   color: var.$COLOR_TEXT_SECONDARY;
   background: transparent;
@@ -31,10 +31,20 @@
   font-size: var.$TEXT_SIZE_SM;
   font-weight: var.$FONT_WEIGHT_MEDIUM;
   transition: var.$TRANSITION_FAST;
-  transition-property: color, background-color;
+  transition-property: color, background-color, border-color, box-shadow;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var.$COLOR_FOCUS;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
 
   @include var.hover-capable {
-    &:hover {
+    &:hover:not(:disabled) {
       color: var.$COLOR_TEXT;
       background: var.$COLOR_HOVER;
     }
@@ -43,34 +53,38 @@
 
 .presetButton {
   padding: 0 0.875rem;
+  text-align: left;
 
   &.active {
     color: var.$COLOR_TEXT;
     background: var.$COLOR_ACTIVE;
+    box-shadow: inset 3px 0 0 var.$COLOR_POINT;
   }
 }
 
 .deleteButton {
-  width: var.$CONTROL_HEIGHT_SM;
+  width: var.$CONTROL_HEIGHT_MD;
   border-left: 1px solid var.$COLOR_BORDER_SUBTLE;
+  color: var.$COLOR_TEXT_MUTED;
 }
 
 .saveButton {
+  justify-content: center;
   padding: 0 0.875rem;
-  border: 1px solid var.$COLOR_BORDER_SUBTLE;
-  border-radius: var.$RADIUS_FULL;
-  background: var.$COLOR_SURFACE_SUBTLE;
+  border: 1px dashed var.$COLOR_BORDER_SUBTLE;
+  border-radius: var.$RADIUS_LG;
+  background: transparent;
+  color: var.$COLOR_POINT_LIGHT;
 }
 
-@media (max-width: 640px) {
-  .presetButtonGroup,
-  .presetItem,
-  .saveButton {
-    width: 100%;
+@media (max-width: 900px) {
+  .presetButtonGroup {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
 
-  .presetButton {
-    flex: 1;
-    text-align: left;
+@media (max-width: 560px) {
+  .presetButtonGroup {
+    grid-template-columns: 1fr;
   }
 }

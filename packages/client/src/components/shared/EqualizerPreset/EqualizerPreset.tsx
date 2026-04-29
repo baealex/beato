@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styles from './EqualizerPreset.module.scss';
 
 export interface Preset {
@@ -15,6 +14,8 @@ export interface Preset {
 
 interface EqualizerPresetProps {
     presets: Preset[];
+    activePresetId?: string | null;
+    disabled?: boolean;
     onSelectPreset: (preset: Preset) => void;
     onSaveCurrentAsPreset: () => void;
     onDeletePreset?: (presetId: string) => void;
@@ -22,23 +23,19 @@ interface EqualizerPresetProps {
 
 const EqualizerPreset = ({
     presets,
+    activePresetId = null,
+    disabled = false,
     onSelectPreset,
     onSaveCurrentAsPreset,
     onDeletePreset
 }: EqualizerPresetProps) => {
-    const [activePreset, setActivePreset] = useState<string | null>(null);
-
     const handlePresetClick = (preset: Preset) => {
-        setActivePreset(preset.id);
         onSelectPreset(preset);
     };
 
     const handleDeleteClick = (presetId: string) => {
         if (onDeletePreset) {
             onDeletePreset(presetId);
-            if (activePreset === presetId) {
-                setActivePreset(null);
-            }
         }
     };
 
@@ -51,8 +48,9 @@ const EqualizerPreset = ({
                     <div key={preset.id} className={styles.presetItem}>
                         <button
                             type="button"
-                            className={`${styles.presetButton} ${activePreset === preset.id ? styles.active : ''}`}
-                            aria-pressed={activePreset === preset.id}
+                            className={`${styles.presetButton} ${activePresetId === preset.id ? styles.active : ''}`}
+                            aria-pressed={activePresetId === preset.id}
+                            disabled={disabled}
                             onClick={() => handlePresetClick(preset)}>
                             {preset.name}
                         </button>
@@ -61,6 +59,7 @@ const EqualizerPreset = ({
                                 type="button"
                                 className={styles.deleteButton}
                                 aria-label={`Delete ${preset.name} preset`}
+                                disabled={disabled}
                                 onClick={() => handleDeleteClick(preset.id)}>
                                 ✕
                             </button>
@@ -70,6 +69,7 @@ const EqualizerPreset = ({
                 <button
                     type="button"
                     className={styles.saveButton}
+                    disabled={disabled}
                     onClick={onSaveCurrentAsPreset}>
                     Save Current
                 </button>

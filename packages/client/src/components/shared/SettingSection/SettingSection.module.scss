@@ -24,6 +24,7 @@
 
 .sectionTitle {
     margin-bottom: var.$SPACING_SM;
+    color: var.$COLOR_POINT_LIGHT;
     display: flex;
     align-items: center;
     gap: var.$SPACING_SM;
@@ -36,8 +37,8 @@
     width: 1.75rem;
     height: 1.75rem;
     border-radius: var.$RADIUS_FULL;
-    background: var.$COLOR_SURFACE_ITEM;
-    color: var.$COLOR_TEXT_TERTIARY;
+    background: var.$COLOR_GLOW_AMBIENT;
+    color: var.$COLOR_POINT_LIGHT;
     justify-content: center;
     flex-shrink: 0;
 

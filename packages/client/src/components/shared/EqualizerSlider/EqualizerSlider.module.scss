@@ -3,74 +3,148 @@
 .sliderRow {
   position: relative;
   display: grid;
-  grid-template-columns: 5rem minmax(0, 1fr) 3rem;
+  grid-template-columns: minmax(8rem, 0.8fr) minmax(12rem, 1.6fr) minmax(5.75rem, auto);
   align-items: center;
   gap: var.$SPACING_MD;
   width: 100%;
+  padding: var.$SPACING_MD;
+  border: 1px solid var.$COLOR_BORDER_SUBTLE;
+  border-radius: var.$RADIUS_LG;
+  background: var.$COLOR_SURFACE_ITEM;
+}
+
+.labelGroup,
+.valueGroup {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .label {
-  color: var.$COLOR_TEXT_SECONDARY;
+  color: var.$COLOR_TEXT;
   font-size: var.$TEXT_SIZE_SM;
-  font-weight: var.$FONT_WEIGHT_MEDIUM;
+  font-weight: var.$FONT_WEIGHT_SEMIBOLD;
+}
+
+.meta {
+  min-height: 1rem;
+  color: var.$COLOR_TEXT_MUTED;
+  font-size: var.$TEXT_SIZE_XS;
+  line-height: var.$LINE_HEIGHT_TIGHT;
+}
+
+.sliderControl {
+  min-width: 0;
+  padding: 0.25rem 0;
+}
+
+.valueGroup {
+  align-items: flex-end;
 }
 
 .valueDisplay {
-  color: var.$COLOR_TEXT_TERTIARY;
+  color: var.$COLOR_TEXT_SECONDARY;
   font-size: var.$TEXT_SIZE_SM;
-  font-weight: var.$FONT_WEIGHT_MEDIUM;
+  font-variant-numeric: tabular-nums;
+  font-weight: var.$FONT_WEIGHT_SEMIBOLD;
   text-align: right;
 }
 
+.resetButton {
+  min-height: 1.35rem;
+  padding: 0;
+  border: 0;
+  color: var.$COLOR_TEXT_MUTED;
+  background: transparent;
+  font: inherit;
+  font-size: var.$TEXT_SIZE_XS;
+  font-weight: var.$FONT_WEIGHT_MEDIUM;
+  transition: var.$TRANSITION_FAST;
+  transition-property: color;
+
+  &:disabled {
+    opacity: 0.36;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var.$COLOR_FOCUS;
+    outline-offset: 2px;
+  }
+
+  @include var.hover-capable {
+    &:hover:not(:disabled) {
+      color: var.$COLOR_TEXT;
+    }
+  }
+}
+
 .sliderInput {
-  flex: 1;
   width: 100%;
-  height: 0.5rem;
+  height: 0.625rem;
   border-radius: var.$RADIUS_FULL;
-  background: var.$COLOR_BORDER_SUBTLE;
+  background:
+    linear-gradient(to right, transparent 0, transparent var(--eq-start), var.$COLOR_POINT var(--eq-start), var.$COLOR_POINT var(--eq-end), transparent var(--eq-end), transparent 100%),
+    linear-gradient(to right, transparent 0, transparent calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) + 1px), transparent calc(var(--eq-zero) + 1px), transparent 100%),
+    var.$COLOR_BORDER_SUBTLE;
   outline: none;
   appearance: none;
   transition: var.$TRANSITION_FAST;
-  transition-property: background-color;
+  transition-property: background-color, opacity;
+
+  &:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+  }
 
   &:focus-visible {
     box-shadow: 0 0 0 3px var.$COLOR_FOCUS_RING;
   }
 
   @include var.hover-capable {
-    &:hover {
-      background: var.$COLOR_BORDER;
+    &:hover:not(:disabled) {
+      background:
+        linear-gradient(to right, transparent 0, transparent var(--eq-start), var.$COLOR_POINT_LIGHT var(--eq-start), var.$COLOR_POINT_LIGHT var(--eq-end), transparent var(--eq-end), transparent 100%),
+        linear-gradient(to right, transparent 0, transparent calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) + 1px), transparent calc(var(--eq-zero) + 1px), transparent 100%),
+        var.$COLOR_BORDER;
     }
   }
 
   &::-webkit-slider-thumb {
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 1.25rem;
+    height: 1.25rem;
     border: 2px solid var.$COLOR_BACKGROUND;
     border-radius: var.$RADIUS_FULL;
     background: var.$COLOR_POINT;
     cursor: pointer;
     appearance: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
   }
 
   &::-moz-range-thumb {
-    width: 1.125rem;
-    height: 1.125rem;
+    width: 1.25rem;
+    height: 1.25rem;
     border: 2px solid var.$COLOR_BACKGROUND;
     border-radius: var.$RADIUS_FULL;
     background: var.$COLOR_POINT;
     cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 720px) {
   .sliderRow {
     grid-template-columns: 1fr auto;
     gap: var.$SPACING_SM;
   }
 
-  .sliderInput {
+  .sliderControl {
     grid-column: 1 / -1;
     grid-row: 2;
+  }
+
+  .valueGroup {
+    align-self: start;
   }
 }
