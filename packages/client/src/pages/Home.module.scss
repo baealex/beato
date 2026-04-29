@@ -169,9 +169,7 @@
 .primaryButton {
     color: var.$COLOR_BACKGROUND;
     background: var.$GRADIENT_PRIMARY;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.28),
-        0 14px 32px var.$COLOR_FOCUS_RING;
+    box-shadow: 0 14px 32px var.$COLOR_FOCUS_RING;
 }
 
 .secondaryButton {
