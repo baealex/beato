@@ -81,7 +81,7 @@ Changes in the files below are treated as release-impacting.
 1. `packages/cli/package.json`
 2. `scripts/release/prepublish.mjs`, `scripts/release/bump-version.mjs`
 3. `.github/workflows/RELEASE.yml`
-4. `Dockerfile`, `docker-compose.yml`
+4. `packages/server/Dockerfile`, `docker-compose.yml`
 
 Release-impact PRs must include:
 1. expected release version

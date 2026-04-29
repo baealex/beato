@@ -15,8 +15,8 @@ const readText = (...segments) =>
 
 test('package manifests use Ocean Wave identifiers', () => {
     const rootPackage = readJson('package.json');
-    const serverPackage = readJson('server', 'src', 'package.json');
-    const clientPackage = readJson('server', 'src', 'client', 'package.json');
+    const serverPackage = readJson('packages', 'server', 'package.json');
+    const clientPackage = readJson('packages', 'client', 'package.json');
 
     assert.equal(rootPackage.name, 'ocean-wave');
     assert.equal(serverPackage.name, 'ocean-wave-server');
@@ -24,7 +24,7 @@ test('package manifests use Ocean Wave identifiers', () => {
 });
 
 test('server package metadata points at the Ocean Wave repository', () => {
-    const serverPackage = readJson('server', 'src', 'package.json');
+    const serverPackage = readJson('packages', 'server', 'package.json');
 
     assert.deepEqual(serverPackage.repository, {
         type: 'git',
@@ -54,12 +54,12 @@ test('README and Docker metadata use Ocean Wave public branding', () => {
 });
 
 test('runtime configuration uses the Ocean Wave audio sample-rate port', () => {
-    const serverPackage = readJson('server', 'src', 'package.json');
+    const serverPackage = readJson('packages', 'server', 'package.json');
     const readme = readText('README.md');
     const composeFile = readText('docker-compose.yml');
-    const dockerfile = readText('server', 'Dockerfile');
-    const serverEntry = readText('server', 'src', 'src', 'main.ts');
-    const viteConfig = readText('server', 'src', 'client', 'vite.config.ts');
+    const dockerfile = readText('packages', 'server', 'Dockerfile');
+    const serverEntry = readText('packages', 'server', 'src', 'main.ts');
+    const viteConfig = readText('packages', 'client', 'vite.config.ts');
 
     assert.match(serverPackage.scripts.dev, /PORT=44100/);
     assert.match(serverPackage.scripts.start, /PORT=44100/);

@@ -1,0 +1,78 @@
+@use '~/styles/var';
+
+.TwoToneLayout {
+    position: relative;
+    min-height: 100%;
+
+    .background {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .header {
+        position: relative;
+    }
+
+    .headerContent {
+        position: relative;
+        z-index: 1;
+        padding: calc(var.$SPACING_2XL + var.$SPACING_LG) var.$SPACING_LG;
+    }
+
+    .primaryAction {
+        position: absolute;
+        bottom: 0;
+        right: var.$SPACING_LG;
+        transform: translateY(50%);
+        z-index: 2;
+
+        button {
+            border-radius: var.$RADIUS_FULL;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--b-gradient-primary);
+            border: none;
+            color: var.$COLOR_TEXT;
+            cursor: pointer;
+            box-shadow:
+                0 8px 24px var.$COLOR_FOCUS_RING,
+                0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: var.$TRANSITION_FAST;
+            transition-property: box-shadow, filter;
+
+            svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            @include var.hover-capable {
+                &:hover {
+                    filter: brightness(1.1);
+                    box-shadow:
+                        0 12px 32px var.$COLOR_FOCUS_RING,
+                        0 6px 16px rgba(0, 0, 0, 0.5);
+                }
+            }
+
+            &:active {
+                transform: scale(0.95);
+            }
+        }
+    }
+
+    &.hasPrimaryAction {
+        .content {
+            padding-top: var.$SPACING_2XL;
+        }
+    }
+
+    .content {
+        position: relative;
+        z-index: 1;
+    }
+}

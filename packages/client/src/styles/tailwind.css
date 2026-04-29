@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Spoqa Han Sans Neo", -apple-system, BlinkMacSystemFont, sans-serif;
+    --color-wave-bg: #051014;
+    --color-wave-panel: #0c1b21;
+    --color-wave-border: rgba(196, 244, 248, 0.1);
+    --color-wave-accent: #46d7cf;
+    --color-wave-accent-soft: #a7fff6;
+    --color-wave-text: rgba(238, 252, 255, 0.92);
+    --color-wave-muted: rgba(195, 225, 231, 0.54);
+}

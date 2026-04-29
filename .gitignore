@@ -4,6 +4,8 @@
 /data
 /node_modules
 /.superpowers/
-/docs/
+/docs/*
+!/docs/process/
+!/docs/process/*.md
 /.worktrees/
 TODO.md

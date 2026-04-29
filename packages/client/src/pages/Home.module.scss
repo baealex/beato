@@ -1,0 +1,512 @@
+@use '~/styles/var';
+
+.Home {
+    width: min(100%, 72rem);
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    padding-bottom: calc(clamp(1.5rem, 4vw, 3rem) + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 2.4vw, 1.5rem);
+    color: var.$COLOR_TEXT;
+}
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(19rem, 46vw, 29rem);
+    padding: clamp(1rem, 4vw, 2rem);
+    border: 1px solid var.$COLOR_BORDER_SUBTLE;
+    border-radius: var.$RADIUS_2XL;
+    background:
+        radial-gradient(circle at 18% 14%, var.$COLOR_GLOW_AMBIENT, transparent 34%),
+        var.$COLOR_SURFACE_ITEM;
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.78fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1.25rem, 4vw, 3rem);
+    box-shadow: var.$SHADOW_MAIN;
+}
+
+.heroArt {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+
+    &::after {
+        position: absolute;
+        inset: 12% 8% 4%;
+        z-index: 0;
+        border-radius: var.$RADIUS_2XL;
+        background: var.$COLOR_GLOW_AMBIENT;
+        filter: blur(32px);
+        content: "";
+    }
+}
+
+.art,
+.emptyArt {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 18rem);
+    aspect-ratio: 1;
+    border-radius: var.$RADIUS_2XL;
+    box-shadow:
+        0 24px 50px rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.art {
+    object-fit: cover;
+}
+
+.emptyArt {
+    border: 1px solid var.$COLOR_BORDER_SUBTLE;
+    background: var.$COLOR_SURFACE_SUBTLE;
+    color: var.$COLOR_POINT_LIGHT;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        width: 4rem;
+        height: 4rem;
+    }
+}
+
+.heroCopy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.875rem;
+}
+
+.eyebrow {
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.title {
+    max-width: 13ch;
+    line-height: var.$LINE_HEIGHT_DISPLAY;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+}
+
+.description {
+    max-width: 34rem;
+    line-height: var.$LINE_HEIGHT_RELAXED;
+}
+
+.progress {
+    width: min(100%, 28rem);
+    height: 0.375rem;
+    margin-top: 0.25rem;
+    overflow: hidden;
+    border-radius: var.$RADIUS_FULL;
+    background: var.$COLOR_BORDER_SUBTLE;
+}
+
+.progressBar {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: var.$GRADIENT_PRIMARY;
+    transform-origin: left;
+}
+
+.heroActions,
+.actionStack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.primaryButton,
+.secondaryButton,
+.actionButton,
+.textButton,
+.trackRow,
+.focusTrack {
+    font: inherit;
+}
+
+.primaryButton,
+.secondaryButton {
+    min-height: var.$CONTROL_HEIGHT_LG;
+    padding: 0.75rem 1rem;
+    border-radius: var.$RADIUS_FULL;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    border: 1px solid transparent;
+    transition: var.$TRANSITION_FAST;
+    transition-property: color, background-color, border-color, transform;
+
+    svg {
+        width: 1.05rem;
+        height: 1.05rem;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var.$COLOR_FOCUS;
+        outline-offset: 3px;
+    }
+
+    &:active:not(:disabled) {
+        transform: scale(0.98);
+    }
+
+    &:disabled {
+        opacity: 0.42;
+        cursor: not-allowed;
+    }
+}
+
+.primaryButton {
+    color: var.$COLOR_BACKGROUND;
+    background: var.$GRADIENT_PRIMARY;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        0 14px 32px var.$COLOR_FOCUS_RING;
+}
+
+.secondaryButton {
+    color: var.$COLOR_TEXT_SECONDARY;
+    border-color: var.$COLOR_BORDER_SUBTLE;
+    background: var.$COLOR_SURFACE_SUBTLE;
+}
+
+@include var.hover-capable {
+    .primaryButton:hover:not(:disabled) {
+        filter: brightness(1.06);
+    }
+
+    .secondaryButton:hover,
+    .actionButton:hover:not(:disabled),
+    .textButton:hover,
+    .trackRow:hover,
+    .focusTrack:hover,
+    .shortcutCard:hover {
+        color: var.$COLOR_TEXT;
+        border-color: var.$COLOR_BORDER;
+        background: var.$COLOR_HOVER;
+    }
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.8fr);
+    gap: clamp(1rem, 2.4vw, 1.5rem);
+}
+
+.panel,
+.librarySection,
+.focusSection {
+    border: 1px solid var.$COLOR_BORDER_SUBTLE;
+    border-radius: var.$RADIUS_XL;
+    background: var.$COLOR_SURFACE_SUBTLE;
+}
+
+.panel {
+    min-width: 0;
+    padding: clamp(1rem, 2.4vw, 1.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.sectionTitle {
+    margin: 0;
+    color: var.$COLOR_TEXT;
+    font-size: var.$TEXT_SIZE_TITLE;
+    font-weight: var.$FONT_WEIGHT_BOLD;
+    line-height: var.$LINE_HEIGHT_HEADING;
+}
+
+.textButton {
+    min-height: var.$CONTROL_HEIGHT_SM;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var.$COLOR_BORDER_SUBTLE;
+    border-radius: var.$RADIUS_FULL;
+    background: transparent;
+    color: var.$COLOR_TEXT_TERTIARY;
+    font-size: var.$TEXT_SIZE_SM;
+    font-weight: var.$FONT_WEIGHT_SEMIBOLD;
+    transition: var.$TRANSITION_FAST;
+    transition-property: color, background-color, border-color;
+
+    &:focus-visible {
+        outline: 2px solid var.$COLOR_FOCUS;
+        outline-offset: 2px;
+    }
+}
+
+.trackList,
+.focusList,
+.actionStack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.trackRow,
+.focusTrack,
+.actionButton,
+.shortcutCard {
+    min-width: 0;
+    border: 1px solid var.$COLOR_BORDER_SUBTLE;
+    border-radius: var.$RADIUS_LG;
+    background: var.$COLOR_SURFACE_ITEM;
+    color: var.$COLOR_TEXT;
+    text-decoration: none;
+    transition: var.$TRANSITION_FAST;
+    transition-property: color, background-color, border-color, transform;
+}
+
+.trackRow,
+.focusTrack {
+    width: 100%;
+    min-height: 4.5rem;
+    padding: 0.625rem;
+    display: grid;
+    grid-template-columns: 1.5rem 3rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+
+    &:focus-visible {
+        outline: 2px solid var.$COLOR_FOCUS;
+        outline-offset: 2px;
+    }
+}
+
+.trackIndex {
+    color: var.$COLOR_TEXT_MUTED;
+    font-size: var.$TEXT_SIZE_SM;
+    font-weight: var.$FONT_WEIGHT_SEMIBOLD;
+    text-align: center;
+}
+
+.trackArt,
+.focusArt {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var.$RADIUS_MD;
+    object-fit: cover;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.trackCopy,
+.focusCopy,
+.shortcutCopy,
+.actionButton span {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.trackTitle,
+.shortcutLabel {
+    overflow: hidden;
+    color: var.$COLOR_TEXT;
+    font-size: var.$TEXT_SIZE_SM;
+    font-weight: var.$FONT_WEIGHT_SEMIBOLD;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.trackMeta,
+.shortcutMeta,
+.actionButton small {
+    overflow: hidden;
+    color: var.$COLOR_TEXT_TERTIARY;
+    font-size: var.$TEXT_SIZE_XS;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.quietState {
+    min-height: 8rem;
+    padding: 1rem;
+    border-radius: var.$RADIUS_LG;
+    background: var.$COLOR_SURFACE_ITEM;
+    display: flex;
+    align-items: center;
+}
+
+.panelNote {
+    margin-top: auto;
+}
+
+.actionButton {
+    width: 100%;
+    min-height: 4rem;
+    padding: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    text-align: left;
+
+    > svg {
+        width: 1.125rem;
+        height: 1.125rem;
+        color: var.$COLOR_POINT_LIGHT;
+        flex-shrink: 0;
+    }
+
+    strong {
+        font-size: var.$TEXT_SIZE_SM;
+        font-weight: var.$FONT_WEIGHT_SEMIBOLD;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var.$COLOR_FOCUS;
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.42;
+        cursor: not-allowed;
+    }
+}
+
+.librarySection,
+.focusSection {
+    padding: clamp(1rem, 2.4vw, 1.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.shortcutGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.shortcutCard {
+    min-height: 6rem;
+    padding: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+
+    &:focus-visible {
+        outline: 2px solid var.$COLOR_FOCUS;
+        outline-offset: 2px;
+    }
+}
+
+.shortcutIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var.$RADIUS_FULL;
+    background: var.$COLOR_SURFACE_SUBTLE;
+    color: var.$COLOR_POINT_LIGHT;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        width: 1.125rem;
+        height: 1.125rem;
+    }
+}
+
+.focusList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.focusTrack {
+    grid-template-columns: 3rem minmax(0, 1fr) 1.25rem;
+
+    > svg {
+        width: 1rem;
+        height: 1rem;
+        color: var.$COLOR_TEXT_MUTED;
+    }
+}
+
+@media (max-width: 900px) {
+    .hero,
+    .contentGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        min-height: 0;
+    }
+
+    .heroCopy {
+        align-items: center;
+        text-align: center;
+    }
+
+    .title {
+        max-width: 15ch;
+    }
+
+    .heroActions {
+        justify-content: center;
+    }
+
+    .progress {
+        width: 100%;
+    }
+
+    .shortcutGrid,
+    .focusList {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .Home {
+        padding: var.$SPACING_MD;
+        padding-bottom: calc(var.$SPACING_XL + env(safe-area-inset-bottom));
+    }
+
+    .hero,
+    .panel,
+    .librarySection,
+    .focusSection {
+        border-radius: var.$RADIUS_XL;
+    }
+
+    .art,
+    .emptyArt {
+        width: min(100%, 14rem);
+        border-radius: var.$RADIUS_XL;
+    }
+
+    .description,
+    .panelNote {
+        display: none;
+    }
+
+    .heroActions,
+    .primaryButton,
+    .secondaryButton {
+        width: 100%;
+    }
+
+    .shortcutGrid,
+    .focusList {
+        grid-template-columns: 1fr;
+    }
+}

@@ -5,8 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'server/src/**'
-      - 'server/Dockerfile'
+      - 'packages/**'
       - 'README.md'
       - '.dockerignore'
       - '.gitignore'
@@ -18,14 +17,14 @@ on:
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
       - 'scripts/**'
+      - 'docs/process/**'
       - 'tests/branding/**'
       - '.github/workflows/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'server/src/**'
-      - 'server/Dockerfile'
+      - 'packages/**'
       - 'README.md'
       - '.dockerignore'
       - '.gitignore'
@@ -37,6 +36,7 @@ on:
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
       - 'scripts/**'
+      - 'docs/process/**'
       - 'tests/branding/**'
       - '.github/workflows/**'
   workflow_dispatch:

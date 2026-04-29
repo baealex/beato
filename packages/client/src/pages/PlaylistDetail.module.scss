@@ -1,0 +1,35 @@
+@use '~/styles/var';
+
+.item {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+    padding: 0 var.$SPACING_MD;
+    column-gap: var.$SPACING_XS;
+}
+
+.rowControl {
+    justify-self: center;
+}
+
+.dragControl {
+    cursor: grab;
+    touch-action: none;
+}
+
+.headerControl {
+    display: flex;
+    align-items: center;
+    gap: var.$SPACING_MD;
+}
+
+.listContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.musicItemShell {
+    flex: 1;
+    min-width: 0;
+}

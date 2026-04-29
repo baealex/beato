@@ -1,0 +1,21 @@
+@use '~/styles/var';
+
+.playlistRow {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+    padding: 0 var.$SPACING_MD;
+    column-gap: var.$SPACING_XS;
+}
+
+.dragHandle {
+    justify-self: center;
+    cursor: grab;
+    touch-action: none;
+}
+
+.playlistItemShell {
+    flex: 1;
+    min-width: 0;
+}
