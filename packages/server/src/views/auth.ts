@@ -38,24 +38,29 @@ const renderLoginPage = (input: {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#09090b" />
+    <meta name="theme-color" content="#051014" />
     <title>Ocean Wave Sign In</title>
     <style>
         :root {
             color-scheme: dark;
-            --bg: #09090b;
-            --page: radial-gradient(circle at top, rgba(140, 80, 255, 0.06), transparent 32%), linear-gradient(180deg, rgba(9, 9, 11, 0.98) 0%, rgba(6, 6, 8, 1) 100%);
-            --panel: linear-gradient(180deg, rgba(18, 18, 22, 0.98) 0%, rgba(10, 10, 14, 0.98) 100%);
-            --panel-border: rgba(160, 100, 255, 0.1);
-            --text-primary: rgba(255, 255, 255, 0.9);
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --text-muted: rgba(255, 255, 255, 0.32);
-            --accent: #8c50ff;
-            --accent-light: #c8a0ff;
-            --accent-text: #09090b;
-            --focus-ring: rgba(140, 80, 255, 0.14);
-            --input-bg: rgba(24, 24, 28, 0.7);
-            --input-focus: rgba(26, 26, 32, 0.9);
+            --bg: #051014;
+            --page: radial-gradient(circle at 18% -8%, rgba(70, 215, 207, 0.1), transparent 34%), radial-gradient(circle at 100% 0%, rgba(29, 96, 111, 0.14), transparent 34%), linear-gradient(180deg, rgba(5, 16, 20, 0.98) 0%, rgba(3, 10, 13, 1) 100%);
+            --panel: linear-gradient(180deg, rgba(13, 33, 40, 0.98) 0%, rgba(6, 19, 24, 0.98) 100%);
+            --panel-subtle: rgba(202, 247, 249, 0.04);
+            --panel-item: rgba(202, 247, 249, 0.06);
+            --panel-border: rgba(196, 244, 248, 0.1);
+            --panel-border-strong: rgba(196, 244, 248, 0.16);
+            --text-primary: rgba(238, 252, 255, 0.92);
+            --text-secondary: rgba(218, 243, 247, 0.72);
+            --text-muted: rgba(178, 214, 221, 0.34);
+            --accent: #46d7cf;
+            --accent-light: #a7fff6;
+            --accent-deep: #128fa0;
+            --accent-text: #031014;
+            --focus-ring: rgba(70, 215, 207, 0.15);
+            --glow: rgba(70, 215, 207, 0.11);
+            --input-bg: rgba(18, 45, 54, 0.72);
+            --input-focus: rgba(25, 62, 72, 0.92);
             --error-bg: rgba(78, 18, 22, 0.58);
             --error-border: rgba(247, 113, 113, 0.28);
             --error-text: #ffd9d9;
@@ -74,10 +79,23 @@ const renderLoginPage = (input: {
             padding: 24px;
             background: var(--page);
             color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            position: fixed;
+            inset: auto -10vw -24vh 42vw;
+            height: 50vh;
+            border-radius: 9999px;
+            background: radial-gradient(circle, rgba(70, 215, 207, 0.12), transparent 62%);
+            filter: blur(20px);
+            pointer-events: none;
+            content: "";
         }
 
         .shell {
-            width: min(440px, 100%);
+            position: relative;
+            width: min(460px, 100%);
         }
 
         .brand {
@@ -91,20 +109,38 @@ const renderLoginPage = (input: {
         }
 
         .mark {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
+            width: 46px;
+            height: 46px;
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            background: linear-gradient(135deg, #dcc0ff 0%, #c8a0ff 34%, #8c50ff 100%);
-            color: var(--accent-text);
-            font-size: 13px;
-            font-weight: 800;
+            overflow: hidden;
+            background: var(--panel-item);
             box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
                 0 16px 32px var(--focus-ring);
+        }
+
+        .mark img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .brand-copy {
+            display: grid;
+            gap: 2px;
+        }
+
+        .brand-kicker {
+            color: var(--accent-light);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
         .panel {
@@ -114,7 +150,7 @@ const renderLoginPage = (input: {
             background: var(--panel);
             box-shadow:
                 0 22px 50px rgba(0, 0, 0, 0.5),
-                0 0 52px rgba(140, 80, 255, 0.06),
+                0 0 60px var(--glow),
                 inset 0 1px 0 rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(18px);
         }
@@ -122,9 +158,9 @@ const renderLoginPage = (input: {
         h1 {
             margin: 0;
             color: var(--text-primary);
-            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-size: clamp(1.75rem, 5vw, 2.25rem);
             line-height: 1.12;
-            letter-spacing: 0;
+            letter-spacing: -0.035em;
         }
 
         .lead {
@@ -142,10 +178,10 @@ const renderLoginPage = (input: {
         label {
             display: block;
             margin-bottom: 8px;
-            color: var(--text-muted);
+            color: var(--accent-light);
             font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
         }
 
@@ -169,13 +205,17 @@ const renderLoginPage = (input: {
             box-shadow: 0 0 0 3px var(--focus-ring);
         }
 
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
         button {
             width: 100%;
             min-height: 48px;
             padding: 0 18px;
             border: none;
             border-radius: 9999px;
-            background: linear-gradient(135deg, #dcc0ff 0%, #c8a0ff 34%, #8c50ff 100%);
+            background: linear-gradient(135deg, #c9fff7 0%, #5eead4 38%, #128fa0 100%);
             color: var(--accent-text);
             font-size: 16px;
             font-weight: 700;
@@ -191,7 +231,7 @@ const renderLoginPage = (input: {
             filter: saturate(1.04) brightness(1.04);
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.36),
-                0 20px 40px rgba(140, 80, 255, 0.2);
+                0 20px 40px rgba(70, 215, 207, 0.2);
         }
 
         .error {
@@ -226,8 +266,13 @@ const renderLoginPage = (input: {
 <body>
     <main class="shell">
         <div class="brand">
-            <span class="mark" aria-hidden="true">OW</span>
-            <span>Ocean Wave</span>
+            <span class="mark" aria-hidden="true">
+                <img src="/ocean-wave.svg" alt="" />
+            </span>
+            <span class="brand-copy">
+                <span class="brand-kicker">Private listening room</span>
+                <span>Ocean Wave</span>
+            </span>
         </div>
         <section class="panel" aria-labelledby="login-title">
             <h1 id="login-title">Sign in</h1>
