@@ -1,0 +1,41 @@
+@use '~/styles/var';
+
+.container {
+    width: min(760px, 100%);
+    min-height: 100%;
+    margin: 0 auto;
+    padding: clamp(20px, 3vw, 36px);
+    color: var.$COLOR_TEXT;
+}
+
+.settingsHeader {
+    margin-bottom: var.$SPACING_LG;
+    padding-bottom: var.$SPACING_MD;
+    border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
+}
+
+.settingsContent {
+    display: flex;
+    flex-direction: column;
+    gap: var.$SPACING_MD;
+}
+
+.poweredBy {
+    margin: var.$SPACING_LG 0 0;
+    padding-bottom: max(48px, calc(var.$SPACING_2XL + env(safe-area-inset-bottom)));
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var.$SPACING_SM;
+    font-size: var.$TEXT_SIZE_XS;
+    color: var.$COLOR_TEXT_MUTED;
+    text-align: center;
+}
+
+.poweredByIcon {
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 0.375rem;
+    opacity: 0.72;
+}

@@ -1,0 +1,78 @@
+@use '~/styles/var';
+
+.PlaylistItem {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+}
+
+.mainButton {
+    flex: 1;
+    min-width: 0;
+    padding: var.$SPACING_MD;
+    border: 0;
+    border-radius: var.$RADIUS_MD;
+    background: transparent;
+    color: var.$COLOR_TEXT;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var.$SPACING_MD;
+    text-align: left;
+    transition: var.$TRANSITION_FAST;
+    transition-property: background-color;
+
+    @include var.hover-capable {
+        &:hover {
+            background-color: var.$COLOR_HOVER;
+        }
+    }
+
+    &:active {
+        background-color: var.$COLOR_ACTIVE;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var.$COLOR_FOCUS;
+        outline-offset: -2px;
+    }
+}
+
+.title {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var.$SPACING_XS;
+}
+
+.name,
+.count {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.name {
+    font-size: var.$TEXT_SIZE_SM;
+    font-weight: var.$FONT_WEIGHT_MEDIUM;
+}
+
+.count {
+    color: var.$COLOR_TEXT_TERTIARY;
+    font-size: var.$TEXT_SIZE_XS;
+}
+
+.cover {
+    width: 60px;
+    height: 60px;
+    border-radius: var.$RADIUS_MD;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.icon-button {
+    margin-right: var.$SPACING_SM;
+}

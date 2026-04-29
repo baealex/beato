@@ -1,0 +1,144 @@
+@use '~/styles/var';
+
+.buttonContainer {
+    display: flex;
+    gap: var.$SPACING_SM;
+    margin-top: var.$SPACING_MD;
+}
+
+.reportCard {
+    margin-top: var.$SPACING_LG;
+    padding: var.$SPACING_LG 0 var.$SPACING_XS;
+    border-top: 1px solid var.$COLOR_BORDER_SUBTLE;
+}
+
+.reportHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var.$SPACING_SM;
+}
+
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var.$SPACING_SM;
+    margin-top: var.$SPACING_MD;
+}
+
+.summaryItem {
+    padding: var.$SPACING_SM 0;
+    display: flex;
+    flex-direction: column;
+    gap: var.$SPACING_XS;
+}
+
+.summaryLabel {
+    font-size: var.$TEXT_SIZE_XS;
+    color: var.$COLOR_TEXT_MUTED;
+}
+
+.reportMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var.$SPACING_SM;
+    margin-top: var.$SPACING_MD;
+}
+
+.reportDetails {
+    margin-top: var.$SPACING_MD;
+    display: flex;
+    flex-direction: column;
+    gap: var.$SPACING_SM;
+}
+
+.detailGroup {
+    border-top: 1px solid var.$COLOR_BORDER_SUBTLE;
+    background: transparent;
+    overflow: hidden;
+
+    summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var.$SPACING_SM 0;
+        cursor: pointer;
+        font-weight: var.$FONT_WEIGHT_SEMIBOLD;
+    }
+
+    summary::-webkit-details-marker {
+        display: none;
+    }
+}
+
+.detailList {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 var.$SPACING_MD;
+    display: flex;
+    flex-direction: column;
+    gap: var.$SPACING_SM;
+}
+
+.detailItem {
+    padding-top: var.$SPACING_SM;
+    border-top: 1px solid var.$COLOR_BORDER_SUBTLE;
+
+    &:first-child {
+        border-top: 0;
+        padding-top: 0;
+    }
+}
+
+.emptyDetail {
+    margin: 0;
+    padding: 0 0 var.$SPACING_MD;
+    font-size: var.$TEXT_SIZE_SM;
+    color: var.$COLOR_TEXT_MUTED;
+}
+
+.progressContainer {
+    margin: var.$SPACING_MD 0;
+    width: 100%;
+
+    .progressBar {
+        height: 4px;
+        background-color: var.$COLOR_HOVER;
+        border-radius: var.$RADIUS_FULL;
+        overflow: hidden;
+        margin-bottom: var.$SPACING_SM;
+    }
+
+    .progressIndicator {
+        height: 100%;
+        width: 30%;
+        background: var(--b-gradient-primary);
+        border-radius: var.$RADIUS_FULL;
+
+        &.animating {
+            animation: progress 1.5s ease-in-out infinite;
+        }
+    }
+
+    .progressMessage {
+        font-size: var.$TEXT_SIZE_SM;
+        color: var.$COLOR_TEXT_SECONDARY;
+        margin: 0;
+    }
+}
+
+@keyframes progress {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(300%); }
+}
+
+@media (max-width: 720px) {
+    .summaryGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .reportHeader {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Ocean Wave</title>
+  <desc id="desc">A simple Ocean Wave symbol: an O ring with a calm wave inside.</desc>
+  <defs>
+    <linearGradient id="bg" x1="104" y1="64" x2="408" y2="448" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0b3440"/>
+      <stop offset="1" stop-color="#031014"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="132" y1="112" x2="380" y2="408" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#eafffb"/>
+      <stop offset="0.45" stop-color="#8ff7ed"/>
+      <stop offset="1" stop-color="#2eb8bd"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="136" y1="266" x2="376" y2="244" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a7fff6"/>
+      <stop offset="1" stop-color="#46d7cf"/>
+    </linearGradient>
+    <clipPath id="rounded">
+      <rect width="512" height="512" rx="112"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#rounded)">
+    <rect width="512" height="512" fill="url(#bg)"/>
+    <circle cx="164" cy="104" r="180" fill="#5eead4" opacity="0.1"/>
+  </g>
+
+  <path
+    d="M256 96c-88.37 0-160 71.63-160 160s71.63 160 160 160 160-71.63 160-160S344.37 96 256 96Zm0 66c51.91 0 94 42.09 94 94s-42.09 94-94 94-94-42.09-94-94 42.09-94 94-94Z"
+    fill="url(#ring)"
+    fill-rule="evenodd"/>
+
+  <path
+    d="M132 270c34-34 72-48 114-42 29 4 47 17 68 26 22 10 43 9 66-8-12 36-43 58-82 58-27 0-46-10-67-19-30-13-60-17-99-15Z"
+    fill="url(#wave)"/>
+
+  <path
+    d="M143 302c30-17 62-23 96-14 26 7 45 21 73 20 22-1 40-9 58-24-18 43-56 66-105 62-41-3-72-26-122-44Z"
+    fill="#eafffb"
+    opacity="0.82"/>
+
+  <rect x="14" y="14" width="484" height="484" rx="98" fill="none" stroke="#c4f4f8" stroke-opacity="0.1" stroke-width="2"/>
+</svg>

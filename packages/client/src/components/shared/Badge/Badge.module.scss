@@ -1,0 +1,50 @@
+@use '~/styles/var';
+
+.Badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 24px;
+    padding: 0.25rem 0.625rem;
+    border: 1px solid transparent;
+    border-radius: var.$RADIUS_FULL;
+    font-size: var.$TEXT_SIZE_XS;
+    font-weight: var.$FONT_WEIGHT_SEMIBOLD;
+    line-height: var.$LINE_HEIGHT_HEADING;
+    white-space: nowrap;
+
+    &.size-md {
+        min-height: 28px;
+        padding-inline: 0.75rem;
+        font-size: var.$TEXT_SIZE_SM;
+    }
+
+    &.tone-neutral {
+        border-color: var.$COLOR_BORDER_SUBTLE;
+        background: var.$COLOR_SURFACE_INPUT;
+        color: var.$COLOR_TEXT_SECONDARY;
+    }
+
+    &.tone-accent {
+        border-color: var.$COLOR_FOCUS;
+        background: var.$COLOR_ACTIVE;
+        color: var.$COLOR_POINT_LIGHT;
+    }
+
+    &.tone-success {
+        background: rgba(56, 189, 120, 0.1);
+        color: rgba(129, 222, 168, 0.92);
+    }
+
+    &.tone-warning {
+        background: rgba(245, 158, 11, 0.12);
+        color: rgba(255, 210, 138, 0.95);
+    }
+
+    &.tone-danger {
+        background: rgba(244, 63, 94, 0.1);
+        color: rgba(255, 154, 173, 0.92);
+    }
+}

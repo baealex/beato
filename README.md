@@ -28,14 +28,14 @@ Ocean Wave uses port `44100` by default, matching the 44.1kHz audio sample rate.
 
 ### Use Node.js
 
-Link your music directory into `server/src/music`.
+Link your music directory into `packages/server/music`.
 
 ```bash
 git clone <repository-url> ocean-wave
 cd ocean-wave
 nvm use
 corepack enable
-ln -s {YOUR_MUSIC_PATH} server/src/music
+ln -s {YOUR_MUSIC_PATH} packages/server/music
 pnpm install
 pnpm start
 ```

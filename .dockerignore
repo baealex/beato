@@ -6,14 +6,16 @@
 node_modules
 **/node_modules
 
-server/src/client/dist
-server/src/dist
-server/src/coverage
+packages/client/dist
+packages/server/dist
+packages/server/coverage
 
-server/src/music
-server/src/cache
-server/src/prisma/data
-server/src/*.sqlite3*
+packages/server/music
+packages/server/cache
+packages/server/data
+packages/server/prisma/data
+packages/server/*.sqlite3*
+server/src
 
 music
 cache

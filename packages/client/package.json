@@ -1,0 +1,48 @@
+{
+    "name": "ocean-wave-client",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "pnpm type-check && vite build",
+        "type-check": "tsc --noEmit",
+        "lint": "pnpm --workspace-root exec biome lint packages/client/src packages/client/vite.config.ts packages/client/tsconfig.json packages/client/tsconfig.node.json",
+        "test": "vitest run",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@baejino/handy": "^0.2.3",
+        "@baejino/icon": "^0.2.1",
+        "@baejino/react-ui": "^0.2.0",
+        "@baejino/style": "^0.2.2",
+        "@dnd-kit/core": "^6.3.1",
+        "@dnd-kit/modifiers": "^7.0.0",
+        "@dnd-kit/sortable": "^8.0.0",
+        "@dnd-kit/utilities": "^3.2.2",
+        "@tanstack/react-query": "^5.100.5",
+        "@use-gesture/react": "^10.3.1",
+        "axios": "^1.13.4",
+        "classnames": "^2.5.1",
+        "motion": "^12.38.0",
+        "react": "^19.2.5",
+        "react-dom": "^19.2.5",
+        "react-router": "^7.14.2",
+        "react-router-dom": "^7.14.2",
+        "sass": "^1.97.3",
+        "socket.io-client": "^4.8.3",
+        "vite-plugin-svgr": "^5.2.0",
+        "zustand": "^5.0.12"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.2.4",
+        "@types/react": "^19.2.14",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^6.0.1",
+        "react-grab": "^0.1.32",
+        "tailwindcss": "^4.2.4",
+        "typescript": "^6.0.3",
+        "vite": "^8.0.10",
+        "vitest": "^4.1.5"
+    }
+}
