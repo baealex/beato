@@ -13,12 +13,19 @@
 }
 
 .sectionHeader {
-    margin-bottom: var.$SPACING_LG;
-    padding-bottom: var.$SPACING_MD;
-    border-bottom: 1px solid var.$COLOR_BORDER_SUBTLE;
+    margin: calc(var(--b-spacing-lg) * -1) calc(var(--b-spacing-lg) * -1) var.$SPACING_LG;
+    padding: var.$SPACING_MD var.$SPACING_LG;
+    background:
+        linear-gradient(135deg, rgba(70, 215, 207, 0.13), rgba(202, 247, 249, 0.045)),
+        var.$COLOR_BACKGROUND_LAYER_2;
+    border-bottom: 1px solid var.$COLOR_BORDER;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 12px 28px rgba(0, 0, 0, 0.16);
 
     @media (max-width: 768px) {
-        margin-bottom: var.$SPACING_MD;
+        margin: calc(var(--b-spacing-md) * -1) calc(var(--b-spacing-md) * -1) var.$SPACING_MD;
+        padding: var.$SPACING_MD;
     }
 }
 
