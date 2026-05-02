@@ -8,27 +8,25 @@
     overflow: hidden;
     background: var.$GRADIENT_PAGE;
 
-    .background {
+    .ambient-background {
         position: absolute;
         inset: 0;
         z-index: 0;
         overflow: hidden;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at 28% 16%, rgba(var(--player-accent), 0.24), transparent 44%),
+            radial-gradient(circle at 58% 42%, rgba(var(--player-muted), 0.16), transparent 50%),
+            linear-gradient(135deg, rgba(var(--player-deep), 0.86), rgba(3, 10, 13, 0.92)),
+            var.$GRADIENT_PAGE;
 
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: blur(72px) saturate(1.1) brightness(0.28);
-            transform: scale(1.18);
-            opacity: 0.58;
-        }
-
-        .overlay {
+        &::after {
+            content: "";
             position: absolute;
             inset: 0;
             background:
-                linear-gradient(180deg, rgba(9, 9, 11, 0.24) 0%, rgba(9, 9, 11, 0.66) 52%, rgba(6, 6, 8, 0.96) 100%),
-                radial-gradient(circle at top right, var.$COLOR_GLOW_AMBIENT, transparent 28%);
+                radial-gradient(circle at 50% 36%, transparent 0, rgba(3, 10, 13, 0.08) 36%, rgba(3, 10, 13, 0.5) 78%),
+                linear-gradient(180deg, rgba(5, 16, 20, 0.08) 0%, rgba(5, 16, 20, 0.22) 48%, rgba(3, 10, 13, 0.8) 100%);
         }
     }
 
@@ -48,6 +46,8 @@
         margin: 0 0 0.875rem;
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        gap: var.$SPACING_MD;
     }
 
     .utility-button {
@@ -81,6 +81,183 @@
         }
     }
 
+    .audio-menu-trigger {
+        margin-left: auto;
+
+        &.active {
+            color: var.$COLOR_TEXT;
+            background: var.$COLOR_ACTIVE;
+        }
+    }
+
+    .audio-menu-layer {
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .audio-menu-backdrop {
+        position: absolute;
+        inset: 0;
+        border: 0;
+        background: transparent;
+    }
+
+    .audio-menu-panel {
+        position: relative;
+        z-index: 1;
+        width: min(20rem, 32vw);
+        min-width: 18.75rem;
+        height: 100dvh;
+        margin: 0;
+        padding: 1rem;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 0;
+        background:
+            linear-gradient(180deg, rgba(13, 34, 40, 0.94), rgba(5, 16, 20, 0.96)),
+            var.$COLOR_SURFACE_MODAL;
+        color: var.$COLOR_TEXT;
+        box-shadow:
+            0 28px 80px rgba(0, 0, 0, 0.46),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        overflow-y: auto;
+        backdrop-filter: blur(24px);
+    }
+
+    .audio-menu-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .audio-menu-close {
+        flex: 0 0 auto;
+        color: var.$COLOR_TEXT_SECONDARY;
+    }
+
+    .audio-menu-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .audio-menu-section-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .audio-menu-section-title {
+        margin: 0;
+        color: var.$COLOR_TEXT;
+        font-size: var.$TEXT_SIZE_SM;
+        font-weight: var.$FONT_WEIGHT_BOLD;
+        line-height: var.$LINE_HEIGHT_HEADING;
+    }
+
+    .audio-menu-note {
+        padding: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var.$RADIUS_LG;
+        background: rgba(255, 255, 255, 0.05);
+        color: var.$COLOR_TEXT_TERTIARY;
+        font-size: var.$TEXT_SIZE_XS;
+        line-height: var.$LINE_HEIGHT_TIGHT;
+    }
+
+    .audio-option-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .audio-option,
+    .audio-action {
+        width: 100%;
+        min-height: 3.625rem;
+        padding: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var.$RADIUS_XL;
+        background: rgba(255, 255, 255, 0.04);
+        color: var.$COLOR_TEXT_SECONDARY;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.875rem;
+        text-align: left;
+        transition: var.$TRANSITION_FAST;
+        transition-property: color, background-color, border-color, transform;
+
+        svg {
+            flex: 0 0 auto;
+            width: 1rem;
+            height: 1rem;
+        }
+
+        @include var.hover-capable {
+            &:hover:not(:disabled) {
+                color: var.$COLOR_TEXT;
+                background: rgba(255, 255, 255, 0.07);
+                border-color: rgba(255, 255, 255, 0.14);
+                transform: translateY(-1px);
+            }
+        }
+
+        &:disabled,
+        &.disabled {
+            cursor: not-allowed;
+            opacity: 0.48;
+        }
+
+        &.active {
+            color: var.$COLOR_TEXT;
+            border-color: rgba(var(--player-accent), 0.4);
+            background:
+                linear-gradient(135deg, rgba(var(--player-accent), 0.16), rgba(255, 255, 255, 0.04)),
+                rgba(255, 255, 255, 0.04);
+        }
+    }
+
+    .audio-action {
+        justify-content: flex-start;
+
+        > svg {
+            width: 1.125rem;
+            height: 1.125rem;
+            color: var.$COLOR_POINT_LIGHT;
+        }
+    }
+
+    .audio-option-copy,
+    .audio-action > span {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .audio-option-label {
+        color: inherit;
+        font-size: var.$TEXT_SIZE_SM;
+        font-weight: var.$FONT_WEIGHT_SEMIBOLD;
+        line-height: var.$LINE_HEIGHT_TIGHT;
+    }
+
+    .audio-option-description {
+        color: var.$COLOR_TEXT_TERTIARY;
+        font-size: var.$TEXT_SIZE_XS;
+        font-weight: var.$FONT_WEIGHT_NORMAL;
+        line-height: var.$LINE_HEIGHT_TIGHT;
+    }
+
     .content {
         width: min(100%, 30rem);
         margin: auto;
@@ -109,7 +286,7 @@
                 0 0 32px var.$COLOR_GLOW_AMBIENT;
 
             &::after {
-                content: '';
+                content: "";
                 position: absolute;
                 inset: 0;
                 border-radius: 2rem;
@@ -117,10 +294,16 @@
                 pointer-events: none;
             }
         }
+
+        &.halo {
+            overflow: visible;
+            isolation: isolate;
+        }
     }
 
     .title-block {
         width: 100%;
+        min-width: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -134,18 +317,47 @@
     }
 
     .title {
-        line-height: 1;
+        width: 100%;
+        max-width: min(100%, 24rem);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 1.08;
         letter-spacing: 0;
-        text-wrap: balance;
-        max-width: 12ch;
+    }
+
+    .artist-name {
+        width: 100%;
+        max-width: min(100%, 22rem);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .album-line {
+        width: 100%;
+        min-width: 0;
+        max-width: min(100%, 22rem);
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 0.625rem;
+
+        > * {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        > :first-child {
+            flex: 0 1 auto;
+        }
+
+        > :last-child {
+            flex: 0 0 auto;
+        }
     }
 
     .progress-section {
@@ -296,6 +508,21 @@
         }
     }
 
+    &.immersive {
+        .content {
+            text-shadow: 0 2px 18px rgba(0, 0, 0, 0.34);
+        }
+
+        .progress {
+            background: rgba(196, 244, 248, 0.12);
+        }
+
+        .secondary-action {
+            background: rgba(6, 19, 24, 0.54);
+            backdrop-filter: blur(16px);
+        }
+    }
+
     .empty-state {
         width: min(100%, 28rem);
         margin: auto;
@@ -395,6 +622,28 @@
     }
 
     @media (max-width: 640px) {
+        .top-bar {
+            gap: var.$SPACING_SM;
+        }
+
+        .audio-menu-layer {
+            display: block;
+        }
+
+        .audio-menu-backdrop {
+            display: none;
+        }
+
+        .audio-menu-panel {
+            width: 100vw;
+            min-width: 0;
+            height: 100dvh;
+            margin: 0;
+            padding: 1rem;
+            border: 0;
+            border-radius: 0;
+        }
+
         .content {
             gap: 1.25rem;
         }
@@ -404,7 +653,12 @@
         }
 
         .title {
-            max-width: none;
+            max-width: min(100%, 21rem);
+        }
+
+        .artist-name,
+        .album-line {
+            max-width: min(100%, 20rem);
         }
 
         .controls {

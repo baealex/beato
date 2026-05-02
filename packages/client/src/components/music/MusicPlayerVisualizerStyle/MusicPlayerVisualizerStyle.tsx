@@ -11,22 +11,26 @@ import {
     digital,
     line,
     ring,
-    round,
-    dna,
-    neon
+    round
 } from './visualizers';
+import {
+    createVividVisualizerPalette,
+    type RGB
+} from './visualizers/types';
 
 interface MusicPlayerVisualizerStyleProps {
     type: string;
     isPlaying: boolean;
     src: string;
     alt: string;
+    accentColor?: RGB | null;
 }
 
-const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt }: MusicPlayerVisualizerStyleProps) => {
+const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt, accentColor }: MusicPlayerVisualizerStyleProps) => {
     const ref = useRef<HTMLCanvasElement>(null);
     const bufferLength = 144;
     const dataArray = useMemo(() => new Uint8Array(bufferLength), []);
+    const palette = useMemo(() => createVividVisualizerPalette(accentColor), [accentColor]);
 
     const draw = (ctx: CanvasRenderingContext2D) => {
         if (!ref.current) return;
@@ -37,22 +41,16 @@ const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt }: MusicPlayerVi
 
         switch (type) {
             case 'line':
-                line(canvas, ctx, bufferLength, dataArray);
+                line(canvas, ctx, bufferLength, dataArray, palette);
                 break;
             case 'ring':
-                ring(canvas, ctx, bufferLength, dataArray);
+                ring(canvas, ctx, bufferLength, dataArray, palette);
                 break;
             case 'digital':
-                digital(canvas, ctx, bufferLength, dataArray);
-                break;
-            case 'dna':
-                dna(canvas, ctx, bufferLength, dataArray);
-                break;
-            case 'neon':
-                neon(canvas, ctx, bufferLength, dataArray);
+                digital(canvas, ctx, bufferLength, dataArray, palette);
                 break;
             default:
-                round(canvas, ctx, bufferLength, dataArray);
+                round(canvas, ctx, bufferLength, dataArray, palette);
                 break;
         }
     };
@@ -76,10 +74,10 @@ const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt }: MusicPlayerVi
         return () => {
             cancelAnimationFrame(animationId);
         };
-    }, [dataArray]);
+    }, [dataArray, palette, type]);
 
     return (
-        <div className={cx('MusicPlayerVisualizerStyle')}>
+        <div className={cx('MusicPlayerVisualizerStyle', { halo: type === 'ring' })}>
             <div className={cx('foreground-wrapper')}>
                 <Image
                     className={cx('foreground', { isPlaying })}
@@ -87,7 +85,11 @@ const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt }: MusicPlayerVi
                     alt={alt}
                 />
             </div>
-            <canvas ref={ref} width={1200} height={1200} />
+            <canvas
+                ref={ref}
+                width={type === 'ring' ? 640 : 900}
+                height={type === 'ring' ? 640 : 900}
+            />
         </div>
     );
 };

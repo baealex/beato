@@ -12,7 +12,6 @@ import {
     PlayModeSection,
     StabilityModeSection,
     SynchronizationSection,
-    ThemeSection,
     TroubleshootingSection
 } from './components';
 
@@ -50,7 +49,6 @@ export default function Setting() {
                 <SynchronizationSection onSyncMusic={handleClickSyncMusic} />
                 <PlayModeSection />
                 <AudioSettingsSection shouldStable={isAppChannel || isStabilityModeEnabled} />
-                <ThemeSection shouldStable={isAppChannel || isStabilityModeEnabled} />
                 <ConnectorsSection />
                 {!isAppChannel && <StabilityModeSection />}
                 <TroubleshootingSection />

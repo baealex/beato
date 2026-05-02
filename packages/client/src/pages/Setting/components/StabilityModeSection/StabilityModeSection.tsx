@@ -22,9 +22,9 @@ export const StabilityModeSection = () => {
     const handleChangeStabilityMode = () => {
         if (isStabilityModeEnabled) {
             localStorage.removeItem('stability-mode::on');
-            themeStore.setPlayerAlbumArtStyle('');
         } else {
             localStorage.setItem('stability-mode::on', 'true');
+            themeStore.setPlayerVisualizerMode('disk');
         }
         window.location.reload();
     };
