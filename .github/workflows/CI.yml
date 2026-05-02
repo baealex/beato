@@ -41,36 +41,52 @@ on:
       - '.github/workflows/**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
-    name: build (21.x)
+    name: build (Node 22.12)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 10.25.0
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.25.0
 
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version-file: .nvmrc
-        cache: pnpm
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
 
-    - name: Install
-      run: pnpm install --frozen-lockfile
+      - name: Print tool versions
+        run: |
+          node --version
+          pnpm --version
 
-    - name: Test (Repository Metadata)
-      run: pnpm test:metadata
+      - name: Install
+        run: pnpm install --frozen-lockfile
 
-    - name: Test (Server)
-      run: pnpm test:server
+      - name: Test (Repository Metadata)
+        run: pnpm test:metadata
 
-    - name: Test (Client)
-      run: pnpm test:client
+      - name: Test (Server)
+        run: pnpm test:server
 
-    - name: Check
-      run: pnpm check
+      - name: Test (Client)
+        run: pnpm test:client
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type Check
+        run: pnpm type-check
+
+      - name: Build
+        run: pnpm build
