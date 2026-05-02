@@ -13,19 +13,17 @@ interface MusicPlayerDiskStyleProps {
 
 const MusicPlayerDiskStyle = ({ isPlaying, src, alt }: MusicPlayerDiskStyleProps) => {
     return (
-        <div className={cx('MusicPlayerDiskStyle')}>
-            <Image
-                className={cx('background')}
-                src={src}
-                alt={alt}
-                loading="eager"
-            />
-            <div className={cx('foreground-wrapper')}>
-                <Image
-                    className={cx('foreground', { isPlaying })}
-                    src={getOriginalImage(src)}
-                    alt={alt}
-                />
+        <div className={cx('MusicPlayerDiskStyle', { isPlaying })}>
+            <div className={cx('disc')}>
+                <div className={cx('label')}>
+                    <Image
+                        className={cx('labelImage')}
+                        src={getOriginalImage(src)}
+                        alt={alt}
+                        loading="eager"
+                    />
+                </div>
+                <span className={cx('center')} />
             </div>
         </div>
     );

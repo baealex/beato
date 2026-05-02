@@ -4,4 +4,3 @@ export * from './PlayModeSection';
 export * from './StabilityModeSection';
 export * from './SynchronizationSection';
 export * from './TroubleshootingSection';
-export * from './ThemeSection';

@@ -1,4 +1,9 @@
-import type { KeyboardEvent } from 'react';
+import {
+    useEffect,
+    useState,
+    type CSSProperties,
+    type KeyboardEvent as ReactKeyboardEvent
+} from 'react';
 
 import styles from './Player.module.scss';
 import classNames from 'classnames/bind';
@@ -7,11 +12,15 @@ const cx = classNames.bind(styles);
 import { useNavigate } from 'react-router-dom';
 import { useAppStore as useStore } from '~/store/base-store';
 
-import { MusicPlayerDiskStyle, MusicPlayerFluffyStyle, MusicPlayerVisualizerStyle } from '~/components/music';
-import { Image, Text } from '~/components/shared';
+import {
+    MusicPlayerDiskStyle,
+    MusicPlayerFluffyStyle,
+    MusicPlayerVisualizerStyle
+} from '~/components/music';
+import { Text } from '~/components/shared';
 import * as Icon from '~/icon';
 
-import { useBack, useStoreValue } from '~/hooks';
+import { useBack, useDominantColor, useStoreValue } from '~/hooks';
 
 import { getImage } from '~/modules/image';
 import { makePlayTime } from '~/modules/time';
@@ -19,6 +28,92 @@ import { makePlayTime } from '~/modules/time';
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 import { themeStore } from '~/store/theme';
+import type { PlayerVisualizerMode } from '~/store/theme';
+
+const PLAYER_VISUALIZER_MODES: Array<{
+    value: PlayerVisualizerMode;
+    label: string;
+    description: string;
+}> = [
+    {
+        value: 'puffy',
+        label: 'Puffy',
+        description: 'Soft album motion'
+    },
+    {
+        value: 'disk',
+        label: 'CD',
+        description: 'Simple disk player'
+    },
+    {
+        value: 'round',
+        label: 'Dancing',
+        description: 'Sound points dance'
+    },
+    {
+        value: 'line',
+        label: 'Trace',
+        description: 'Low spectrum trace'
+    },
+    {
+        value: 'ring',
+        label: 'Halo',
+        description: 'Album edge glow'
+    },
+    {
+        value: 'digital',
+        label: 'Constellation',
+        description: 'Connected digital field'
+    }
+];
+
+const MIX_MODES = [
+    {
+        value: 'none',
+        label: 'No transition',
+        description: 'Change tracks immediately'
+    },
+    {
+        value: 'mix',
+        label: 'Mix fade',
+        description: 'Fade tracks across 20 seconds'
+    }
+] as const;
+
+interface RGB {
+    r: number;
+    g: number;
+    b: number;
+}
+
+const DEFAULT_AMBIENT_COLOR = {
+    r: 70,
+    g: 215,
+    b: 207
+} as const satisfies RGB;
+
+const mixChannel = (from: number, to: number, amount: number) => Math.round(from + (to - from) * amount);
+const mixColor = (from: RGB, to: RGB, amount: number): RGB => ({
+    r: mixChannel(from.r, to.r, amount),
+    g: mixChannel(from.g, to.g, amount),
+    b: mixChannel(from.b, to.b, amount)
+});
+const rgbVar = (color: RGB) => `${color.r}, ${color.g}, ${color.b}`;
+const createAmbientStyle = (accentColor: RGB | null | undefined) => {
+    const accent = accentColor ?? DEFAULT_AMBIENT_COLOR;
+    const deep = mixColor(accent, {
+        r: 3,
+        g: 10,
+        b: 13
+    }, 0.52);
+    const muted = mixColor(accent, DEFAULT_AMBIENT_COLOR, 0.34);
+
+    return {
+        '--player-accent': rgbVar(accent),
+        '--player-deep': rgbVar(deep),
+        '--player-muted': rgbVar(muted)
+    } as CSSProperties;
+};
 
 export default function PlayerDetail() {
     const back = useBack();
@@ -32,12 +127,16 @@ export default function PlayerDetail() {
     const [isPlaying] = useStoreValue(queueStore, 'isPlaying');
     const [repeatMode] = useStoreValue(queueStore, 'repeatMode');
     const [shuffle] = useStoreValue(queueStore, 'shuffle');
-    const [{ playerAlbumArtStyle }] = useStore(themeStore);
+    const [mixMode] = useStoreValue(queueStore, 'mixMode');
+    const [{ playerVisualizerMode }] = useStore(themeStore);
     const [{ musicMap }] = useStore(musicStore);
+    const [isAudioMenuOpen, setIsAudioMenuOpen] = useState(false);
 
     const currentMusic = currentTrackId
         ? musicMap.get(currentTrackId)
         : null;
+    const coverImage = currentMusic ? getImage(currentMusic.album.cover) : '';
+    const accentColor = useDominantColor(coverImage || undefined);
     const duration = currentMusic?.duration || 0;
     const queuePosition = selected !== null ? selected + 1 : null;
     const publishedYear = currentMusic?.album?.publishedYear?.trim() || '';
@@ -71,7 +170,7 @@ export default function PlayerDetail() {
         }
     };
 
-    const handleKeyDownProgress = (e: KeyboardEvent<HTMLDivElement>) => {
+    const handleKeyDownProgress = (e: ReactKeyboardEvent<HTMLDivElement>) => {
         if (duration <= 0) {
             return;
         }
@@ -97,21 +196,38 @@ export default function PlayerDetail() {
         }
     };
 
-    const showBackground = playerAlbumArtStyle.includes('visualizer');
+    const isStabilityModeEnabled = Boolean(localStorage.getItem('stability-mode::on'));
+    const playerEffectMode = isStabilityModeEnabled ? 'disk' : playerVisualizerMode;
+    const isVisualizerEffect = !['puffy', 'disk'].includes(playerEffectMode);
+    const ambientStyle = createAmbientStyle(accentColor);
+
+    useEffect(() => {
+        if (!isAudioMenuOpen) {
+            return;
+        }
+
+        const handleKeyDown = (event: globalThis.KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setIsAudioMenuOpen(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isAudioMenuOpen]);
+
+    useEffect(() => {
+        if (!currentMusic) {
+            setIsAudioMenuOpen(false);
+        }
+    }, [currentMusic]);
 
     return (
-        <div className={cx('Player')}>
-            {currentMusic && showBackground && (
-                <div className={cx('background')}>
-                    <Image
-                        src={currentMusic.album.cover}
-                        alt=""
-                        aria-hidden="true"
-                        loading="eager"
-                    />
-                    <div className={cx('overlay')} />
-                </div>
-            )}
+        <div className={cx('Player', { immersive: Boolean(currentMusic) })} style={ambientStyle}>
+            {currentMusic && <div className={cx('ambient-background')} aria-hidden="true" />}
 
             <div className={cx('container')}>
                 <div className={cx('top-bar')}>
@@ -122,32 +238,198 @@ export default function PlayerDetail() {
                         onClick={back}>
                         <Icon.ChevronLeft />
                     </button>
+
+                    {currentMusic && (
+                        <button
+                            type="button"
+                            className={cx('utility-button', 'audio-menu-trigger', { active: isAudioMenuOpen })}
+                            aria-label="Open audio menu"
+                            aria-haspopup="dialog"
+                            aria-expanded={isAudioMenuOpen}
+                            onClick={() => setIsAudioMenuOpen(true)}>
+                            <Icon.Menu />
+                        </button>
+                    )}
                 </div>
+
+                {currentMusic && isAudioMenuOpen && (
+                    <div className={cx('audio-menu-layer')}>
+                        <button
+                            type="button"
+                            className={cx('audio-menu-backdrop')}
+                            aria-label="Close audio menu"
+                            onClick={() => setIsAudioMenuOpen(false)}
+                        />
+
+                        <aside
+                            className={cx('audio-menu-panel')}
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label="Audio menu">
+                            <header className={cx('audio-menu-header')}>
+                                <div>
+                                    <Text as="h2" size="title" weight="bold">
+                                        Audio Menu
+                                    </Text>
+                                    <Text as="p" variant="tertiary" size="sm">
+                                        Visualizer and playback tools.
+                                    </Text>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className={cx('utility-button', 'audio-menu-close')}
+                                    aria-label="Close audio menu"
+                                    onClick={() => setIsAudioMenuOpen(false)}>
+                                    <Icon.Close />
+                                </button>
+                            </header>
+
+                            <section className={cx('audio-menu-section')} aria-labelledby="player-effects-title">
+                                <div className={cx('audio-menu-section-header')}>
+                                    <h3 id="player-effects-title" className={cx('audio-menu-section-title')}>
+                                        Player Effect
+                                    </h3>
+                                    <Text as="p" variant="tertiary" size="xs">
+                                        Choose how the album art reacts.
+                                    </Text>
+                                </div>
+
+                                {isStabilityModeEnabled && (
+                                    <div className={cx('audio-menu-note')}>
+                                        Stability mode is on. CD is used until visual effects are re-enabled in Settings.
+                                    </div>
+                                )}
+
+                                <div className={cx('audio-option-list')} aria-label="Visualizer mode">
+                                    {PLAYER_VISUALIZER_MODES.map(({ value, label, description }) => (
+                                        <button
+                                            key={value}
+                                            type="button"
+                                            className={cx('audio-option', {
+                                                active: playerEffectMode === value,
+                                                disabled: isStabilityModeEnabled
+                                            })}
+                                            aria-pressed={playerEffectMode === value}
+                                            disabled={isStabilityModeEnabled}
+                                            onClick={() => themeStore.setPlayerVisualizerMode(value)}>
+                                            <span className={cx('audio-option-copy')}>
+                                                <span className={cx('audio-option-label')}>{label}</span>
+                                                <span className={cx('audio-option-description')}>{description}</span>
+                                            </span>
+                                            {playerEffectMode === value && <Icon.Check />}
+                                        </button>
+                                    ))}
+                                </div>
+                            </section>
+
+                            <section className={cx('audio-menu-section')} aria-labelledby="transition-title">
+                                <div className={cx('audio-menu-section-header')}>
+                                    <h3 id="transition-title" className={cx('audio-menu-section-title')}>
+                                        Transition
+                                    </h3>
+                                    <Text as="p" variant="tertiary" size="xs">
+                                        Control how tracks blend.
+                                    </Text>
+                                </div>
+
+                                <div className={cx('audio-option-list')} aria-label="Transition effect">
+                                    {MIX_MODES.map(({ value, label, description }) => (
+                                        <button
+                                            key={value}
+                                            type="button"
+                                            className={cx('audio-option', { active: mixMode === value })}
+                                            aria-pressed={mixMode === value}
+                                            onClick={() => queueStore.setMixMode(value)}>
+                                            <span className={cx('audio-option-copy')}>
+                                                <span className={cx('audio-option-label')}>{label}</span>
+                                                <span className={cx('audio-option-description')}>{description}</span>
+                                            </span>
+                                            {mixMode === value && <Icon.Check />}
+                                        </button>
+                                    ))}
+                                </div>
+                            </section>
+
+                            <section className={cx('audio-menu-section')} aria-labelledby="audio-tools-title">
+                                <div className={cx('audio-menu-section-header')}>
+                                    <h3 id="audio-tools-title" className={cx('audio-menu-section-title')}>
+                                        Audio Tools
+                                    </h3>
+                                    <Text as="p" variant="tertiary" size="xs">
+                                        Tune output and stability.
+                                    </Text>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className={cx('audio-action')}
+                                    disabled={isStabilityModeEnabled}
+                                    onClick={() => {
+                                        setIsAudioMenuOpen(false);
+                                        navigate('/equalizer');
+                                    }}>
+                                    <Icon.Settings />
+                                    <span>
+                                        <span className={cx('audio-option-label')}>Open Equalizer</span>
+                                        <span className={cx('audio-option-description')}>
+                                            {isStabilityModeEnabled
+                                                ? 'Paused while stability mode is on'
+                                                : 'Adjust frequency bands and presets'}
+                                        </span>
+                                    </span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className={cx('audio-action')}
+                                    onClick={() => {
+                                        setIsAudioMenuOpen(false);
+                                        navigate('/setting');
+                                    }}>
+                                    <Icon.Gear />
+                                    <span>
+                                        <span className={cx('audio-option-label')}>Playback Settings</span>
+                                        <span className={cx('audio-option-description')}>
+                                            Quality, stability mode, and queue behavior
+                                        </span>
+                                    </span>
+                                </button>
+                            </section>
+                        </aside>
+                    </div>
+                )}
 
                 {currentMusic ? (
                     <div className={cx('content')}>
                         <div className={cx('art-wrap')}>
-                            <div className={cx('album-art', { framed: showBackground })}>
-                                {playerAlbumArtStyle === '' && (
+                            <div className={cx('album-art', {
+                                framed: isVisualizerEffect,
+                                halo: playerEffectMode === 'ring'
+                            })}>
+                                {playerEffectMode === 'puffy' && (
                                     <MusicPlayerFluffyStyle
                                         isPlaying={isPlaying}
-                                        src={getImage(currentMusic.album.cover)}
+                                        src={coverImage}
                                         alt={currentMusic.album.name}
                                     />
                                 )}
-                                {playerAlbumArtStyle === 'disk' && (
+
+                                {playerEffectMode === 'disk' && (
                                     <MusicPlayerDiskStyle
                                         isPlaying={isPlaying}
-                                        src={getImage(currentMusic.album.cover)}
+                                        src={coverImage}
                                         alt={currentMusic.album.name}
                                     />
                                 )}
-                                {playerAlbumArtStyle.includes('visualizer') && (
+
+                                {isVisualizerEffect && (
                                     <MusicPlayerVisualizerStyle
-                                        type={playerAlbumArtStyle.split(':')[1] || 'round'}
+                                        type={playerEffectMode}
                                         isPlaying={isPlaying}
-                                        src={getImage(currentMusic.album.cover)}
+                                        src={coverImage}
                                         alt={currentMusic.album.name}
+                                        accentColor={accentColor}
                                     />
                                 )}
                             </div>
@@ -166,7 +448,12 @@ export default function PlayerDetail() {
                                 {currentMusic.name}
                             </Text>
 
-                            <Text as="p" variant="secondary" size="md" weight="medium">
+                            <Text
+                                as="p"
+                                variant="secondary"
+                                size="md"
+                                weight="medium"
+                                className={cx('artist-name')}>
                                 {currentMusic.artist.name}
                             </Text>
 

@@ -1,19 +1,14 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 
 import AuthGate from '~/components/auth/AuthGate';
-import SplashScreen from '~/components/app/SplashScreen/SplashScreen';
 import { getAuthSession } from '~/api';
 import { queryKeys } from '~/api/query-keys';
 import {
     redirectToLogin,
     shouldRedirectToLogin
 } from '~/modules/auth-redirect';
-import { useAppStore as useStore } from '~/store/base-store';
-import { musicStore } from '~/store/music';
-
-const SPLASH_MIN_MS = 2000;
 
 interface AuthSessionBoundaryProps {
     children: React.ReactNode;
@@ -22,11 +17,6 @@ interface AuthSessionBoundaryProps {
 export default function AuthSessionBoundary({
     children
 }: AuthSessionBoundaryProps) {
-    const [showSplash, setShowSplash] = useState(true);
-    const [splashExiting, setSplashExiting] = useState(false);
-    const splashStartTime = useRef(Date.now());
-    const [{ loaded: musicLoaded }] = useStore(musicStore);
-
     const authSessionQuery = useQuery({
         queryKey: queryKeys.auth.session(),
         queryFn: getAuthSession,
@@ -66,53 +56,25 @@ export default function AuthSessionBoundary({
         }
     }, [authSession, isAuthLoading]);
 
-    useEffect(() => {
-        if (!showSplash) return;
+    if (!isAuthLoading && !authSession) {
+        return (
+            <AuthGate
+                state="error"
+                errorMessage="Unable to verify the current session. Retry once the server is reachable."
+                onRetry={() => {
+                    void authSessionQuery.refetch();
+                }}
+            />
+        );
+    }
 
-        const authDone = !isAuthLoading;
-        const storesDone = !canAccessApp || musicLoaded;
+    if (!isAuthLoading && authSession?.authRequired && !authSession.authenticated) {
+        return <AuthGate state="loading" />;
+    }
 
-        if (!authDone || !storesDone) return;
+    if (canAccessApp) {
+        return children;
+    }
 
-        const elapsed = Date.now() - splashStartTime.current;
-        const remaining = Math.max(0, SPLASH_MIN_MS - elapsed);
-
-        const exitTimer = setTimeout(() => {
-            setSplashExiting(true);
-            setTimeout(() => setShowSplash(false), 440);
-        }, remaining);
-
-        return () => clearTimeout(exitTimer);
-    }, [isAuthLoading, canAccessApp, musicLoaded, showSplash]);
-
-    const boundaryContent = () => {
-        if (!isAuthLoading && !authSession) {
-            return (
-                <AuthGate
-                    state="error"
-                    errorMessage="Unable to verify the current session. Retry once the server is reachable."
-                    onRetry={() => {
-                        void authSessionQuery.refetch();
-                    }}
-                />
-            );
-        }
-
-        if (!isAuthLoading && authSession?.authRequired && !authSession.authenticated) {
-            return <AuthGate state="loading" />;
-        }
-
-        if (canAccessApp) {
-            return children;
-        }
-
-        return null;
-    };
-
-    return (
-        <>
-            {showSplash && <SplashScreen isExiting={splashExiting} />}
-            {(!showSplash || splashExiting) && boundaryContent()}
-        </>
-    );
+    return null;
 }
