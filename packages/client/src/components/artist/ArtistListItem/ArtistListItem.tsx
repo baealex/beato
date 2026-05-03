@@ -1,9 +1,7 @@
 import classNames from 'classnames';
 const cx = classNames;
 
-import Image from '~/components/shared/Image';
-import Text from '~/components/shared/Text';
-import { User } from '~/icon';
+import { ArtistArtwork } from '~/components/shared';
 
 interface ArtistListItemProps {
     artistName: string;
@@ -21,28 +19,23 @@ const ArtistListItem = ({
     onClick
 }: ArtistListItemProps) => {
     return (
-        <div className={cx('ow-artist-list-item-ArtistListItem')} onClick={onClick}>
-            <div className={cx('ow-artist-list-item-image-container')}>
-                <span className={cx('ow-artist-list-item-halo')} aria-hidden="true" />
-                <Image
-                    className={cx('ow-artist-list-item-image')}
-                    src={artistCover}
-                    alt={artistName}
-                    loading="eager"
-                    icon={<User />}
-                />
+        <button
+            type="button"
+            className={cx(
+                'group/row flex w-full cursor-pointer flex-row items-center gap-4 px-6 py-4 text-left transition-colors',
+                'hover:bg-[image:var(--b-gradient-row-hover)] active:bg-[var(--b-color-active)]'
+            )}
+            onClick={onClick}>
+            <ArtistArtwork src={artistCover} alt={artistName} />
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+                <span className="truncate text-sm font-medium text-[var(--b-color-text)]">{artistName}</span>
+                <span className="flex gap-2 text-xs text-[var(--b-color-text-tertiary)]">
+                    <span>{albumCount} {albumCount === 1 ? 'album' : 'albums'}</span>
+                    <span className="text-[var(--b-color-text-muted)]">·</span>
+                    <span>{musicCount} {musicCount === 1 ? 'song' : 'songs'}</span>
+                </span>
             </div>
-            <div className={cx('ow-artist-list-item-info')}>
-                <Text as="div" size="sm" weight="medium" truncate>
-                    {artistName}
-                </Text>
-                <div className={cx('ow-artist-list-item-count')}>
-                    <Text size="xs" variant="tertiary">{albumCount} {albumCount === 1 ? 'album' : 'albums'}</Text>
-                    <Text size="xs" variant="muted">·</Text>
-                    <Text size="xs" variant="tertiary">{musicCount} {musicCount === 1 ? 'song' : 'songs'}</Text>
-                </div>
-            </div>
-        </div>
+        </button>
     );
 };
 

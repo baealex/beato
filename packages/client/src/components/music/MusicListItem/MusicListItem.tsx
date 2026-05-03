@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 const cx = classNames;
 
-import { IconButton, Image, Text } from '~/components/shared';
-import { Disc, Heart, VerticalDots } from '~/icon';
+import { IconButton, TrackArtwork } from '~/components/shared';
+import { Heart, VerticalDots } from '~/icon';
 
 interface MusicListItemProps {
     id?: number;
@@ -33,58 +33,45 @@ const MusicListItem = ({
     onLongPress
 }: MusicListItemProps) => {
     return (
-        <div
-            className={cx('ow-music-list-item-MusicListItem', { 'ow-music-list-item-isHated': isHated })}
+        <button
+            type="button"
+            className={cx(
+                'group/row flex w-full cursor-pointer flex-row items-center gap-4 px-6 py-4 text-left text-[var(--b-color-text)] transition-colors',
+                'hover:bg-[image:var(--b-gradient-row-hover)] active:bg-[var(--b-color-active)]',
+                { 'opacity-40': isHated }
+            )}
             onClick={onClick}
             onContextMenu={(e) => {
                 e.preventDefault();
                 onLongPress?.();
             }}>
             {hideAlbumArt ? (
-                <Text as="span" size="sm" variant="muted" className={cx('ow-music-list-item-track-number-col')}>
+                <span className="w-12 shrink-0 text-center text-sm text-[var(--b-color-text-muted)]">
                     {trackNumber ?? '·'}
-                </Text>
-            ) : (
-                <span className={cx('ow-music-list-item-artWrap')}>
-                    <span className={cx('ow-music-list-item-wave')} aria-hidden="true">
-                        <span />
-                        <span />
-                        <span />
-                    </span>
-                    <Image
-                    className={cx('ow-music-list-item-album-art')}
-                    src={albumCover}
-                    alt={albumName}
-                    loading="eager"
-                    icon={<Disc />}
-                    />
                 </span>
+            ) : (
+                <TrackArtwork src={albumCover} alt={albumName} />
             )}
-            <div className={cx('ow-music-list-item-row')}>
-                <div className={cx('ow-music-list-item-info', { 'ow-music-list-item-hasMenu': typeof onLongPress === 'function' })}>
-                    <div className={cx('ow-music-list-item-title')}>
+            <span className="flex min-w-0 flex-1 flex-row items-center justify-between gap-2">
+                <span className={cx('flex min-w-0 flex-1 flex-col gap-1', { 'max-w-[calc(100%-40px-var(--b-spacing-md))]': typeof onLongPress === 'function' })}>
+                    <span className="flex min-w-0 items-center gap-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium text-[var(--b-color-text)]">
                         {!!trackNumber && !hideAlbumArt && (
-                            <span className={cx('ow-music-list-item-track-number')}>{trackNumber}.</span>
+                            <span className="min-w-6 text-[var(--b-color-text-muted)]">{trackNumber}.</span>
                         )}
-                        <Text as="span" size="sm" truncate>{musicName}</Text>
+                        <span className="truncate">{musicName}</span>
                         {musicCodec && musicCodec.toLowerCase() === 'flac' && (
-                            <span className={cx('ow-music-list-item-codec')}>{musicCodec}</span>
+                            <span className="shrink-0 text-[0.625rem] font-semibold uppercase tracking-[0.04em] text-[var(--b-color-point)]">{musicCodec}</span>
                         )}
-                    </div>
-                    <Text
-                        as="div"
-                        size="sm"
-                        variant="tertiary"
-                        truncate
-                        className={cx('ow-music-list-item-artist')}>
+                    </span>
+                    <span className="truncate text-sm text-[var(--b-color-text-tertiary)]">
                         {artistName}
-                    </Text>
-                </div>
+                    </span>
+                </span>
                 {onLongPress && (
                     <IconButton
                         aria-label={`Open actions for ${musicName}`}
                         active={isLiked}
-                        className={cx('ow-music-list-item-icon-button')}
+                        className="h-10 w-10"
                         onClick={(e) => {
                             e.stopPropagation();
                             onLongPress?.();
@@ -92,8 +79,8 @@ const MusicListItem = ({
                         {isLiked ? <Heart /> : <VerticalDots />}
                     </IconButton>
                 )}
-            </div>
-        </div>
+            </span>
+        </button>
     );
 };
 

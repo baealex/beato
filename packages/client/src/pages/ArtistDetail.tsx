@@ -78,6 +78,7 @@ export default function ArtistDetail() {
                                 artistName={artist.name}
                                 publishedYear={album.publishedYear}
                                 musicCount={album.musics?.length}
+                                compact
                                 onClick={() => navigate(`/album/${album.id}`)}
                             />
                         </div>
