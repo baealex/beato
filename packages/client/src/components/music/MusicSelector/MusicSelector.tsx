@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 
 import { CheckBox, DoubleCheck } from '~/icon';
 
@@ -17,14 +18,19 @@ export default function MusicSelector({
     return (
         <>
             <button
-                className={`${'ow-music-selector-MusicSelector'} clickable ${active ? 'ow-music-selector-active' : ''}`}
+                type="button"
+                className={classNames(
+                    'flex w-auto cursor-pointer items-center justify-center gap-2 text-[0.8rem] [&_svg]:h-4 [&_svg]:w-4',
+                    active && 'text-[var(--b-color-point)]'
+                )}
                 onClick={onClick}>
                 <CheckBox />
                 {label}
             </button>
             {active && (
                 <button
-                    className={`${'ow-music-selector-MusicSelector'} clickable`}
+                    type="button"
+                    className="flex w-auto cursor-pointer items-center justify-center gap-2 text-[0.8rem] [&_svg]:h-4 [&_svg]:w-4"
                     onClick={onSelectAll}>
                     <DoubleCheck />
                     Select All
