@@ -16,7 +16,7 @@ interface EqualizerPresetProps {
     onSelectPreset: (preset: Preset) => void;
 }
 
-const buttonClass = 'min-h-9 border-0 bg-transparent px-3 py-2 text-left text-xs font-semibold text-[var(--b-color-text-secondary)] transition-[color,background-color] duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)] disabled:cursor-not-allowed disabled:opacity-50 enabled:hover:bg-[var(--b-color-hover)] enabled:hover:text-[var(--b-color-text)]';
+const buttonClass = 'block min-h-9 w-full border-0 bg-transparent px-3 py-2 text-left text-xs font-semibold text-[var(--b-color-text-secondary)] transition-[color,background-color] duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)] disabled:cursor-not-allowed disabled:opacity-50 enabled:hover:bg-[var(--b-color-hover)] enabled:hover:text-[var(--b-color-text)]';
 
 const EqualizerPreset = ({
     presets,
