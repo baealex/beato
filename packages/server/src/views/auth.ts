@@ -38,33 +38,43 @@ const renderLoginPage = (input: {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#051014" />
+    <meta name="theme-color" content="#09090b" />
     <title>Ocean Wave Sign In</title>
     <style>
+        @font-face {
+            font-family: "Pretendard";
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: local("Pretendard Regular"), url("/fonts/Pretendard/Pretendard-Regular.woff2") format("woff2"), url("/fonts/Pretendard/Pretendard-Regular.woff") format("woff");
+        }
+
+        @font-face {
+            font-family: "Pretendard";
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: local("Pretendard Bold"), url("/fonts/Pretendard/Pretendard-Bold.woff2") format("woff2"), url("/fonts/Pretendard/Pretendard-Bold.woff") format("woff");
+        }
+
         :root {
             color-scheme: dark;
-            --bg: #051014;
-            --page: radial-gradient(circle at 18% -8%, rgba(70, 215, 207, 0.1), transparent 34%), radial-gradient(circle at 100% 0%, rgba(29, 96, 111, 0.14), transparent 34%), linear-gradient(180deg, rgba(5, 16, 20, 0.98) 0%, rgba(3, 10, 13, 1) 100%);
-            --panel: linear-gradient(180deg, rgba(13, 33, 40, 0.98) 0%, rgba(6, 19, 24, 0.98) 100%);
-            --panel-subtle: rgba(202, 247, 249, 0.04);
-            --panel-item: rgba(202, 247, 249, 0.06);
-            --panel-border: rgba(196, 244, 248, 0.1);
-            --panel-border-strong: rgba(196, 244, 248, 0.16);
-            --text-primary: rgba(238, 252, 255, 0.92);
-            --text-secondary: rgba(218, 243, 247, 0.72);
-            --text-muted: rgba(178, 214, 221, 0.34);
-            --accent: #46d7cf;
-            --accent-light: #a7fff6;
-            --accent-deep: #128fa0;
-            --accent-text: #031014;
-            --focus-ring: rgba(70, 215, 207, 0.15);
-            --glow: rgba(70, 215, 207, 0.11);
-            --input-bg: rgba(18, 45, 54, 0.72);
-            --input-focus: rgba(25, 62, 72, 0.92);
+            --bg: #09090b;
+            --surface: #18181b;
+            --surface-raised: #27272a;
+            --surface-soft: rgba(244, 244, 245, 0.04);
+            --border: rgba(244, 244, 245, 0.08);
+            --text-primary: rgba(250, 250, 250, 0.94);
+            --text-secondary: rgba(228, 228, 231, 0.72);
+            --text-muted: rgba(161, 161, 170, 0.52);
+            --primary: #1ed760;
+            --primary-hover: #1fdf64;
+            --primary-text: #06130a;
+            --focus-ring: rgba(30, 215, 96, 0.16);
             --error-bg: rgba(78, 18, 22, 0.58);
             --error-border: rgba(247, 113, 113, 0.28);
             --error-text: #ffd9d9;
-            font-family: Inter, "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         * {
@@ -74,54 +84,40 @@ const renderLoginPage = (input: {
         body {
             margin: 0;
             min-height: 100vh;
+            min-height: 100dvh;
             display: grid;
             place-items: center;
             padding: 24px;
-            background: var(--page);
+            background: var(--bg);
             color: var(--text-primary);
             overflow-x: hidden;
         }
 
-        body::before {
-            position: fixed;
-            inset: auto -10vw -24vh 42vw;
-            height: 50vh;
-            border-radius: 9999px;
-            background: radial-gradient(circle, rgba(70, 215, 207, 0.12), transparent 62%);
-            filter: blur(20px);
-            pointer-events: none;
-            content: "";
-        }
-
         .shell {
-            position: relative;
-            width: min(460px, 100%);
+            width: min(384px, 100%);
         }
 
         .brand {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             color: var(--text-primary);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
         }
 
         .mark {
-            width: 46px;
-            height: 46px;
-            border: 1px solid var(--panel-border);
-            border-radius: 16px;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             overflow: hidden;
-            background: var(--panel-item);
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.08),
-                0 16px 32px var(--focus-ring);
+            background: var(--surface-soft);
         }
 
         .mark img {
@@ -136,72 +132,77 @@ const renderLoginPage = (input: {
         }
 
         .brand-kicker {
-            color: var(--accent-light);
+            color: var(--primary);
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
         }
 
         .panel {
-            padding: 32px;
-            border: 1px solid var(--panel-border);
-            border-radius: 28px;
-            background: var(--panel);
-            box-shadow:
-                0 22px 50px rgba(0, 0, 0, 0.5),
-                0 0 60px var(--glow),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(18px);
+            position: relative;
+            padding: 28px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background: var(--surface);
+            overflow: hidden;
+        }
+
+        .panel::before {
+            position: absolute;
+            inset: 0 28px auto;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            content: "";
         }
 
         h1 {
             margin: 0;
             color: var(--text-primary);
             font-size: clamp(1.75rem, 5vw, 2.25rem);
-            line-height: 1.12;
-            letter-spacing: -0.035em;
+            line-height: 1.08;
+            letter-spacing: -0.04em;
         }
 
         .lead {
-            margin: 14px 0 0;
+            margin: 12px 0 0;
             color: var(--text-secondary);
+            font-size: 14px;
             line-height: 1.6;
         }
 
         form {
             margin-top: 24px;
             display: grid;
-            gap: 12px;
+            gap: 14px;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
-            color: var(--accent-light);
-            font-size: 12px;
+            color: var(--text-muted);
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
         }
 
         input {
             width: 100%;
-            min-height: 48px;
-            padding: 0 16px;
-            border: 1px solid var(--panel-border);
-            border-radius: 9999px;
-            background: var(--input-bg);
+            min-height: 46px;
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface-raised);
             color: var(--text-primary);
             font-size: 16px;
-            transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-            transition-property: border-color, box-shadow, background-color;
+            outline: none;
+            transition: 150ms border-color, 150ms box-shadow, 150ms background-color;
         }
 
         input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: var(--input-focus);
+            border-color: rgba(30, 215, 96, 0.42);
+            background: #3f3f46;
             box-shadow: 0 0 0 3px var(--focus-ring);
         }
 
@@ -211,34 +212,27 @@ const renderLoginPage = (input: {
 
         button {
             width: 100%;
-            min-height: 48px;
-            padding: 0 18px;
-            border: none;
-            border-radius: 9999px;
-            background: linear-gradient(135deg, #c9fff7 0%, #5eead4 38%, #128fa0 100%);
-            color: var(--accent-text);
-            font-size: 16px;
+            min-height: 46px;
+            padding: 0 16px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--primary);
+            color: var(--primary-text);
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.32),
-                0 16px 32px var(--focus-ring);
-            transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-            transition-property: filter, box-shadow;
+            transition: 150ms background-color;
         }
 
         button:hover {
-            filter: saturate(1.04) brightness(1.04);
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.36),
-                0 20px 40px rgba(70, 215, 207, 0.2);
+            background: var(--primary-hover);
         }
 
         .error {
-            margin-top: 24px;
-            padding: 14px 16px;
+            margin-top: 20px;
+            padding: 12px 14px;
             border: 1px solid var(--error-border);
-            border-radius: 14px;
+            border-radius: 12px;
             background: var(--error-bg);
             color: var(--error-text);
             font-size: 14px;
@@ -246,9 +240,9 @@ const renderLoginPage = (input: {
         }
 
         .hint {
-            margin-top: 16px;
+            margin-top: 14px;
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1.5;
         }
 
@@ -258,7 +252,7 @@ const renderLoginPage = (input: {
             }
 
             .panel {
-                padding: 20px;
+                padding: 22px;
             }
         }
     </style>

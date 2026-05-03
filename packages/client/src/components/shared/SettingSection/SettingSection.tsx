@@ -1,5 +1,8 @@
+import classNames from 'classnames';
 import type { ReactNode } from 'react';
 import Text from '../Text';
+
+const cx = classNames;
 
 interface SettingItemProps {
     title: string;
@@ -15,19 +18,19 @@ export const SettingItem = ({
     children
 }: SettingItemProps) => {
     return (
-        <div className={`${'ow-setting-section-settingItem'} ${divider ? '' : 'ow-setting-section-noDivider'}`}>
-            <div className={'ow-setting-section-settingItemContent'}>
-                <div className={'ow-setting-section-settingItemHeader'}>
-                    <Text as="h4" size="md" weight="medium">
+        <div className={cx('py-[var(--b-spacing-md)]', !divider && 'border-b-0', divider && 'border-b border-[var(--b-color-border-subtle)] last:border-b-0')}>
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-[var(--b-spacing-md)] max-[720px]:grid-cols-1 max-[720px]:items-start">
+                <div className="min-w-0">
+                    <Text as="h4" size="md" weight="medium" className="m-0">
                         {title}
                     </Text>
                     {description && (
-                        <Text as="p" variant="tertiary" size="sm" className={'ow-setting-section-description'}>
+                        <Text as="p" variant="tertiary" size="sm" className="mt-1 leading-[1.45]">
                             {description}
                         </Text>
                     )}
                 </div>
-                <div className={'ow-setting-section-settingItemControl'}>
+                <div className="flex justify-end max-[720px]:w-full max-[720px]:justify-start [&>*]:max-w-full">
                     {children}
                 </div>
             </div>
@@ -44,19 +47,19 @@ interface SettingSectionProps {
 
 export const SettingSection = ({ title, description, icon, children }: SettingSectionProps) => {
     return (
-        <section className={'ow-setting-section-settingSection'}>
-            <div className={'ow-setting-section-sectionHeader'}>
-                <Text as="h3" size="md" weight="semibold" className={'ow-setting-section-sectionTitle'}>
-                    {icon && <span className={'ow-setting-section-sectionIcon'}>{icon}</span>}
+        <section className="p-0">
+            <div className="mb-[var(--b-spacing-md)] grid grid-cols-1 gap-[var(--b-spacing-xs)]">
+                <Text as="h3" size="md" weight="semibold" className="m-0 flex items-center gap-[var(--b-spacing-sm)] text-[var(--b-color-text)] tracking-[-0.015em]">
+                    {icon && <span className="flex w-[1.2rem] items-center text-[var(--b-color-point-light)] [&_svg]:h-[1.1rem] [&_svg]:w-[1.1rem]">{icon}</span>}
                     <span>{title}</span>
                 </Text>
                 {description && (
-                    <Text as="p" variant="secondary" size="sm" className={'ow-setting-section-sectionDescription'}>
+                    <Text as="p" variant="secondary" size="sm" className="max-w-[42rem] leading-[1.45]">
                         {description}
                     </Text>
                 )}
             </div>
-            <div className={'ow-setting-section-sectionContent'}>
+            <div className="rounded-[var(--b-radius-xl)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-background-layer-1)] px-[var(--b-spacing-lg)]">
                 {children}
             </div>
         </section>
@@ -70,7 +73,12 @@ interface InfoBoxProps {
 
 export const InfoBox = ({ children, type = 'info' }: InfoBoxProps) => {
     return (
-        <div className={`${'ow-setting-section-infoBox'} ${`ow-setting-section-${type}`}`}>
+        <div className={cx(
+            'rounded-[var(--b-radius-lg)] border p-[var(--b-spacing-md)] [&_p]:m-0',
+            type === 'warning'
+                ? 'border-[rgba(245,158,11,0.22)] bg-[rgba(245,158,11,0.08)] [&_p]:text-[rgba(255,210,138,0.95)]'
+                : 'border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] [&_p]:text-[var(--b-color-text-secondary)]'
+        )}>
             <Text as="p" size="sm" variant="secondary">
                 {children}
             </Text>

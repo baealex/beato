@@ -1,7 +1,6 @@
 import { useAppStore as useStore } from '~/store/base-store';
 
-import GridImage from '../../shared/GridImage';
-import { IconButton } from '~/components/shared';
+import { IconButton, PlaylistArtwork } from '~/components/shared';
 import { VerticalDots } from '~/icon';
 
 import type { Music } from '~/models/type';
@@ -26,31 +25,25 @@ export default function PlaylistItem({
     const [{ musicMap }] = useStore(musicStore);
 
     return (
-        <div className={'ow-playlist-item-PlaylistItem'}>
+        <div className="flex w-full min-w-0 items-center">
             <button
                 type="button"
-                className={'ow-playlist-item-mainButton'}
+                className="group/row flex min-w-0 flex-1 items-center gap-4 rounded-[var(--b-radius-lg)] border border-transparent p-4 text-left text-[var(--b-color-text)] transition-colors hover:border-[var(--b-color-border-subtle)] hover:bg-[image:var(--b-gradient-row-hover)] active:bg-[var(--b-color-active)] focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[var(--b-color-focus)]"
                 onClick={onClick}
                 onContextMenu={(e) => {
                     e.preventDefault();
                     onLongPress?.();
                 }}>
-                <span className={'ow-playlist-item-coverStack'}>
-                    <span className={'ow-playlist-item-coverBack'} aria-hidden="true" />
-                    <GridImage
-                        className={'ow-playlist-item-cover'}
-                        images={headerMusics.map((music) => musicMap.get(music.id)?.album.cover ?? '')}
-                    />
+                <PlaylistArtwork images={headerMusics.map((music) => musicMap.get(music.id)?.album.cover ?? '')} />
+                <span className="flex min-w-0 flex-1 flex-col items-start gap-1">
+                    <span className="truncate text-sm font-medium text-[var(--b-color-text)]">{name}</span>
+                    <span className="truncate text-xs text-[var(--b-color-text-tertiary)]">{musicCount} songs</span>
                 </span>
-                <div className={'ow-playlist-item-title'}>
-                    <div className={'ow-playlist-item-name'}>{name}</div>
-                    <div className={'ow-playlist-item-count'}>{musicCount} songs</div>
-                </div>
             </button>
             {onLongPress && (
                 <IconButton
                     aria-label={`Open actions for ${name}`}
-                    className={'ow-playlist-item-icon-button'}
+                    className="mr-2"
                     onClick={(e) => {
                         e.stopPropagation();
                         onLongPress();

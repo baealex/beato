@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 const cx = classNames;
 
-import { Image, Text } from '~/components/shared';
-import { Disc } from '~/icon';
+import { AlbumArtwork } from '~/components/shared';
 
 interface AlbumListItemProps {
     albumCover: string;
@@ -11,7 +10,10 @@ interface AlbumListItemProps {
     musicCount?: number;
     publishedYear?: string;
     onClick: () => void;
+    compact?: boolean;
 }
+
+const metaPillClass = 'rounded-full border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] px-2 py-1 text-xs font-medium text-[var(--b-color-text-tertiary)]';
 
 const AlbumListItem = ({
     albumCover,
@@ -19,28 +21,28 @@ const AlbumListItem = ({
     artistName,
     musicCount,
     publishedYear,
-    onClick
+    onClick,
+    compact = false
 }: AlbumListItemProps) => {
     return (
         <button
             type="button"
-            className={cx('ow-album-list-item-AlbumListItem')}
+            className={cx(
+                compact
+                    ? 'group/row relative grid min-h-[88px] w-full grid-cols-[78px_minmax(0,1fr)] items-center gap-3 px-2 py-2 text-left text-[var(--b-color-text)] transition-colors'
+                    : 'group/row relative grid h-full w-full grid-cols-[78px_minmax(0,1fr)_auto] items-center gap-4 px-6 py-2 text-left text-[var(--b-color-text)] transition-colors',
+                'hover:bg-[image:var(--b-gradient-row-hover)] active:bg-[var(--b-color-active)] focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[var(--b-color-focus)]',
+                'max-sm:grid-cols-[78px_minmax(0,1fr)]'
+            )}
             onClick={onClick}>
-            <span className={cx('ow-album-list-item-artStack')}>
-                <span className={cx('ow-album-list-item-disc')} aria-hidden="true" />
-                <Image className={cx('ow-album-list-item-cover')} src={albumCover} alt={albumName} loading="eager" icon={<Disc />} />
-            </span>
-            <div className={cx('ow-album-list-item-info')}>
-                <Text as="span" size="sm" weight="medium" truncate>{albumName}</Text>
-                <Text as="span" variant="tertiary" size="xs" truncate>{artistName}</Text>
+            <AlbumArtwork src={albumCover} alt={albumName} />
+            <div className="flex min-w-0 flex-col gap-1">
+                <span className="truncate text-sm font-medium">{albumName}</span>
+                <span className="truncate text-xs text-[var(--b-color-text-tertiary)]">{artistName}</span>
             </div>
-            <div className={cx('ow-album-list-item-meta')}>
-                {publishedYear && (
-                    <span>{publishedYear}</span>
-                )}
-                {typeof musicCount === 'number' && (
-                    <span>{musicCount} tracks</span>
-                )}
+            <div className={cx('flex items-center justify-end gap-1 whitespace-nowrap max-sm:hidden', { hidden: compact })}>
+                {publishedYear && <span className={metaPillClass}>{publishedYear}</span>}
+                {typeof musicCount === 'number' && <span className={metaPillClass}>{musicCount} tracks</span>}
             </div>
         </button>
     );

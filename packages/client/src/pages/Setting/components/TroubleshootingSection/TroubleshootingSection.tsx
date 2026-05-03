@@ -25,7 +25,7 @@ export const TroubleshootingSection = () => {
             <SettingItem
                 title="Refresh Application"
                 description="Reload the application to resolve common issues.">
-                <div className={'ow-troubleshooting-section-buttonContainer'}>
+                <div className="flex justify-end gap-[var(--b-spacing-sm)] max-[720px]:justify-start">
                     <Button onClick={() => window.location.reload()}>
                         Refresh App
                     </Button>
@@ -34,7 +34,7 @@ export const TroubleshootingSection = () => {
             <SettingItem
                 title="Give Feedback"
                 description="Give feedback to help us improve the application.">
-                <div className={'ow-troubleshooting-section-buttonContainer'}>
+                <div className="flex justify-end gap-[var(--b-spacing-sm)] max-[720px]:justify-start">
                     <Button onClick={() => window.open('https://feedback.baejino.com/s/nfhsuyckehiwfgbpuzesy6dp', '_blank')}>
                         Give Feedback
                     </Button>

@@ -127,40 +127,40 @@ export default function PlaylistDetail() {
                     <Play />
                 </button>
             )}>
-            <div className={'ow-playlist-detail-sectionHeader'}>
-                <div className={'ow-playlist-detail-pageCopy'}>
+            <div className="mb-[var(--b-spacing-sm)] flex items-center justify-between gap-[var(--b-spacing-md)] px-[var(--b-spacing-lg)] py-[var(--b-spacing-md)] max-sm:flex-col max-sm:items-start">
+                <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                     <Text
                         as="h2"
                         size="title"
                         weight="semibold"
-                        className={`ow-playlist-detail-pageTitle ${isSelectMode ? 'ow-playlist-detail-pageTitleSelecting' : ''}`}>
+                        className="truncate">
                         {isSelectMode && (
-                            <span className={'ow-playlist-detail-pageTitleSelection'}>
+                            <span className="hidden">
                                 {selectedItems.length} selected
                             </span>
                         )}
-                        <span className={'ow-playlist-detail-pageTitleDefault'}>Songs</span>
+                        <span>Songs</span>
                     </Text>
-                    <Text as="p" variant="muted" size="xs" className={'ow-playlist-detail-pageSummary'}>
+                    <Text as="p" variant="muted" size="xs" className="truncate">
                         {isSelectMode
                             ? `${selectedItems.length} selected`
                             : `${playlistMusics.length} songs`}
                     </Text>
                 </div>
 
-                <div className={'ow-playlist-detail-topBarActions'}>
+                <div className="inline-flex items-center justify-self-end gap-2">
                     {isSelectMode ? (
                         <>
                             <button
                                 type="button"
-                                className={'ow-playlist-detail-summaryAction'}
+                                className="min-h-9 rounded-[var(--b-radius-md)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] px-3 py-1.5 text-xs font-semibold text-[var(--b-color-text-secondary)] transition-[color,background-color,border-color] duration-150 hover:border-[var(--b-color-border-subtle)] hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)] disabled:cursor-not-allowed disabled:opacity-40"
                                 disabled={selectedItems.length === playlistMusics.length}
                                 onClick={() => setSelectedItems(playlistMusics.map(({ id }) => id))}>
                                 Select all
                             </button>
                             <button
                                 type="button"
-                                className={'ow-playlist-detail-editButton ow-playlist-detail-active'}
+                                className="min-h-9 rounded-[var(--b-radius-md)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] px-3 py-1.5 text-xs font-semibold text-[var(--b-color-text)] transition-[color,background-color,border-color] duration-150 hover:border-[var(--b-color-border-subtle)] hover:bg-[var(--b-color-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)]"
                                 onClick={() => setIsSelectMode(false)}>
                                 Done
                             </button>
@@ -168,14 +168,14 @@ export default function PlaylistDetail() {
                     ) : (
                         <button
                             type="button"
-                            className={'ow-playlist-detail-editButton'}
+                            className="min-h-9 rounded-[var(--b-radius-md)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] px-3 py-1.5 text-xs font-semibold text-[var(--b-color-text-secondary)] transition-[color,background-color,border-color] duration-150 hover:border-[var(--b-color-border-subtle)] hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)]"
                             onClick={() => setIsSelectMode(true)}>
                             Edit
                         </button>
                     )}
                 </div>
             </div>
-            <div className={'ow-playlist-detail-listContent'}>
+            <div className="min-w-0 flex-1">
                 <VerticalSortable items={playlistMusics.map(({ id }) => id)} onDragEnd={handleDragEnd}>
                     {playlistMusics.map(({ id }) => {
                         const music = musicMap.get(id);
@@ -201,13 +201,13 @@ export default function PlaylistDetail() {
                                 id={music.id}
                                 key={music.id}
                                 render={({ listeners }) => (
-                                    <div className={'ow-playlist-detail-item'}>
+                                    <div className="grid w-full grid-cols-[48px_minmax(0,1fr)] items-center gap-x-[var(--b-spacing-xs)] px-[var(--b-spacing-md)]">
                                         {isSelectMode ? (
                                             <IconButton
                                                 aria-label={isSelected ? `Unselect ${music.name}` : `Select ${music.name}`}
                                                 aria-pressed={isSelected}
                                                 active={isSelected}
-                                                className={'ow-playlist-detail-rowControl'}
+                                                className="justify-self-center"
                                                 onClick={() => {
                                                     if (selectedItems.includes(music.id)) {
                                                         setSelectedItems(selectedItems.filter(item => item !== music.id));
@@ -220,12 +220,12 @@ export default function PlaylistDetail() {
                                         ) : (
                                             <IconButton
                                                 aria-label={`Reorder ${music.name}`}
-                                                className={`${'ow-playlist-detail-rowControl'} ${'ow-playlist-detail-dragControl'}`}
+                                                className="justify-self-center cursor-grab touch-none"
                                                 {...listeners}>
                                                 <Icon.Menu />
                                             </IconButton>
                                         )}
-                                        <div className={'ow-playlist-detail-musicItemShell'}>
+                                        <div className="min-w-0 flex-1">
                                             <MusicListItem
                                                 albumName={music.album.name}
                                                 albumCover={music.album.cover}

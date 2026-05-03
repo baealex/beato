@@ -1,18 +1,37 @@
+import { cva, type VariantProps } from 'class-variance-authority';
 import classNames from 'classnames';
-const cx = classNames;
-
 import React from 'react';
 
-type TagTone = 'neutral' | 'accent';
+const cx = classNames;
 
-export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
-    tone?: TagTone;
-    selected?: boolean;
-}
+const tagVariants = cva(
+    [
+        'inline-flex min-w-0 items-center justify-center rounded-full border border-[var(--b-color-border-subtle)]',
+        'min-h-8 px-3 py-1.5 text-sm font-semibold leading-tight transition-[border-color,background-color,color,box-shadow] duration-150'
+    ],
+    {
+        variants: {
+            tone: {
+                neutral: 'bg-[var(--b-color-surface-input)] text-[var(--b-color-text-secondary)]',
+                accent: 'bg-[var(--b-color-surface-input)] text-[var(--b-color-point-light)]'
+            },
+            selected: {
+                true: 'border-[var(--b-color-focus)] bg-[var(--b-color-active)] text-[var(--b-color-text)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]',
+                false: ''
+            }
+        },
+        defaultVariants: {
+            tone: 'neutral',
+            selected: false
+        }
+    }
+);
+
+export interface TagProps extends React.HTMLAttributes<HTMLSpanElement>, VariantProps<typeof tagVariants> {}
 
 const Tag = React.forwardRef<HTMLSpanElement, TagProps>(({
-    tone = 'neutral',
-    selected = false,
+    tone,
+    selected,
     className,
     children,
     ...props
@@ -20,13 +39,13 @@ const Tag = React.forwardRef<HTMLSpanElement, TagProps>(({
     return (
         <span
             ref={ref}
-            className={cx('ow-tag-Tag', `ow-tag-tone-${tone}`, { 'ow-tag-selected': selected }, className)}
+            className={cx(tagVariants({ tone, selected }), className)}
             {...props}>
             {children}
         </span>
     );
 });
 
-Tag.displayName = 'ow-tag-Tag';
+Tag.displayName = 'Tag';
 
 export default Tag;

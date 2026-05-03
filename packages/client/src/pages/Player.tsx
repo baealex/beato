@@ -69,6 +69,12 @@ const PLAYER_PRIMARY_COLOR = {
     b: 96
 } as const;
 
+const playerUtilityButtonClass = 'inline-flex h-11 w-11 items-center justify-center rounded-full border-0 bg-transparent text-[var(--b-color-text-secondary)] transition-[color,background-color] duration-150 hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)] max-lg:h-10 max-lg:w-10 max-lg:text-inherit [&_svg]:h-[1.125rem] [&_svg]:w-[1.125rem] max-lg:[&_svg]:h-5 max-lg:[&_svg]:w-5';
+const playerControlButtonClass = 'inline-flex h-[clamp(2.75rem,10vw,3.25rem)] w-[clamp(2.75rem,10vw,3.25rem)] items-center justify-center justify-self-center rounded-full border-0 bg-transparent text-[var(--b-color-text-secondary)] transition-[color,background-color] duration-150 hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] [&_svg]:h-5 [&_svg]:w-5';
+const playerSecondaryActionClass = 'min-h-9 rounded-full border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] px-3 py-2 text-sm font-medium text-[var(--b-color-text-tertiary)] transition-[color,background-color,border-color] duration-150 hover:border-[var(--b-color-border)] hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] [&_svg]:h-[0.95rem] [&_svg]:w-[0.95rem]';
+const playerEmptyButtonClass = 'min-h-11 rounded-full border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-item)] px-4 py-3 text-[var(--b-color-text-secondary)] transition-[color,background-color,border-color] duration-150 hover:border-[var(--b-color-border)] hover:bg-[var(--b-color-surface-input)] hover:text-[var(--b-color-text)] max-sm:w-full [&_svg]:h-4 [&_svg]:w-4';
+const audioOptionBaseClass = 'flex min-h-[3.25rem] w-full items-center justify-between gap-3 rounded-[var(--b-radius-md)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] px-3 py-2.5 text-left text-[var(--b-color-text-secondary)] transition-[color,background-color,border-color] duration-150 hover:border-[var(--b-color-border)] hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0';
+
 interface AudioMenuSectionProps {
     titleId: string;
     title: string;
@@ -82,9 +88,9 @@ const AudioMenuSection = ({
     description,
     children
 }: AudioMenuSectionProps) => (
-    <section className={cx('ow-player-audio-menu-section')} aria-labelledby={titleId}>
-        <div className={cx('ow-player-audio-menu-section-header')}>
-            <h3 id={titleId} className={cx('ow-player-audio-menu-section-title')}>
+    <section className="flex flex-col gap-2.5" aria-labelledby={titleId}>
+        <div className="flex flex-col gap-1">
+            <h3 id={titleId} className="m-0 text-xs font-semibold uppercase leading-tight tracking-[0.08em] text-[var(--b-color-text-secondary)]">
                 {title}
             </h3>
             <Text as="p" variant="tertiary" size="xs">
@@ -120,21 +126,18 @@ const AudioMenuOption = ({
     <button
         type="button"
         className={cx(
-            variant === 'action'
-                ? 'ow-player-audio-action'
-                : 'ow-player-audio-option',
-            {
-                'ow-player-active': active,
-                'ow-player-disabled': disabled
-            }
+            audioOptionBaseClass,
+            variant === 'action' && 'justify-start [&>svg]:h-[1.125rem] [&>svg]:w-[1.125rem] [&>svg]:text-[var(--b-color-text-tertiary)]',
+            active && 'border-[var(--b-color-focus)] bg-[var(--b-color-active)] text-[var(--b-color-text)]',
+            disabled && 'cursor-not-allowed opacity-50'
         )}
         aria-pressed={pressed}
         disabled={disabled}
         onClick={onClick}>
         {leadingIcon}
-        <span className={cx('ow-player-audio-option-copy')}>
-            <span className={cx('ow-player-audio-option-label')}>{label}</span>
-            <span className={cx('ow-player-audio-option-description')}>{description}</span>
+        <span className="flex min-w-0 flex-col gap-0.5">
+            <span className="text-sm font-semibold leading-[1.35] text-inherit">{label}</span>
+            <span className="text-xs font-normal leading-[1.35] text-[var(--b-color-text-tertiary)]">{description}</span>
         </span>
         {variant === 'option' && active && <Icon.Check />}
     </button>
@@ -248,14 +251,14 @@ export default function PlayerDetail() {
     }, [currentMusic]);
 
     return (
-        <div className={cx('ow-player-Player', { 'ow-player-immersive': Boolean(currentMusic) })}>
-            {currentMusic && <div className={cx('ow-player-ambient-background')} aria-hidden="true" />}
+        <div className="relative h-full min-h-full w-full overflow-hidden bg-[var(--b-gradient-page)]">
+            {currentMusic && <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-[var(--b-color-background)]" aria-hidden="true" />}
 
-            <div className={cx('ow-player-container')}>
-                <div className={cx('ow-player-top-bar')}>
+            <div className="relative z-[1] flex min-h-full flex-col px-4 pb-6 pt-4 max-lg:pt-0">
+                <div className="mb-3.5 flex w-full min-w-0 shrink-0 items-center justify-between gap-[var(--b-spacing-md)] max-lg:-mx-4 max-lg:h-16 max-lg:w-auto max-lg:border-b max-lg:border-[var(--b-color-border-subtle)] max-lg:bg-[var(--b-color-background)] max-lg:px-3">
                     <button
                         type="button"
-                        className={cx('ow-player-utility-button')}
+                        className={playerUtilityButtonClass}
                         aria-label="Go back"
                         onClick={back}>
                         <Icon.ChevronLeft />
@@ -264,7 +267,7 @@ export default function PlayerDetail() {
                     {currentMusic && (
                         <button
                             type="button"
-                            className={cx('ow-player-utility-button', 'ow-player-audio-menu-trigger', { 'ow-player-active': isAudioMenuOpen })}
+                            className={cx(playerUtilityButtonClass, 'ml-auto', isAudioMenuOpen && 'bg-[var(--b-color-active)] text-[var(--b-color-text)]')}
                             aria-label="Open audio menu"
                             aria-haspopup="dialog"
                             aria-expanded={isAudioMenuOpen}
@@ -275,10 +278,10 @@ export default function PlayerDetail() {
                 </div>
 
                 {currentMusic && isAudioMenuOpen && (
-                    <div className={cx('ow-player-audio-menu-layer')}>
+                    <div className="fixed inset-0 z-30 flex justify-end max-sm:block">
                         <button
                             type="button"
-                            className={cx('ow-player-audio-menu-backdrop')}
+                            className="absolute inset-0 border-0 bg-transparent max-sm:hidden"
                             aria-label="Close audio menu"
                             onClick={() => setIsAudioMenuOpen(false)}
                         />
@@ -287,11 +290,11 @@ export default function PlayerDetail() {
                             as="aside"
                             variant="panel"
                             radius="none"
-                            className={cx('ow-player-audio-menu-panel')}
+                            className="relative z-[1] m-0 flex h-dvh w-[min(22rem,34vw)] min-w-80 flex-col gap-6 overflow-y-auto rounded-none border-l border-[var(--b-color-border-subtle)] bg-[var(--b-color-background)] p-5 text-[var(--b-color-text)] shadow-none max-sm:h-dvh max-sm:w-screen max-sm:min-w-0 max-sm:border-0 max-sm:p-4"
                             role="dialog"
                             aria-modal="true"
                             aria-label="Audio menu">
-                            <header className={cx('ow-player-audio-menu-header')}>
+                            <header className="flex items-start justify-between gap-4 border-b border-[var(--b-color-border-subtle)] pb-4">
                                 <div>
                                     <Text as="h2" size="md" weight="semibold">
                                         Audio
@@ -303,7 +306,7 @@ export default function PlayerDetail() {
 
                                 <button
                                     type="button"
-                                    className={cx('ow-player-utility-button', 'ow-player-audio-menu-close')}
+                                    className={cx(playerUtilityButtonClass, "shrink-0 text-[var(--b-color-text-secondary)]")}
                                     aria-label="Close audio menu"
                                     onClick={() => setIsAudioMenuOpen(false)}>
                                     <Icon.Close />
@@ -314,7 +317,7 @@ export default function PlayerDetail() {
                                 titleId="player-effects-title"
                                 title="Player Effect"
                                 description="Choose how the album art reacts.">
-                                <div className={cx('ow-player-audio-option-list')} aria-label="Visualizer mode">
+                                <div className="flex flex-col gap-1" aria-label="Visualizer mode">
                                     {PLAYER_VISUALIZER_MODES.map(({ value, label, description }) => (
                                         <AudioMenuOption
                                             key={value}
@@ -332,7 +335,7 @@ export default function PlayerDetail() {
                                 titleId="transition-title"
                                 title="Transition"
                                 description="Control how tracks blend.">
-                                <div className={cx('ow-player-audio-option-list')} aria-label="Transition effect">
+                                <div className="flex flex-col gap-1" aria-label="Transition effect">
                                     {MIX_MODES.map(({ value, label, description }) => (
                                         <AudioMenuOption
                                             key={value}
@@ -377,11 +380,12 @@ export default function PlayerDetail() {
                 )}
 
                 {currentMusic ? (
-                    <div className={cx('ow-player-content')}>
-                        <div className={cx('ow-player-art-wrap')}>
-                            <div className={cx('ow-player-album-art', {
-                                'ow-player-framed': isVisualizerEffect
-                            })}>
+                    <div className="m-auto flex w-[min(100%,30rem)] flex-col items-center gap-6 max-sm:gap-5">
+                        <div className="flex w-full justify-center">
+                            <div className={cx(
+                                'relative aspect-square w-[min(100%,19rem)] max-sm:w-[min(100%,16rem)]',
+                                isVisualizerEffect && "overflow-hidden rounded-[2rem] after:pointer-events-none after:absolute after:inset-0 after:rounded-[2rem] after:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)] after:content-['']"
+                            )}>
                                 {playerEffectMode === 'disk' && (
                                     <MusicPlayerDiskStyle
                                         isPlaying={isPlaying}
@@ -402,16 +406,16 @@ export default function PlayerDetail() {
                             </div>
                         </div>
 
-                        <div className={cx('ow-player-title-block')}>
+                        <div className="flex w-full min-w-0 flex-col items-center gap-2 text-center">
                             <Text
                                 as="span"
                                 variant="muted"
                                 size="xs"
                                 weight="medium"
-                                className={cx('ow-player-eyebrow')}>
+                                className="uppercase tracking-normal">
                                 Now playing
                             </Text>
-                            <Text as="h1" size="2xl" weight="bold" className={cx('ow-player-title')}>
+                            <Text as="h1" size="2xl" weight="bold" className="w-full max-w-[min(100%,24rem)] truncate leading-[1.08] tracking-normal max-sm:max-w-[min(100%,21rem)]">
                                 {currentMusic.name}
                             </Text>
 
@@ -420,11 +424,11 @@ export default function PlayerDetail() {
                                 variant="secondary"
                                 size="md"
                                 weight="medium"
-                                className={cx('ow-player-artist-name')}>
+                                className="w-full max-w-[min(100%,22rem)] truncate max-sm:max-w-[min(100%,20rem)]">
                                 {currentMusic.artist.name}
                             </Text>
 
-                            <div className={cx('ow-player-album-line')}>
+                            <div className="flex w-full min-w-0 max-w-[min(100%,22rem)] flex-nowrap items-center justify-center gap-2.5 max-sm:max-w-[min(100%,20rem)] [&>*]:min-w-0 [&>*]:truncate [&>:first-child]:flex-[0_1_auto] [&>:last-child]:shrink-0">
                                 <Text as="span" variant="tertiary" size="sm" weight="medium">
                                     {currentMusic.album.name}
                                 </Text>
@@ -437,9 +441,9 @@ export default function PlayerDetail() {
                             </div>
                         </div>
 
-                        <div className={cx('ow-player-progress-section')}>
+                        <div className="w-full pt-1">
                             <div
-                                className={cx('ow-player-progress')}
+                                className="relative h-1.5 w-full cursor-pointer rounded-full bg-[var(--b-color-surface-input)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--b-color-focus)]"
                                 role="slider"
                                 tabIndex={duration > 0 ? 0 : -1}
                                 aria-label="Seek playback position"
@@ -452,15 +456,15 @@ export default function PlayerDetail() {
                                 onMouseMove={handleMoveProgress}
                                 onTouchMove={handleMoveProgress}>
                                 <div
-                                    className={cx('ow-player-bar')}
+                                    className="absolute left-0 top-0 h-full w-full origin-left rounded-full bg-[var(--b-gradient-primary)]"
                                     style={{ transform: `scaleX(${progress / 100})` }}
                                 />
                                 <div
-                                    className={cx('ow-player-thumb')}
+                                    className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--b-color-text)] shadow-none"
                                     style={{ left: `${progress}%` }}
                                 />
                             </div>
-                            <div className={cx('ow-player-time-info')}>
+                            <div className="mt-3 flex justify-between gap-[var(--b-spacing-md)]">
                                 <Text variant="tertiary" size="sm">
                                     {makePlayTime(currentTime)}
                                 </Text>
@@ -470,10 +474,10 @@ export default function PlayerDetail() {
                             </div>
                         </div>
 
-                        <div className={cx('ow-player-controls')}>
+                        <div className="grid w-full grid-cols-5 items-center gap-2.5 max-sm:gap-2">
                             <button
                                 type="button"
-                                className={cx('ow-player-control-button', { 'ow-player-active': shuffle })}
+                                className={cx(playerControlButtonClass, shuffle && '!text-[var(--b-color-point)] hover:!text-[var(--b-color-point)] [&_svg]:!stroke-[var(--b-color-point)] [&_path]:!stroke-[var(--b-color-point)]')}
                                 aria-label={shuffle ? 'Disable shuffle' : 'Enable shuffle'}
                                 onClick={() => queueStore.toggleShuffle()}>
                                 <Icon.Shuffle />
@@ -481,7 +485,7 @@ export default function PlayerDetail() {
 
                             <button
                                 type="button"
-                                className={cx('ow-player-control-button')}
+                                className={playerControlButtonClass}
                                 aria-label="Previous track"
                                 onClick={() => queueStore.prev()}>
                                 <Icon.SkipBack />
@@ -489,7 +493,7 @@ export default function PlayerDetail() {
 
                             <button
                                 type="button"
-                                className={cx('ow-player-play-button')}
+                                className="inline-flex h-[clamp(4.25rem,14vw,4.75rem)] w-[clamp(4.25rem,14vw,4.75rem)] items-center justify-center justify-self-center rounded-full border-0 bg-[var(--b-gradient-primary)] text-[var(--b-color-background)] transition-[color,background-color] duration-150 hover:text-[var(--b-color-background)] [&_svg]:h-7 [&_svg]:w-7"
                                 aria-label={isPlaying ? 'Pause playback' : 'Resume playback'}
                                 onClick={() => isPlaying ? queueStore.pause() : queueStore.play()}>
                                 {isPlaying ? <Icon.Pause /> : <Icon.Play />}
@@ -497,7 +501,7 @@ export default function PlayerDetail() {
 
                             <button
                                 type="button"
-                                className={cx('ow-player-control-button')}
+                                className={playerControlButtonClass}
                                 aria-label="Next track"
                                 onClick={() => queueStore.next()}>
                                 <Icon.SkipForward />
@@ -505,7 +509,7 @@ export default function PlayerDetail() {
 
                             <button
                                 type="button"
-                                className={cx('ow-player-control-button')}
+                                className={playerControlButtonClass}
                                 aria-label={`Repeat mode ${repeatMode}`}
                                 onClick={() => queueStore.changeRepeatMode()}>
                                 {repeatMode === 'all' && <Icon.Repeat />}
@@ -514,16 +518,16 @@ export default function PlayerDetail() {
                             </button>
                         </div>
 
-                        <div className={cx('ow-player-secondary-actions')}>
+                        <div className="flex w-full flex-wrap items-center justify-center gap-2.5 max-sm:gap-2">
                             <IconTextButton
-                                className={cx('ow-player-secondary-action')}
+                                className={playerSecondaryActionClass}
                                 size="sm"
                                 icon={<Icon.Music />}
                                 label="Artist"
                                 onClick={() => navigate(`/artist/${currentMusic.artist.id}`)}
                             />
                             <IconTextButton
-                                className={cx('ow-player-secondary-action')}
+                                className={playerSecondaryActionClass}
                                 size="sm"
                                 icon={<Icon.Disc />}
                                 label="Album"
@@ -531,7 +535,7 @@ export default function PlayerDetail() {
                             />
                             {queuePosition !== null && (
                                 <IconTextButton
-                                    className={cx('ow-player-secondary-action')}
+                                    className={playerSecondaryActionClass}
                                     size="sm"
                                     icon={<Icon.ListMusic />}
                                     label={`Queue ${queuePosition}/${queueLength}`}
@@ -541,12 +545,12 @@ export default function PlayerDetail() {
                         </div>
                     </div>
                 ) : (
-                    <Surface variant="panel" radius="2xl" padding="lg" className={cx('ow-player-empty-state')}>
-                        <div className={cx('ow-player-empty-icon')}>
+                    <Surface variant="panel" radius="2xl" padding="lg" className="m-auto flex w-[min(100%,28rem)] flex-col items-center gap-6 text-center">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-[1.5rem] border border-[var(--b-color-border)] bg-[var(--b-color-surface-item)] text-[var(--b-color-point-light)] [&_svg]:h-8 [&_svg]:w-8">
                             <Icon.Music />
                         </div>
 
-                        <div className={cx('ow-player-empty-copy')}>
+                        <div className="flex flex-col gap-3">
                             <Text as="h1" size="2xl" weight="bold">
                                 Nothing is playing.
                             </Text>
@@ -555,15 +559,15 @@ export default function PlayerDetail() {
                             </Text>
                         </div>
 
-                        <div className={cx('ow-player-empty-actions')}>
+                        <div className="flex flex-wrap justify-center gap-3 max-sm:w-full max-sm:flex-col">
                             <IconTextButton
-                                className={cx('ow-player-empty-button', 'ow-player-empty-button-primary')}
+                                className={cx(playerEmptyButtonClass, 'text-[var(--b-color-text)]')}
                                 icon={<Icon.Music />}
                                 label="Open library"
                                 onClick={() => navigate('/')}
                             />
                             <IconTextButton
-                                className={cx('ow-player-empty-button')}
+                                className={playerEmptyButtonClass}
                                 icon={<Icon.ListMusic />}
                                 label="Open queue"
                                 onClick={() => navigate('/queue')}

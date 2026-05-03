@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { cva, type VariantProps } from 'class-variance-authority';
 const cx = classNames;
 
 export type TextElement = 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div' | 'strong';
@@ -6,36 +7,60 @@ export type TextVariant = 'primary' | 'secondary' | 'tertiary' | 'muted';
 export type TextSize = 'xs' | 'sm' | 'md' | 'title' | 'xl' | '2xl';
 export type TextWeight = 'normal' | 'medium' | 'semibold' | 'bold';
 
-interface TextProps extends React.HTMLAttributes<HTMLElement> {
+const textVariants = cva('m-0 p-0 leading-[1.45]', {
+    variants: {
+        variant: {
+            primary: 'text-[var(--b-color-text)]',
+            secondary: 'text-[var(--b-color-text-secondary)]',
+            tertiary: 'text-[var(--b-color-text-tertiary)]',
+            muted: 'text-[var(--b-color-text-muted)]'
+        },
+        size: {
+            xs: 'text-xs',
+            sm: 'text-sm',
+            md: 'text-base',
+            title: 'text-xl leading-tight',
+            xl: 'text-2xl leading-tight',
+            '2xl': 'text-3xl leading-[1.12]'
+        },
+        weight: {
+            normal: 'font-normal',
+            medium: 'font-medium',
+            semibold: 'font-semibold',
+            bold: 'font-bold'
+        },
+        truncate: {
+            true: 'truncate'
+        }
+    },
+    defaultVariants: {
+        variant: 'primary',
+        size: 'md',
+        weight: 'normal',
+        truncate: false
+    }
+});
+
+type TextVariantProps = VariantProps<typeof textVariants>;
+
+interface TextProps extends React.HTMLAttributes<HTMLElement>, TextVariantProps {
     as?: TextElement;
-    variant?: TextVariant;
-    size?: TextSize;
-    weight?: TextWeight;
-    truncate?: boolean;
-    className?: string;
     children: React.ReactNode;
 }
 
 const Text = ({
     as: Component = 'span',
-    variant = 'primary',
-    size = 'md',
-    weight = 'normal',
-    truncate = false,
+    variant,
+    size,
+    weight,
+    truncate,
     className,
     children,
     ...props
 }: TextProps) => {
     return (
         <Component
-            className={cx(
-                'ow-text-Text',
-                `ow-text-variant-${variant}`,
-                `ow-text-size-${size}`,
-                `ow-text-weight-${weight}`,
-                { truncate },
-                className
-            )}
+            className={cx(textVariants({ variant, size, weight, truncate }), className)}
             {...props}>
             {children}
         </Component>

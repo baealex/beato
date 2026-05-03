@@ -1,6 +1,4 @@
-import classNames from 'classnames';
 import { useEffect, useMemo, useRef } from 'react';
-const cx = classNames;
 
 import { Image } from '~/components/shared';
 import { getOriginalImage } from '~/modules/image';
@@ -23,7 +21,7 @@ interface MusicPlayerVisualizerStyleProps {
     accentColor?: RGB | null;
 }
 
-const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt, accentColor }: MusicPlayerVisualizerStyleProps) => {
+const MusicPlayerVisualizerStyle = ({ type, src, alt, accentColor }: MusicPlayerVisualizerStyleProps) => {
     const ref = useRef<HTMLCanvasElement>(null);
     const bufferLength = 144;
     const dataArray = useMemo(() => new Uint8Array(bufferLength), []);
@@ -68,16 +66,17 @@ const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt, accentColor }: 
     }, [dataArray, palette, type]);
 
     return (
-        <div className={cx('ow-music-player-visualizer-style-MusicPlayerVisualizerStyle')}>
-            <div className={cx('ow-music-player-visualizer-style-foreground-wrapper')}>
+        <div className="relative aspect-square h-full w-full">
+            <div className="absolute inset-0 z-0 aspect-square overflow-hidden rounded-2xl">
                 <Image
-                    className={cx('ow-music-player-visualizer-style-foreground', { 'ow-music-player-visualizer-style-isPlaying': isPlaying })}
+                    className="absolute inset-0 h-full w-full rounded-2xl object-cover"
                     src={getOriginalImage(src)}
                     alt={alt}
                 />
             </div>
             <canvas
                 ref={ref}
+                className="pointer-events-none absolute left-0 top-0 z-[1] h-full w-full rounded-2xl"
                 width={900}
                 height={900}
             />

@@ -1,6 +1,4 @@
 import classNames from 'classnames';
-const cx = classNames;
-
 import { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 
@@ -14,6 +12,28 @@ import {
     shouldHideMiniPlayer,
     shouldRenderSubPageHeader
 } from '~/modules/sub-page-presentation';
+
+const cx = classNames;
+
+type SubPagePresentation = ReturnType<typeof resolveSubPagePresentation>;
+
+const subPageFrameClass: Record<SubPagePresentation, string> = {
+    stacked: 'pt-0',
+    sheet: 'pt-3.5 lg:pt-0',
+    fullscreen: 'pt-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.98)_0%,rgb(6,6,8)_100%)] lg:bg-transparent'
+};
+
+const subPageSurfaceClass: Record<SubPagePresentation, string> = {
+    stacked: '',
+    sheet: 'rounded-t-[1.5rem] lg:rounded-none',
+    fullscreen: 'border-t-0 bg-transparent opacity-100 shadow-none lg:flex lg:w-full lg:grid-cols-none'
+};
+
+const subPageContentClass: Record<SubPagePresentation, string> = {
+    stacked: '',
+    sheet: '',
+    fullscreen: 'flex flex-1 w-full min-w-0 overflow-hidden bg-transparent'
+};
 
 interface SiteLayoutProps {
     disablePlayer?: boolean;
@@ -29,7 +49,6 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     const setSearchParamsRef = useRef(setSearchParams);
     const isSubPage = isSubPagePath(location.pathname);
     const subPagePresentation = resolveSubPagePresentation(location.pathname);
-    const subPagePresentationClass = `ow-site-layout-${subPagePresentation}`;
     const hasSubPageHeader = shouldRenderSubPageHeader(location.pathname);
     const hideMiniPlayer = shouldHideMiniPlayer(location.pathname);
 
@@ -80,9 +99,9 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     return (
         <main>
             {!isSubPage && <SiteHeader />}
-            <div className={cx('ow-site-layout-contentFrame', { 'ow-site-layout-hasSubPage': isSubPage })}>
+            <div className={cx('relative flex min-h-0 flex-1 overflow-hidden', isSubPage && 'lg:col-[1/3]')}>
                 {!isSubPage && (
-                    <div ref={containerRef} className={cx('ow-site-layout-pageContent', 'main-container')}>
+                    <div ref={containerRef} className={cx('main-container min-h-0 w-full min-w-0 flex-1')}>
                         <Suspense fallback={<Loading />}>
                             <Outlet />
                         </Suspense>
@@ -90,24 +109,33 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
                 )}
                 {isSubPage && (
                     <div
-                        className={cx('ow-site-layout-subPageFrame', subPagePresentationClass)}>
-                        <div className={cx('ow-site-layout-subPageBackdrop')} />
+                        className={cx(
+                            'absolute inset-0 z-[2] flex min-h-0 flex-1 overflow-hidden p-0',
+                            subPageFrameClass[subPagePresentation]
+                        )}>
+                        <div className={cx('pointer-events-none absolute inset-0 bg-[rgba(9,9,11,0.72)] lg:hidden', subPagePresentation === 'fullscreen' && 'hidden')} />
                         <div
                             key={location.pathname}
-                            className={cx('ow-site-layout-subPageSurface', subPagePresentationClass)}>
+                            className={cx(
+                                'relative flex min-h-0 w-full min-w-0 flex-1 flex-col overflow-hidden border-t border-[var(--b-color-border-subtle)] bg-[var(--b-gradient-layer)] shadow-none lg:grid lg:grid-cols-[256px_minmax(0,1fr)] lg:border-t-0 lg:bg-transparent',
+                                subPageSurfaceClass[subPagePresentation]
+                            )}>
                             {hasSubPageHeader ? (
                                 <>
                                     <SubPageHeader />
                                     <div
                                         ref={containerRef}
-                                        className={cx('ow-site-layout-subPageContent', 'main-container', subPagePresentationClass)}>
+                                        className={cx(
+                                            'main-container min-h-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.52)_0%,rgba(9,9,11,0)_100%)] lg:bg-transparent',
+                                            subPageContentClass[subPagePresentation]
+                                        )}>
                                         <Suspense fallback={<Loading />}>
                                             <Outlet />
                                         </Suspense>
                                     </div>
                                 </>
                             ) : (
-                                <div className={cx('ow-site-layout-subPageContent', subPagePresentationClass)}>
+                                <div className={cx('min-h-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.52)_0%,rgba(9,9,11,0)_100%)] lg:bg-transparent', subPageContentClass[subPagePresentation])}>
                                     <Suspense fallback={<Loading />}>
                                         <Outlet />
                                     </Suspense>

@@ -36,11 +36,11 @@ export const ConnectorsSection = () => {
             title="Connected Devices"
             icon={<DevicesIcon />}
             description={appCopy.connectors.description}>
-            <div className={'ow-connectors-section-connectorList'}>
+            <div className="flex flex-col">
                 {connectors.map((connector) => (
-                    <div key={connector.id} className={'ow-connectors-section-connector'}>
-                        <div className={'ow-connectors-section-connectorCopy'}>
-                            <Text as="span" size="sm" className={'ow-connectors-section-userAgent'}>
+                    <div key={connector.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-[var(--b-spacing-md)] border-b border-[var(--b-color-border-subtle)] py-[var(--b-spacing-md)] last:border-b-0 max-[720px]:grid-cols-1 max-[720px]:items-start">
+                        <div className="flex min-w-0 flex-col gap-1">
+                            <Text as="span" size="sm" className="truncate font-semibold">
                                 {connector.userAgent}
                             </Text>
                             <Text as="span" size="xs" variant="muted">
@@ -48,10 +48,10 @@ export const ConnectorsSection = () => {
                             </Text>
                         </div>
                         {connector.id === socket.id ? (
-                            <span className={'ow-connectors-section-thisDevice'}>This device</span>
+                            <span className="inline-flex w-fit items-center rounded-full border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] px-2.5 py-1 text-xs font-semibold text-[var(--b-color-text-secondary)]">This device</span>
                         ) : (
                             <button
-                                className={'ow-connectors-section-kick'}
+                                className="inline-flex w-fit items-center rounded-full border border-[rgba(255,152,152,0.2)] bg-transparent px-2.5 py-1 text-xs font-semibold text-[rgba(254,202,202,0.92)] transition-[color,border-color,background-color] duration-150 hover:border-[rgba(255,152,152,0.28)] hover:bg-[rgba(255,152,152,0.08)] hover:text-[var(--b-color-text)]"
                                 onClick={() => ConnectorListener.remove(connector.id)}>
                                 Remove
                             </button>

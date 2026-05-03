@@ -47,16 +47,16 @@ function PlaylistDndItem({
             ref={setNodeRef}
             direction="row"
             align="center"
-            className={'ow-playlist-playlistRow'}
+            className="grid w-full grid-cols-[48px_minmax(0,1fr)] items-center gap-x-[var(--b-spacing-xs)] px-[var(--b-spacing-md)]"
             style={style}
             {...attributes}>
             <IconButton
                 aria-label={`Reorder ${playlist.name}`}
-                className={'ow-playlist-dragHandle'}
+                className="justify-self-center cursor-grab touch-none"
                 {...listeners}>
                 <Menu />
             </IconButton>
-            <div className={'ow-playlist-playlistItemShell'}>
+            <div className="min-w-0 flex-1">
                 <PlaylistItem
                     key={playlist.id}
                     {...playlist}

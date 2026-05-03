@@ -14,6 +14,7 @@ export { default as Image } from './Image';
 export { default as Input } from './Input';
 export { default as ItemSortPanelContent } from './ItemSortPanelContent';
 export { default as Loading } from './Loading';
+export { AlbumArtwork, ArtistArtwork, PlaylistArtwork, TrackArtwork } from './LibraryArtwork';
 export { default as Observer } from './Observer';
 export { default as PanelContent } from './PanelContent';
 export { default as PageContainer } from './PageContainer';

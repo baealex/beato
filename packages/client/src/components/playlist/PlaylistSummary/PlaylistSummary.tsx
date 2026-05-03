@@ -1,6 +1,3 @@
-import classNames from 'classnames';
-const cx = classNames;
-
 import { useAppStore as useStore } from '~/store/base-store';
 
 import { GridImage, SummaryTitle } from '~/components/shared';
@@ -15,9 +12,9 @@ const PlaylistSummary = ({ musics, name }: PlaylistSummaryProps) => {
     const [{ musicMap }] = useStore(musicStore);
 
     return (
-        <div className={cx('ow-playlist-summary-PlaylistSummary')}>
+        <div className="flex flex-col items-center justify-center gap-[var(--b-spacing-md)] text-center">
             <GridImage
-                className={cx('ow-playlist-summary-cover')}
+                className="mb-[var(--b-spacing-sm)] w-[260px] max-w-[76%] rounded-[var(--b-radius-xl)] shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
                 images={(musics ?? []).slice(0, 16).map((music) => musicMap.get(music.id)?.album.cover ?? '')}
             />
             <SummaryTitle as="h1">

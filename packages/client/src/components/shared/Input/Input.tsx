@@ -1,39 +1,63 @@
+import { cva, type VariantProps } from 'class-variance-authority';
 import classNames from 'classnames';
-const cx = classNames;
-
 import React from 'react';
 
-type InputSize = 'md' | 'lg';
-type InputTone = 'default' | 'panel';
+const cx = classNames;
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    inputSize?: InputSize;
-    tone?: InputTone;
-    fullWidth?: boolean;
-}
+const inputVariants = cva(
+    [
+        'min-w-0 rounded-[var(--b-radius-md)] border border-[var(--b-color-border-subtle)]',
+        'bg-[var(--b-color-surface-subtle)] text-xs font-semibold leading-tight text-[var(--b-color-text-secondary)]',
+        'transition-[border-color,background-color,box-shadow,color] duration-150',
+        'placeholder:text-[var(--b-color-text-muted)]',
+        'focus:outline-none focus-visible:border-[var(--b-color-focus)] focus-visible:bg-[var(--b-color-hover)]',
+        'focus-visible:text-[var(--b-color-text)] focus-visible:shadow-[0_0_0_3px_var(--b-color-focus-ring)]',
+        'enabled:hover:border-[var(--b-color-border-subtle)] enabled:hover:bg-[var(--b-color-hover)] enabled:hover:text-[var(--b-color-text)]',
+        'disabled:cursor-not-allowed disabled:opacity-50'
+    ],
+    {
+        variants: {
+            inputSize: {
+                md: 'min-h-9 px-3',
+                lg: 'min-h-11 px-3.5'
+            },
+            tone: {
+                default: '',
+                panel: 'bg-[var(--b-color-surface-subtle)]'
+            },
+            fullWidth: {
+                true: 'w-full',
+                false: ''
+            }
+        },
+        defaultVariants: {
+            inputSize: 'md',
+            tone: 'default',
+            fullWidth: true
+        }
+    }
+);
+
+type InputVariantProps = VariantProps<typeof inputVariants>;
+
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>, InputVariantProps {}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({
-    inputSize = 'md',
-    tone = 'default',
-    fullWidth = true,
+    inputSize,
+    tone,
+    fullWidth,
     className,
     ...props
 }, ref) => {
     return (
         <input
             ref={ref}
-            className={cx(
-                'ow-input-Input',
-                `ow-input-size-${inputSize}`,
-                `ow-input-tone-${tone}`,
-                { fullWidth },
-                className
-            )}
+            className={cx(inputVariants({ inputSize, tone, fullWidth }), className)}
             {...props}
         />
     );
 });
 
-Input.displayName = 'ow-input-Input';
+Input.displayName = 'Input';
 
 export default Input;

@@ -1,10 +1,20 @@
+import classNames from 'classnames';
 
 import Image from '../Image';
+
+const cx = classNames;
 
 interface GridImageProps {
     images: string[];
     className?: string;
 }
+
+const gridClassByColumn = {
+    1: 'grid-cols-1 grid-rows-1',
+    2: 'grid-cols-2 grid-rows-2',
+    3: 'grid-cols-3 grid-rows-3',
+    4: 'grid-cols-4 grid-rows-4'
+} as const;
 
 export default function GridImage({
     images,
@@ -13,7 +23,7 @@ export default function GridImage({
     const col = images.length >= 16 ? 4 : images.length >= 9 ? 3 : images.length >= 4 ? 2 : 1;
 
     return (
-        <div className={`${'ow-grid-image-GridImage'} ${className} ${`ow-grid-image-col-${col}`}`}>
+        <div className={cx('grid aspect-square overflow-hidden', gridClassByColumn[col], '[&_img]:h-full [&_img]:w-full [&_img]:object-cover', className)}>
             {images.length === 0 && (
                 <Image />
             )}

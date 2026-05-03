@@ -99,19 +99,19 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                 divider={!latestSyncReport}>
                 <div>
                     {progressMessage && (
-                        <div className={'ow-synchronization-section-progressContainer'}>
-                            <div className={'ow-synchronization-section-progressBar'}>
+                        <div className="mb-[var(--b-spacing-sm)] w-[min(18rem,100%)]">
+                            <div className="mb-[var(--b-spacing-sm)] h-[3px] overflow-hidden rounded-full bg-[var(--b-color-hover)]">
                                 <div
-                                    className={`${'ow-synchronization-section-progressIndicator'} ${isSyncing ? 'ow-synchronization-section-animating' : ''}`}
+                                    className={`h-full w-[30%] rounded-full bg-[var(--b-gradient-primary)] ${isSyncing ? 'animate-[progress_1.5s_ease-in-out_infinite]' : ''}`}
                                 />
                             </div>
-                            <Text as="p" size="sm" variant="secondary" className={'ow-synchronization-section-progressMessage'}>
+                            <Text as="p" size="sm" variant="secondary" className="m-0">
                                 {progressMessage}
                             </Text>
                         </div>
                     )}
 
-                    <div className={'ow-synchronization-section-buttonContainer'}>
+                    <div className="flex justify-end gap-[var(--b-spacing-sm)] max-[720px]:justify-start">
                         <Button disabled={isSyncing} onClick={() => handleSync(false)}>
                             Sync
                         </Button>
@@ -123,8 +123,8 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
             </SettingItem>
 
             {latestSyncReport && (
-                <div className={'ow-synchronization-section-reportRow'}>
-                    <div className={'ow-synchronization-section-reportCopy'}>
+                <div className="flex min-h-[4.25rem] items-center justify-between gap-[var(--b-spacing-md)] border-b border-[var(--b-color-border-subtle)] py-[var(--b-spacing-md)] max-[720px]:flex-col max-[720px]:items-start">
+                    <div className="flex min-w-0 flex-col gap-1">
                         <Text as="span" size="sm" weight="semibold">
                             Latest sync
                         </Text>
