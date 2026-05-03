@@ -66,20 +66,22 @@ export default function ArtistDetail() {
                         </Text>
                     </div>
                 </div>
-                <div className="grid auto-cols-[minmax(240px,320px)] grid-flow-col gap-[var(--b-spacing-sm)] overflow-x-auto px-[var(--b-spacing-lg)] pb-[var(--b-spacing-sm)] [scrollbar-width:none] [scroll-snap-type:x_proximity] [&::-webkit-scrollbar]:hidden">
-                    {artist.albums.map(album => (
-                        <div key={album.id} className="min-w-0 overflow-hidden rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-transparent [scroll-snap-align:start]">
-                            <AlbumListItem
-                                albumCover={album.cover}
-                                albumName={album.name}
-                                artistName={artist.name}
-                                publishedYear={album.publishedYear}
-                                musicCount={album.musics?.length}
-                                compact
-                                onClick={() => navigate(`/album/${album.id}`)}
-                            />
-                        </div>
-                    ))}
+                <div className="overflow-x-auto px-[var(--b-spacing-lg)] pb-[var(--b-spacing-sm)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    <div className="grid w-max auto-cols-[minmax(240px,320px)] grid-flow-col gap-[var(--b-spacing-sm)] [scroll-snap-type:x_proximity]">
+                        {artist.albums.map(album => (
+                            <div key={album.id} className="min-w-0 overflow-hidden rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-transparent [scroll-snap-align:start]">
+                                <AlbumListItem
+                                    albumCover={album.cover}
+                                    albumName={album.name}
+                                    artistName={artist.name}
+                                    publishedYear={album.publishedYear}
+                                    musicCount={album.musics?.length}
+                                    compact
+                                    onClick={() => navigate(`/album/${album.id}`)}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 
