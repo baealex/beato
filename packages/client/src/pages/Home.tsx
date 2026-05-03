@@ -1,6 +1,3 @@
-import classNames from 'classnames';
-const cx = classNames;
-
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useAppStore as useStore } from '~/store/base-store';
@@ -99,56 +96,56 @@ export default function Home() {
     ];
 
     return (
-        <div className={cx('ow-home-Home')}>
-            <Surface as="section" variant="panel" radius="2xl" className={cx('ow-home-hero')}>
-                <div className={cx('ow-home-heroArt')}>
+        <div className="mx-auto flex w-[min(100%,72rem)] flex-col gap-[clamp(1rem,2.4vw,1.5rem)] p-[clamp(1rem,3vw,2rem)] pb-[calc(clamp(1.5rem,4vw,3rem)+env(safe-area-inset-bottom))] text-[var(--b-color-text)] max-sm:p-[var(--b-spacing-md)] max-sm:pb-[calc(var(--b-spacing-xl)+env(safe-area-inset-bottom))]">
+            <Surface as="section" variant="panel" radius="2xl" className="relative grid min-h-[clamp(15rem,34vw,22rem)] grid-cols-[minmax(9rem,0.44fr)_minmax(0,1fr)] items-center gap-[clamp(1.25rem,4vw,3rem)] overflow-hidden rounded-[var(--b-radius-2xl)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] p-[clamp(1rem,3vw,1.5rem)] shadow-[var(--b-card-shadow-main)] max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-sm:rounded-[var(--b-radius-xl)]">
+                <div className="relative flex min-w-0 justify-center">
                     {currentMusic ? (
                         <Image
-                            className={cx('ow-home-art')}
+                            className="relative z-[1] aspect-square w-[min(100%,12.5rem)] rounded-[var(--b-radius-2xl)] object-cover shadow-none max-sm:w-[min(100%,14rem)] max-sm:rounded-[var(--b-radius-xl)]"
                             src={currentMusic.album.cover}
                             alt={currentMusic.album.name}
                             loading="eager"
                             icon={<Icon.Disc />}
                         />
                     ) : (
-                        <div className={cx('ow-home-emptyArt')}>
+                        <div className="relative z-[1] flex aspect-square w-[min(100%,12.5rem)] items-center justify-center rounded-[var(--b-radius-2xl)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] text-[var(--b-color-point-light)] shadow-none max-sm:w-[min(100%,14rem)] max-sm:rounded-[var(--b-radius-xl)] [&_svg]:h-16 [&_svg]:w-16">
                             <Icon.Music />
                         </div>
                     )}
                 </div>
 
-                <div className={cx('ow-home-heroCopy')}>
+                <div className="flex min-w-0 flex-col items-start gap-3.5 max-[900px]:items-center max-[900px]:text-center">
                     <Text
                         as="span"
                         variant="muted"
                         size="xs"
                         weight="medium"
-                        className={cx('ow-home-eyebrow')}>
+                        className="tracking-[0.06em] uppercase">
                         {currentMusic ? 'Now playing' : 'Listening room'}
                     </Text>
 
-                    <Text as="h1" size="2xl" weight="bold" className={cx('ow-home-title')}>
+                    <Text as="h1" size="2xl" weight="bold" className="max-w-[16ch] text-balance leading-[1.08] tracking-[-0.04em] max-[900px]:max-w-[15ch]">
                         {currentMusic?.name ?? (loaded ? 'Ready when you are.' : 'Loading your library.')}
                     </Text>
 
-                    <Text as="p" variant="secondary" size="md" className={cx('ow-home-description')}>
+                    <Text as="p" variant="secondary" size="md" className="max-w-[34rem] leading-[1.6] max-sm:hidden">
                         {currentMusic
                             ? `${currentMusic.artist.name} · ${currentMusic.album.name}`
                             : 'Start a calm session from your own collection.'}
                     </Text>
 
                     {currentMusic && (
-                        <div className={cx('ow-home-progress')} aria-hidden="true">
+                        <div className="mt-1 h-1.5 w-[min(100%,22rem)] overflow-hidden rounded-full bg-[var(--b-color-border-subtle)] max-[900px]:w-full" aria-hidden="true">
                             <div
-                                className={cx('ow-home-progressBar')}
+                                className="h-full w-full origin-left rounded-[inherit] bg-[var(--b-gradient-primary)]"
                                 style={{ transform: `scaleX(${progress / 100})` }}
                             />
                         </div>
                     )}
 
-                    <div className={cx('ow-home-heroActions')}>
+                    <div className="flex flex-wrap gap-3 max-[900px]:justify-center max-sm:w-full">
                         <IconTextButton
-                            className={cx('ow-home-primaryButton')}
+                            className="min-h-11 rounded-[var(--b-radius-md)] max-sm:w-full"
                             variant="primary"
                             size="lg"
                             icon={currentMusic && isPlaying ? <Icon.Pause /> : <Icon.Play />}
@@ -158,7 +155,7 @@ export default function Home() {
                         />
 
                         <IconTextButton
-                            className={cx('ow-home-secondaryButton')}
+                            className="min-h-11 rounded-[var(--b-radius-md)] max-sm:w-full"
                             variant="secondary"
                             size="lg"
                             icon={currentMusic ? <Icon.Music /> : <Icon.ListMusic />}
@@ -169,37 +166,37 @@ export default function Home() {
                 </div>
             </Surface>
 
-            <div className={cx('ow-home-contentGrid')}>
-                <Surface as="section" className={cx('ow-home-panel', 'queuePanel')} aria-labelledby="home-queue-title">
-                    <div className={cx('ow-home-sectionHeader')}>
+            <div className="grid grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.8fr)] gap-[clamp(1rem,2.4vw,1.5rem)] max-[900px]:grid-cols-1">
+                <Surface as="section" className="flex min-w-0 flex-col gap-4 rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-transparent p-[clamp(1rem,2.4vw,1.25rem)] max-sm:rounded-[var(--b-radius-xl)]" aria-labelledby="home-queue-title">
+                    <div className="flex items-start justify-between gap-4">
                         <div>
                             <Text
                                 as="span"
                                 variant="muted"
                                 size="xs"
                                 weight="medium"
-                                className={cx('ow-home-eyebrow')}>
+                                className="tracking-[0.06em] uppercase">
                                 Up next
                             </Text>
-                            <h2 id="home-queue-title" className={cx('ow-home-sectionTitle')}>
+                            <h2 id="home-queue-title" className="m-0 text-[1.05rem] font-semibold leading-tight text-[var(--b-color-text)]">
                                 Queue
                             </h2>
                         </div>
                         <button
                             type="button"
-                            className={cx('ow-home-textButton')}
+                            className="min-h-9 rounded-full border border-[var(--b-color-border-subtle)] bg-transparent px-2.5 py-1.5 text-sm font-medium text-[var(--b-color-text-tertiary)] transition-[color,background-color,border-color] duration-150 hover:border-[var(--b-color-border)] hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)]"
                             onClick={() => navigate('/queue')}>
                             Open
                         </button>
                     </div>
 
                     {queuePreviewMusics.length > 0 ? (
-                        <div className={cx('ow-home-trackList')}>
+                        <div className="flex flex-col gap-2.5">
                             {queuePreviewMusics.map((music, index) => (
                                 <button
                                     key={music.id}
                                     type="button"
-                                    className={cx('ow-home-trackRow')}
+                                    className="grid min-h-15 w-full min-w-0 grid-cols-[1.5rem_3rem_minmax(0,1fr)] items-center gap-3 rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-item)] p-2.5 text-left text-[var(--b-color-text)] transition-[color,background-color,border-color,transform] duration-150 hover:border-[var(--b-color-border)] hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)]"
                                     onClick={() => {
                                         const queueIndex = items.indexOf(music.id);
 
@@ -207,22 +204,22 @@ export default function Home() {
                                             queueStore.select(queueIndex);
                                         }
                                     }}>
-                                    <span className={cx('ow-home-trackIndex')}>{index + 1}</span>
+                                    <span className="text-center text-sm font-medium text-[var(--b-color-text-muted)]">{index + 1}</span>
                                     <Image
-                                        className={cx('ow-home-trackArt')}
+                                        className="h-12 w-12 shrink-0 overflow-hidden rounded-[var(--b-radius-md)] object-cover"
                                         src={music.album.cover}
                                         alt={music.album.name}
                                         icon={<Icon.Disc />}
                                     />
-                                    <span className={cx('ow-home-trackCopy')}>
-                                        <span className={cx('ow-home-trackTitle')}>{music.name}</span>
-                                        <span className={cx('ow-home-trackMeta')}>{music.artist.name}</span>
+                                    <span className="flex min-w-0 flex-col gap-0.5">
+                                        <span className="truncate text-sm font-medium text-[var(--b-color-text)]">{music.name}</span>
+                                        <span className="truncate text-xs text-[var(--b-color-text-tertiary)]">{music.artist.name}</span>
                                     </span>
                                 </button>
                             ))}
                         </div>
                     ) : (
-                        <div className={cx('ow-home-quietState')}>
+                        <div className="flex min-h-32 items-center rounded-[var(--b-radius-lg)] bg-[var(--b-color-surface-item)] p-4">
                             <Text as="p" variant="secondary" size="sm">
                                 {queueLength > 0
                                     ? 'Queue ends after the current track.'
@@ -231,33 +228,33 @@ export default function Home() {
                         </div>
                     )}
 
-                    <Text as="p" variant="muted" size="xs" className={cx('ow-home-panelNote')}>
+                    <Text as="p" variant="muted" size="xs" className="mt-auto max-sm:hidden">
                         {upNextCount > 0
                             ? `${formatCount(upNextCount, 'track')} waiting after this moment.`
                             : 'No upcoming tracks yet.'}
                     </Text>
                 </Surface>
 
-                <Surface as="section" className={cx('ow-home-panel', 'actionsPanel')} aria-labelledby="home-actions-title">
-                    <div className={cx('ow-home-sectionHeader')}>
+                <Surface as="section" className="flex min-w-0 flex-col gap-4 rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-transparent p-[clamp(1rem,2.4vw,1.25rem)] max-sm:rounded-[var(--b-radius-xl)]" aria-labelledby="home-actions-title">
+                    <div className="flex items-start justify-between gap-4">
                         <div>
                             <Text
                                 as="span"
                                 variant="muted"
                                 size="xs"
                                 weight="medium"
-                                className={cx('ow-home-eyebrow')}>
+                                className="tracking-[0.06em] uppercase">
                                 Quick start
                             </Text>
-                            <h2 id="home-actions-title" className={cx('ow-home-sectionTitle')}>
+                            <h2 id="home-actions-title" className="m-0 text-[1.05rem] font-semibold leading-tight text-[var(--b-color-text)]">
                                 Choose a flow
                             </h2>
                         </div>
                     </div>
 
-                    <div className={cx('ow-home-actionStack')}>
+                    <div className="flex flex-col flex-wrap gap-2.5">
                         <IconTextButton
-                            className={cx('ow-home-actionButton')}
+                            className="w-full min-h-15 rounded-[var(--b-radius-lg)]"
                             icon={<Icon.Play />}
                             label="Play library"
                             meta={formatCount(availableMusics.length, 'song')}
@@ -265,7 +262,7 @@ export default function Home() {
                             onClick={() => void resetQueue(availableMusics.map(music => music.id))}
                         />
                         <IconTextButton
-                            className={cx('ow-home-actionButton')}
+                            className="w-full min-h-15 rounded-[var(--b-radius-lg)]"
                             icon={<Icon.Heart />}
                             label="Play favorites"
                             meta={formatCount(likedMusics.length, 'song')}
@@ -276,30 +273,30 @@ export default function Home() {
                 </Surface>
             </div>
 
-            <Surface as="section" className={cx('ow-home-librarySection')} aria-labelledby="home-library-title">
-                <div className={cx('ow-home-sectionHeader')}>
+            <Surface as="section" className="flex flex-col gap-4 rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-transparent p-[clamp(1rem,2.4vw,1.25rem)] max-sm:rounded-[var(--b-radius-xl)]" aria-labelledby="home-library-title">
+                <div className="flex items-start justify-between gap-4">
                     <div>
                         <Text
                             as="span"
                             variant="muted"
                             size="xs"
                             weight="medium"
-                            className={cx('ow-home-eyebrow')}>
+                            className="tracking-[0.06em] uppercase">
                             Library
                         </Text>
-                        <h2 id="home-library-title" className={cx('ow-home-sectionTitle')}>
+                        <h2 id="home-library-title" className="m-0 text-[1.05rem] font-semibold leading-tight text-[var(--b-color-text)]">
                             Browse quietly
                         </h2>
                     </div>
                 </div>
 
-                <div className={cx('ow-home-shortcutGrid')}>
+                <div className="grid grid-cols-4 gap-3 max-[900px]:grid-cols-2 max-sm:grid-cols-1">
                     {shortcutItems.map(item => (
-                        <Link key={item.path} to={item.path} className={cx('ow-home-shortcutCard')}>
-                            <span className={cx('ow-home-shortcutIcon')}>{item.icon}</span>
-                            <span className={cx('ow-home-shortcutCopy')}>
-                                <span className={cx('ow-home-shortcutLabel')}>{item.label}</span>
-                                <span className={cx('ow-home-shortcutMeta')}>{item.meta}</span>
+                        <Link key={item.path} to={item.path} className="flex min-h-21 min-w-0 flex-col justify-between gap-4 rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-item)] p-3.5 text-[var(--b-color-text)] no-underline transition-[color,background-color,border-color,transform] duration-150 hover:border-[var(--b-color-border)] hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)]">
+                            <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--b-color-surface-subtle)] text-[var(--b-color-point-light)] [&_svg]:h-[1.125rem] [&_svg]:w-[1.125rem]">{item.icon}</span>
+                            <span className="flex min-w-0 flex-col gap-0.5">
+                                <span className="truncate text-sm font-medium text-[var(--b-color-text)]">{item.label}</span>
+                                <span className="truncate text-xs text-[var(--b-color-text-tertiary)]">{item.meta}</span>
                             </span>
                         </Link>
                     ))}
@@ -307,39 +304,39 @@ export default function Home() {
             </Surface>
 
             {focusMusics.length > 0 && (
-                <Surface as="section" className={cx('ow-home-focusSection')} aria-labelledby="home-focus-title">
-                    <div className={cx('ow-home-sectionHeader')}>
+                <Surface as="section" className="flex flex-col gap-4 rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-transparent p-[clamp(1rem,2.4vw,1.25rem)] max-sm:rounded-[var(--b-radius-xl)]" aria-labelledby="home-focus-title">
+                    <div className="flex items-start justify-between gap-4">
                         <div>
                             <Text
                                 as="span"
                                 variant="muted"
                                 size="xs"
                                 weight="medium"
-                                className={cx('ow-home-eyebrow')}>
+                                className="tracking-[0.06em] uppercase">
                                 High rotation
                             </Text>
-                            <h2 id="home-focus-title" className={cx('ow-home-sectionTitle')}>
+                            <h2 id="home-focus-title" className="m-0 text-[1.05rem] font-semibold leading-tight text-[var(--b-color-text)]">
                                 Familiar tracks
                             </h2>
                         </div>
                     </div>
 
-                    <div className={cx('ow-home-focusList')}>
+                    <div className="grid grid-cols-2 gap-2.5 max-[900px]:grid-cols-2 max-sm:grid-cols-1">
                         {focusMusics.map(music => (
                             <button
                                 key={music.id}
                                 type="button"
-                                className={cx('ow-home-focusTrack')}
+                                className="grid min-h-15 w-full min-w-0 grid-cols-[3rem_minmax(0,1fr)_1.25rem] items-center gap-3 rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-item)] p-2.5 text-left text-[var(--b-color-text)] transition-[color,background-color,border-color,transform] duration-150 hover:border-[var(--b-color-border)] hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)] [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-[var(--b-color-text-muted)]"
                                 onClick={() => void queueStore.add(music.id)}>
                                 <Image
-                                    className={cx('ow-home-focusArt')}
+                                    className="h-12 w-12 shrink-0 overflow-hidden rounded-[var(--b-radius-md)] object-cover"
                                     src={music.album.cover}
                                     alt={music.album.name}
                                     icon={<Icon.Disc />}
                                 />
-                                <span className={cx('ow-home-focusCopy')}>
-                                    <span className={cx('ow-home-trackTitle')}>{music.name}</span>
-                                    <span className={cx('ow-home-trackMeta')}>{music.artist.name}</span>
+                                <span className="flex min-w-0 flex-col gap-0.5">
+                                    <span className="truncate text-sm font-medium text-[var(--b-color-text)]">{music.name}</span>
+                                    <span className="truncate text-xs text-[var(--b-color-text-tertiary)]">{music.artist.name}</span>
                                 </span>
                                 <Icon.Play />
                             </button>
