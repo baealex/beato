@@ -46,7 +46,7 @@ const MusicListItem = ({
                 onLongPress?.();
             }}>
             {hideAlbumArt ? (
-                <span className="w-12 shrink-0 text-center text-sm text-[var(--b-color-text-muted)]">
+                <span className="w-12 shrink-0 text-center text-xs text-[var(--b-color-text-muted)]">
                     {trackNumber ?? '·'}
                 </span>
             ) : (
@@ -56,14 +56,14 @@ const MusicListItem = ({
                 <span className={cx('flex min-w-0 flex-1 flex-col gap-1', { 'max-w-[calc(100%-40px-var(--b-spacing-md))]': typeof onLongPress === 'function' })}>
                     <span className="flex min-w-0 items-center gap-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium text-[var(--b-color-text)]">
                         {!!trackNumber && !hideAlbumArt && (
-                            <span className="min-w-6 text-[var(--b-color-text-muted)]">{trackNumber}.</span>
+                            <span className="min-w-6 text-xs text-[var(--b-color-text-muted)]">{trackNumber}.</span>
                         )}
                         <span className="truncate">{musicName}</span>
                         {musicCodec && musicCodec.toLowerCase() === 'flac' && (
                             <span className="shrink-0 text-[0.625rem] font-semibold uppercase tracking-[0.04em] text-[var(--b-color-point)]">{musicCodec}</span>
                         )}
                     </span>
-                    <span className="truncate text-sm text-[var(--b-color-text-tertiary)]">
+                    <span className="truncate text-xs text-[var(--b-color-text-tertiary)]">
                         {artistName}
                     </span>
                 </span>

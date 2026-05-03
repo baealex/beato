@@ -124,7 +124,12 @@ export default function Home() {
                         {currentMusic ? 'Now playing' : 'Listening room'}
                     </Text>
 
-                    <Text as="h1" size="2xl" weight="bold" className="max-w-[16ch] text-balance leading-[1.08] tracking-[-0.04em] max-[900px]:max-w-[15ch]">
+                    <Text
+                        as="h1"
+                        size="2xl"
+                        weight="bold"
+                        title={currentMusic?.name}
+                        className="max-w-[min(100%,28rem)] overflow-hidden break-all leading-[1.08] tracking-[-0.04em] [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] max-[900px]:max-w-[min(100%,24rem)]">
                         {currentMusic?.name ?? (loaded ? 'Ready when you are.' : 'Loading your library.')}
                     </Text>
 
