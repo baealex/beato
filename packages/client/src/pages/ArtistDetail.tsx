@@ -1,6 +1,3 @@
-import classNames from 'classnames';
-const cx = classNames;
-
 import { useAppStore as useStore } from '~/store/base-store';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -58,9 +55,9 @@ export default function ArtistDetail() {
                     <Play />
                 </button>
             )}>
-            <div className={cx('ow-artist-detail-section')}>
-                <div className={cx('ow-artist-detail-section-header')}>
-                    <div className={cx('ow-artist-detail-section-title')}>
+            <div className="mb-[var(--b-spacing-2xl)] last:mb-0">
+                <div className="mb-[var(--b-spacing-sm)] flex items-center justify-between gap-[var(--b-spacing-md)] px-[var(--b-spacing-lg)] py-[var(--b-spacing-md)]">
+                    <div className="flex items-center gap-[var(--b-spacing-sm)]">
                         <Text as="h2" size="xl" weight="semibold">
                             Albums
                         </Text>
@@ -69,9 +66,9 @@ export default function ArtistDetail() {
                         </Text>
                     </div>
                 </div>
-                <div className={cx('ow-artist-detail-album-rail')}>
+                <div className="grid auto-cols-[minmax(240px,320px)] grid-flow-col gap-[var(--b-spacing-sm)] overflow-x-auto px-[var(--b-spacing-lg)] pb-[var(--b-spacing-sm)] [scrollbar-width:none] [scroll-snap-type:x_proximity] [&::-webkit-scrollbar]:hidden">
                     {artist.albums.map(album => (
-                        <div key={album.id} className={cx('ow-artist-detail-album-card')}>
+                        <div key={album.id} className="min-w-0 overflow-hidden rounded-[var(--b-radius-lg)] border border-[var(--b-color-border-subtle)] bg-transparent [scroll-snap-align:start]">
                             <AlbumListItem
                                 albumCover={album.cover}
                                 albumName={album.name}
@@ -86,9 +83,9 @@ export default function ArtistDetail() {
                 </div>
             </div>
 
-            <div className={cx('ow-artist-detail-section')}>
-                <div className={cx('ow-artist-detail-section-header')}>
-                    <div className={cx('ow-artist-detail-section-title')}>
+            <div className="mb-[var(--b-spacing-2xl)] last:mb-0">
+                <div className="mb-[var(--b-spacing-sm)] flex items-center justify-between gap-[var(--b-spacing-md)] px-[var(--b-spacing-lg)] py-[var(--b-spacing-md)]">
+                    <div className="flex items-center gap-[var(--b-spacing-sm)]">
                         <Text as="h2" size="xl" weight="semibold">
                             Songs
                         </Text>
@@ -97,7 +94,7 @@ export default function ArtistDetail() {
                         </Text>
                     </div>
                 </div>
-                <div className={cx('ow-artist-detail-music-list')}>
+                <div className="flex flex-col">
                     {artist.musics.map(({ id }) => {
                         const music = musicMap.get(id);
 

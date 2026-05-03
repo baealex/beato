@@ -307,56 +307,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-album-summary-AlbumSummary {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--b-spacing-md);
-  text-align: center;
-}
-.ow-album-summary-AlbumSummary .ow-album-summary-cover {
-  width: 260px;
-  max-width: 76%;
-  margin-bottom: var(--b-spacing-sm);
-}
-.ow-album-summary-AlbumSummary .ow-album-summary-cover .ow-album-summary-cover-inner {
-  position: relative;
-  aspect-ratio: 1;
-  border-radius: var(--b-radius-xl);
-  overflow: hidden;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-}
-.ow-album-summary-AlbumSummary .ow-album-summary-cover .ow-album-summary-cover-inner::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: var(--b-radius-xl);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-  pointer-events: none;
-}
-.ow-album-summary-AlbumSummary .ow-album-summary-cover .ow-album-summary-cover-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.ow-album-summary-AlbumSummary .ow-album-summary-title {
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-.ow-album-summary-AlbumSummary .ow-album-summary-meta {
-  display: flex;
-  align-items: center;
-  gap: var(--b-spacing-sm);
-}
-.ow-album-summary-AlbumSummary .ow-album-summary-artist {
-  text-decoration: none;
-  transition: opacity var(--b-transition-fast);
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-album-summary-AlbumSummary .ow-album-summary-artist:hover {
-    opacity: 0.8;
-  }
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -507,42 +457,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-artist-summary-ArtistSummary {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--b-spacing-md);
-  text-align: center;
-}
-.ow-artist-summary-ArtistSummary .ow-artist-summary-cover {
-  width: 260px;
-  max-width: 76%;
-  margin-bottom: var(--b-spacing-sm);
-}
-.ow-artist-summary-ArtistSummary .ow-artist-summary-cover .ow-artist-summary-cover-inner {
-  position: relative;
-  aspect-ratio: 1;
-  border-radius: var(--b-radius-full);
-  overflow: hidden;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-}
-.ow-artist-summary-ArtistSummary .ow-artist-summary-cover .ow-artist-summary-cover-inner::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: var(--b-radius-full);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-  pointer-events: none;
-}
-.ow-artist-summary-ArtistSummary .ow-artist-summary-cover .ow-artist-summary-cover-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.ow-artist-summary-ArtistSummary .ow-artist-summary-name {
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -1138,22 +1052,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-playlist-summary-PlaylistSummary {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: var(--b-spacing-md);
-  text-align: center;
-}
-.ow-playlist-summary-PlaylistSummary .ow-playlist-summary-cover {
-  width: 260px;
-  max-width: 76%;
-  margin-bottom: var(--b-spacing-sm);
-  border-radius: var(--b-radius-xl);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -1587,57 +1485,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-artist-detail-section {
-  margin-bottom: var(--b-spacing-2xl);
-}
-.ow-artist-detail-section:last-child {
-  margin-bottom: 0;
-}
-
-.ow-artist-detail-section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--b-spacing-md) var(--b-spacing-lg);
-  margin-bottom: var(--b-spacing-sm);
-  gap: var(--b-spacing-md);
-}
-
-.ow-artist-detail-section-title {
-  display: flex;
-  align-items: center;
-  gap: var(--b-spacing-sm);
-}
-
-.ow-artist-detail-music-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.ow-artist-detail-album-rail {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(240px, 320px);
-  gap: var(--b-spacing-sm);
-  padding: 0 var(--b-spacing-lg) var(--b-spacing-sm);
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  scrollbar-width: none;
-}
-.ow-artist-detail-album-rail::-webkit-scrollbar {
-  display: none;
-}
-
-.ow-artist-detail-album-card {
-  min-width: 0;
-  scroll-snap-align: start;
-  border: 1px solid var(--b-color-border-subtle);
-  border-radius: var(--b-radius-lg);
-  background: transparent;
-  overflow: hidden;
-}
-
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -2770,26 +2617,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-playlist-playlistRow {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  align-items: center;
-  width: 100%;
-  padding: 0 var(--b-spacing-md);
-  column-gap: var(--b-spacing-xs);
-}
-
-.ow-playlist-dragHandle {
-  justify-self: center;
-  cursor: grab;
-  touch-action: none;
-}
-
-.ow-playlist-playlistItemShell {
-  flex: 1;
-  min-width: 0;
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -2806,112 +2633,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-playlist-detail-sectionHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--b-spacing-md) var(--b-spacing-lg);
-  margin-bottom: var(--b-spacing-sm);
-  gap: var(--b-spacing-md);
-}
-
-.ow-playlist-detail-pageCopy {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-}
-
-.ow-playlist-detail-pageTitle,
-.ow-playlist-detail-pageSummary {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ow-playlist-detail-pageTitleSelection {
-  display: none;
-}
-
-.ow-playlist-detail-topBarActions {
-  display: inline-flex;
-  align-items: center;
-  justify-self: end;
-  gap: 0.5rem;
-}
-
-.ow-playlist-detail-editButton,
-.ow-playlist-detail-summaryAction {
-  min-height: 2.25rem;
-  padding: 0.42rem 0.8rem;
-  border-radius: var(--b-radius-md);
-  border: 1px solid var(--b-color-border-subtle);
-  background: var(--b-color-surface-subtle);
-  color: var(--b-color-text-secondary);
-  font-size: 0.75rem;
-  font-weight: 600;
-  transition: var(--b-transition-fast);
-  transition-property: color, background-color, border-color;
-}
-.ow-playlist-detail-editButton:focus-visible,
-.ow-playlist-detail-summaryAction:focus-visible {
-  outline: 2px solid var(--b-color-focus);
-  outline-offset: 2px;
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-playlist-detail-editButton:hover:not(:disabled),
-  .ow-playlist-detail-summaryAction:hover:not(:disabled) {
-    color: var(--b-color-text);
-    background: var(--b-color-hover);
-    border-color: var(--b-color-border-subtle);
-  }
-}
-.ow-playlist-detail-editButton:disabled,
-.ow-playlist-detail-summaryAction:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.ow-playlist-detail-editButton.ow-playlist-detail-active {
-  color: var(--b-color-text);
-}
-
-.ow-playlist-detail-item {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  align-items: center;
-  width: 100%;
-  padding: 0 var(--b-spacing-md);
-  column-gap: var(--b-spacing-xs);
-}
-
-.ow-playlist-detail-rowControl {
-  justify-self: center;
-}
-
-.ow-playlist-detail-dragControl {
-  cursor: grab;
-  touch-action: none;
-}
-
-.ow-playlist-detail-listContent {
-  flex: 1;
-  min-width: 0;
-}
-
-.ow-playlist-detail-musicItemShell {
-  flex: 1;
-  min-width: 0;
-}
-
-@media (max-width: 640px) {
-  .ow-playlist-detail-sectionHeader {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
