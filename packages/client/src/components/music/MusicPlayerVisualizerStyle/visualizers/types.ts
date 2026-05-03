@@ -23,16 +23,16 @@ export interface VisualizerPalette {
     underlayAlpha: number;
 }
 
-const IDENTITY_TEAL_HUE = 177;
-const ALBUM_HUE_IDENTITY_PULL = 0.12;
+const IDENTITY_GREEN_HUE = 141;
+const ALBUM_HUE_IDENTITY_PULL = 0;
 
 export const DEFAULT_VISUALIZER_PALETTE: VisualizerPalette = {
-    hueStart: 145,
-    hueRange: 64,
+    hueStart: IDENTITY_GREEN_HUE,
+    hueRange: 0,
     saturation: 98,
-    lightnessBase: 60,
-    lightnessRange: 14,
-    glowHue: 165,
+    lightnessBase: 54,
+    lightnessRange: 10,
+    glowHue: IDENTITY_GREEN_HUE,
     scrimAlpha: 0.22,
     underlayAlpha: 0.34
 };
@@ -60,7 +60,7 @@ const rgbToHue = ({ r, g, b }: RGB) => {
     const delta = max - min;
 
     if (delta === 0) {
-        return IDENTITY_TEAL_HUE;
+        return IDENTITY_GREEN_HUE;
     }
 
     if (max === red) {
@@ -75,18 +75,18 @@ const rgbToHue = ({ r, g, b }: RGB) => {
 };
 
 export const createVividVisualizerPalette = (accentColor?: RGB | null): VisualizerPalette => {
-    const albumHue = accentColor ? rgbToHue(accentColor) : IDENTITY_TEAL_HUE;
+    const albumHue = accentColor ? rgbToHue(accentColor) : IDENTITY_GREEN_HUE;
     const luminance = accentColor ? getLuminance(accentColor) : 0.5;
     const seedHue = accentColor
-        ? mixHue(albumHue, IDENTITY_TEAL_HUE, ALBUM_HUE_IDENTITY_PULL)
-        : IDENTITY_TEAL_HUE;
+        ? mixHue(albumHue, IDENTITY_GREEN_HUE, ALBUM_HUE_IDENTITY_PULL)
+        : IDENTITY_GREEN_HUE;
 
     return {
-        hueStart: seedHue - 32,
-        hueRange: 64,
+        hueStart: seedHue,
+        hueRange: 0,
         saturation: 98,
-        lightnessBase: 60,
-        lightnessRange: 14,
+        lightnessBase: 54,
+        lightnessRange: 10,
         glowHue: seedHue - 12,
         scrimAlpha: clamp(0.14 + luminance * 0.18, 0.14, 0.32),
         underlayAlpha: clamp(0.24 + luminance * 0.2, 0.24, 0.44)
@@ -140,11 +140,11 @@ export const drawVisualizerContrastLayer = (
     ctx.fillStyle = scrim;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const halo = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-    halo.addColorStop(0, hslaColor(resolvedPalette.glowHue, 100, 62, resolvedPalette.scrimAlpha * 0.22));
-    halo.addColorStop(0.62, hslaColor(resolvedPalette.glowHue, 100, 54, resolvedPalette.scrimAlpha * 0.06));
-    halo.addColorStop(1, `rgba(0, 0, 0, ${resolvedPalette.scrimAlpha * 0.24})`);
-    ctx.fillStyle = halo;
+    const primaryWash = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+    primaryWash.addColorStop(0, hslaColor(resolvedPalette.glowHue, 100, 62, resolvedPalette.scrimAlpha * 0.22));
+    primaryWash.addColorStop(0.62, hslaColor(resolvedPalette.glowHue, 100, 54, resolvedPalette.scrimAlpha * 0.06));
+    primaryWash.addColorStop(1, `rgba(0, 0, 0, ${resolvedPalette.scrimAlpha * 0.24})`);
+    ctx.fillStyle = primaryWash;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.restore();

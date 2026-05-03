@@ -1,4 +1,3 @@
-import styles from './PlaylistItem.module.scss';
 import { useAppStore as useStore } from '~/store/base-store';
 
 import GridImage from '../../shared/GridImage';
@@ -27,28 +26,31 @@ export default function PlaylistItem({
     const [{ musicMap }] = useStore(musicStore);
 
     return (
-        <div className={styles.PlaylistItem}>
+        <div className={'ow-playlist-item-PlaylistItem'}>
             <button
                 type="button"
-                className={styles.mainButton}
+                className={'ow-playlist-item-mainButton'}
                 onClick={onClick}
                 onContextMenu={(e) => {
                     e.preventDefault();
                     onLongPress?.();
                 }}>
-                <GridImage
-                    className={styles.cover}
-                    images={headerMusics.map((music) => musicMap.get(music.id)?.album.cover ?? '')}
-                />
-                <div className={styles.title}>
-                    <div className={styles.name}>{name}</div>
-                    <div className={styles.count}>{musicCount} songs</div>
+                <span className={'ow-playlist-item-coverStack'}>
+                    <span className={'ow-playlist-item-coverBack'} aria-hidden="true" />
+                    <GridImage
+                        className={'ow-playlist-item-cover'}
+                        images={headerMusics.map((music) => musicMap.get(music.id)?.album.cover ?? '')}
+                    />
+                </span>
+                <div className={'ow-playlist-item-title'}>
+                    <div className={'ow-playlist-item-name'}>{name}</div>
+                    <div className={'ow-playlist-item-count'}>{musicCount} songs</div>
                 </div>
             </button>
             {onLongPress && (
                 <IconButton
                     aria-label={`Open actions for ${name}`}
-                    className={styles['icon-button']}
+                    className={'ow-playlist-item-icon-button'}
                     onClick={(e) => {
                         e.stopPropagation();
                         onLongPress();

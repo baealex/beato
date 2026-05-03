@@ -34,7 +34,6 @@ export default defineConfig({
         svgr(),
         tailwindcss()
     ],
-    css: { preprocessorOptions: { scss: { api: 'modern' } } },
     resolve: { alias: { '~': path.resolve(__dirname, './src') } },
     build: {
         sourcemap: false,

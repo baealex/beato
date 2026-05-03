@@ -1,6 +1,5 @@
-import styles from './AlbumSummary.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import { Link } from 'react-router-dom';
 
@@ -19,17 +18,17 @@ const AlbumSummary = ({
     publishedYear
 }: AlbumSummaryProps) => {
     return (
-        <div className={cx('AlbumSummary')}>
-            <div className={cx('cover')}>
-                <div className={cx('cover-inner')}>
-                    <Image className={cx('cover-img')} src={getOriginalImage(cover)} alt={name} icon={<Disc />} />
+        <div className={cx('ow-album-summary-AlbumSummary')}>
+            <div className={cx('ow-album-summary-cover')}>
+                <div className={cx('ow-album-summary-cover-inner')}>
+                    <Image className={cx('ow-album-summary-cover-img')} src={getOriginalImage(cover)} alt={name} icon={<Disc />} />
                 </div>
             </div>
-            <Text as="h1" size="xl" weight="bold" className={cx('title')}>
+            <Text as="h1" size="xl" weight="bold" className={cx('ow-album-summary-title')}>
                 {name}
             </Text>
-            <div className={cx('meta')}>
-                <Link className={cx('artist')} to={`/artist/${artist.id}`}>
+            <div className={cx('ow-album-summary-meta')}>
+                <Link className={cx('ow-album-summary-artist')} to={`/artist/${artist.id}`}>
                     <Text variant="secondary" size="md">
                         {artist.name}
                     </Text>

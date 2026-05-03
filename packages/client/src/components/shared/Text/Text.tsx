@@ -1,13 +1,12 @@
-import styles from './Text.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 export type TextElement = 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div' | 'strong';
 export type TextVariant = 'primary' | 'secondary' | 'tertiary' | 'muted';
 export type TextSize = 'xs' | 'sm' | 'md' | 'title' | 'xl' | '2xl';
 export type TextWeight = 'normal' | 'medium' | 'semibold' | 'bold';
 
-interface TextProps {
+interface TextProps extends React.HTMLAttributes<HTMLElement> {
     as?: TextElement;
     variant?: TextVariant;
     size?: TextSize;
@@ -24,18 +23,20 @@ const Text = ({
     weight = 'normal',
     truncate = false,
     className,
-    children
+    children,
+    ...props
 }: TextProps) => {
     return (
         <Component
             className={cx(
-                'Text',
-                `variant-${variant}`,
-                `size-${size}`,
-                `weight-${weight}`,
+                'ow-text-Text',
+                `ow-text-variant-${variant}`,
+                `ow-text-size-${size}`,
+                `ow-text-weight-${weight}`,
                 { truncate },
                 className
-            )}>
+            )}
+            {...props}>
             {children}
         </Component>
     );

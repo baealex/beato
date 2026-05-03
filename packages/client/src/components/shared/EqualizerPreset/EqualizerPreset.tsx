@@ -1,15 +1,9 @@
-import styles from './EqualizerPreset.module.scss';
+import type { EqualizerState } from '~/store/equalizer';
 
 export interface Preset {
     id: string;
     name: string;
-    values: {
-        bass: number;
-        lowMid: number;
-        mid: number;
-        highMid: number;
-        treble: number;
-    };
+    values: EqualizerState;
 }
 
 interface EqualizerPresetProps {
@@ -42,13 +36,13 @@ const EqualizerPreset = ({
     const isCustomPreset = (presetId: string) => presetId.startsWith('custom-');
 
     return (
-        <div className={styles.presetContainer}>
-            <div className={styles.presetButtonGroup}>
+        <div className={'ow-equalizer-preset-presetContainer'}>
+            <div className={'ow-equalizer-preset-presetButtonGroup'}>
                 {presets.map((preset) => (
-                    <div key={preset.id} className={styles.presetItem}>
+                    <div key={preset.id} className={'ow-equalizer-preset-presetItem'}>
                         <button
                             type="button"
-                            className={`${styles.presetButton} ${activePresetId === preset.id ? styles.active : ''}`}
+                            className={`${'ow-equalizer-preset-presetButton'} ${activePresetId === preset.id ? 'ow-equalizer-preset-active' : ''}`}
                             aria-pressed={activePresetId === preset.id}
                             disabled={disabled}
                             onClick={() => handlePresetClick(preset)}>
@@ -57,7 +51,7 @@ const EqualizerPreset = ({
                         {isCustomPreset(preset.id) && onDeletePreset && (
                             <button
                                 type="button"
-                                className={styles.deleteButton}
+                                className={'ow-equalizer-preset-deleteButton'}
                                 aria-label={`Delete ${preset.name} preset`}
                                 disabled={disabled}
                                 onClick={() => handleDeleteClick(preset.id)}>
@@ -68,7 +62,7 @@ const EqualizerPreset = ({
                 ))}
                 <button
                     type="button"
-                    className={styles.saveButton}
+                    className={'ow-equalizer-preset-saveButton'}
                     disabled={disabled}
                     onClick={onSaveCurrentAsPreset}>
                     Save Current

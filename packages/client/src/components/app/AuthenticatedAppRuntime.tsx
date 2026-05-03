@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
 
+import { useAppStore as useStore } from '~/store/base-store';
+
 import { redirectToLogin } from '~/modules/auth-redirect';
 import { albumStore } from '~/store/album';
 import { artistStore } from '~/store/artist';
 import { musicStore } from '~/store/music';
 import { MusicListener, socket } from '~/socket';
+import StartupSplash from './StartupSplash';
 
 interface AuthenticatedAppRuntimeProps {
     children: React.ReactNode;
@@ -13,6 +16,7 @@ interface AuthenticatedAppRuntimeProps {
 export default function AuthenticatedAppRuntime({
     children
 }: AuthenticatedAppRuntimeProps) {
+    const [{ loaded }] = useStore(musicStore);
     useEffect(() => {
         const handleResync = () => {
             musicStore.init = false;
@@ -66,5 +70,10 @@ export default function AuthenticatedAppRuntime({
         };
     }, []);
 
-    return children;
+    return (
+        <>
+            {children}
+            {!loaded && <StartupSplash />}
+        </>
+    );
 }

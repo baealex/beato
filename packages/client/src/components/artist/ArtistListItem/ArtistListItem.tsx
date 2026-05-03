@@ -1,6 +1,5 @@
-import styles from './ArtistListItem.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import Image from '~/components/shared/Image';
 import Text from '~/components/shared/Text';
@@ -22,21 +21,22 @@ const ArtistListItem = ({
     onClick
 }: ArtistListItemProps) => {
     return (
-        <div className={cx('ArtistListItem')} onClick={onClick}>
-            <div className={cx('image-container')}>
+        <div className={cx('ow-artist-list-item-ArtistListItem')} onClick={onClick}>
+            <div className={cx('ow-artist-list-item-image-container')}>
+                <span className={cx('ow-artist-list-item-halo')} aria-hidden="true" />
                 <Image
-                    className={cx('image')}
+                    className={cx('ow-artist-list-item-image')}
                     src={artistCover}
                     alt={artistName}
                     loading="eager"
                     icon={<User />}
                 />
             </div>
-            <div className={cx('info')}>
-                <Text as="div" size="md" weight="semibold" truncate>
+            <div className={cx('ow-artist-list-item-info')}>
+                <Text as="div" size="sm" weight="medium" truncate>
                     {artistName}
                 </Text>
-                <div className={cx('count')}>
+                <div className={cx('ow-artist-list-item-count')}>
                     <Text size="xs" variant="tertiary">{albumCount} {albumCount === 1 ? 'album' : 'albums'}</Text>
                     <Text size="xs" variant="muted">·</Text>
                     <Text size="xs" variant="tertiary">{musicCount} {musicCount === 1 ? 'song' : 'songs'}</Text>

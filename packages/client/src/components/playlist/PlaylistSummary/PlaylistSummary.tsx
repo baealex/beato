@@ -1,6 +1,5 @@
-import styles from './PlaylistSummary.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import { useAppStore as useStore } from '~/store/base-store';
 
@@ -16,10 +15,10 @@ const PlaylistSummary = ({ musics, name }: PlaylistSummaryProps) => {
     const [{ musicMap }] = useStore(musicStore);
 
     return (
-        <div className={cx('PlaylistSummary')}>
+        <div className={cx('ow-playlist-summary-PlaylistSummary')}>
             <GridImage
-                className={cx('cover')}
-                images={musics.slice(0, 16).map((music) => musicMap.get(music.id)?.album.cover ?? '')}
+                className={cx('ow-playlist-summary-cover')}
+                images={(musics ?? []).slice(0, 16).map((music) => musicMap.get(music.id)?.album.cover ?? '')}
             />
             <SummaryTitle as="h1">
                 {name}

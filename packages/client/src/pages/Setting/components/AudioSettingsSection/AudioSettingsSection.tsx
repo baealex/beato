@@ -58,11 +58,7 @@ const AudioIcon = () => (
     </svg>
 );
 
-interface AudioSettingsSectionProps {
-    shouldStable: boolean;
-}
-
-export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps) => {
+export const AudioSettingsSection = () => {
     const navigate = useNavigate();
     const [{ format, bitrate, useOriginal }] = useStore(audioSettingsStore);
 
@@ -109,13 +105,11 @@ export const AudioSettingsSection = ({ shouldStable }: AudioSettingsSectionProps
                 </>
             )}
 
-            {!shouldStable && (
-                <SettingItem
-                    title="Equalizer"
-                    description="Adjust playback tone by frequency band.">
-                    <Button onClick={() => navigate('/equalizer')}>Open Equalizer</Button>
-                </SettingItem>
-            )}
+            <SettingItem
+                title="Equalizer"
+                description="Adjust playback tone by frequency band.">
+                <Button onClick={() => navigate('/equalizer')}>Open Equalizer</Button>
+            </SettingItem>
         </SettingSection>
     );
 };

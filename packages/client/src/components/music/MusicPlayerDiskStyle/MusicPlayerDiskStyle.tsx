@@ -1,6 +1,5 @@
-import styles from './MusicPlayerDiskStyle.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import { Image } from '~/components/shared';
 import { getOriginalImage } from '~/modules/image';
@@ -13,17 +12,17 @@ interface MusicPlayerDiskStyleProps {
 
 const MusicPlayerDiskStyle = ({ isPlaying, src, alt }: MusicPlayerDiskStyleProps) => {
     return (
-        <div className={cx('MusicPlayerDiskStyle', { isPlaying })}>
-            <div className={cx('disc')}>
-                <div className={cx('label')}>
+        <div className={cx('ow-music-player-disk-style-MusicPlayerDiskStyle', { 'ow-music-player-disk-style-isPlaying': isPlaying })}>
+            <div className={cx('ow-music-player-disk-style-disc')}>
+                <div className={cx('ow-music-player-disk-style-label')}>
                     <Image
-                        className={cx('labelImage')}
+                        className={cx('ow-music-player-disk-style-labelImage')}
                         src={getOriginalImage(src)}
                         alt={alt}
                         loading="eager"
                     />
                 </div>
-                <span className={cx('center')} />
+                <span className={cx('ow-music-player-disk-style-center')} />
             </div>
         </div>
     );

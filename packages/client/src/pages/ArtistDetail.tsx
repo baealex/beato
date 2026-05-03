@@ -1,6 +1,5 @@
-import styles from './ArtistDetail.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import { useAppStore as useStore } from '~/store/base-store';
 import { useQuery } from '@tanstack/react-query';
@@ -10,7 +9,7 @@ import { AlbumListItem } from '~/components/album';
 import { ArtistSummary } from '~/components/artist';
 import { TwoToneLayout } from '~/components/layout';
 import { MusicActionPanelContent, MusicListItem } from '~/components/music';
-import { Grid, Text } from '~/components/shared';
+import { Text } from '~/components/shared';
 import { Play } from '~/icon';
 
 import { getArtist } from '~/api';
@@ -59,9 +58,9 @@ export default function ArtistDetail() {
                     <Play />
                 </button>
             )}>
-            <div className={cx('section')}>
-                <div className={cx('section-header')}>
-                    <div className={cx('section-title')}>
+            <div className={cx('ow-artist-detail-section')}>
+                <div className={cx('ow-artist-detail-section-header')}>
+                    <div className={cx('ow-artist-detail-section-title')}>
                         <Text as="h2" size="xl" weight="semibold">
                             Albums
                         </Text>
@@ -70,22 +69,25 @@ export default function ArtistDetail() {
                         </Text>
                     </div>
                 </div>
-                <Grid>
+                <div className={cx('ow-artist-detail-album-rail')}>
                     {artist.albums.map(album => (
-                        <AlbumListItem
-                            key={album.id}
-                            albumCover={album.cover}
-                            albumName={album.name}
-                            artistName={album.publishedYear}
-                            onClick={() => navigate(`/album/${album.id}`)}
-                        />
+                        <div key={album.id} className={cx('ow-artist-detail-album-card')}>
+                            <AlbumListItem
+                                albumCover={album.cover}
+                                albumName={album.name}
+                                artistName={artist.name}
+                                publishedYear={album.publishedYear}
+                                musicCount={album.musics?.length}
+                                onClick={() => navigate(`/album/${album.id}`)}
+                            />
+                        </div>
                     ))}
-                </Grid>
+                </div>
             </div>
 
-            <div className={cx('section')}>
-                <div className={cx('section-header')}>
-                    <div className={cx('section-title')}>
+            <div className={cx('ow-artist-detail-section')}>
+                <div className={cx('ow-artist-detail-section-header')}>
+                    <div className={cx('ow-artist-detail-section-title')}>
                         <Text as="h2" size="xl" weight="semibold">
                             Songs
                         </Text>
@@ -94,7 +96,7 @@ export default function ArtistDetail() {
                         </Text>
                     </div>
                 </div>
-                <div className={cx('music-list')}>
+                <div className={cx('ow-artist-detail-music-list')}>
                     {artist.musics.map(({ id }) => {
                         const music = musicMap.get(id);
 

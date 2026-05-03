@@ -1,7 +1,6 @@
-import classNames from 'classnames/bind';
-import styles from './Flex.module.scss';
+import classNames from 'classnames';
 import { forwardRef } from 'react';
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 type Gap = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
@@ -34,12 +33,12 @@ const Flex = forwardRef<HTMLDivElement, FlexProps & React.HTMLAttributes<HTMLDiv
             ref={ref}
             className={
                 cx([
-                    'flex',
+                    'ow-flex-flex',
                     {
-                        [`d-${direction}`]: direction,
-                        [`j-${justify}`]: justify,
-                        [`a-${align}`]: align,
-                        [`w-${wrap}`]: wrap,
+                        [`ow-flex-d-${direction}`]: direction,
+                        [`ow-flex-j-${justify}`]: justify,
+                        [`ow-flex-a-${align}`]: align,
+                        [`ow-flex-w-${wrap}`]: wrap,
                         [`g-${gap}`]: gap,
                         [`rg-${rowGap}`]: rowGap,
                         [`cg-${columnGap}`]: columnGap

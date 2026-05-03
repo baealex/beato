@@ -1,4 +1,3 @@
-import styles from './PanelContent.module.scss';
 
 interface PanelContentProps {
     header?: React.ReactNode;
@@ -13,27 +12,27 @@ interface PanelContentProps {
 
 export default function PanelContent({ header, items, footer }: PanelContentProps) {
     return (
-        <div className={styles.container}>
+        <div className={'ow-panel-content-container'}>
             {header && (
-                <div className="panel-content">
+                <div className="ow-panel-content-panel-content">
                     {header}
                 </div>
             )}
             {items && (
-                <div className="items">
+                <div className="ow-panel-content-items">
                     {items.map(({ icon, text, isActive, onClick }) => (
                         <button
                             key={text}
-                            className={`clickable item ${isActive ? 'active' : ''}`}
+                            className={`clickable ow-panel-content-item ${isActive ? 'ow-panel-content-active' : ''}`}
                             onClick={onClick}>
                             {icon}
-                            <span className="text">{text}</span>
+                            <span className="ow-panel-content-text">{text}</span>
                         </button>
                     ))}
                 </div>
             )}
             {footer && (
-                <div className="detail-info">
+                <div className="ow-panel-content-detail-info">
                     {footer}
                 </div>
             )}

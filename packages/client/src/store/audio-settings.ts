@@ -20,7 +20,7 @@ class AudioSettingsStore extends BaseStore<AudioSettings> {
         this.state = savedSettings || {
             format: 'mp3',
             bitrate: '128k',
-            useOriginal: false
+            useOriginal: true
         };
     }
 

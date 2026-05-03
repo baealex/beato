@@ -1,4 +1,3 @@
-import styles from './MusicSelector.module.scss';
 
 import { CheckBox, DoubleCheck } from '~/icon';
 
@@ -18,14 +17,14 @@ export default function MusicSelector({
     return (
         <>
             <button
-                className={`${styles.MusicSelector} clickable ${active ? 'active' : ''}`}
+                className={`${'ow-music-selector-MusicSelector'} clickable ${active ? 'ow-music-selector-active' : ''}`}
                 onClick={onClick}>
                 <CheckBox />
                 {label}
             </button>
             {active && (
                 <button
-                    className={`${styles.MusicSelector} clickable`}
+                    className={`${'ow-music-selector-MusicSelector'} clickable`}
                     onClick={onSelectAll}>
                     <DoubleCheck />
                     Select All

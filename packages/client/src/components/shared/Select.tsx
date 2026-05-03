@@ -2,7 +2,6 @@ import * as SelectPrimitive from '@baejino/react-ui/select';
 
 import * as Icon from '~/icon';
 
-import styles from './Select.module.scss';
 
 interface Option {
     value: string;
@@ -25,28 +24,28 @@ export default function Select({ selected, options, onChange }: SelectProps) {
         <SelectPrimitive.Root
             value={selected ? toInternalValue(selected.value) : undefined}
             onValueChange={(value) => onChange(fromInternalValue(value))}>
-            <SelectPrimitive.Trigger className={styles.trigger}>
+            <SelectPrimitive.Trigger className={'ow-select-trigger'}>
                 <SelectPrimitive.Value placeholder="Select an option" />
-                <SelectPrimitive.Icon className={styles.triggerIcon}>
+                <SelectPrimitive.Icon className={'ow-select-triggerIcon'}>
                     <Icon.ChevronDown />
                 </SelectPrimitive.Icon>
             </SelectPrimitive.Trigger>
 
             <SelectPrimitive.Portal>
                 <SelectPrimitive.Content
-                    className={styles.content}
+                    className={'ow-select-content'}
                     position="popper"
                     sideOffset={8}>
-                    <SelectPrimitive.Viewport className={styles.viewport}>
+                    <SelectPrimitive.Viewport className={'ow-select-viewport'}>
                         {options.map((option) => (
                             <SelectPrimitive.Item
                                 key={option.value || EMPTY_OPTION_VALUE}
                                 value={toInternalValue(option.value)}
-                                className={styles.item}>
+                                className={'ow-select-item'}>
                                 <SelectPrimitive.ItemText>
                                     {option.label}
                                 </SelectPrimitive.ItemText>
-                                <SelectPrimitive.ItemIndicator className={styles.itemIndicator}>
+                                <SelectPrimitive.ItemIndicator className={'ow-select-itemIndicator'}>
                                     <Icon.Check />
                                 </SelectPrimitive.ItemIndicator>
                             </SelectPrimitive.Item>

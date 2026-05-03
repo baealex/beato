@@ -38,19 +38,19 @@ export default function MusicActionPanelContent({
                 <>
                     {onAlbumClick && (
                         <button
-                            className="panel-album clickable linkable"
+                            className="ow-panel-content-panel-album clickable linkable"
                             onClick={() => {
                                 panel.close();
                                 setTimeout(onAlbumClick, 100);
                             }}>
                             <Image
-                                className="cover"
+                                className="ow-panel-content-panel-cover"
                                 src={music.album.cover}
                                 alt={music.album.name}
                             />
                             <div>
-                                <div className="panel-sub-title">Album</div>
-                                <div className="panel-sub-content">
+                                <div className="ow-panel-content-panel-sub-title">Album</div>
+                                <div className="ow-panel-content-panel-sub-content">
                                     {music.album.name}
                                 </div>
                             </div>
@@ -58,14 +58,14 @@ export default function MusicActionPanelContent({
                     )}
                     {onArtistClick && (
                         <button
-                            className="panel-artist clickable linkable"
+                            className="ow-panel-content-panel-artist clickable linkable"
                             onClick={() => {
                                 panel.close();
                                 setTimeout(onArtistClick, 100);
                             }}>
                             <div>
-                                <div className="panel-sub-title">Artist</div>
-                                <div className="panel-sub-content">
+                                <div className="ow-panel-content-panel-sub-title">Artist</div>
+                                <div className="ow-panel-content-panel-sub-content">
                                     {music.artist.name}
                                 </div>
                             </div>

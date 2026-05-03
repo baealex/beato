@@ -12,10 +12,10 @@ describe('isSubPagePath', () => {
         expect(isSubPagePath('/album/1')).toBe(true);
         expect(isSubPagePath('/artist/1')).toBe(true);
         expect(isSubPagePath('/playlist/1')).toBe(true);
-        expect(isSubPagePath('/equalizer')).toBe(true);
         expect(isSubPagePath('/player')).toBe(true);
         expect(isSubPagePath('/queue')).toBe(true);
         expect(isSubPagePath('/album')).toBe(false);
+        expect(isSubPagePath('/equalizer')).toBe(false);
         expect(isSubPagePath('/setting')).toBe(false);
     });
 });
@@ -27,8 +27,10 @@ describe('resolveSubPagePresentation', () => {
         expect(resolveSubPagePresentation('/playlist/1')).toBe('stacked');
     });
 
-    it('treats equalizer as a sheet overlay', () => {
-        expect(resolveSubPagePresentation('/equalizer')).toBe('sheet');
+    it('does not treat equalizer as a sub page overlay', () => {
+        expect(resolveSubPagePresentation('/equalizer')).toBe('stacked');
+        expect(shouldRenderSubPageHeader('/equalizer')).toBe(true);
+        expect(shouldHideMiniPlayer('/equalizer')).toBe(false);
     });
 
     it('treats player and queue as fullscreen overlays with their own chrome', () => {

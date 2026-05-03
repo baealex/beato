@@ -1,6 +1,5 @@
-import styles from './Tag.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
 
@@ -21,13 +20,13 @@ const Tag = React.forwardRef<HTMLSpanElement, TagProps>(({
     return (
         <span
             ref={ref}
-            className={cx('Tag', `tone-${tone}`, { selected }, className)}
+            className={cx('ow-tag-Tag', `ow-tag-tone-${tone}`, { 'ow-tag-selected': selected }, className)}
             {...props}>
             {children}
         </span>
     );
 });
 
-Tag.displayName = 'Tag';
+Tag.displayName = 'ow-tag-Tag';
 
 export default Tag;

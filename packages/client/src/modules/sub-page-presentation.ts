@@ -1,8 +1,6 @@
 export type SubPagePresentation = 'stacked' | 'sheet' | 'fullscreen';
 
-const SHEET_ROUTES = new Set([
-    '/equalizer'
-]);
+const SHEET_ROUTES = new Set<string>();
 
 const FULLSCREEN_ROUTES = new Set([
     '/player',
@@ -13,7 +11,6 @@ const SUB_PAGE_PATTERNS = [
     /^\/album\/[^/]+$/,
     /^\/artist\/[^/]+$/,
     /^\/playlist\/[^/]+$/,
-    /^\/equalizer$/,
     /^\/player$/,
     /^\/queue$/
 ];

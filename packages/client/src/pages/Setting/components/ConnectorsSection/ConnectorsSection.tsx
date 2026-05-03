@@ -5,7 +5,6 @@ import { appCopy } from '~/config/copy';
 import { ConnectorListener, socket } from '~/socket';
 import { connectorStore } from '~/store/connector';
 
-import styles from './ConnectorsSection.module.scss';
 
 const DevicesIcon = () => (
     <svg
@@ -37,11 +36,11 @@ export const ConnectorsSection = () => {
             title="Connected Devices"
             icon={<DevicesIcon />}
             description={appCopy.connectors.description}>
-            <div className={styles.connectorList}>
+            <div className={'ow-connectors-section-connectorList'}>
                 {connectors.map((connector) => (
-                    <div key={connector.id} className={styles.connector}>
-                        <div className={styles.connectorCopy}>
-                            <Text as="span" size="sm" className={styles.userAgent}>
+                    <div key={connector.id} className={'ow-connectors-section-connector'}>
+                        <div className={'ow-connectors-section-connectorCopy'}>
+                            <Text as="span" size="sm" className={'ow-connectors-section-userAgent'}>
                                 {connector.userAgent}
                             </Text>
                             <Text as="span" size="xs" variant="muted">
@@ -49,10 +48,10 @@ export const ConnectorsSection = () => {
                             </Text>
                         </div>
                         {connector.id === socket.id ? (
-                            <span className={styles.thisDevice}>This device</span>
+                            <span className={'ow-connectors-section-thisDevice'}>This device</span>
                         ) : (
                             <button
-                                className={styles.kick}
+                                className={'ow-connectors-section-kick'}
                                 onClick={() => ConnectorListener.remove(connector.id)}>
                                 Remove
                             </button>

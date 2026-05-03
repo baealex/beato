@@ -1,16 +1,13 @@
-import styles from './MusicPlayerVisualizerStyle.module.scss';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import { useEffect, useMemo, useRef } from 'react';
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 import { Image } from '~/components/shared';
 import { getOriginalImage } from '~/modules/image';
 import { webAudioContext } from '~/modules/web-audio-context';
 
 import {
-    digital,
     line,
-    ring,
     round
 } from './visualizers';
 import {
@@ -43,12 +40,6 @@ const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt, accentColor }: 
             case 'line':
                 line(canvas, ctx, bufferLength, dataArray, palette);
                 break;
-            case 'ring':
-                ring(canvas, ctx, bufferLength, dataArray, palette);
-                break;
-            case 'digital':
-                digital(canvas, ctx, bufferLength, dataArray, palette);
-                break;
             default:
                 round(canvas, ctx, bufferLength, dataArray, palette);
                 break;
@@ -77,18 +68,18 @@ const MusicPlayerVisualizerStyle = ({ type, isPlaying, src, alt, accentColor }: 
     }, [dataArray, palette, type]);
 
     return (
-        <div className={cx('MusicPlayerVisualizerStyle', { halo: type === 'ring' })}>
-            <div className={cx('foreground-wrapper')}>
+        <div className={cx('ow-music-player-visualizer-style-MusicPlayerVisualizerStyle')}>
+            <div className={cx('ow-music-player-visualizer-style-foreground-wrapper')}>
                 <Image
-                    className={cx('foreground', { isPlaying })}
+                    className={cx('ow-music-player-visualizer-style-foreground', { 'ow-music-player-visualizer-style-isPlaying': isPlaying })}
                     src={getOriginalImage(src)}
                     alt={alt}
                 />
             </div>
             <canvas
                 ref={ref}
-                width={type === 'ring' ? 640 : 900}
-                height={type === 'ring' ? 640 : 900}
+                width={900}
+                height={900}
             />
         </div>
     );

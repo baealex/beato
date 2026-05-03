@@ -1,6 +1,5 @@
-import styles from './MusicPlayer.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import { useAppStore as useStore } from '~/store/base-store';
 import { useNavigate } from 'react-router-dom';
@@ -53,9 +52,9 @@ const MusicPlayer = () => {
     };
 
     return (
-        <div className={cx('MusicPlayer')}>
+        <div className={cx('ow-music-player-MusicPlayer')}>
             <div
-                className={cx('progress')}
+                className={cx('ow-music-player-progress')}
                 role="progressbar"
                 aria-valuenow={progress}
                 aria-valuemin={0}
@@ -64,62 +63,62 @@ const MusicPlayer = () => {
                 onMouseMove={handleMoveProgress}
                 onTouchMove={handleMoveProgress}>
                 <div
-                    className={cx('bar')}
+                    className={cx('ow-music-player-bar')}
                     style={{ transform: `translateX(-${100 - progress}%)` }}
                 />
             </div>
-            <div className={cx('content')}>
+            <div className={cx('ow-music-player-content')}>
                 <button
-                    className={cx('trackInfo')}
+                    className={cx('ow-music-player-trackInfo')}
                     onClick={() => currentMusic && navigate('/player')}>
-                    <div className={cx('albumArt')}>
+                    <div className={cx('ow-music-player-albumArt')}>
                         <Image
-                            className={cx('art')}
+                            className={cx('ow-music-player-art')}
                             src={currentMusic?.album.cover}
                             alt={currentMusic?.album.name ?? ''}
                             loading="eager"
                             icon={<Icon.Disc />}
                         />
                     </div>
-                    <div className={cx('meta')}>
-                        <span className={cx('title')}>
+                    <div className={cx('ow-music-player-meta')}>
+                        <span className={cx('ow-music-player-title')}>
                             {currentMusic?.name ?? 'No music'}
                         </span>
-                        <span className={cx('artist')}>
+                        <span className={cx('ow-music-player-artist')}>
                             {currentMusic?.artist.name ?? ''}
                         </span>
                     </div>
                 </button>
-                <div className={cx('controls')}>
+                <div className={cx('ow-music-player-controls')}>
                     <button
-                        className={cx('controlButton', 'secondary')}
+                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary')}
                         onClick={() => queueStore.changeRepeatMode()}>
                         {repeatMode === 'all' && <Icon.Repeat />}
                         {repeatMode === 'one' && <Icon.Infinite />}
                         {repeatMode === 'none' && <Icon.RightLeft />}
                     </button>
                     <button
-                        className={cx('controlButton', 'secondary')}
+                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary')}
                         onClick={() => queueStore.prev()}>
                         <Icon.SkipBack />
                     </button>
                     <button
-                        className={cx('controlButton', 'primary')}
+                        className={cx('ow-music-player-controlButton', 'ow-music-player-primary')}
                         onClick={() => isPlaying ? queueStore.pause() : queueStore.play()}>
                         {isPlaying ? <Icon.Pause /> : <Icon.Play />}
                     </button>
                     <button
-                        className={cx('controlButton', 'secondary')}
+                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary')}
                         onClick={() => queueStore.next()}>
                         <Icon.SkipForward />
                     </button>
                     <button
-                        className={cx('controlButton', 'secondary', { active: shuffle })}
+                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary', { 'ow-music-player-active': shuffle })}
                         onClick={() => queueStore.toggleShuffle()}>
                         <Icon.Shuffle />
                     </button>
                     <button
-                        className={cx('controlButton', 'secondary', 'queue')}
+                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary', 'ow-music-player-queue')}
                         onClick={() => navigate('/queue')}>
                         <Icon.ListMusic />
                     </button>

@@ -1,6 +1,5 @@
-import styles from './SummaryTitle.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
 import Text, { type TextElement } from '../Text';
@@ -17,7 +16,7 @@ const SummaryTitle = ({ as = 'div', className, children }: SummaryTitleProps) =>
             as={as}
             size="title"
             weight="bold"
-            className={cx('SummaryTitle', className)}>
+            className={cx('ow-summary-title-SummaryTitle', className)}>
             {children}
         </Text>
     );

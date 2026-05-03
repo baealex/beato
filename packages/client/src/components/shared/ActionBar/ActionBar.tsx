@@ -1,6 +1,5 @@
-import styles from './ActionBar.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
 
@@ -14,7 +13,7 @@ export interface ActionBarButtonProps extends React.ButtonHTMLAttributes<HTMLBut
 
 const ActionBar = ({ children }: ActionBarProps) => {
     return (
-        <div className={cx('ActionBar')}>{children}</div>
+        <div className={cx('ow-action-bar-ActionBar')}>{children}</div>
     );
 };
 
@@ -28,13 +27,13 @@ export const ActionBarButton = React.forwardRef<HTMLButtonElement, ActionBarButt
         <button
             ref={ref}
             type={type}
-            className={cx('ActionBarButton', className)}
+            className={cx('ow-action-bar-ActionBarButton', className)}
             {...props}>
             {children}
         </button>
     );
 });
 
-ActionBarButton.displayName = 'ActionBarButton';
+ActionBarButton.displayName = 'ow-action-bar-ActionBarButton';
 
 export default ActionBar;

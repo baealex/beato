@@ -1,6 +1,5 @@
-import styles from './Queue.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import type {
     CSSProperties,
@@ -240,15 +239,7 @@ export default function Queue() {
             0,
             scrollNode.scrollTop + listRect.top - containerRect.top + selectedVirtualRow.top - 80
         );
-        const travelDistance = Math.abs(nextTop - scrollNode.scrollTop);
-        const behavior = travelDistance > Math.max(containerRect.height * 1.5, 480)
-            ? 'auto'
-            : 'smooth';
-
-        scrollNode.scrollTo({
-            top: nextTop,
-            behavior
-        });
+        scrollNode.scrollTop = nextTop;
     }, [selectedVirtualRow?.top]);
 
     useEffect(() => {
@@ -438,7 +429,7 @@ export default function Queue() {
                         return (
                             <li
                                 key={row.key}
-                                className={cx('virtual-row', 'section-label', { 'section-label-current': row.current })}
+                                className={cx('ow-queue-virtual-row', 'ow-queue-section-label', { 'ow-queue-section-label-current': row.current })}
                                 style={{
                                     top: `${row.top}px`,
                                     height: `${row.height}px`
@@ -449,7 +440,7 @@ export default function Queue() {
                     }
 
                     return renderQueueItem(row.id, row.index, row.tone, {
-                        className: cx('virtual-row', { 'drag-source-hidden': dragState?.activeId === row.id }),
+                        className: cx('ow-queue-virtual-row', { 'ow-queue-drag-source-hidden': dragState?.activeId === row.id }),
                         style: {
                             top: `${row.top + QUEUE_TRACK_ROW_GAP / 2}px`,
                             height: `${QUEUE_TRACK_CARD_HEIGHT}px`
@@ -458,14 +449,14 @@ export default function Queue() {
                 })}
                 {dragIndicatorTop !== null && (
                     <li
-                        className={cx('drop-indicator')}
+                        className={cx('ow-queue-drop-indicator')}
                         style={{ top: `${dragIndicatorTop}px` }}
                     />
                 )}
                 {dragState && dragOverlayTop !== null && (
                     <QueueItem
                         key={`drag-overlay-${dragState.activeId}`}
-                        className={cx('virtual-row', 'drag-overlay')}
+                        className={cx('ow-queue-virtual-row', 'ow-queue-drag-overlay')}
                         music={dragState.music}
                         index={dragState.activeIndex}
                         tone={dragState.tone}
@@ -485,31 +476,31 @@ export default function Queue() {
     };
 
     return (
-        <div className={cx('Queue')} ref={scrollRef}>
-            <div className={cx('top-bar')}>
-                <div className={cx('top-bar-inner')}>
+        <div className={cx('ow-queue-Queue')} ref={scrollRef}>
+            <div className={cx('ow-queue-top-bar')}>
+                <div className={cx('ow-queue-top-bar-inner')}>
                     <button
                         type="button"
-                        className={cx('utility-button')}
+                        className={cx('ow-queue-utility-button')}
                         aria-label="Go back"
                         onClick={back}>
                         <Icon.ChevronLeft />
                     </button>
 
-                    <div className={cx('page-copy')}>
+                    <div className={cx('ow-queue-page-copy')}>
                         <Text
                             as="h1"
                             size="title"
                             weight="semibold"
-                            className={cx('page-title', { 'page-title-selecting': isSelectMode })}>
+                            className={cx('ow-queue-page-title', { 'ow-queue-page-title-selecting': isSelectMode })}>
                             {isSelectMode && (
-                                <span className={cx('page-title-selection')}>
+                                <span className={cx('ow-queue-page-title-selection')}>
                                     {selectedItems.length} selected
                                 </span>
                             )}
-                            <span className={cx('page-title-default')}>Queue</span>
+                            <span className={cx('ow-queue-page-title-default')}>Queue</span>
                         </Text>
-                        <Text as="p" variant="muted" size="xs" className={cx('page-summary')}>
+                        <Text as="p" variant="muted" size="xs" className={cx('ow-queue-page-summary')}>
                             {isSelectMode
                                 ? `${selectedItems.length} selected`
                                 : queueSummary}
@@ -517,19 +508,19 @@ export default function Queue() {
                     </div>
 
                     {items.length > 0 ? (
-                        <div className={cx('top-bar-actions')}>
+                        <div className={cx('ow-queue-top-bar-actions')}>
                             {isSelectMode ? (
                                 <>
                                     <button
                                         type="button"
-                                        className={cx('summary-action')}
+                                        className={cx('ow-queue-summary-action')}
                                         disabled={selectedItems.length === items.length}
                                         onClick={() => setSelectedItems(items)}>
                                         Select all
                                     </button>
                                     <button
                                         type="button"
-                                        className={cx('edit-button', { active: true })}
+                                        className={cx('ow-queue-edit-button', { active: true })}
                                         onClick={() => setIsSelectMode(false)}>
                                         Done
                                     </button>
@@ -537,36 +528,36 @@ export default function Queue() {
                             ) : (
                                 <button
                                     type="button"
-                                    className={cx('edit-button')}
+                                    className={cx('ow-queue-edit-button')}
                                     onClick={() => setIsSelectMode(true)}>
                                     Edit
                                 </button>
                             )}
                         </div>
                     ) : (
-                        <div className={cx('top-bar-spacer')} />
+                        <div className={cx('ow-queue-top-bar-spacer')} />
                     )}
                 </div>
             </div>
 
-            <div className={cx('container')}>
+            <div className={cx('ow-queue-container')}>
                 {items.length > 0 ? (
                     <>
-                        <div className={cx('list-shell')} ref={listRef}>
+                        <div className={cx('ow-queue-list-shell')} ref={listRef}>
                             <ul
-                                className={cx('virtual-list')}
+                                className={cx('ow-queue-virtual-list')}
                                 style={{ height: `${virtualLayout.totalHeight}px` }}>
                                 {renderVirtualRows()}
                             </ul>
                         </div>
                     </>
                 ) : (
-                    <div className={cx('empty-state')}>
-                        <div className={cx('empty-icon')}>
+                    <div className={cx('ow-queue-empty-state')}>
+                        <div className={cx('ow-queue-empty-icon')}>
                             <Icon.ListMusic />
                         </div>
 
-                        <div className={cx('empty-copy')}>
+                        <div className={cx('ow-queue-empty-copy')}>
                             <Text as="h1" size="2xl" weight="bold">
                                 Queue is empty.
                             </Text>
@@ -575,10 +566,10 @@ export default function Queue() {
                             </Text>
                         </div>
 
-                        <div className={cx('empty-actions')}>
+                        <div className={cx('ow-queue-empty-actions')}>
                             <button
                                 type="button"
-                                className={cx('empty-button', 'empty-button-primary')}
+                                className={cx('ow-queue-empty-button', 'ow-queue-empty-button-primary')}
                                 onClick={() => navigate('/')}>
                                 <Icon.Music />
                                 <span>Open library</span>
@@ -588,10 +579,10 @@ export default function Queue() {
                 )}
 
                 {isSelectMode && selectedItems.length > 0 && (
-                    <div className={cx('selection-actions')}>
+                    <div className={cx('ow-queue-selection-actions')}>
                         <button
                             type="button"
-                            className={cx('action-button', 'action-button-primary')}
+                            className={cx('ow-queue-action-button', 'ow-queue-action-button-primary')}
                             onClick={() => panel.open({
                                 title: 'Move to playlist',
                                 content: (
@@ -611,7 +602,7 @@ export default function Queue() {
 
                         <button
                             type="button"
-                            className={cx('action-button')}
+                            className={cx('ow-queue-action-button')}
                             onClick={() => {
                                 queueStore.removeItems(selectedItems);
                                 setSelectedItems([]);

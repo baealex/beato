@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { getImage, getOriginalImage } from './image';
+import { DEFAULT_ALBUM_ART, getImage, getOriginalImage } from './image';
 
 describe('getImage', () => {
-    it('does not provide default artwork for an empty source', () => {
-        expect(getImage()).toBe('');
-        expect(getImage('')).toBe('');
-        expect(getOriginalImage()).toBe('');
+    it('provides default artwork for an empty source', () => {
+        expect(getImage()).toBe(DEFAULT_ALBUM_ART);
+        expect(getImage('')).toBe(DEFAULT_ALBUM_ART);
+        expect(getOriginalImage()).toBe(DEFAULT_ALBUM_ART);
     });
 
     it('keeps provided artwork paths and removes resized segments for original artwork surfaces', () => {

@@ -23,15 +23,9 @@ importers:
       '@baejino/handy':
         specifier: ^0.2.3
         version: 0.2.3
-      '@baejino/icon':
-        specifier: ^0.2.1
-        version: 0.2.1(react@19.2.5)
       '@baejino/react-ui':
         specifier: ^0.2.0
         version: 0.2.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@baejino/style':
-        specifier: ^0.2.2
-        version: 0.2.2
       '@dnd-kit/core':
         specifier: ^6.3.1
         version: 6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -56,6 +50,9 @@ importers:
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
+      lucide-react:
+        specifier: ^1.14.0
+        version: 1.14.0(react@19.2.5)
       motion:
         specifier: ^12.38.0
         version: 12.38.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -71,9 +68,6 @@ importers:
       react-router-dom:
         specifier: ^7.14.2
         version: 7.14.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      sass:
-        specifier: ^1.97.3
-        version: 1.99.0
       socket.io-client:
         specifier: ^4.8.3
         version: 4.8.3
@@ -380,19 +374,11 @@ packages:
   '@baejino/handy@0.2.3':
     resolution: {integrity: sha512-znE97aBZ4BaZPf7/oqDtpA7aWO1zXX9LGtfd80wSl7jUnii7rHddQt7Kx5tPbXK47DKxkbQLXe5UGNiZHRMlAg==}
 
-  '@baejino/icon@0.2.1':
-    resolution: {integrity: sha512-z0P7H/rL2wyx19RwvS+wLN9aa1lU5S7vbpQG6j9IqRuOF8/1cDZCDDDKD3eq/vWDAc0hWmWaJz35vIX+vFAbpg==}
-    peerDependencies:
-      react: '>=18'
-
   '@baejino/react-ui@0.2.0':
     resolution: {integrity: sha512-NHWgMhHcXI8IQARUyt2KnQ8OuMkHxGU6KWB0nBrrkDH9tWxCmc+5+Qav6Bnubz3SCdZy5inTJFN74he06dB7Wg==}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
-
-  '@baejino/style@0.2.2':
-    resolution: {integrity: sha512-+tLSBglpmdwS6Ji9aB+QRsmBsNmgpiLqEnjwTvyyG1YF7OtfgxGG1qBLMXnNXBhJ1Csg+E1ID7Zd2RHpUaDpbw==}
 
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
@@ -3292,6 +3278,11 @@ packages:
     resolution: {integrity: sha512-DqC6n3QQ77zdFpCMASA1a3Jlb64Hv2N2DciFGkO/4L9+q/IpIAuRlKOvCXabtRW6cQf8usbmM6BE/TOPysCdIA==}
     engines: {bun: '>=1.0.0', deno: '>=1.30.0', node: '>=8.0.0'}
 
+  lucide-react@1.14.0:
+    resolution: {integrity: sha512-+1mdWcfSJVUsaTIjN9zoezmUhfXo5l0vP7ekBMPo3jcS/aIkxHnXqAPsByszMZx/Y8oQBRJxJx5xg+RH3urzxA==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
@@ -4706,10 +4697,6 @@ snapshots:
 
   '@baejino/handy@0.2.3': {}
 
-  '@baejino/icon@0.2.1(react@19.2.5)':
-    dependencies:
-      react: 19.2.5
-
   '@baejino/react-ui@0.2.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@radix-ui/react-alert-dialog': 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -4724,8 +4711,6 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
-
-  '@baejino/style@0.2.2': {}
 
   '@bcoe/v8-coverage@0.2.3': {}
 
@@ -6557,6 +6542,7 @@ snapshots:
   chokidar@4.0.3:
     dependencies:
       readdirp: 4.1.2
+    optional: true
 
   chokidar@5.0.0:
     dependencies:
@@ -7195,7 +7181,8 @@ snapshots:
 
   ignore@7.0.5: {}
 
-  immutable@5.1.5: {}
+  immutable@5.1.5:
+    optional: true
 
   import-fresh@3.3.1:
     dependencies:
@@ -7765,6 +7752,10 @@ snapshots:
 
   lru.min@1.1.4: {}
 
+  lucide-react@1.14.0(react@19.2.5):
+    dependencies:
+      react: 19.2.5
+
   magic-string@0.30.21:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -8236,7 +8227,8 @@ snapshots:
     dependencies:
       picomatch: 2.3.2
 
-  readdirp@4.1.2: {}
+  readdirp@4.1.2:
+    optional: true
 
   readdirp@5.0.0: {}
 
@@ -8354,6 +8346,7 @@ snapshots:
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.6
+    optional: true
 
   scheduler@0.27.0: {}
 

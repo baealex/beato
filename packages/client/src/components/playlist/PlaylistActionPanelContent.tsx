@@ -50,20 +50,20 @@ export default function PlaylistActionPanelContent({
             <PanelContent
                 header={onPlaylistClick && (
                     <button
-                        className="panel-album clickable linkable"
+                        className="ow-panel-content-panel-album clickable linkable"
                         onClick={() => {
                             panel.close();
                             setTimeout(onPlaylistClick, 100);
                         }}>
                         <GridImage
-                            className="album-cover-grid"
+                            className="ow-panel-content-album-cover-grid"
                             images={playlist.headerMusics.map(music => musicMap.get(music.id)?.album.cover ?? '')}
                         />
                         <div>
-                            <div className="panel-sub-title">
+                            <div className="ow-panel-content-panel-sub-title">
                                 {playlist.musicCount} songs
                             </div>
-                            <div className="panel-sub-content">
+                            <div className="ow-panel-content-panel-sub-content">
                                 {playlist.name}
                             </div>
                         </div>

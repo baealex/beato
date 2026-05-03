@@ -1,5 +1,5 @@
+import classNames from 'classnames';
 import type { ChangeEvent, CSSProperties } from 'react';
-import styles from './EqualizerSlider.module.scss';
 
 interface EqualizerSliderProps {
     name: string;
@@ -10,6 +10,7 @@ interface EqualizerSliderProps {
     min?: number;
     max?: number;
     disabled?: boolean;
+    orientation?: 'horizontal' | 'vertical';
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     onReset?: () => void;
 }
@@ -23,6 +24,7 @@ const EqualizerSlider = ({
     min = -10,
     max = 10,
     disabled = false,
+    orientation = 'horizontal',
     onChange,
     onReset
 }: EqualizerSliderProps) => {
@@ -42,17 +44,17 @@ const EqualizerSlider = ({
     } as CSSProperties;
 
     return (
-        <div className={styles.sliderRow}>
-            <div className={styles.labelGroup}>
-                <span className={styles.label}>{displayName}</span>
-                <span className={styles.meta}>
+        <div className={classNames('ow-equalizer-slider-sliderRow', orientation)}>
+            <div className={'ow-equalizer-slider-labelGroup'}>
+                <span className={'ow-equalizer-slider-label'}>{displayName}</span>
+                <span className={'ow-equalizer-slider-meta'}>
                     {frequency}
                     {tone && ` · ${tone}`}
                 </span>
             </div>
-            <div className={styles.sliderControl}>
+            <div className={'ow-equalizer-slider-sliderControl'}>
                 <input
-                    className={styles.sliderInput}
+                    className={'ow-equalizer-slider-sliderInput'}
                     type="range"
                     name={name}
                     min={min}
@@ -60,15 +62,16 @@ const EqualizerSlider = ({
                     value={value}
                     disabled={disabled}
                     aria-label={`${displayName} gain`}
+                    aria-orientation={orientation}
                     style={sliderStyle}
                     onChange={onChange}
                 />
             </div>
-            <div className={styles.valueGroup}>
-                <span className={styles.valueDisplay}>{valueLabel}</span>
+            <div className={'ow-equalizer-slider-valueGroup'}>
+                <span className={'ow-equalizer-slider-valueDisplay'}>{valueLabel}</span>
                 <button
                     type="button"
-                    className={styles.resetButton}
+                    className={'ow-equalizer-slider-resetButton'}
                     disabled={disabled || value === 0}
                     onClick={onReset}>
                     Reset

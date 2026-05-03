@@ -1,14 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { Badge, Button, SettingSection, SettingItem, Tag, Text } from '~/components/shared';
+import { Badge, Button, SettingSection, SettingItem, Text } from '~/components/shared';
 import { getLatestSyncReport } from '~/api';
 import { queryKeys } from '~/api/query-keys';
 import { toast } from '~/modules/toast';
 import { socket } from '~/socket';
-import type { SyncReport, SyncReportItem } from '~/models/type';
+import type { SyncReport } from '~/models/type';
 
-import styles from './SynchronizationSection.module.scss';
 
 export interface SynchronizationSectionProps {
     onSyncMusic: (force: boolean) => Promise<void>;
@@ -32,52 +31,17 @@ const formatTimestamp = (value: string | null) => {
         return 'Unavailable';
     }
 
-    return new Date(value).toLocaleString();
-};
+    const date = new Date(value);
 
-const buildDetailLabel = (item: SyncReportItem) => {
-    if (item.kind === 'moved' && item.previousFilePath) {
-        return `${item.previousFilePath} -> ${item.filePath}`;
+    if (Number.isNaN(date.getTime())) {
+        return 'Unavailable';
     }
 
-    return item.filePath;
+    return date.toLocaleString();
 };
 
 const syncStatusTone = (status: SyncReport['status']) => {
     return status === 'success' ? 'success' : 'danger';
-};
-
-const reportSections = (report: SyncReport | null) => {
-    if (!report) {
-        return [];
-    }
-
-    return [
-        {
-            key: 'created',
-            title: 'Created',
-            count: report.createdCount,
-            items: report.created
-        },
-        {
-            key: 'moved',
-            title: 'Moved',
-            count: report.movedCount,
-            items: report.moved
-        },
-        {
-            key: 'duplicate',
-            title: 'Duplicate',
-            count: report.duplicateCount,
-            items: report.duplicate
-        },
-        {
-            key: 'missing',
-            title: 'Missing',
-            count: report.missingCount,
-            items: report.missing
-        }
-    ];
 };
 
 export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionProps) => {
@@ -88,7 +52,6 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
         queryKey: queryKeys.syncReports.latest(),
         queryFn: () => getLatestSyncReport().then((response) => response.data.latestSyncReport)
     });
-    const sections = useMemo(() => reportSections(latestSyncReport ?? null), [latestSyncReport]);
 
     useEffect(() => {
         const handleSyncMusic = (serverMessage: string | 'done' | 'error') => {
@@ -136,19 +99,19 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
                 divider={!latestSyncReport}>
                 <div>
                     {progressMessage && (
-                        <div className={styles.progressContainer}>
-                            <div className={styles.progressBar}>
+                        <div className={'ow-synchronization-section-progressContainer'}>
+                            <div className={'ow-synchronization-section-progressBar'}>
                                 <div
-                                    className={`${styles.progressIndicator} ${isSyncing ? styles.animating : ''}`}
+                                    className={`${'ow-synchronization-section-progressIndicator'} ${isSyncing ? 'ow-synchronization-section-animating' : ''}`}
                                 />
                             </div>
-                            <Text as="p" size="sm" variant="secondary" className={styles.progressMessage}>
+                            <Text as="p" size="sm" variant="secondary" className={'ow-synchronization-section-progressMessage'}>
                                 {progressMessage}
                             </Text>
                         </div>
                     )}
 
-                    <div className={styles.buttonContainer}>
+                    <div className={'ow-synchronization-section-buttonContainer'}>
                         <Button disabled={isSyncing} onClick={() => handleSync(false)}>
                             Sync
                         </Button>
@@ -160,96 +123,18 @@ export const SynchronizationSection = ({ onSyncMusic }: SynchronizationSectionPr
             </SettingItem>
 
             {latestSyncReport && (
-                <div className={styles.reportCard}>
-                    <div className={styles.reportHeader}>
-                        <div>
-                            <Text as="h5" size="sm" weight="semibold">
-                                Latest Sync Report
-                            </Text>
-                            <Text as="p" variant="muted" size="xs">
-                                Started {formatTimestamp(latestSyncReport.startedAt)}
-                            </Text>
-                        </div>
-                        <Badge tone={syncStatusTone(latestSyncReport.status)}>
-                            {latestSyncReport.status}
-                        </Badge>
-                    </div>
-
-                    <div className={styles.summaryGrid}>
-                        {([
-                            {
-                                label: 'Scanned',
-                                value: latestSyncReport.scannedFiles
-                            },
-                            {
-                                label: 'Indexed',
-                                value: latestSyncReport.indexedFiles
-                            },
-                            {
-                                label: 'Created',
-                                value: latestSyncReport.createdCount
-                            },
-                            {
-                                label: 'Moved',
-                                value: latestSyncReport.movedCount
-                            },
-                            {
-                                label: 'Duplicate',
-                                value: latestSyncReport.duplicateCount
-                            },
-                            {
-                                label: 'Missing',
-                                value: latestSyncReport.missingCount
-                            }
-                        ] as const).map(({ label, value }) => (
-                            <div key={label} className={styles.summaryItem}>
-                                <Text as="span" size="xs" variant="muted">{label}</Text>
-                                <Text as="strong" size="sm" weight="semibold">{value}</Text>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className={styles.reportMeta}>
-                        <Text as="p" variant="muted" size="xs">
-                            Completed {formatTimestamp(latestSyncReport.completedAt)}
+                <div className={'ow-synchronization-section-reportRow'}>
+                    <div className={'ow-synchronization-section-reportCopy'}>
+                        <Text as="span" size="sm" weight="semibold">
+                            Latest sync
                         </Text>
-                        <Text as="p" variant="muted" size="xs">
-                            {latestSyncReport.force ? 'Force sync' : 'Normal sync'}
+                        <Text as="span" size="xs" variant="muted">
+                            {latestSyncReport.scannedFiles} scanned · {latestSyncReport.indexedFiles} indexed · {latestSyncReport.completedAt ? `Completed ${formatTimestamp(latestSyncReport.completedAt)}` : 'Completion unavailable'}
                         </Text>
                     </div>
-
-                    <div className={styles.reportDetails}>
-                        {sections.map((section) => (
-                            <details key={section.key} className={styles.detailGroup}>
-                                <summary>
-                                    <Text as="span" size="sm" weight="semibold">{section.title}</Text>
-                                    <Tag
-                                        tone={section.count > 0 ? 'accent' : 'neutral'}
-                                        selected={section.count > 0}>
-                                        {section.count}
-                                    </Tag>
-                                </summary>
-                                {section.items.length === 0 ? (
-                                    <Text as="p" size="sm" variant="muted" className={styles.emptyDetail}>
-                                        No items in this group.
-                                    </Text>
-                                ) : (
-                                    <ul className={styles.detailList}>
-                                        {section.items.map((item) => (
-                                            <li key={item.id} className={styles.detailItem}>
-                                                <Text as="p" size="sm" weight="semibold">
-                                                    {item.musicName}
-                                                </Text>
-                                                <Text as="p" size="xs" variant="muted">
-                                                    {buildDetailLabel(item)}
-                                                </Text>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </details>
-                        ))}
-                    </div>
+                    <Badge tone={syncStatusTone(latestSyncReport.status)}>
+                        {latestSyncReport.status}
+                    </Badge>
                 </div>
             )}
         </SettingSection>

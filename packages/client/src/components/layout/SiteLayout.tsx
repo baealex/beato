@@ -1,6 +1,5 @@
-import styles from './SiteLayout.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
@@ -30,6 +29,7 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     const setSearchParamsRef = useRef(setSearchParams);
     const isSubPage = isSubPagePath(location.pathname);
     const subPagePresentation = resolveSubPagePresentation(location.pathname);
+    const subPagePresentationClass = `ow-site-layout-${subPagePresentation}`;
     const hasSubPageHeader = shouldRenderSubPageHeader(location.pathname);
     const hideMiniPlayer = shouldHideMiniPlayer(location.pathname);
 
@@ -80,9 +80,9 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     return (
         <main>
             {!isSubPage && <SiteHeader />}
-            <div className={cx('contentFrame', { hasSubPage: isSubPage })}>
+            <div className={cx('ow-site-layout-contentFrame', { 'ow-site-layout-hasSubPage': isSubPage })}>
                 {!isSubPage && (
-                    <div ref={containerRef} className={cx('pageContent', 'main-container')}>
+                    <div ref={containerRef} className={cx('ow-site-layout-pageContent', 'main-container')}>
                         <Suspense fallback={<Loading />}>
                             <Outlet />
                         </Suspense>
@@ -90,24 +90,24 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
                 )}
                 {isSubPage && (
                     <div
-                        className={cx('subPageFrame', subPagePresentation)}>
-                        <div className={cx('subPageBackdrop')} />
+                        className={cx('ow-site-layout-subPageFrame', subPagePresentationClass)}>
+                        <div className={cx('ow-site-layout-subPageBackdrop')} />
                         <div
                             key={location.pathname}
-                            className={cx('subPageSurface', subPagePresentation)}>
+                            className={cx('ow-site-layout-subPageSurface', subPagePresentationClass)}>
                             {hasSubPageHeader ? (
                                 <>
                                     <SubPageHeader />
                                     <div
                                         ref={containerRef}
-                                        className={cx('subPageContent', 'main-container', subPagePresentation)}>
+                                        className={cx('ow-site-layout-subPageContent', 'main-container', subPagePresentationClass)}>
                                         <Suspense fallback={<Loading />}>
                                             <Outlet />
                                         </Suspense>
                                     </div>
                                 </>
                             ) : (
-                                <div className={cx('subPageContent', subPagePresentation)}>
+                                <div className={cx('ow-site-layout-subPageContent', subPagePresentationClass)}>
                                     <Suspense fallback={<Loading />}>
                                         <Outlet />
                                     </Suspense>

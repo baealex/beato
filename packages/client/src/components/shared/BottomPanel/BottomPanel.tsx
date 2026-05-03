@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 
 import { useDragDismiss } from '~/hooks';
 
-import styles from './BottomPanel.module.scss';
 
 interface BottomPanelProps {
     title?: string;
@@ -67,25 +66,25 @@ export default function BottomPanel({
                 }
             }}>
             <Dialog.Portal>
-                <Dialog.Overlay className={styles.overlay} />
+                <Dialog.Overlay className={'ow-bottom-panel-overlay'} />
 
                 <Dialog.Content
-                    className={styles.content}
+                    className={'ow-bottom-panel-content'}
                     style={{ '--panel-offset': `${dragOffset}px` } as CSSProperties}>
                     <div
-                        className={styles.header}
+                        className={'ow-bottom-panel-header'}
                         onPointerDown={handlePointerDown}
                         onPointerMove={handlePointerMove}
                         onPointerUp={handlePointerEnd}
                         onPointerCancel={handlePointerEnd}>
-                        <div className={styles.handle} aria-hidden="true" />
+                        <div className={'ow-bottom-panel-handle'} aria-hidden="true" />
 
-                        <Dialog.Title className={title ? styles.title : styles.visuallyHidden}>
+                        <Dialog.Title className={title ? 'ow-bottom-panel-title' : 'ow-bottom-panel-visuallyHidden'}>
                             {title || DEFAULT_TITLE}
                         </Dialog.Title>
                     </div>
 
-                    <div className={styles.body}>
+                    <div className={'ow-bottom-panel-body'}>
                         {children}
                     </div>
                 </Dialog.Content>

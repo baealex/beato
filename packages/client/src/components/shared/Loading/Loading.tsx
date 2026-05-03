@@ -1,4 +1,3 @@
-import styles from './Loading.module.scss';
 import { useEffect, useState } from 'react';
 
 const Loading = () => {
@@ -14,8 +13,8 @@ const Loading = () => {
 
     return (
         shouldShow && (
-            <div className={styles.Loading}>
-                <div className={styles['sound-wave']}>
+            <div className={'ow-loading-Loading'}>
+                <div className={'ow-loading-sound-wave'}>
                     <div />
                     <div />
                     <div />

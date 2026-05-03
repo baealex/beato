@@ -1,6 +1,5 @@
-import styles from './IconButton.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
 
@@ -26,13 +25,13 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(({
         <button
             ref={ref}
             type={type}
-            className={cx('IconButton', `size-${size}`, `tone-${tone}`, { active }, className)}
+            className={cx('ow-icon-button-IconButton', `ow-icon-button-size-${size}`, `ow-icon-button-tone-${tone}`, { 'ow-icon-button-active': active }, className)}
             {...props}>
             {children}
         </button>
     );
 });
 
-IconButton.displayName = 'IconButton';
+IconButton.displayName = 'ow-icon-button-IconButton';
 
 export default IconButton;

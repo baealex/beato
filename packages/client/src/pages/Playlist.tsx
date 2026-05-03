@@ -24,7 +24,6 @@ import { PlaylistListener } from '~/socket';
 
 import { playlistStore } from '~/store/playlist';
 import { panel } from '~/modules/panel';
-import styles from './Playlist.module.scss';
 
 function PlaylistDndItem({
     playlist,
@@ -48,16 +47,16 @@ function PlaylistDndItem({
             ref={setNodeRef}
             direction="row"
             align="center"
-            className={styles.playlistRow}
+            className={'ow-playlist-playlistRow'}
             style={style}
             {...attributes}>
             <IconButton
                 aria-label={`Reorder ${playlist.name}`}
-                className={styles.dragHandle}
+                className={'ow-playlist-dragHandle'}
                 {...listeners}>
                 <Menu />
             </IconButton>
-            <div className={styles.playlistItemShell}>
+            <div className={'ow-playlist-playlistItemShell'}>
                 <PlaylistItem
                     key={playlist.id}
                     {...playlist}

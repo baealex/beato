@@ -91,8 +91,7 @@ const line: RenderVisualizer = (
     lineGradient.addColorStop(1, visualizerColor(palette, 0.98, 0.94));
 
     ctx.save();
-    ctx.shadowBlur = 18;
-    ctx.shadowColor = visualizerColor(palette, 0.78, 0.72);
+    ctx.shadowBlur = 0;
     drawConnectedPath(ctx, points);
     ctx.strokeStyle = lineGradient;
     ctx.lineWidth = 7;

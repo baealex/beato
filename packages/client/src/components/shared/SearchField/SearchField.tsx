@@ -1,6 +1,7 @@
-import styles from './SearchField.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
+
+import { useEffect, useState } from 'react';
 
 import * as Icon from '~/icon';
 
@@ -17,28 +18,56 @@ export default function SearchField({
     ariaLabel = 'Search',
     onChange
 }: SearchFieldProps) {
+    const [draftValue, setDraftValue] = useState(value);
+    const [isComposing, setIsComposing] = useState(false);
+
+    useEffect(() => {
+        if (!isComposing) {
+            setDraftValue(value);
+        }
+    }, [isComposing, value]);
+
+    const handleChange = (nextValue: string) => {
+        setDraftValue(nextValue);
+
+        if (!isComposing) {
+            onChange(nextValue);
+        }
+    };
+
+    const handleClear = () => {
+        setDraftValue('');
+        onChange('');
+    };
+
     return (
-        <label className={cx('SearchField')}>
-            <Icon.Search className={cx('icon')} />
+        <label className={cx('ow-search-field-SearchField')}>
+            <Icon.Search className={cx('ow-search-field-icon')} />
             <input
-                value={value}
-                className={cx('input')}
+                value={draftValue}
+                className={cx('ow-search-field-input')}
                 placeholder={placeholder}
                 aria-label={ariaLabel}
-                onChange={(event) => onChange(event.currentTarget.value)}
+                onCompositionStart={() => setIsComposing(true)}
+                onCompositionEnd={(event) => {
+                    setIsComposing(false);
+                    handleChange(event.currentTarget.value);
+                    onChange(event.currentTarget.value);
+                }}
+                onChange={(event) => handleChange(event.currentTarget.value)}
                 onKeyDown={(event) => {
-                    if (event.key === 'Escape' && value) {
+                    if (event.key === 'Escape' && draftValue) {
                         event.preventDefault();
-                        onChange('');
+                        handleClear();
                     }
                 }}
             />
-            {value && (
+            {draftValue && (
                 <button
                     type="button"
-                    className={cx('clearButton')}
+                    className={cx('ow-search-field-clearButton')}
                     aria-label="Clear search"
-                    onClick={() => onChange('')}>
+                    onClick={handleClear}>
                     <Icon.Close />
                 </button>
             )}
