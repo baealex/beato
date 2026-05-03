@@ -14,6 +14,7 @@ interface PanelContentProps {
 }
 
 export const panelContentClass = {
+    actionLink: 'relative w-full border-0 bg-transparent pr-10 text-left font-inherit text-inherit after:absolute after:right-4 after:top-1/2 after:h-2.5 after:w-2.5 after:-translate-y-1/2 after:rotate-45 after:border-r-2 after:border-t-2 after:border-[var(--b-color-text-muted)] after:content-[""]',
     albumLink: 'flex flex-row items-center gap-4 overflow-hidden rounded-lg',
     cover: 'h-[60px] w-[60px] rounded-lg object-cover',
     coverGrid: 'h-[60px] w-[60px]',
@@ -36,7 +37,7 @@ export default function PanelContent({ header, items, footer }: PanelContentProp
                         <button
                             key={text}
                             className={cx(
-                                'clickable flex items-center gap-4 rounded-lg py-4 text-left text-[var(--b-color-text)]',
+                                'flex w-full items-center gap-4 rounded-lg border-0 bg-transparent py-4 text-left font-inherit text-[var(--b-color-text)]',
                                 '[&_svg]:h-[1.125rem] [&_svg]:w-[1.125rem]',
                                 isActive && '[&_svg]:fill-[var(--b-color-point)] [&_svg]:text-[var(--b-color-point)]'
                             )}

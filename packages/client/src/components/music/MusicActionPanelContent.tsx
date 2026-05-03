@@ -39,7 +39,7 @@ export default function MusicActionPanelContent({
                 <>
                     {onAlbumClick && (
                         <button
-                            className={`clickable linkable ${panelContentClass.albumLink}`}
+                            className={`${panelContentClass.actionLink} ${panelContentClass.albumLink}`}
                             onClick={() => {
                                 panel.close();
                                 setTimeout(onAlbumClick, 100);
@@ -59,7 +59,7 @@ export default function MusicActionPanelContent({
                     )}
                     {onArtistClick && (
                         <button
-                            className={`clickable linkable ${panelContentClass.artistLink}`}
+                            className={`${panelContentClass.actionLink} ${panelContentClass.artistLink}`}
                             onClick={() => {
                                 panel.close();
                                 setTimeout(onArtistClick, 100);

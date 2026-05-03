@@ -119,7 +119,7 @@ const MusicPlayer = () => {
                     </button>
                     <button
                         type="button"
-                        className={classNames(controlButtonClassName, secondaryControlClassName, shuffle && '!text-[var(--b-color-point)] hover:!text-[var(--b-color-point)]')}
+                        className={classNames(controlButtonClassName, secondaryControlClassName, shuffle && '!text-[var(--b-color-point)] hover:!text-[var(--b-color-point)] [&_svg]:!stroke-[var(--b-color-point)] [&_path]:!stroke-[var(--b-color-point)]')}
                         onClick={() => queueStore.toggleShuffle()}>
                         <Icon.Shuffle />
                     </button>

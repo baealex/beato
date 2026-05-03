@@ -477,7 +477,7 @@ export default function PlayerDetail() {
                         <div className="grid w-full grid-cols-5 items-center gap-2.5 max-sm:gap-2">
                             <button
                                 type="button"
-                                className={cx(playerControlButtonClass, shuffle && 'text-[var(--b-color-point-light)]')}
+                                className={cx(playerControlButtonClass, shuffle && '!text-[var(--b-color-point)] hover:!text-[var(--b-color-point)] [&_svg]:!stroke-[var(--b-color-point)] [&_path]:!stroke-[var(--b-color-point)]')}
                                 aria-label={shuffle ? 'Disable shuffle' : 'Enable shuffle'}
                                 onClick={() => queueStore.toggleShuffle()}>
                                 <Icon.Shuffle />

@@ -51,7 +51,7 @@ export default function PlaylistActionPanelContent({
             <PanelContent
                 header={onPlaylistClick && (
                     <button
-                        className={`clickable linkable ${panelContentClass.albumLink}`}
+                        className={`${panelContentClass.actionLink} ${panelContentClass.albumLink}`}
                         onClick={() => {
                             panel.close();
                             setTimeout(onPlaylistClick, 100);
