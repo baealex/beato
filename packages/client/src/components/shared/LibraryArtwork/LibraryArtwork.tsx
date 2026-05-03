@@ -23,13 +23,14 @@ export function AlbumArtwork({
     className
 }: SingleArtworkProps) {
     return (
-        <span className={cx('relative block h-16 w-[78px] shrink-0', className)}>
+        <span className={cx('relative block h-16 w-20 shrink-0 overflow-visible', className)}>
             <span
                 aria-hidden="true"
                 className={cx(
-                    'absolute right-0 top-2 h-12 w-12 rounded-full border border-[var(--b-color-border-subtle)] opacity-70',
-                    'bg-[#18181b]',
-                    '[background-image:radial-gradient(circle,rgba(9,9,11,1)_0_18%,rgba(244,244,245,0.16)_19%_22%,transparent_23%),repeating-radial-gradient(circle,rgba(244,244,245,0.18)_0_1px,transparent_1px_7px)]'
+                    'absolute right-0 top-2 h-12 w-12 rounded-full border border-[var(--b-color-border-subtle)] opacity-75',
+                    'bg-[#18181b] transition-all duration-150 group-hover/row:border-[rgba(30,215,96,0.45)] group-hover/row:opacity-90 group-hover/row:shadow-[0_0_0_3px_rgba(30,215,96,0.08)]',
+                    '[background-image:radial-gradient(circle_at_center,rgba(9,9,11,1)_0_15%,rgba(244,244,245,0.22)_16%_20%,transparent_21%),linear-gradient(135deg,transparent_0_42%,rgba(244,244,245,0.26)_43%_47%,transparent_48%_100%)]',
+                    'group-hover/row:[background-image:radial-gradient(circle_at_center,rgba(9,9,11,1)_0_15%,rgba(30,215,96,0.85)_16%_20%,transparent_21%),linear-gradient(135deg,transparent_0_42%,rgba(30,215,96,0.32)_43%_47%,transparent_48%_100%)]'
                 )}
             />
             <Image
@@ -87,19 +88,9 @@ export function PlaylistArtwork({
     className
 }: PlaylistArtworkProps) {
     return (
-        <span className={cx('group/art relative block h-[60px] w-[70px] shrink-0', className)}>
-            <span
-                aria-hidden="true"
-                className={cx(
-                    'absolute right-0 top-1.5 h-12 w-[54px] rounded-[var(--b-radius-md)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-background-layer-1)]',
-                    'transition-transform duration-150 group-hover/row:translate-x-[7px] group-hover/row:-translate-y-[5px]',
-                    '[background-image:repeating-linear-gradient(135deg,rgba(30,215,96,0.14)_0_2px,transparent_2px_7px)]'
-                )}
-            />
-            <GridImage
-                images={images}
-                className="absolute left-0 top-0 h-[60px] w-[60px] overflow-hidden rounded-[var(--b-radius-md)]"
-            />
-        </span>
+        <GridImage
+            images={images}
+            className={cx('h-[60px] w-[60px] shrink-0 overflow-hidden rounded-[var(--b-radius-md)]', className)}
+        />
     );
 }

@@ -31,8 +31,7 @@ const AlbumListItem = ({
                 compact
                     ? 'group/row relative grid min-h-[88px] w-full grid-cols-[78px_minmax(0,1fr)] items-center gap-3 px-2 py-2 text-left text-[var(--b-color-text)] transition-colors'
                     : 'group/row relative grid h-full w-full grid-cols-[78px_minmax(0,1fr)_auto] items-center gap-4 px-6 py-2 text-left text-[var(--b-color-text)] transition-colors',
-                'before:absolute before:left-2 before:top-1/2 before:h-0 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-[var(--b-color-point)] before:transition-[height]',
-                'hover:bg-[image:var(--b-gradient-row-hover)] hover:before:h-12 active:bg-[var(--b-color-active)] focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[var(--b-color-focus)]',
+                'hover:bg-[image:var(--b-gradient-row-hover)] active:bg-[var(--b-color-active)] focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[var(--b-color-focus)]',
                 'max-sm:grid-cols-[78px_minmax(0,1fr)]'
             )}
             onClick={onClick}>
