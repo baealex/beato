@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import type { Socket } from 'socket.io';
-import { parseBuffer } from 'music-metadata';
+import { parseBuffer } from '../modules/music-metadata';
 
 import { connectors } from './connectors';
 
@@ -87,6 +87,10 @@ const emitSyncMessage = (socket: Pick<Socket, 'emit'>, message: string) => {
     socket.emit(SYNC_EVENT, message);
 };
 
+const toPictureBuffer = (data: Uint8Array | undefined): Buffer | null => {
+    return data ? Buffer.from(data) : null;
+};
+
 const isSupportedAudioFile = (filePath: string) => {
     return SUPPORTED_AUDIO_EXTENSIONS.has(path.extname(filePath).toLowerCase());
 };
@@ -127,7 +131,7 @@ const parseTrackMetadata = async (filePath: string, data: Buffer): Promise<Parse
         albumArtist,
         artist,
         album,
-        pictureData: picture?.[0]?.data ?? null,
+        pictureData: toPictureBuffer(picture?.[0]?.data),
         genres: genre,
         year: year.toString(),
         trackNumber: track?.no || 1,

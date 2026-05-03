@@ -1,14 +1,14 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { parseBuffer } from 'music-metadata';
+import { parseBuffer } from '../modules/music-metadata';
 
 import models from '~/models';
 import { musicResolvers } from '~/schema/music';
 
 jest.mock('../modules/file', () => ({ walk: jest.fn() }));
 
-jest.mock('music-metadata', () => ({ parseBuffer: jest.fn() }));
+jest.mock('../modules/music-metadata', () => ({ parseBuffer: jest.fn() }));
 
 jest.mock('sharp', () => {
     return jest.fn(() => ({

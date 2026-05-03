@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { parseBuffer } from 'music-metadata';
+import { parseBuffer } from '../../modules/music-metadata';
 
 import models from '~/models';
 import type { Controller } from '~/types';
@@ -55,7 +55,8 @@ export const cacheAsset: Controller = async (req, _res, next) => {
 
     const fileData = fs.readFileSync(sourceFilePath);
     const metadata = await parseBuffer(fileData);
-    const pictureData = metadata.common.picture?.[0]?.data ?? null;
+    const rawPictureData = metadata.common.picture?.[0]?.data;
+    const pictureData = rawPictureData ? Buffer.from(rawPictureData) : null;
 
     if (!pictureData) {
         next?.();

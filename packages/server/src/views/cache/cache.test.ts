@@ -1,7 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { parseBuffer } from 'music-metadata';
+import { parseBuffer } from '../../modules/music-metadata';
 import request from 'supertest';
 
 import models from '~/models';
@@ -9,7 +9,7 @@ import { createApp } from '~/app';
 import { AUTH_SESSION_COOKIE_NAME, type AuthConfig } from '~/modules/auth-mode';
 import { resolveCachePath } from '~/modules/storage-paths';
 
-jest.mock('music-metadata', () => ({ parseBuffer: jest.fn() }));
+jest.mock('../../modules/music-metadata', () => ({ parseBuffer: jest.fn() }));
 
 jest.mock('sharp', () => {
     return jest.fn(() => ({
