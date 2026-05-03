@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import * as Icon from '~/icon';
 
@@ -19,18 +19,18 @@ export default function SearchField({
     onChange
 }: SearchFieldProps) {
     const [draftValue, setDraftValue] = useState(value);
-    const [isComposing, setIsComposing] = useState(false);
+    const isComposingRef = useRef(false);
 
     useEffect(() => {
-        if (!isComposing) {
+        if (!isComposingRef.current) {
             setDraftValue(value);
         }
-    }, [isComposing, value]);
+    }, [value]);
 
     const handleChange = (nextValue: string) => {
         setDraftValue(nextValue);
 
-        if (!isComposing) {
+        if (!isComposingRef.current) {
             onChange(nextValue);
         }
     };
@@ -54,11 +54,15 @@ export default function SearchField({
                 className={cx('min-w-0 flex-1 border-0 bg-transparent text-xs font-semibold text-[var(--b-color-text-secondary)] outline-none placeholder:text-[var(--b-color-text-muted)]')}
                 placeholder={placeholder}
                 aria-label={ariaLabel}
-                onCompositionStart={() => setIsComposing(true)}
+                onCompositionStart={() => {
+                    isComposingRef.current = true;
+                }}
                 onCompositionEnd={(event) => {
-                    setIsComposing(false);
-                    handleChange(event.currentTarget.value);
-                    onChange(event.currentTarget.value);
+                    const nextValue = event.currentTarget.value;
+
+                    isComposingRef.current = false;
+                    setDraftValue(nextValue);
+                    onChange(nextValue);
                 }}
                 onChange={(event) => handleChange(event.currentTarget.value)}
                 onKeyDown={(event) => {

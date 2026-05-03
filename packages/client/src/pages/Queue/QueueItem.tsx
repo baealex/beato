@@ -54,15 +54,15 @@ export default function QueueItem({
             data-queue-index={index}
             style={style}
             className={cx(
-                'flex min-h-[4.25rem] items-center gap-2 rounded-2xl border border-transparent bg-[var(--b-color-surface-subtle)] transition-[background-color,border-color,opacity] duration-150 [content-visibility:auto] [contain-intrinsic-size:4.25rem] max-sm:min-h-[4.125rem] max-sm:gap-1.5',
+                'flex min-h-[4.25rem] items-center gap-2 rounded-2xl border border-transparent bg-[var(--b-color-surface-subtle)] transition-[background-color,border-color,opacity] duration-150 hover:bg-[linear-gradient(90deg,var(--b-color-surface-subtle),var(--b-color-surface-subtle)),var(--b-gradient-row-hover)] [content-visibility:auto] [contain-intrinsic-size:4.25rem] max-sm:min-h-[4.125rem] max-sm:gap-1.5',
                 queueItemToneClass[tone],
-                isSelected && 'border-[var(--b-color-focus)] bg-[var(--b-color-surface-item)]',
+                isSelected && 'bg-[var(--b-color-surface-item)]',
                 className
             )}>
             {isSelectMode ? (
                 <button
                     type="button"
-                    className={cx(iconButtonClass, 'ml-1', isSelected && 'bg-[var(--b-color-active)] text-[var(--b-color-point)] [&_svg]:fill-none [&_svg]:text-current')}
+                    className={cx(iconButtonClass, 'ml-1', isSelected && '!bg-[rgba(30,215,96,0.16)] !text-[var(--b-color-point-light)] hover:!bg-[rgba(30,215,96,0.22)] hover:!text-[var(--b-color-point-light)] [&_svg]:fill-none [&_svg]:text-current')}
                     aria-label={isSelected ? `Unselect ${music.name}` : `Select ${music.name}`}
                     aria-pressed={isSelected}
                     onClick={onSelect}>

@@ -8,8 +8,8 @@ import { useAppStore as useStore } from '~/store/base-store';
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 
-const controlButtonClassName = 'relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-[var(--b-color-text)] transition-[background-color,color,transform] duration-150 hover:bg-[var(--b-color-hover)] active:scale-95 [&_svg]:h-[1.125rem] [&_svg]:w-[1.125rem]';
-const secondaryControlClassName = 'text-[var(--b-color-text-secondary)]';
+const controlButtonClassName = 'relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent !text-[var(--b-color-text)] transition-[background-color,color,transform] duration-150 hover:bg-white/8 hover:!text-white active:scale-95 [&_svg]:h-[1.125rem] [&_svg]:w-[1.125rem] [&_svg]:opacity-100 [&_svg]:text-current';
+const secondaryControlClassName = '!text-[var(--b-color-text-secondary)] hover:!text-[var(--b-color-text)]';
 
 const MusicPlayer = () => {
     const navigate = useNavigate();
@@ -52,9 +52,9 @@ const MusicPlayer = () => {
     };
 
     return (
-        <div className="lg:col-span-2">
+        <div className="overflow-hidden border-t border-[var(--b-color-border-subtle)] bg-[rgba(9,9,11,0.96)] lg:col-span-2">
             <div
-                className="h-[3px] w-full cursor-pointer overflow-hidden bg-[var(--b-color-background)] transition-[height] duration-150 hover:h-[5px]"
+                className="h-[3px] w-full cursor-pointer overflow-hidden bg-[rgba(244,244,245,0.08)] transition-[height] duration-150 hover:h-1"
                 role="progressbar"
                 aria-valuenow={progress}
                 aria-valuemin={0}
@@ -72,7 +72,7 @@ const MusicPlayer = () => {
                     type="button"
                     className="flex min-w-0 flex-1 cursor-pointer items-center gap-[var(--b-spacing-sm)] border-0 bg-transparent p-0 text-left lg:gap-[var(--b-spacing-md)]"
                     onClick={() => currentMusic && navigate('/player')}>
-                    <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[var(--b-radius-md)]">
+                    <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[var(--b-radius-md)] bg-[var(--b-color-surface-subtle)]">
                         <Image
                             className="h-full w-full object-cover"
                             src={currentMusic?.album.cover}
@@ -107,7 +107,7 @@ const MusicPlayer = () => {
                     </button>
                     <button
                         type="button"
-                        className={classNames(controlButtonClassName, 'h-11 w-11 bg-[var(--b-color-point)] text-black hover:bg-[var(--b-color-point-dark)] [&_svg]:h-5 [&_svg]:w-5')}
+                        className={classNames(controlButtonClassName, 'h-11 w-11 !bg-[var(--b-color-point)] !text-black hover:!bg-[var(--b-color-point-dark)] hover:!text-black [&_svg]:h-5 [&_svg]:w-5')}
                         onClick={() => isPlaying ? queueStore.pause() : queueStore.play()}>
                         {isPlaying ? <Icon.Pause /> : <Icon.Play />}
                     </button>
@@ -119,7 +119,7 @@ const MusicPlayer = () => {
                     </button>
                     <button
                         type="button"
-                        className={classNames(controlButtonClassName, secondaryControlClassName, shuffle && 'text-[var(--b-color-point)]')}
+                        className={classNames(controlButtonClassName, secondaryControlClassName, shuffle && '!text-[var(--b-color-point)] hover:!text-[var(--b-color-point)]')}
                         onClick={() => queueStore.toggleShuffle()}>
                         <Icon.Shuffle />
                     </button>
