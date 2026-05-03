@@ -1,14 +1,14 @@
 import { useAppStore as useStore } from '~/store/base-store';
-import { useState } from 'react';
+import { useDeferredValue } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import {
-    Grid,
     ItemSortPanelContent,
     Loading,
     Button,
     StickyHeader,
-    SearchField
+    SearchField,
+    FixedVirtualList
 } from '~/components/shared';
 import { AlbumListItem } from '~/components/album';
 import * as Icon from '~/icon';
@@ -16,17 +16,16 @@ import * as Icon from '~/icon';
 import { panel } from '~/modules/panel';
 
 import { albumStore } from '~/store/album';
-import styles from './AlbumList.module.scss';
 
-const RENDER_LIMIT = 100;
+const ALBUM_LIST_ROW_HEIGHT = 88;
 
 export default function Album() {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [{ albums, loaded }] = useStore(albumStore);
-    const [renderLimit, setRenderLimit] = useState(Number(searchParams.get('l')) || RENDER_LIMIT);
     const query = searchParams.get('q') || '';
+    const deferredQuery = useDeferredValue(query.trim().toLowerCase());
 
     const handleSearchChange = (value: string) => {
         const nextSearchParams = new URLSearchParams(searchParams);
@@ -40,20 +39,11 @@ export default function Album() {
         setSearchParams(nextSearchParams, { replace: true });
     };
 
-    const handleReadMore = () => {
-        const nextRenderLimit = renderLimit + RENDER_LIMIT;
-        const nextSearchParams = new URLSearchParams(searchParams);
-
-        setRenderLimit(nextRenderLimit);
-        nextSearchParams.set('l', nextRenderLimit.toString());
-        setSearchParams(nextSearchParams, { replace: true });
-    };
-
     const filteredAlbums = albums
         ?.filter(album =>
-            album.name.toLowerCase().includes(query.toLowerCase()) ||
-            album.artist.name.toLowerCase().includes(query.toLowerCase())
-        );
+            album.name.toLowerCase().includes(deferredQuery) ||
+            album.artist.name.toLowerCase().includes(deferredQuery)
+        ) ?? [];
 
     return (
         <>
@@ -78,25 +68,23 @@ export default function Album() {
             {!loaded && (
                 <Loading />
             )}
-            <Grid>
-                {loaded && filteredAlbums.slice(0, renderLimit).map((album) => (
-                    <AlbumListItem
-                        key={album.id}
-                        albumName={album.name}
-                        albumCover={album.cover}
-                        artistName={album.artist.name}
-                        onClick={() => navigate(`/album/${album.id}`)}
-                    />
-                ))}
-            </Grid>
-            {loaded && filteredAlbums.length > renderLimit && (
-                <div className={styles.loadMore}>
-                    <Button
-                        fullWidth
-                        onClick={handleReadMore}>
-                        Load More
-                    </Button>
-                </div>
+            {loaded && (
+                <FixedVirtualList
+                    items={filteredAlbums}
+                    rowHeight={ALBUM_LIST_ROW_HEIGHT}
+                    overscanPx={ALBUM_LIST_ROW_HEIGHT * 8}
+                    getKey={(album) => album.id}
+                    renderItem={(album) => (
+                        <AlbumListItem
+                            albumName={album.name}
+                            albumCover={album.cover}
+                            artistName={album.artist.name}
+                            publishedYear={album.publishedYear}
+                            musicCount={album.musics?.length}
+                            onClick={() => navigate(`/album/${album.id}`)}
+                        />
+                    )}
+                />
             )}
         </>
     );

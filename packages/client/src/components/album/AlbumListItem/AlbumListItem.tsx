@@ -1,34 +1,48 @@
-import styles from './AlbumListItem.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
-import { Card, Image, Text } from '~/components/shared';
+import { Image, Text } from '~/components/shared';
 import { Disc } from '~/icon';
 
 interface AlbumListItemProps {
     albumCover: string;
     albumName: string;
     artistName: string;
+    musicCount?: number;
+    publishedYear?: string;
     onClick: () => void;
 }
 
-const AlbumListItem = ({ albumCover, albumName, artistName, onClick }: AlbumListItemProps) => {
+const AlbumListItem = ({
+    albumCover,
+    albumName,
+    artistName,
+    musicCount,
+    publishedYear,
+    onClick
+}: AlbumListItemProps) => {
     return (
-        <Card
-            variant="outlined"
-            radius="xl"
-            padding="none"
-            interactive
-            overflow
+        <button
+            type="button"
+            className={cx('ow-album-list-item-AlbumListItem')}
             onClick={onClick}>
-            <div className={cx('cover-wrapper')}>
-                <Image className={cx('cover')} src={albumCover} alt={albumName} icon={<Disc />} />
+            <span className={cx('ow-album-list-item-artStack')}>
+                <span className={cx('ow-album-list-item-disc')} aria-hidden="true" />
+                <Image className={cx('ow-album-list-item-cover')} src={albumCover} alt={albumName} loading="eager" icon={<Disc />} />
+            </span>
+            <div className={cx('ow-album-list-item-info')}>
+                <Text as="span" size="sm" weight="medium" truncate>{albumName}</Text>
+                <Text as="span" variant="tertiary" size="xs" truncate>{artistName}</Text>
             </div>
-            <div className={cx('info')}>
-                <Text as="span" size="sm" weight="semibold" truncate>{albumName}</Text>
-                <Text as="span" variant="secondary" size="xs" truncate>{artistName}</Text>
+            <div className={cx('ow-album-list-item-meta')}>
+                {publishedYear && (
+                    <span>{publishedYear}</span>
+                )}
+                {typeof musicCount === 'number' && (
+                    <span>{musicCount} tracks</span>
+                )}
             </div>
-        </Card>
+        </button>
     );
 };
 

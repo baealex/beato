@@ -1,12 +1,31 @@
-export * from '@baejino/icon';
-export { default as CheckBox } from './CheckBox.svg?react';
-export { default as DoubleCheck } from './DoubleCheck.svg?react';
-export { default as Repeat } from './Repeat.svg?react';
-export { default as Infinite } from './Infinite.svg?react';
-export { default as Shuffle } from './Shuffle.svg?react';
-export { default as RightLeft } from './RightLeft.svg?react';
-export { default as Music } from './Music.svg?react';
-export { default as Disc } from './Disc.svg?react';
-export { default as ListMusic } from './ListMusic.svg?react';
-export { default as SkipBack } from './SkipBack.svg?react';
-export { default as SkipForward } from './SkipForward.svg?react';
+export {
+    ArrowLeftRight as RightLeft,
+    ArrowUpDown as Sort,
+    Check,
+    CheckCheck as DoubleCheck,
+    ChevronDown,
+    ChevronLeft,
+    Cog as Gear,
+    Disc,
+    Download,
+    Heart,
+    Infinity as Infinite,
+    List,
+    ListMusic,
+    Menu,
+    MoreVertical as VerticalDots,
+    Music,
+    Pause,
+    Pencil,
+    Play,
+    Repeat,
+    Search,
+    Settings,
+    Shuffle,
+    SkipBack,
+    SkipForward,
+    SquareCheckBig as CheckBox,
+    Trash2 as TrashCan,
+    User,
+    X as Close
+} from 'lucide-react';

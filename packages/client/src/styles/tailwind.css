@@ -2,11 +2,6384 @@
 
 @theme {
     --font-sans: "Spoqa Han Sans Neo", -apple-system, BlinkMacSystemFont, sans-serif;
-    --color-wave-bg: #051014;
-    --color-wave-panel: #0c1b21;
-    --color-wave-border: rgba(196, 244, 248, 0.1);
-    --color-wave-accent: #46d7cf;
-    --color-wave-accent-soft: #a7fff6;
-    --color-wave-text: rgba(238, 252, 255, 0.92);
-    --color-wave-muted: rgba(195, 225, 231, 0.54);
+    --color-wave-bg: #09090b;
+    --color-wave-panel: #121214;
+    --color-wave-border: rgba(244, 244, 245, 0.08);
+    --color-wave-accent: #1ed760;
+    --color-wave-accent-soft: #1ed760;
+    --color-wave-text: rgba(250, 250, 250, 0.94);
+    --color-wave-muted: rgba(212, 212, 216, 0.54);
+}
+
+@layer base, components;
+
+@layer components {
+:root {
+  --b-color-background: #09090b;
+  --b-color-background-layer-1: #18181b;
+  --b-color-background-layer-2: #27272a;
+  --b-color-panel-background: #121214;
+  --b-color-text: rgba(250, 250, 250, 0.94);
+  --b-color-text-secondary: rgba(228, 228, 231, 0.74);
+  --b-color-text-tertiary: rgba(212, 212, 216, 0.54);
+  --b-color-text-muted: rgba(161, 161, 170, 0.4);
+  --b-color-point: #1ed760;
+  --b-color-point-light: #1ed760;
+  --b-color-point-dark: #1db954;
+  --b-gradient-primary: var(--b-color-point);
+  --b-color-point-glow: rgba(30, 215, 96, 0.2);
+  --b-color-primary-button: #1ed760;
+  --b-color-secondary-button: #27272a;
+  --b-color-hover: rgba(244, 244, 245, 0.07);
+  --b-color-active: rgba(30, 215, 96, 0.14);
+  --b-color-focus: rgba(30, 215, 96, 0.42);
+  --b-color-border: rgba(244, 244, 245, 0.14);
+  --b-color-border-subtle: rgba(244, 244, 245, 0.08);
+  --b-color-cd-border: rgba(244, 244, 245, 0.14);
+  --b-card-shadow-main: none;
+  --b-card-shadow-hover: none;
+  --b-card-shadow-glow: none;
+  --b-card-shadow-sub: none;
+  --b-backdrop-filter-panel-background: none;
+  --b-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --b-transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --b-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --b-transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --b-spacing-xs: 4px;
+  --b-spacing-sm: 8px;
+  --b-spacing-md: 16px;
+  --b-spacing-lg: 24px;
+  --b-spacing-xl: 32px;
+  --b-spacing-2xl: 48px;
+  --b-radius-sm: 6px;
+  --b-radius-md: 10px;
+  --b-radius-lg: 14px;
+  --b-radius-xl: 20px;
+  --b-radius-2xl: 28px;
+  --b-radius-full: 9999px;
+  --b-app-shell-background: #121214;
+  --b-app-shell-border: rgba(244, 244, 245, 0.08);
+  --b-app-shell-shadow: none;
+  /* GRADIENTS */
+  --b-gradient-page: #09090b;
+  --b-gradient-sticky: linear-gradient(180deg, #09090b 0%, rgba(9, 9, 11, 0.92) 64%, rgba(9, 9, 11, 0) 100%);
+  /* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+  --b-color-surface-modal: #18181b;
+  --b-color-surface-dropdown: #18181b;
+  --b-color-surface-input: #27272a;
+  --b-color-surface-input-hover: #3f3f46;
+  --b-color-surface-input-focus: #3f3f46;
+  --b-color-surface-item: rgba(244, 244, 245, 0.06);
+  --b-color-surface-subtle: rgba(244, 244, 245, 0.04);
+  --b-color-glow-ambient: transparent;
+  --b-color-focus-ring: rgba(30, 215, 96, 0.18);
+  --b-gradient-layer: #18181b;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  font-weight: 700;
+  src: local("Spoqa Han Sans Bold"), url("/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.woff2") format("woff2"), url("/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.woff") format("woff"), url("/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Spoqa Han Sans Neo";
+  font-weight: 400;
+  src: local("Spoqa Han Sans Regular"), url("/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff2") format("woff2"), url("/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff") format("woff"), url("/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.ttf") format("truetype");
+}
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  overflow: hidden;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--b-color-background);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+.main-container {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+@media (min-width: 1024px) {
+  main {
+    display: grid;
+    grid-template-columns: 256px minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+  }
+}
+
+body {
+  position: relative;
+  background: var(--b-color-background);
+  font-family: "Spoqa Han Sans Neo", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  word-wrap: break-word;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  color: var(--b-color-text);
+}
+
+.app-toast {
+  border: 1px solid var(--b-color-border-subtle) !important;
+  border-radius: 18px !important;
+  background: var(--b-color-panel-background) !important;
+  color: var(--b-color-text) !important;
+  box-shadow: var(--b-card-shadow-sub) !important;
+}
+
+.app-toast [data-icon] {
+  color: var(--b-color-point) !important;
+}
+
+.app-toast-title {
+  color: var(--b-color-text) !important;
+  font-size: 0.94rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.app-toast-description {
+  color: var(--b-color-text-secondary) !important;
+}
+
+button {
+  cursor: pointer;
+}
+
+.clickable {
+  background: none;
+  border: none;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+}
+
+.linkable {
+  position: relative;
+  padding-right: 40px;
+}
+.linkable::after {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  content: "";
+  border-top: 2px solid var(--b-color-text-muted);
+  border-right: 2px solid var(--b-color-text-muted);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.icon-button {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--b-radius-full);
+  background-color: var(--b-color-surface-subtle);
+  color: var(--b-color-text);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--b-transition-fast);
+  transition-property: background-color, border-color, transform;
+}
+@media (hover: hover) and (pointer: fine) {
+  .icon-button:hover {
+    background-color: var(--b-color-hover);
+    border-color: var(--b-color-border-subtle);
+  }
+}
+.icon-button:active {
+  transform: scale(0.95);
+  background-color: var(--b-color-active);
+}
+.icon-button svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-album-list-item-AlbumListItem {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: var(--b-spacing-sm) var(--b-spacing-lg);
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--b-spacing-md);
+  color: var(--b-color-text);
+  text-align: left;
+  transition: var(--b-transition-fast);
+  transition-property: background-color, border-color;
+}
+.ow-album-list-item-AlbumListItem::before {
+  content: "";
+  position: absolute;
+  left: var(--b-spacing-sm);
+  top: 50%;
+  width: 2px;
+  height: 0;
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-point);
+  transform: translateY(-50%);
+  transition: height var(--b-transition-fast);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-album-list-item-AlbumListItem:hover {
+    background: linear-gradient(90deg, rgba(30, 215, 96, 0.08), transparent 42%);
+  }
+  .ow-album-list-item-AlbumListItem:hover::before {
+    height: 48px;
+  }
+}
+.ow-album-list-item-AlbumListItem:active {
+  background: var(--b-color-active);
+}
+.ow-album-list-item-AlbumListItem:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: -2px;
+}
+
+.ow-album-list-item-artStack {
+  position: relative;
+  width: 78px;
+  height: 64px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.ow-album-list-item-disc {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--b-radius-full);
+  background:
+    radial-gradient(circle, rgba(9, 9, 11, 1) 0 18%, rgba(244, 244, 245, 0.16) 19% 22%, transparent 23%),
+    repeating-radial-gradient(circle, rgba(244, 244, 245, 0.18) 0 1px, transparent 1px 7px),
+    #18181b;
+  border: 1px solid var(--b-color-border-subtle);
+  opacity: 0.72;
+}
+
+.ow-album-list-item-cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--b-radius-lg);
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 8px 0 0 rgba(9, 9, 11, 0.72);
+}
+
+.ow-album-list-item-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+
+.ow-album-list-item-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--b-spacing-xs);
+  white-space: nowrap;
+}
+.ow-album-list-item-meta span {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-full);
+  color: var(--b-color-text-tertiary);
+  background: var(--b-color-surface-subtle);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .ow-album-list-item-AlbumListItem {
+    grid-template-columns: 78px minmax(0, 1fr);
+  }
+  .ow-album-list-item-meta {
+    display: none;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-album-summary-AlbumSummary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--b-spacing-md);
+  text-align: center;
+}
+.ow-album-summary-AlbumSummary .ow-album-summary-cover {
+  width: 260px;
+  max-width: 76%;
+  margin-bottom: var(--b-spacing-sm);
+}
+.ow-album-summary-AlbumSummary .ow-album-summary-cover .ow-album-summary-cover-inner {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--b-radius-xl);
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+.ow-album-summary-AlbumSummary .ow-album-summary-cover .ow-album-summary-cover-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--b-radius-xl);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+.ow-album-summary-AlbumSummary .ow-album-summary-cover .ow-album-summary-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ow-album-summary-AlbumSummary .ow-album-summary-title {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.ow-album-summary-AlbumSummary .ow-album-summary-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--b-spacing-sm);
+}
+.ow-album-summary-AlbumSummary .ow-album-summary-artist {
+  text-decoration: none;
+  transition: opacity var(--b-transition-fast);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-album-summary-AlbumSummary .ow-album-summary-artist:hover {
+    opacity: 0.8;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-modal-provider-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(2, 9, 12, 0.68);
+  animation: fade-in 180ms ease;
+}
+
+.ow-modal-provider-content {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: min(100vw - 1.5rem, 26rem);
+  transform: translate(-50%, -50%);
+  z-index: 121;
+  border-radius: var(--b-radius-lg);
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-color-surface-modal);
+  box-shadow: 0 12px 28px rgba(2, 8, 11, 0.22);
+  padding: 0.875rem;
+  color: var(--b-color-text);
+  animation: confirm-in 220ms ease;
+}
+.ow-modal-provider-content:focus {
+  outline: none;
+}
+
+.ow-modal-provider-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ow-modal-provider-title {
+  letter-spacing: 0;
+}
+
+.ow-modal-provider-description {
+  line-height: 1.45;
+}
+
+.ow-modal-provider-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  margin-top: 1rem;
+}
+
+.ow-modal-provider-button {
+  min-width: 5.5rem;
+}
+
+@media (max-width: 640px) {
+  .ow-modal-provider-content {
+    width: min(100vw - 1rem, 26rem);
+    padding: 0.875rem;
+  }
+  .ow-modal-provider-actions {
+    flex-direction: column-reverse;
+  }
+  .ow-modal-provider-button {
+    width: 100%;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes confirm-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 8px));
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-startup-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: var(--b-spacing-lg);
+  background: radial-gradient(circle at 50% 42%, rgba(30, 215, 96, 0.14), transparent 26rem), rgba(9, 9, 11, 0.78);
+  backdrop-filter: blur(18px) saturate(0.92);
+  -webkit-backdrop-filter: blur(18px) saturate(0.92);
+}
+
+.ow-startup-splash-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--b-spacing-md);
+  min-width: min(20rem, 100%);
+  padding: var(--b-spacing-xl);
+  border: 1px solid rgba(244, 244, 245, 0.1);
+  border-radius: var(--b-radius-2xl);
+  background: rgba(18, 18, 20, 0.82);
+}
+
+.ow-startup-splash-logo {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 1.35rem;
+}
+
+.ow-startup-splash-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.ow-startup-splash-kicker {
+  color: var(--b-color-point-light);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ow-startup-splash-title {
+  color: var(--b-color-text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.ow-startup-splash-meter {
+  position: relative;
+  width: 8.5rem;
+  height: 3px;
+  overflow: hidden;
+  border-radius: var(--b-radius-full);
+  background: rgba(244, 244, 245, 0.1);
+}
+.ow-startup-splash-meter::after {
+  position: absolute;
+  inset: 0;
+  width: 42%;
+  border-radius: inherit;
+  background: var(--b-color-point-light);
+  content: "";
+  animation: ow-startup-splash-meter 1.1s ease-in-out infinite;
+}
+
+@keyframes ow-startup-splash-meter {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(260%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ow-startup-splash-meter::after {
+    animation: none;
+    width: 100%;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-artist-list-item-ArtistListItem {
+  position: relative;
+  cursor: pointer;
+  padding: var(--b-spacing-md) var(--b-spacing-lg);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--b-spacing-md);
+  transition: var(--b-transition-fast);
+  transition-property: background-color, border-color;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-artist-list-item-ArtistListItem:hover {
+    background: linear-gradient(90deg, rgba(244, 244, 245, 0.06), transparent 56%);
+  }
+  .ow-artist-list-item-ArtistListItem:hover .ow-artist-list-item-halo {
+    border-color: rgba(30, 215, 96, 0.44);
+    transform: rotate(-10deg) scale(1.04);
+  }
+}
+.ow-artist-list-item-ArtistListItem:active {
+  background-color: var(--b-color-active);
+}
+.ow-artist-list-item-ArtistListItem .ow-artist-list-item-image-container {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--b-radius-full);
+  flex-shrink: 0;
+}
+.ow-artist-list-item-ArtistListItem .ow-artist-list-item-halo {
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--b-color-border-subtle);
+  border-top-color: rgba(30, 215, 96, 0.34);
+  border-radius: var(--b-radius-full);
+  transform: rotate(18deg);
+  transition: var(--b-transition-fast);
+  transition-property: transform, border-color;
+}
+
+.ow-artist-list-item-ArtistListItem .ow-artist-list-item-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--b-radius-full);
+  object-fit: cover;
+  overflow: hidden;
+  box-shadow: 0 0 0 1.5px var(--b-color-border);
+  z-index: 1;
+}
+.ow-artist-list-item-ArtistListItem .ow-artist-list-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--b-spacing-xs);
+  min-width: 0;
+  flex: 1;
+}
+.ow-artist-list-item-ArtistListItem .ow-artist-list-item-count {
+  display: flex;
+  gap: var(--b-spacing-sm);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-artist-summary-ArtistSummary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--b-spacing-md);
+  text-align: center;
+}
+.ow-artist-summary-ArtistSummary .ow-artist-summary-cover {
+  width: 260px;
+  max-width: 76%;
+  margin-bottom: var(--b-spacing-sm);
+}
+.ow-artist-summary-ArtistSummary .ow-artist-summary-cover .ow-artist-summary-cover-inner {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--b-radius-full);
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+.ow-artist-summary-ArtistSummary .ow-artist-summary-cover .ow-artist-summary-cover-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--b-radius-full);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+.ow-artist-summary-ArtistSummary .ow-artist-summary-cover .ow-artist-summary-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ow-artist-summary-ArtistSummary .ow-artist-summary-name {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-auth-gate-AuthGate {
+  width: 100%;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow: auto;
+  background: var(--b-gradient-page);
+}
+
+.ow-auth-gate-panel {
+  width: min(440px, 100vw - 32px);
+  padding: var(--b-spacing-xl);
+  border-radius: var(--b-radius-2xl);
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-gradient-layer);
+  box-shadow: none;
+  backdrop-filter: var(--b-backdrop-filter-panel-background);
+}
+
+.ow-auth-gate-brandLockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.ow-auth-gate-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--b-gradient-primary);
+  color: var(--b-color-background);
+  box-shadow: none;
+}
+.ow-auth-gate-mark svg {
+  width: 22px;
+  height: 22px;
+}
+
+.ow-auth-gate-eyebrow {
+  display: inline-flex;
+  color: var(--b-color-point-light);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.ow-auth-gate-title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: 0;
+  color: var(--b-color-text);
+}
+
+.ow-auth-gate-description {
+  margin: var(--b-spacing-md) 0 0;
+  color: var(--b-color-text-secondary);
+  line-height: 1.6;
+}
+
+.ow-auth-gate-error {
+  margin-top: var(--b-spacing-lg);
+  padding: 14px 16px;
+  border-radius: var(--b-radius-lg);
+  border: 1px solid rgba(247, 113, 113, 0.28);
+  background: rgba(78, 18, 22, 0.58);
+  color: #ffd9d9;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.ow-auth-gate-actions {
+  margin-top: var(--b-spacing-lg);
+}
+
+.ow-auth-gate-button {
+  min-height: 48px;
+  padding: 0 18px;
+  border: none;
+  border-radius: var(--b-radius-full);
+  background: var(--b-gradient-primary);
+  color: var(--b-color-background);
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0;
+  box-shadow: none;
+  transition: var(--b-transition-fast);
+  transition-property: background-color, border-color;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-auth-gate-button:hover:not(:disabled) {
+    background: var(--b-color-point-dark);
+  }
+}
+.ow-auth-gate-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+.ow-auth-gate-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.ow-auth-gate-loadingPill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--b-radius-full);
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-color-surface-input);
+  color: var(--b-color-text-secondary);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+  .ow-auth-gate-AuthGate {
+    padding: 16px;
+  }
+  .ow-auth-gate-panel {
+    width: 100%;
+    padding: var(--b-spacing-lg);
+    border-radius: var(--b-radius-xl);
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-site-layout-contentFrame {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+@media (min-width: 1024px) {
+  .ow-site-layout-contentFrame.ow-site-layout-hasSubPage {
+    grid-column: 1/3;
+  }
+}
+
+.ow-site-layout-pageContent {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ow-site-layout-subPageFrame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.ow-site-layout-subPageFrame.ow-site-layout-sheet {
+  padding-top: 0.875rem;
+}
+.ow-site-layout-subPageFrame.ow-site-layout-fullscreen {
+  padding-top: 0;
+  background: linear-gradient(180deg, rgba(9, 9, 11, 0.98) 0%, rgb(6, 6, 8) 100%);
+}
+@media (min-width: 1024px) {
+  .ow-site-layout-subPageFrame {
+    padding: 0;
+  }
+}
+
+.ow-site-layout-subPageBackdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(9, 9, 11, 0.72);
+}
+@media (min-width: 1024px) {
+  .ow-site-layout-subPageBackdrop {
+    display: none;
+  }
+}
+.ow-site-layout-fullscreen .ow-site-layout-subPageBackdrop {
+  display: none;
+}
+
+.ow-site-layout-subPageSurface {
+  position: relative;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--b-gradient-layer);
+  border-top: 1px solid var(--b-color-border-subtle);
+  box-shadow: none;
+}
+.ow-site-layout-subPageSurface.ow-site-layout-sheet {
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+}
+.ow-site-layout-subPageSurface.ow-site-layout-fullscreen {
+  border-top: 0;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+@media (min-width: 1024px) {
+  .ow-site-layout-subPageSurface {
+    display: grid;
+    grid-template-columns: 256px minmax(0, 1fr);
+    margin: 0;
+    border-radius: 0;
+    border-top: 0;
+    background: transparent;
+    box-shadow: none;
+    animation: none;
+  }
+  .ow-site-layout-subPageSurface.ow-site-layout-fullscreen {
+    display: flex;
+    grid-template-columns: none;
+    width: 100%;
+  }
+}
+
+.ow-site-layout-subPageContent {
+  min-height: 0;
+  background: linear-gradient(180deg, rgba(9, 9, 11, 0.52) 0%, rgba(9, 9, 11, 0) 100%);
+}
+.ow-site-layout-subPageContent.ow-site-layout-fullscreen {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: transparent;
+}
+@media (min-width: 1024px) {
+  .ow-site-layout-subPageContent {
+    background: transparent;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-two-tone-layout-TwoToneLayout {
+  position: relative;
+  min-height: 100%;
+}
+.ow-two-tone-layout-TwoToneLayout .ow-two-tone-layout-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--b-color-background-layer-1);
+}
+.ow-two-tone-layout-TwoToneLayout .ow-two-tone-layout-header {
+  position: relative;
+  z-index: 3;
+}
+.ow-two-tone-layout-TwoToneLayout .ow-two-tone-layout-headerContent {
+  position: relative;
+  z-index: 1;
+  padding: calc(var(--b-spacing-2xl) + var(--b-spacing-lg)) var(--b-spacing-lg);
+}
+.ow-two-tone-layout-TwoToneLayout .ow-two-tone-layout-primaryAction {
+  position: absolute;
+  bottom: 0;
+  right: var(--b-spacing-lg);
+  transform: translateY(50%);
+  z-index: 10;
+}
+.ow-two-tone-layout-TwoToneLayout .ow-two-tone-layout-primaryAction button {
+  border-radius: var(--b-radius-full);
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--b-color-point);
+  border: none;
+  color: #000;
+  cursor: pointer;
+  box-shadow: none;
+  transition: var(--b-transition-fast);
+  transition-property: background-color;
+}
+.ow-two-tone-layout-TwoToneLayout .ow-two-tone-layout-primaryAction button svg {
+  width: 28px;
+  height: 28px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-two-tone-layout-TwoToneLayout .ow-two-tone-layout-primaryAction button:hover {
+    background: var(--b-color-point-dark);
+  }
+}
+.ow-two-tone-layout-TwoToneLayout .ow-two-tone-layout-primaryAction button:active {
+  transform: scale(0.95);
+}
+.ow-two-tone-layout-TwoToneLayout.ow-two-tone-layout-hasPrimaryAction .ow-two-tone-layout-content {
+  padding-top: var(--b-spacing-2xl);
+}
+.ow-two-tone-layout-TwoToneLayout .ow-two-tone-layout-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-music-list-item-MusicListItem {
+  position: relative;
+  color: var(--b-color-text);
+  cursor: pointer;
+  padding: var(--b-spacing-md) var(--b-spacing-lg);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--b-spacing-md);
+  width: 100%;
+  transition: var(--b-transition-fast);
+  transition-property: background-color;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-music-list-item-MusicListItem:hover {
+    background: linear-gradient(90deg, rgba(30, 215, 96, 0.06), transparent 48%);
+  }
+  .ow-music-list-item-MusicListItem:hover .ow-music-list-item-wave span {
+    background: var(--b-color-point-light);
+  }
+}
+.ow-music-list-item-MusicListItem:active {
+  background-color: var(--b-color-active);
+}
+.ow-music-list-item-MusicListItem.ow-music-list-item-isHated {
+  opacity: 0.4;
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-artWrap {
+  position: relative;
+  width: 54px;
+  height: 48px;
+  flex-shrink: 0;
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-wave {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  transform: translateY(-50%);
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-wave span {
+  width: 2px;
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-border);
+  transition: background-color var(--b-transition-fast);
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-wave span:nth-child(1) { height: 34%; }
+.ow-music-list-item-MusicListItem .ow-music-list-item-wave span:nth-child(2) { height: 78%; }
+.ow-music-list-item-MusicListItem .ow-music-list-item-wave span:nth-child(3) { height: 52%; }
+.ow-music-list-item-MusicListItem .ow-music-list-item-album-art {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--b-radius-md);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-track-number-col {
+  width: 48px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 0;
+  gap: var(--b-spacing-sm);
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-row .ow-music-list-item-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: var(--b-spacing-xs);
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-row .ow-music-list-item-info.ow-music-list-item-hasMenu {
+  max-width: calc(100% - 40px - var(--b-spacing-md));
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-row .ow-music-list-item-artist,
+.ow-music-list-item-MusicListItem .ow-music-list-item-row .ow-music-list-item-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-row .ow-music-list-item-artist {
+  min-width: 0;
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-row .ow-music-list-item-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--b-color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--b-spacing-xs);
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-row .ow-music-list-item-title .ow-music-list-item-track-number {
+  color: var(--b-color-text-muted);
+  font-weight: 400;
+  min-width: 1.5rem;
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-row .ow-music-list-item-title .ow-music-list-item-codec {
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--b-color-point);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ow-music-list-item-MusicListItem .ow-music-list-item-row .ow-music-list-item-icon-button {
+  width: 40px;
+  height: 40px;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-music-player-MusicPlayer {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--b-color-background-layer-1);
+  border-top: 1px solid var(--b-color-border);
+}
+@media (min-width: 1024px) {
+  .ow-music-player-MusicPlayer {
+    grid-column: 1/3;
+  }
+}
+
+.ow-music-player-progress {
+  width: 100%;
+  height: 3px;
+  background-color: var(--b-color-background);
+  cursor: pointer;
+  overflow: hidden;
+  transition: height var(--b-transition-fast);
+}
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .ow-music-player-progress:hover {
+    height: 5px;
+  }
+}
+.ow-music-player-progress .ow-music-player-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--b-color-point);
+  transform: translateX(-100%);
+}
+
+.ow-music-player-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--b-spacing-sm) var(--b-spacing-md);
+  gap: var(--b-spacing-md);
+}
+@media (min-width: 1024px) {
+  .ow-music-player-content {
+    padding: var(--b-spacing-sm) var(--b-spacing-lg);
+  }
+}
+
+.ow-music-player-trackInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--b-spacing-sm);
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+@media (min-width: 1024px) {
+  .ow-music-player-trackInfo {
+    gap: var(--b-spacing-md);
+  }
+}
+
+.ow-music-player-albumArt {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--b-radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.ow-music-player-albumArt .ow-music-player-art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ow-music-player-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ow-music-player-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--b-color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ow-music-player-artist {
+  font-size: 0.75rem;
+  color: var(--b-color-text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ow-music-player-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--b-spacing-xs);
+}
+
+.ow-music-player-controlButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--b-radius-full);
+  background: none;
+  color: var(--b-color-text);
+  cursor: pointer;
+  transition: var(--b-transition-fast);
+  transition-property: background-color, color, transform;
+}
+.ow-music-player-controlButton svg {
+  width: 18px;
+  height: 18px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-music-player-controlButton:hover {
+    background-color: var(--b-color-hover);
+  }
+}
+.ow-music-player-controlButton:active {
+  transform: scale(0.95);
+}
+.ow-music-player-controlButton.ow-music-player-primary {
+  width: 44px;
+  height: 44px;
+  background: var(--b-color-point);
+  color: #000;
+}
+.ow-music-player-controlButton.ow-music-player-primary svg {
+  width: 20px;
+  height: 20px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-music-player-controlButton.ow-music-player-primary:hover {
+    background: var(--b-color-point-dark);
+  }
+}
+.ow-music-player-controlButton.ow-music-player-secondary {
+  color: var(--b-color-text-secondary);
+}
+.ow-music-player-controlButton.ow-music-player-secondary.ow-music-player-active {
+  color: var(--b-color-point);
+}
+@media (max-width: 768px) {
+  .ow-music-player-controlButton.ow-music-player-secondary {
+    display: none;
+  }
+  .ow-music-player-controlButton.ow-music-player-secondary:nth-last-child(1), .ow-music-player-controlButton.ow-music-player-secondary:nth-last-child(2), .ow-music-player-controlButton.ow-music-player-secondary:nth-last-child(3) {
+    display: flex;
+  }
+}
+@media (max-width: 768px) {
+  .ow-music-player-controlButton.ow-music-player-queue {
+    display: none;
+  }
+}
+@media (min-width: 1024px) {
+  .ow-music-player-controlButton.ow-music-player-queue {
+    display: flex;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-music-player-disk-style-MusicPlayerDiskStyle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.ow-music-player-disk-style-MusicPlayerDiskStyle .ow-music-player-disk-style-disc {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, var(--b-color-background) 0 9%, transparent 9.5%), repeating-radial-gradient(circle at 50% 50%, transparent 0 13px, rgba(244, 244, 245, 0.045) 13px 14px), conic-gradient(from 135deg, #09090b 0deg, #18181b 46deg, #27272a 72deg, #111113 126deg, rgba(30, 215, 96, 0.16) 130deg, #111113 138deg, #27272a 214deg, #18181b 282deg, #09090b 360deg);
+  border: 1px solid var(--b-color-border-subtle);
+  box-shadow: none;
+  animation: cdSpin 12s linear infinite;
+  animation-play-state: paused;
+  transform: translateZ(0);
+}
+.ow-music-player-disk-style-MusicPlayerDiskStyle .ow-music-player-disk-style-disc::before {
+  content: "";
+  position: absolute;
+  inset: 5%;
+  border-radius: 50%;
+  border: 1px solid rgba(244, 244, 245, 0.1);
+  box-shadow: inset 0 0 0 18px rgba(244, 244, 245, 0.018), inset 0 0 0 42px rgba(0, 0, 0, 0.16), inset 0 0 0 68px rgba(244, 244, 245, 0.018), inset 0 0 0 96px rgba(0, 0, 0, 0.14);
+  pointer-events: none;
+}
+.ow-music-player-disk-style-MusicPlayerDiskStyle .ow-music-player-disk-style-disc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(118deg, transparent 0 42%, rgba(244, 244, 245, 0.08) 47%, transparent 54%), radial-gradient(circle at 50% 50%, transparent 0 62%, rgba(0, 0, 0, 0.34) 100%);
+  mix-blend-mode: screen;
+  opacity: 0.62;
+  pointer-events: none;
+}
+.ow-music-player-disk-style-MusicPlayerDiskStyle.ow-music-player-disk-style-isPlaying .ow-music-player-disk-style-disc {
+  animation-play-state: running;
+}
+.ow-music-player-disk-style-MusicPlayerDiskStyle .ow-music-player-disk-style-label {
+  position: absolute;
+  inset: 24%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(244, 244, 245, 0.16);
+}
+.ow-music-player-disk-style-MusicPlayerDiskStyle .ow-music-player-disk-style-label::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 50%, transparent 0 58%, rgba(0, 0, 0, 0.28) 100%);
+  pointer-events: none;
+}
+.ow-music-player-disk-style-MusicPlayerDiskStyle .ow-music-player-disk-style-labelImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ow-music-player-disk-style-MusicPlayerDiskStyle .ow-music-player-disk-style-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 16%;
+  height: 16%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, var(--b-color-background) 0 36%, #18181b 38% 62%, var(--b-color-background) 64% 100%);
+  border: 1px solid rgba(244, 244, 245, 0.18);
+  box-shadow: none;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.ow-music-player-disk-style-MusicPlayerDiskStyle .ow-music-player-disk-style-center::after {
+  content: "";
+  position: absolute;
+  inset: 38%;
+  border-radius: inherit;
+  background: var(--b-color-point);
+}
+
+@keyframes cdSpin {
+  from {
+    transform: translateZ(0) rotate(0deg);
+  }
+  to {
+    transform: translateZ(0) rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ow-music-player-disk-style-MusicPlayerDiskStyle .ow-music-player-disk-style-disc {
+    animation: none;
+  }
+}
+
+.ow-music-player-visualizer-style-MusicPlayerVisualizerStyle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+}
+.ow-music-player-visualizer-style-MusicPlayerVisualizerStyle .ow-music-player-visualizer-style-foreground-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  border-radius: 16px;
+}
+.ow-music-player-visualizer-style-MusicPlayerVisualizerStyle .ow-music-player-visualizer-style-foreground {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+.ow-music-player-visualizer-style-MusicPlayerVisualizerStyle canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 16px;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-music-selector-MusicSelector {
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+.ow-music-selector-MusicSelector.ow-music-selector-active {
+  color: var(--b-color-point);
+}
+.ow-music-selector-MusicSelector svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-playlist-item-PlaylistItem {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.ow-playlist-item-mainButton {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: var(--b-spacing-md);
+  border: 1px solid transparent;
+  border-radius: var(--b-radius-lg);
+  background: transparent;
+  color: var(--b-color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--b-spacing-md);
+  text-align: left;
+  transition: var(--b-transition-fast);
+  transition-property: background-color, border-color;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-playlist-item-mainButton:hover {
+    border-color: var(--b-color-border-subtle);
+    background: linear-gradient(90deg, rgba(244, 244, 245, 0.06), transparent 58%);
+  }
+  .ow-playlist-item-mainButton:hover .ow-playlist-item-coverBack {
+    transform: translate(7px, -5px);
+  }
+}
+.ow-playlist-item-mainButton:active {
+  background-color: var(--b-color-active);
+}
+.ow-playlist-item-mainButton:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: -2px;
+}
+
+.ow-playlist-item-title {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--b-spacing-xs);
+}
+
+.ow-playlist-item-name,
+.ow-playlist-item-count {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ow-playlist-item-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.ow-playlist-item-count {
+  color: var(--b-color-text-tertiary);
+  font-size: 0.75rem;
+}
+
+.ow-playlist-item-coverStack {
+  position: relative;
+  width: 70px;
+  height: 60px;
+  flex-shrink: 0;
+}
+.ow-playlist-item-coverBack {
+  position: absolute;
+  top: 6px;
+  right: 0;
+  width: 54px;
+  height: 48px;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-md);
+  background: repeating-linear-gradient(135deg, rgba(30, 215, 96, 0.14) 0 2px, transparent 2px 7px), var(--b-color-background-layer-1);
+  transition: transform var(--b-transition-fast);
+}
+.ow-playlist-item-cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: var(--b-radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ow-playlist-item-icon-button {
+  margin-right: var(--b-spacing-sm);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-playlist-summary-PlaylistSummary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--b-spacing-md);
+  text-align: center;
+}
+.ow-playlist-summary-PlaylistSummary .ow-playlist-summary-cover {
+  width: 260px;
+  max-width: 76%;
+  margin-bottom: var(--b-spacing-sm);
+  border-radius: var(--b-radius-xl);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-action-bar-ActionBar {
+  position: sticky;
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  z-index: 8;
+  width: min(34rem, 100% - 2rem);
+  margin: var(--b-spacing-lg) auto 0;
+  padding: 0.375rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 0.375rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-xl);
+  background: var(--b-color-surface-modal);
+}
+
+.ow-action-bar-ActionBarButton {
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--b-radius-lg);
+  background: transparent;
+  color: var(--b-color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  font-size: 0.75rem;
+  font-weight: 600;
+  gap: 0.5rem;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color, transform;
+}
+.ow-action-bar-ActionBarButton svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+}
+.ow-action-bar-ActionBarButton:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+.ow-action-bar-ActionBarButton:active {
+  transform: scale(0.98);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-action-bar-ActionBarButton:hover {
+    color: var(--b-color-text);
+    border-color: var(--b-color-border-subtle);
+    background: var(--b-color-hover);
+  }
+}
+.ow-action-bar-ActionBarButton:first-child {
+  color: var(--b-color-background);
+  background: var(--b-color-point);
+  border-color: var(--b-color-point);
+}
+.ow-action-bar-ActionBarButton:last-child {
+  color: rgba(254, 202, 202, 0.92);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-badge-Badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 24px;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid transparent;
+  border-radius: var(--b-radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.ow-badge-Badge.ow-badge-size-md {
+  min-height: 28px;
+  padding-inline: 0.75rem;
+  font-size: 0.875rem;
+}
+.ow-badge-Badge.ow-badge-tone-neutral {
+  border-color: var(--b-color-border-subtle);
+  background: var(--b-color-surface-input);
+  color: var(--b-color-text-secondary);
+}
+.ow-badge-Badge.ow-badge-tone-accent {
+  border-color: var(--b-color-focus);
+  background: var(--b-color-active);
+  color: var(--b-color-point-light);
+}
+.ow-badge-Badge.ow-badge-tone-success {
+  background: rgba(56, 189, 120, 0.1);
+  color: rgba(129, 222, 168, 0.92);
+}
+.ow-badge-Badge.ow-badge-tone-warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: rgba(255, 210, 138, 0.95);
+}
+.ow-badge-Badge.ow-badge-tone-danger {
+  background: rgba(244, 63, 94, 0.1);
+  color: rgba(255, 154, 173, 0.92);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-bottom-panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  background: rgba(2, 9, 12, 0.72);
+  will-change: opacity;
+  animation: fade-in 180ms ease;
+}
+
+.ow-bottom-panel-content {
+  --panel-offset: 0px;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  width: min(100vw, 37.5rem);
+  max-height: min(80dvh, 42rem);
+  transform: translate(-50%, var(--panel-offset));
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.25rem 1.25rem 0 0;
+  border: 1px solid var(--b-color-border-subtle);
+  border-bottom: 0;
+  background: var(--b-color-surface-modal);
+  box-shadow: var(--b-card-shadow-sub);
+  color: var(--b-color-text);
+  z-index: 111;
+  overflow: hidden;
+  will-change: transform;
+  animation: sheet-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ow-bottom-panel-content:focus {
+  outline: none;
+}
+
+.ow-bottom-panel-header {
+  position: relative;
+  padding: 1.75rem 1rem 0.875rem;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.ow-bottom-panel-header:active {
+  cursor: grabbing;
+}
+
+.ow-bottom-panel-handle {
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  width: 3rem;
+  height: 0.3125rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateX(-50%);
+  flex-shrink: 0;
+}
+
+.ow-bottom-panel-title {
+  margin: 0;
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--b-color-text-secondary);
+  letter-spacing: 0;
+  text-align: left;
+}
+
+.ow-bottom-panel-body {
+  overflow-y: auto;
+  padding: 0 1rem max(1rem, env(safe-area-inset-bottom));
+}
+
+.ow-bottom-panel-visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .ow-bottom-panel-content {
+    width: 100vw;
+    max-height: 85dvh;
+    border-radius: 1.125rem 1.125rem 0 0;
+  }
+  .ow-bottom-panel-body {
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+    padding-bottom: max(0.875rem, env(safe-area-inset-bottom));
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sheet-in {
+  from {
+    transform: translate(-50%, calc(var(--panel-offset) + 2rem));
+  }
+  to {
+    transform: translate(-50%, var(--panel-offset));
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-button-Button {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0.42rem 0.8rem;
+  border: 1px solid transparent;
+  border-radius: var(--b-radius-md);
+  color: var(--b-color-text-secondary);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  background: var(--b-color-secondary-button);
+  transition: var(--b-transition-fast);
+  transition-property: background-color, border-color, color, transform;
+}
+.ow-button-Button svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+}
+.ow-button-Button:focus-visible {
+  outline: none;
+  border-color: var(--b-color-focus);
+  box-shadow: 0 0 0 3px var(--b-color-focus-ring);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-button-Button:hover {
+    color: var(--b-color-text);
+    border-color: var(--b-color-border-subtle);
+    background: var(--b-color-hover);
+  }
+}
+.ow-button-Button.ow-button-size-sm {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  padding: 0.42rem 0.65rem;
+}
+.ow-button-Button.ow-button-fullWidth {
+  width: 100%;
+}
+.ow-button-Button.ow-button-variant-primary {
+  color: var(--b-color-background);
+  border-color: var(--b-color-point);
+  background: var(--b-color-point);
+  box-shadow: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-button-Button.ow-button-variant-primary:hover {
+    color: var(--b-color-background);
+    border-color: var(--b-color-point-dark);
+    background: var(--b-color-point-dark);
+  }
+}
+.ow-button-Button.ow-button-variant-danger {
+  border-color: transparent;
+  background: rgba(239, 68, 68, 0.14);
+  color: rgba(254, 202, 202, 0.92);
+  box-shadow: none;
+}
+.ow-button-Button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-card-Card.ow-card-variant-elevated {
+  background: var(--b-color-background-layer-1);
+  box-shadow: var(--b-card-shadow-main);
+}
+.ow-card-Card.ow-card-variant-flat {
+  background: var(--b-color-background-layer-1);
+}
+.ow-card-Card.ow-card-variant-outlined {
+  background: var(--b-color-background-layer-1);
+  border: 1px solid var(--b-color-border-subtle);
+}
+.ow-card-Card.ow-card-padding-none {
+  padding: 0;
+}
+.ow-card-Card.ow-card-padding-sm {
+  padding: var(--b-spacing-sm);
+}
+.ow-card-Card.ow-card-padding-md {
+  padding: var(--b-spacing-md);
+}
+.ow-card-Card.ow-card-padding-lg {
+  padding: var(--b-spacing-lg);
+}
+.ow-card-Card.ow-card-radius-md {
+  border-radius: var(--b-radius-md);
+}
+.ow-card-Card.ow-card-radius-lg {
+  border-radius: var(--b-radius-lg);
+}
+.ow-card-Card.ow-card-radius-xl {
+  border-radius: var(--b-radius-xl);
+}
+.ow-card-Card.ow-card-radius-2xl {
+  border-radius: var(--b-radius-2xl);
+}
+.ow-card-Card.ow-card-overflow {
+  overflow: hidden;
+}
+.ow-card-Card.ow-card-interactive {
+  cursor: pointer;
+  transition: var(--b-transition-fast);
+  transition-property: box-shadow, background-color, border-color;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-card-Card.ow-card-interactive:hover {
+    box-shadow: var(--b-card-shadow-hover);
+  }
+  .ow-card-Card.ow-card-interactive.ow-card-variant-outlined:hover {
+    border-color: var(--b-color-border);
+    box-shadow: none;
+  }
+}
+.ow-card-Card.ow-card-interactive:active {
+  transform: scale(0.99);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-equalizer-preset-presetContainer {
+  width: 100%;
+}
+
+.ow-equalizer-preset-presetButtonGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.5rem;
+}
+
+.ow-equalizer-preset-presetItem {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  overflow: hidden;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-surface-item);
+  transition: var(--b-transition-fast);
+  transition-property: border-color, background-color;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-equalizer-preset-presetItem:hover {
+    border-color: var(--b-color-border);
+    background: var(--b-color-hover);
+  }
+}
+
+.ow-equalizer-preset-presetButton,
+.ow-equalizer-preset-deleteButton,
+.ow-equalizer-preset-saveButton {
+  min-height: 44px;
+  border: 0;
+  color: var(--b-color-text-secondary);
+  background: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color, box-shadow;
+}
+.ow-equalizer-preset-presetButton:focus-visible,
+.ow-equalizer-preset-deleteButton:focus-visible,
+.ow-equalizer-preset-saveButton:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--b-color-focus);
+}
+.ow-equalizer-preset-presetButton:disabled,
+.ow-equalizer-preset-deleteButton:disabled,
+.ow-equalizer-preset-saveButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-equalizer-preset-presetButton:hover:not(:disabled),
+  .ow-equalizer-preset-deleteButton:hover:not(:disabled),
+  .ow-equalizer-preset-saveButton:hover:not(:disabled) {
+    color: var(--b-color-text);
+    background: transparent;
+  }
+}
+
+.ow-equalizer-preset-presetButton {
+  padding: 0 0.75rem;
+  text-align: center;
+}
+.ow-equalizer-preset-presetButton.ow-equalizer-preset-active {
+  color: var(--b-color-text);
+  background: var(--b-color-active);
+}
+
+.ow-equalizer-preset-deleteButton {
+  width: 44px;
+  border-left: 1px solid var(--b-color-border-subtle);
+  color: var(--b-color-text-muted);
+}
+
+.ow-equalizer-preset-saveButton {
+  justify-content: center;
+  padding: 0 0.875rem;
+  border: 1px dashed var(--b-color-border-subtle);
+  border-radius: var(--b-radius-full);
+  background: transparent;
+  color: var(--b-color-point-light);
+}
+
+@media (max-width: 560px) {
+  .ow-equalizer-preset-presetButtonGroup {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-equalizer-slider-sliderRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.8fr) minmax(12rem, 1.6fr) minmax(5.75rem, auto);
+  align-items: center;
+  gap: var(--b-spacing-md);
+  width: 100%;
+  padding: var(--b-spacing-md);
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-lg);
+  background: var(--b-color-surface-item);
+}
+
+.ow-equalizer-slider-sliderRow.vertical {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto minmax(12rem, 1fr) auto;
+  justify-items: center;
+  align-items: stretch;
+  gap: var(--b-spacing-sm);
+  min-width: 0;
+  height: 100%;
+  padding: var(--b-spacing-sm);
+  border: 0;
+  background: transparent;
+}
+.ow-equalizer-slider-sliderRow.vertical .ow-equalizer-slider-labelGroup,
+.ow-equalizer-slider-sliderRow.vertical .ow-equalizer-slider-valueGroup {
+  align-items: center;
+  text-align: center;
+}
+.ow-equalizer-slider-sliderRow.vertical .ow-equalizer-slider-label {
+  font-size: 0.75rem;
+}
+.ow-equalizer-slider-sliderRow.vertical .ow-equalizer-slider-meta {
+  min-height: auto;
+  font-size: 0.6875rem;
+}
+.ow-equalizer-slider-sliderRow.vertical .ow-equalizer-slider-sliderControl {
+  position: relative;
+  width: 100%;
+  min-height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.ow-equalizer-slider-sliderRow.vertical .ow-equalizer-slider-sliderInput {
+  width: 12rem;
+  height: 0.5rem;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  background: linear-gradient(to right, transparent 0, transparent var(--eq-start), var(--b-color-point) var(--eq-start), var(--b-color-point) var(--eq-end), transparent var(--eq-end), transparent 100%), linear-gradient(to right, transparent 0, transparent calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) + 1px), transparent calc(var(--eq-zero) + 1px), transparent 100%), var(--b-color-surface-input);
+}
+.ow-equalizer-slider-sliderRow.vertical .ow-equalizer-slider-valueDisplay {
+  font-size: 0.75rem;
+  text-align: center;
+}
+.ow-equalizer-slider-sliderRow.vertical .ow-equalizer-slider-resetButton {
+  display: none;
+}
+
+.ow-equalizer-slider-labelGroup,
+.ow-equalizer-slider-valueGroup {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ow-equalizer-slider-label {
+  color: var(--b-color-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.ow-equalizer-slider-meta {
+  min-height: 1rem;
+  color: var(--b-color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.ow-equalizer-slider-sliderControl {
+  min-width: 0;
+  padding: 0.25rem 0;
+}
+
+.ow-equalizer-slider-valueGroup {
+  align-items: flex-end;
+}
+
+.ow-equalizer-slider-valueDisplay {
+  color: var(--b-color-text-secondary);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: right;
+}
+
+.ow-equalizer-slider-resetButton {
+  min-height: 1.35rem;
+  padding: 0;
+  border: 0;
+  color: var(--b-color-text-muted);
+  background: transparent;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: var(--b-transition-fast);
+  transition-property: color;
+}
+.ow-equalizer-slider-resetButton:disabled {
+  opacity: 0.36;
+  cursor: not-allowed;
+}
+.ow-equalizer-slider-resetButton:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-equalizer-slider-resetButton:hover:not(:disabled) {
+    color: var(--b-color-text);
+  }
+}
+
+.ow-equalizer-slider-sliderInput {
+  width: 100%;
+  height: 0.625rem;
+  border-radius: var(--b-radius-full);
+  background: linear-gradient(to right, transparent 0, transparent var(--eq-start), var(--b-color-point) var(--eq-start), var(--b-color-point) var(--eq-end), transparent var(--eq-end), transparent 100%), linear-gradient(to right, transparent 0, transparent calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) + 1px), transparent calc(var(--eq-zero) + 1px), transparent 100%), var(--b-color-border-subtle);
+  outline: none;
+  appearance: none;
+  transition: var(--b-transition-fast);
+  transition-property: background-color, opacity;
+}
+.ow-equalizer-slider-sliderInput:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+.ow-equalizer-slider-sliderInput:focus-visible {
+  box-shadow: 0 0 0 3px var(--b-color-focus-ring);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-equalizer-slider-sliderInput:hover:not(:disabled) {
+    background: linear-gradient(to right, transparent 0, transparent var(--eq-start), var(--b-color-point-light) var(--eq-start), var(--b-color-point-light) var(--eq-end), transparent var(--eq-end), transparent 100%), linear-gradient(to right, transparent 0, transparent calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) - 1px), rgba(255, 255, 255, 0.72) calc(var(--eq-zero) + 1px), transparent calc(var(--eq-zero) + 1px), transparent 100%), var(--b-color-border);
+  }
+}
+.ow-equalizer-slider-sliderInput::-webkit-slider-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--b-color-background);
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-point);
+  cursor: pointer;
+  appearance: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+.ow-equalizer-slider-sliderInput::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--b-color-background);
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-point);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+@media (max-width: 720px) {
+  .ow-equalizer-slider-sliderRow {
+    grid-template-columns: 1fr auto;
+    gap: var(--b-spacing-sm);
+  }
+  .ow-equalizer-slider-sliderControl {
+    grid-column: 1/-1;
+    grid-row: 2;
+  }
+  .ow-equalizer-slider-valueGroup {
+    align-self: start;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-flex-flex {
+  display: flex;
+}
+.ow-flex-flex.ow-flex-d-column {
+  flex-direction: column;
+}
+.ow-flex-flex.ow-flex-d-row {
+  flex-direction: row;
+}
+.ow-flex-flex.ow-flex-d-row-reverse {
+  flex-direction: row-reverse;
+}
+.ow-flex-flex.ow-flex-d-column-reverse {
+  flex-direction: column-reverse;
+}
+.ow-flex-flex.ow-flex-j-start {
+  justify-content: flex-start;
+}
+.ow-flex-flex.ow-flex-j-end {
+  justify-content: flex-end;
+}
+.ow-flex-flex.ow-flex-j-center {
+  justify-content: center;
+}
+.ow-flex-flex.ow-flex-j-between {
+  justify-content: space-between;
+}
+.ow-flex-flex.ow-flex-j-around {
+  justify-content: space-around;
+}
+.ow-flex-flex.ow-flex-j-evenly {
+  justify-content: space-evenly;
+}
+.ow-flex-flex.ow-flex-a-start {
+  align-items: flex-start;
+}
+.ow-flex-flex.ow-flex-a-end {
+  align-items: flex-end;
+}
+.ow-flex-flex.ow-flex-a-center {
+  align-items: center;
+}
+.ow-flex-flex.ow-flex-a-baseline {
+  align-items: baseline;
+}
+.ow-flex-flex.ow-flex-a-stretch {
+  align-items: stretch;
+}
+.ow-flex-flex.ow-flex-w-wrap {
+  flex-wrap: wrap;
+}
+.ow-flex-flex.ow-flex-w-nowrap {
+  flex-wrap: nowrap;
+}
+.ow-flex-flex.ow-flex-w-reverse {
+  flex-wrap: wrap-reverse;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-grid-Grid {
+  display: grid;
+  grid-gap: var(--b-spacing-md);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  padding: var(--b-spacing-md) var(--b-spacing-lg);
+  list-style: none;
+}
+@media (max-width: 768px) {
+  .ow-grid-Grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.ow-grid-image-GridImage {
+  display: grid;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+.ow-grid-image-GridImage.ow-grid-image-col-1 {
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+}
+.ow-grid-image-GridImage.ow-grid-image-col-2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+.ow-grid-image-GridImage.ow-grid-image-col-3 {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+.ow-grid-image-GridImage.ow-grid-image-col-4 {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+.ow-grid-image-GridImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-icon-button-IconButton {
+  border: 0;
+  border-radius: var(--b-radius-full);
+  background: transparent;
+  color: var(--b-color-text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color;
+}
+.ow-icon-button-IconButton svg {
+  width: 1rem;
+  height: 1rem;
+}
+.ow-icon-button-IconButton:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-icon-button-IconButton:hover {
+    color: var(--b-color-text);
+    background: var(--b-color-hover);
+  }
+}
+.ow-icon-button-IconButton.ow-icon-button-active {
+  color: var(--b-color-point);
+  background: var(--b-color-active);
+}
+.ow-icon-button-IconButton.ow-icon-button-active svg {
+  fill: none;
+  color: currentColor;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-icon-button-IconButton.ow-icon-button-tone-danger:hover {
+    color: var(--b-color-text);
+    background: rgba(255, 152, 152, 0.08);
+  }
+}
+.ow-icon-button-IconButton.ow-icon-button-size-sm {
+  width: 40px;
+  height: 40px;
+}
+.ow-icon-button-IconButton.ow-icon-button-size-md {
+  width: 44px;
+  height: 44px;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-icon-text-button-IconTextButton {
+  min-height: 2.5rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-md);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-text-secondary);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.55rem;
+  text-align: left;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color, transform;
+}
+.ow-icon-text-button-IconTextButton:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 3px;
+}
+.ow-icon-text-button-IconTextButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.ow-icon-text-button-IconTextButton:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-icon-text-button-IconTextButton:hover:not(:disabled) {
+    color: var(--b-color-text);
+    border-color: var(--b-color-border);
+    background: var(--b-color-hover);
+  }
+}
+
+.ow-icon-text-button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 0 0 auto;
+}
+.ow-icon-text-button-icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ow-icon-text-button-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.ow-icon-text-button-label,
+.ow-icon-text-button-meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ow-icon-text-button-label {
+  color: inherit;
+}
+
+.ow-icon-text-button-meta {
+  color: var(--b-color-text-tertiary);
+  font-size: 0.6875rem;
+  font-weight: 400;
+}
+
+.ow-icon-text-button-variant-primary {
+  color: var(--b-color-background);
+  border-color: var(--b-color-point);
+  background: var(--b-color-point);
+}
+.ow-icon-text-button-variant-primary .ow-icon-text-button-meta {
+  color: rgba(0, 0, 0, 0.64);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-icon-text-button-variant-primary:hover:not(:disabled) {
+    color: var(--b-color-background);
+    border-color: var(--b-color-point-dark);
+    background: var(--b-color-point-dark);
+  }
+}
+
+.ow-icon-text-button-variant-ghost {
+  background: transparent;
+  color: var(--b-color-text-tertiary);
+}
+
+.ow-icon-text-button-size-sm {
+  min-height: 2.25rem;
+  padding: 0.42rem 0.7rem;
+}
+
+.ow-icon-text-button-size-lg {
+  min-height: 2.75rem;
+  padding: 0.6rem 0.9rem;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+
+.ow-image {
+  color: transparent;
+  opacity: 0;
+  background: var(--b-color-surface-subtle);
+  transition: opacity var(--b-transition-normal);
+}
+
+.ow-image-loaded {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ow-image {
+    transition: none;
+  }
+}
+
+.ow-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--b-color-active);
+}
+.ow-image-placeholder svg {
+  width: 38%;
+  height: 38%;
+  color: var(--b-color-text-muted);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-input-Input {
+  min-width: 0;
+  min-height: 2.25rem;
+  padding: 0 0.8rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-md);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-text-secondary);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  transition: var(--b-transition-fast);
+  transition-property: border-color, background-color, box-shadow;
+}
+.ow-input-Input::placeholder {
+  color: var(--b-color-text-muted);
+}
+.ow-input-Input:focus {
+  outline: none;
+}
+.ow-input-Input:focus-visible {
+  border-color: var(--b-color-focus);
+  color: var(--b-color-text);
+  background: var(--b-color-hover);
+  box-shadow: 0 0 0 3px var(--b-color-focus-ring);
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-input-Input:hover:not(:disabled) {
+    color: var(--b-color-text);
+    border-color: var(--b-color-border-subtle);
+    background: var(--b-color-hover);
+  }
+}
+.ow-input-Input:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+.ow-input-Input.ow-input-fullWidth {
+  width: 100%;
+}
+.ow-input-Input.ow-input-size-lg {
+  min-height: 44px;
+}
+.ow-input-Input.ow-input-tone-panel {
+  background: var(--b-color-surface-subtle);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-loading-Loading {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes audio-wave {
+  0% {
+    height: 6px;
+    transform: translateY(0px);
+    background: var(--b-color-point-dark);
+  }
+  25% {
+    height: 20px;
+    transform: translateY(-5px) scaleY(1.7);
+    background: var(--b-color-point-light);
+  }
+  50% {
+    height: 6px;
+    transform: translateY(0px);
+    background: var(--b-color-point);
+  }
+  100% {
+    height: 6px;
+    transform: translateY(0px);
+    background: var(--b-color-point-dark);
+  }
+}
+.ow-loading-Loading .ow-loading-sound-wave {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  width: 3.75rem;
+  height: 2.5rem;
+}
+.ow-loading-Loading .ow-loading-sound-wave div {
+  height: 2.5rem;
+  display: block;
+  width: 0.6rem;
+  height: 0.4rem;
+  border-radius: 0.5rem;
+  background: var(--b-color-point-dark);
+  animation: audio-wave 2.2s infinite ease-in-out;
+}
+.ow-loading-Loading .ow-loading-sound-wave div:nth-child(2) {
+  left: 11px;
+  animation-delay: 0.2s;
+}
+.ow-loading-Loading .ow-loading-sound-wave div:nth-child(3) {
+  left: 22px;
+  animation-delay: 0.4s;
+}
+.ow-loading-Loading .ow-loading-sound-wave div:nth-child(4) {
+  left: 33px;
+  animation-delay: 0.6s;
+}
+.ow-loading-Loading .ow-loading-sound-wave div:nth-child(5) {
+  left: 44px;
+  animation-delay: 0.8s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ow-loading-Loading .ow-loading-sound-wave div {
+    animation: none;
+    height: 0.75rem;
+    transform: none;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-text-entry-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 122;
+  background: rgba(2, 9, 12, 0.72);
+  animation: fade-in 180ms ease;
+}
+
+.ow-text-entry-dialog-content {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: min(100vw - 1.5rem, 28rem);
+  transform: translate(-50%, -50%);
+  z-index: 123;
+  border-radius: var(--b-radius-lg);
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-color-surface-modal);
+  box-shadow: var(--b-card-shadow-sub);
+  padding: 1rem;
+  color: var(--b-color-text);
+  animation: dialog-in 220ms ease;
+}
+.ow-text-entry-dialog-content:focus {
+  outline: none;
+}
+
+.ow-text-entry-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ow-text-entry-dialog-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ow-text-entry-dialog-title {
+  letter-spacing: 0;
+}
+
+.ow-text-entry-dialog-description {
+  line-height: 1.45;
+}
+
+.ow-text-entry-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+}
+
+.ow-text-entry-dialog-button {
+  min-width: 5.5rem;
+}
+
+@media (max-width: 640px) {
+  .ow-text-entry-dialog-content {
+    width: min(100vw - 1rem, 28rem);
+    padding: 0.875rem;
+  }
+  .ow-text-entry-dialog-actions {
+    flex-direction: column-reverse;
+  }
+  .ow-text-entry-dialog-button {
+    width: 100%;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 8px));
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-panel-content-container .ow-panel-content-panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--b-color-border);
+}
+.ow-panel-content-container .ow-panel-content-panel-album {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+.ow-panel-content-container .ow-panel-content-panel-album > img,
+.ow-panel-content-container .ow-panel-content-panel-album .ow-panel-content-panel-cover {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+.ow-panel-content-container .ow-panel-content-panel-album .ow-panel-content-album-cover-grid {
+  width: 60px;
+  height: 60px;
+}
+.ow-panel-content-container .ow-panel-content-panel-artist {
+  display: flex;
+  flex-direction: column;
+}
+.ow-panel-content-container .ow-panel-content-panel-sub-title {
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--b-color-text-muted);
+}
+.ow-panel-content-container .ow-panel-content-panel-sub-content {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.ow-panel-content-container .ow-panel-content-items {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  margin: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--b-color-border);
+}
+.ow-panel-content-container .ow-panel-content-items .ow-panel-content-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-radius: 0.5rem;
+  color: var(--b-color-text);
+  text-align: left;
+}
+.ow-panel-content-container .ow-panel-content-items .ow-panel-content-item svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.ow-panel-content-container .ow-panel-content-items .ow-panel-content-item.ow-panel-content-active svg {
+  fill: var(--b-color-point);
+  color: var(--b-color-point);
+}
+.ow-panel-content-container .ow-panel-content-items .ow-panel-content-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.ow-panel-content-container .ow-panel-content-detail-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0 0;
+  font-size: 0.875rem;
+  color: var(--b-color-text-muted);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-search-field-SearchField {
+  flex: 1 1 18rem;
+  min-width: min(100%, 16rem);
+  max-width: 28rem;
+  min-height: 2.25rem;
+  padding: 0.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-md);
+  background: var(--b-color-surface-subtle);
+  transition: var(--b-transition-fast);
+  transition-property: border-color, background-color, box-shadow;
+}
+.ow-search-field-SearchField:focus-within {
+  border-color: var(--b-color-focus);
+  box-shadow: 0 0 0 3px var(--b-color-focus-ring);
+}
+
+.ow-search-field-icon {
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.675rem;
+  color: var(--b-color-text-muted);
+  flex-shrink: 0;
+}
+
+.ow-search-field-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--b-color-text-secondary);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.ow-search-field-input::placeholder {
+  color: var(--b-color-text-muted);
+}
+.ow-search-field-input:focus {
+  outline: none;
+}
+
+.ow-search-field-clearButton {
+  width: 28px;
+  height: 28px;
+  margin-right: 0.125rem;
+  border: 0;
+  border-radius: var(--b-radius-full);
+  background: transparent;
+  color: var(--b-color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color;
+}
+.ow-search-field-clearButton svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-search-field-clearButton:hover {
+    color: var(--b-color-text);
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+@media (max-width: 640px) {
+  .ow-search-field-SearchField {
+    max-width: none;
+    flex-basis: 100%;
+    width: 100%;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-select-trigger {
+  width: min(100%, 20rem);
+  min-width: 14rem;
+  min-height: 2.25rem;
+  padding: 0.42rem 0.65rem 0.42rem 0.8rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-md);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-text-secondary);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  transition: var(--b-transition-fast);
+  transition-property: border-color, background-color;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-select-trigger:hover {
+    color: var(--b-color-text);
+    border-color: var(--b-color-border-subtle);
+    background: var(--b-color-hover);
+  }
+}
+.ow-select-trigger:focus-visible {
+  outline: none;
+  border-color: var(--b-color-focus);
+  box-shadow: 0 0 0 3px var(--b-color-focus-ring);
+}
+.ow-select-trigger[data-state=open] {
+  color: var(--b-color-text);
+  border-color: var(--b-color-border-subtle);
+  background: var(--b-color-hover);
+}
+
+.ow-select-triggerIcon {
+  color: var(--b-color-text-muted);
+  flex-shrink: 0;
+}
+.ow-select-triggerIcon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ow-select-content {
+  min-width: var(--radix-select-trigger-width);
+  max-width: min(24rem, 100vw - 2rem);
+  max-height: min(18rem, var(--radix-select-content-available-height));
+  overflow: hidden;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-md);
+  background: var(--b-color-surface-dropdown);
+  box-shadow: var(--b-card-shadow-sub);
+  color: var(--b-color-text);
+  z-index: 40;
+  animation: select-in 140ms ease;
+}
+
+.ow-select-viewport {
+  padding: 0.375rem;
+}
+
+.ow-select-item {
+  position: relative;
+  min-height: 2.25rem;
+  padding: 0.55rem 2.25rem 0.55rem 0.75rem;
+  border-radius: var(--b-radius-md);
+  color: var(--b-color-text);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  display: flex;
+  align-items: center;
+  transition: var(--b-transition-fast);
+  transition-property: background-color, color, transform;
+  user-select: none;
+  cursor: default;
+}
+.ow-select-item[data-highlighted] {
+  outline: none;
+  background: var(--b-color-active);
+  color: var(--b-color-text);
+}
+.ow-select-item[data-state=checked] {
+  background: var(--b-color-hover);
+}
+
+.ow-select-itemIndicator {
+  position: absolute;
+  right: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--b-color-point);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ow-select-itemIndicator svg {
+  width: 0.9375rem;
+  height: 0.9375rem;
+}
+
+@media (max-width: 768px) {
+  .ow-select-trigger {
+    width: 100%;
+    min-width: 0;
+  }
+}
+@keyframes select-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-setting-section-settingSection {
+  padding: 0;
+}
+
+.ow-setting-section-sectionHeader {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--b-spacing-xs);
+  margin-bottom: var(--b-spacing-md);
+}
+
+.ow-setting-section-sectionTitle {
+  margin: 0;
+  color: var(--b-color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--b-spacing-sm);
+  letter-spacing: -0.015em;
+}
+
+.ow-setting-section-sectionIcon {
+  display: flex;
+  align-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--b-color-point);
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ow-setting-section-sectionIcon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ow-setting-section-sectionDescription {
+  max-width: 34rem;
+  line-height: 1.6;
+  color: var(--b-color-text-tertiary);
+}
+
+.ow-setting-section-sectionContent {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--b-color-border-subtle);
+}
+
+.ow-setting-section-settingItem {
+  border-bottom: 1px solid var(--b-color-border-subtle);
+}
+.ow-setting-section-settingItem:last-child, .ow-setting-section-settingItem.ow-setting-section-noDivider {
+  border-bottom: none;
+}
+
+.ow-setting-section-settingItemContent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--b-spacing-lg);
+  align-items: center;
+  min-height: 4.75rem;
+  padding: var(--b-spacing-md) 0;
+}
+
+.ow-setting-section-settingItemHeader {
+  min-width: 0;
+}
+.ow-setting-section-settingItemHeader h4 {
+  letter-spacing: -0.01em;
+}
+.ow-setting-section-settingItemHeader .ow-setting-section-description {
+  max-width: 32rem;
+  margin-top: 0.25rem;
+  line-height: 1.45;
+  color: var(--b-color-text-tertiary);
+}
+
+.ow-setting-section-settingItemControl {
+  display: flex;
+  justify-content: flex-end;
+  min-width: min(240px, 40vw);
+}
+.ow-setting-section-settingItemControl > * {
+  max-width: 100%;
+}
+
+.ow-setting-section-infoBox {
+  padding: var(--b-spacing-md) 0;
+  margin: 0;
+  border-bottom: 1px solid var(--b-color-border-subtle);
+}
+.ow-setting-section-infoBox p {
+  max-width: 42rem;
+  margin: 0;
+  line-height: 1.6;
+  color: var(--b-color-text-tertiary);
+}
+.ow-setting-section-infoBox.ow-setting-section-info p, .ow-setting-section-infoBox.ow-setting-section-success p {
+  color: var(--b-color-text-secondary);
+}
+.ow-setting-section-infoBox.ow-setting-section-warning p {
+  color: var(--b-color-text-tertiary);
+}
+
+@media (max-width: 720px) {
+  .ow-setting-section-settingItemContent {
+    grid-template-columns: 1fr;
+    gap: var(--b-spacing-sm);
+    align-items: stretch;
+    min-height: 0;
+  }
+  .ow-setting-section-settingItemControl {
+    justify-content: flex-start;
+    min-width: 0;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-site-header-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--b-spacing-sm);
+  justify-content: center;
+  height: 4rem;
+  padding: 0 0.75rem;
+  background: var(--b-color-panel-background);
+  border-bottom: 1px solid var(--b-color-border-subtle);
+}
+@media (min-width: 1024px) {
+  .ow-site-header-header {
+    height: 100%;
+    gap: var(--b-spacing-lg);
+    justify-content: flex-start;
+    padding: var(--b-spacing-lg) 0.75rem;
+    background: var(--b-color-panel-background);
+    border-right: 1px solid var(--b-color-border-subtle);
+    border-bottom: none;
+  }
+}
+
+.ow-site-header-nav {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: var(--b-spacing-sm);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.ow-site-header-nav::-webkit-scrollbar {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .ow-site-header-nav {
+    flex: 1;
+    flex-direction: column;
+    gap: var(--b-spacing-md);
+    overflow: visible;
+  }
+}
+
+.ow-site-header-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--b-spacing-xs);
+  min-width: max-content;
+}
+@media (min-width: 1024px) {
+  .ow-site-header-group {
+    min-width: 0;
+  }
+}
+.ow-site-header-group ul {
+  display: flex;
+  align-items: center;
+  gap: var(--b-spacing-xs);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+@media (min-width: 1024px) {
+  .ow-site-header-group ul {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ow-site-header-utilityGroup {
+    margin-top: auto;
+    padding-top: var(--b-spacing-md);
+    border-top: 1px solid var(--b-color-border-subtle);
+  }
+}
+
+.ow-site-header-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--b-spacing-sm);
+  min-height: 44px;
+  padding: 0 0.875rem;
+  border: 1px solid transparent;
+  border-radius: var(--b-radius-full);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--b-color-text-secondary);
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color;
+}
+.ow-site-header-link svg {
+  width: 1.18rem;
+  height: 1.18rem;
+  flex-shrink: 0;
+  transition: color var(--b-transition-fast);
+}
+@media (min-width: 1024px) {
+  .ow-site-header-link {
+    border-radius: var(--b-radius-lg);
+    color: var(--b-color-text-tertiary);
+  }
+  .ow-site-header-link::before {
+    position: absolute;
+    left: 0;
+    width: 3px;
+    height: 18px;
+    border-radius: var(--b-radius-full);
+    background: transparent;
+    content: "";
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-site-header-link:hover {
+    color: var(--b-color-text);
+    background-color: var(--b-color-surface-subtle);
+    border-color: var(--b-color-border-subtle);
+  }
+}
+.ow-site-header-link.ow-site-header-active {
+  color: var(--b-color-text);
+  background: var(--b-color-active);
+  border-color: var(--b-color-border-subtle);
+}
+.ow-site-header-link.ow-site-header-active svg {
+  color: var(--b-color-point-light);
+}
+@media (min-width: 1024px) {
+  .ow-site-header-link.ow-site-header-active::before {
+    background: var(--b-color-point-light);
+    box-shadow: none;
+  }
+}
+
+.ow-site-header-label {
+  white-space: nowrap;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-sticky-header-StickyHeader {
+  padding: var(--b-spacing-md) var(--b-spacing-md) 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background: var(--b-gradient-sticky);
+}
+
+.ow-sticky-header-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--b-spacing-sm);
+}
+@media (max-width: 640px) {
+  .ow-sticky-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-sub-page-header-SubPageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+  padding: 0 0.75rem;
+  background: var(--b-color-background);
+  border-bottom: 1px solid var(--b-color-border-subtle);
+}
+@media (min-width: 1024px) {
+  .ow-sub-page-header-SubPageHeader {
+    height: 100%;
+    padding: 0 var(--b-spacing-md);
+    border-bottom: none;
+    border-right: 1px solid var(--b-color-border-subtle);
+  }
+}
+.ow-sub-page-header-SubPageHeader button {
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--b-radius-full);
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ow-sub-page-header-SubPageHeader button:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+@media (min-width: 1024px) {
+  .ow-sub-page-header-SubPageHeader button {
+    width: auto;
+    height: auto;
+    min-height: 40px;
+  }
+}
+.ow-sub-page-header-SubPageHeader button .ow-sub-page-header-back-text {
+  display: none;
+  margin-left: var(--b-spacing-sm);
+}
+@media (min-width: 1024px) {
+  .ow-sub-page-header-SubPageHeader button .ow-sub-page-header-back-text {
+    display: block;
+  }
+}
+.ow-sub-page-header-SubPageHeader button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.ow-summary-title-SummaryTitle {
+  max-width: 450px;
+  text-align: center;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-surface-Surface {
+  border: 1px solid var(--b-color-border-subtle);
+  color: var(--b-color-text);
+}
+
+.ow-surface-variant-subtle {
+  background: var(--b-color-surface-subtle);
+}
+
+.ow-surface-variant-panel {
+  background: var(--b-color-background-layer-1);
+}
+
+.ow-surface-variant-modal {
+  background: var(--b-color-surface-modal);
+}
+
+.ow-surface-radius-none {
+  border-radius: 0;
+}
+
+.ow-surface-radius-lg {
+  border-radius: var(--b-radius-lg);
+}
+
+.ow-surface-radius-xl {
+  border-radius: var(--b-radius-xl);
+}
+
+.ow-surface-radius-2xl {
+  border-radius: var(--b-radius-2xl);
+}
+
+.ow-surface-padding-md {
+  padding: var(--b-spacing-md);
+}
+
+.ow-surface-padding-lg {
+  padding: var(--b-spacing-lg);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-tag-Tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 32px;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-surface-input);
+  color: var(--b-color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  transition: var(--b-transition-fast);
+  transition-property: border-color, background-color, color, box-shadow;
+}
+.ow-tag-Tag.ow-tag-tone-accent {
+  color: var(--b-color-point-light);
+}
+.ow-tag-Tag.ow-tag-selected {
+  border-color: var(--b-color-focus);
+  background: var(--b-color-active);
+  color: var(--b-color-text);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-text-Text {
+  margin: 0;
+  padding: 0;
+  line-height: 1.45;
+}
+.ow-text-Text.ow-text-variant-primary {
+  color: var(--b-color-text);
+}
+.ow-text-Text.ow-text-variant-secondary {
+  color: var(--b-color-text-secondary);
+}
+.ow-text-Text.ow-text-variant-tertiary {
+  color: var(--b-color-text-tertiary);
+}
+.ow-text-Text.ow-text-variant-muted {
+  color: var(--b-color-text-muted);
+}
+.ow-text-Text.ow-text-size-xs {
+  font-size: 0.75rem;
+}
+.ow-text-Text.ow-text-size-sm {
+  font-size: 0.875rem;
+}
+.ow-text-Text.ow-text-size-md {
+  font-size: 1rem;
+}
+.ow-text-Text.ow-text-size-title {
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+.ow-text-Text.ow-text-size-xl {
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+.ow-text-Text.ow-text-size-2xl {
+  font-size: 2rem;
+  line-height: 1.12;
+}
+.ow-text-Text.ow-text-weight-normal {
+  font-weight: 400;
+}
+.ow-text-Text.ow-text-weight-medium {
+  font-weight: 500;
+}
+.ow-text-Text.ow-text-weight-semibold {
+  font-weight: 600;
+}
+.ow-text-Text.ow-text-weight-bold {
+  font-weight: 700;
+}
+.ow-text-Text.ow-text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-toggle-Toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.ow-toggle-Toggle:focus-visible {
+  outline: none;
+}
+.ow-toggle-Toggle:focus-visible .ow-toggle-ToggleSwitch {
+  box-shadow: 0 0 0 3px var(--b-color-focus-ring);
+  border-color: var(--b-color-focus);
+}
+.ow-toggle-Toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ow-toggle-ToggleSwitch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-surface-input);
+  border: 1px solid var(--b-color-border-subtle);
+  transition: background-color 200ms ease, border-color 200ms ease;
+  flex-shrink: 0;
+}
+.ow-toggle-ToggleSwitch.ow-toggle-is-toggled {
+  background: var(--b-color-point);
+  border-color: transparent;
+}
+
+.ow-toggle-ToggleKnob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-text-secondary);
+  box-shadow: none;
+  transition: transform 200ms ease, background-color 200ms ease;
+}
+.ow-toggle-is-toggled .ow-toggle-ToggleKnob {
+  transform: translateX(20px);
+  background: var(--b-color-background);
+}
+
+.ow-toggle-ToggleLabel {
+  color: var(--b-color-text-secondary);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-artist-detail-section {
+  margin-bottom: var(--b-spacing-2xl);
+}
+.ow-artist-detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.ow-artist-detail-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--b-spacing-md) var(--b-spacing-lg);
+  margin-bottom: var(--b-spacing-sm);
+  gap: var(--b-spacing-md);
+}
+
+.ow-artist-detail-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--b-spacing-sm);
+}
+
+.ow-artist-detail-music-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.ow-artist-detail-album-rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(240px, 320px);
+  gap: var(--b-spacing-sm);
+  padding: 0 var(--b-spacing-lg) var(--b-spacing-sm);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.ow-artist-detail-album-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.ow-artist-detail-album-card {
+  min-width: 0;
+  scroll-snap-align: start;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-lg);
+  background: transparent;
+  overflow: hidden;
+}
+.ow-artist-detail-album-card .ow-album-list-item-AlbumListItem {
+  min-height: 88px;
+  padding: var(--b-spacing-sm);
+  grid-template-columns: 64px minmax(0, 1fr);
+}
+.ow-artist-detail-album-card .ow-album-list-item-AlbumListItem::before {
+  display: none;
+}
+.ow-artist-detail-album-card .ow-album-list-item-meta {
+  display: none;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-home-Home {
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem);
+  padding-bottom: calc(clamp(1.5rem, 4vw, 3rem) + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.4vw, 1.5rem);
+  color: var(--b-color-text);
+}
+
+.ow-home-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(15rem, 34vw, 22rem);
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-2xl);
+  background: var(--b-color-surface-subtle);
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.44fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.25rem, 4vw, 3rem);
+  box-shadow: var(--b-card-shadow-main);
+}
+
+.ow-home-heroArt {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.ow-home-art,
+.ow-home-emptyArt {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 12.5rem);
+  aspect-ratio: 1;
+  border-radius: var(--b-radius-2xl);
+  box-shadow: none;
+}
+
+.ow-home-art {
+  object-fit: cover;
+}
+
+.ow-home-emptyArt {
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-point-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ow-home-emptyArt svg {
+  width: 4rem;
+  height: 4rem;
+}
+
+.ow-home-heroCopy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+
+.ow-home-eyebrow {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ow-home-title {
+  max-width: 16ch;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.ow-home-description {
+  max-width: 34rem;
+  line-height: 1.6;
+}
+
+.ow-home-progress {
+  width: min(100%, 22rem);
+  height: 0.375rem;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-border-subtle);
+}
+
+.ow-home-progressBar {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--b-gradient-primary);
+  transform-origin: left;
+}
+
+.ow-home-heroActions,
+.ow-home-actionStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.ow-home-primaryButton,
+.ow-home-secondaryButton,
+.ow-home-actionButton,
+.ow-home-textButton,
+.ow-home-trackRow,
+.ow-home-focusTrack {
+  font: inherit;
+}
+
+.ow-home-primaryButton,
+.ow-home-secondaryButton {
+  min-height: 44px;
+  padding: 0.625rem 0.875rem;
+  border-radius: var(--b-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  border: 1px solid transparent;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color, transform;
+}
+.ow-home-primaryButton svg,
+.ow-home-secondaryButton svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+.ow-home-primaryButton:focus-visible,
+.ow-home-secondaryButton:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 3px;
+}
+.ow-home-primaryButton:active:not(:disabled),
+.ow-home-secondaryButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.ow-home-primaryButton:disabled,
+.ow-home-secondaryButton:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.ow-home-primaryButton {
+  color: var(--b-color-background);
+  border-color: var(--b-color-point);
+  background: var(--b-color-point);
+  box-shadow: none;
+}
+
+.ow-home-secondaryButton {
+  color: var(--b-color-text-secondary);
+  border-color: var(--b-color-border-subtle);
+  background: var(--b-color-surface-subtle);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ow-home-primaryButton:hover:not(:disabled) {
+    background: var(--b-color-point-dark);
+    border-color: var(--b-color-point-dark);
+  }
+  .ow-home-secondaryButton:hover,
+  .ow-home-actionButton:hover:not(:disabled),
+  .ow-home-textButton:hover,
+  .ow-home-trackRow:hover,
+  .ow-home-focusTrack:hover,
+  .ow-home-shortcutCard:hover {
+    color: var(--b-color-text);
+    border-color: var(--b-color-border);
+    background: var(--b-color-hover);
+  }
+}
+.ow-home-contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 0.8fr);
+  gap: clamp(1rem, 2.4vw, 1.5rem);
+}
+
+.ow-home-panel,
+.ow-home-librarySection,
+.ow-home-focusSection {
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-lg);
+  background: transparent;
+}
+
+.ow-home-panel {
+  min-width: 0;
+  padding: clamp(1rem, 2.4vw, 1.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ow-home-sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ow-home-sectionTitle {
+  margin: 0;
+  color: var(--b-color-text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ow-home-textButton {
+  min-height: 36px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-full);
+  background: transparent;
+  color: var(--b-color-text-tertiary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color;
+}
+.ow-home-textButton:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+
+.ow-home-trackList,
+.ow-home-focusList,
+.ow-home-actionStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.ow-home-trackRow,
+.ow-home-focusTrack,
+.ow-home-actionButton,
+.ow-home-shortcutCard {
+  min-width: 0;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-lg);
+  background: var(--b-color-surface-item);
+  color: var(--b-color-text);
+  text-decoration: none;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color, transform;
+}
+
+.ow-home-trackRow,
+.ow-home-focusTrack {
+  width: 100%;
+  min-height: 3.75rem;
+  padding: 0.625rem;
+  display: grid;
+  grid-template-columns: 1.5rem 3rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
+}
+.ow-home-trackRow:focus-visible,
+.ow-home-focusTrack:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+
+.ow-home-trackIndex {
+  color: var(--b-color-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.ow-home-trackArt,
+.ow-home-focusArt {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--b-radius-md);
+  object-fit: cover;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ow-home-trackCopy,
+.ow-home-focusCopy,
+.ow-home-shortcutCopy,
+.ow-home-actionButton span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.ow-home-trackTitle,
+.ow-home-shortcutLabel {
+  overflow: hidden;
+  color: var(--b-color-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ow-home-trackMeta,
+.ow-home-shortcutMeta,
+.ow-home-actionButton small {
+  overflow: hidden;
+  color: var(--b-color-text-tertiary);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ow-home-quietState {
+  min-height: 8rem;
+  padding: 1rem;
+  border-radius: var(--b-radius-lg);
+  background: var(--b-color-surface-item);
+  display: flex;
+  align-items: center;
+}
+
+.ow-home-panelNote {
+  margin-top: auto;
+}
+
+.ow-home-actionButton {
+  width: 100%;
+  min-height: 3.75rem;
+  padding: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  text-align: left;
+}
+.ow-home-actionButton > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--b-color-point-light);
+  flex-shrink: 0;
+}
+.ow-home-actionButton strong {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.ow-home-actionButton:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+.ow-home-actionButton:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.ow-home-librarySection,
+.ow-home-focusSection {
+  padding: clamp(1rem, 2.4vw, 1.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ow-home-shortcutGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.ow-home-shortcutCard {
+  min-height: 5.25rem;
+  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.ow-home-shortcutCard:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+
+.ow-home-shortcutIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-point-light);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.ow-home-shortcutIcon svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.ow-home-focusList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ow-home-focusTrack {
+  grid-template-columns: 3rem minmax(0, 1fr) 1.25rem;
+}
+.ow-home-focusTrack > svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--b-color-text-muted);
+}
+
+@media (max-width: 900px) {
+  .ow-home-hero,
+  .ow-home-contentGrid {
+    grid-template-columns: 1fr;
+  }
+  .ow-home-hero {
+    min-height: 0;
+  }
+  .ow-home-heroCopy {
+    align-items: center;
+    text-align: center;
+  }
+  .ow-home-title {
+    max-width: 15ch;
+  }
+  .ow-home-heroActions {
+    justify-content: center;
+  }
+  .ow-home-progress {
+    width: 100%;
+  }
+  .ow-home-shortcutGrid,
+  .ow-home-focusList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .ow-home-Home {
+    padding: var(--b-spacing-md);
+    padding-bottom: calc(var(--b-spacing-xl) + env(safe-area-inset-bottom));
+  }
+  .ow-home-hero,
+  .ow-home-panel,
+  .ow-home-librarySection,
+  .ow-home-focusSection {
+    border-radius: var(--b-radius-xl);
+  }
+  .ow-home-art,
+  .ow-home-emptyArt {
+    width: min(100%, 14rem);
+    border-radius: var(--b-radius-xl);
+  }
+  .ow-home-description,
+  .ow-home-panelNote {
+    display: none;
+  }
+  .ow-home-heroActions,
+  .ow-home-primaryButton,
+  .ow-home-secondaryButton {
+    width: 100%;
+  }
+  .ow-home-shortcutGrid,
+  .ow-home-focusList {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 1rem;
+}
+
+.ow-not-found-code {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--b-color-text);
+}
+
+.ow-not-found-text {
+  font-size: 1rem;
+  color: var(--b-color-text-tertiary);
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-player-Player {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  background: var(--b-gradient-page);
+}
+.ow-player-Player .ow-player-ambient-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--b-color-background);
+}
+.ow-player-Player .ow-player-ambient-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+.ow-player-Player .ow-player-container {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+  padding: 1rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.ow-player-Player .ow-player-top-bar {
+  width: 100%;
+  min-width: 0;
+  flex-shrink: 0;
+  margin: 0 0 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--b-spacing-md);
+}
+.ow-player-Player .ow-player-utility-button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: var(--b-radius-full);
+  background: transparent;
+  color: var(--b-color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color;
+}
+.ow-player-Player .ow-player-utility-button svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.ow-player-Player .ow-player-utility-button:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-player-Player .ow-player-utility-button:hover {
+    color: var(--b-color-text);
+    background: var(--b-color-hover);
+  }
+}
+.ow-player-Player .ow-player-audio-menu-trigger {
+  margin-left: auto;
+}
+.ow-player-Player .ow-player-audio-menu-trigger.ow-player-active {
+  color: var(--b-color-text);
+  background: var(--b-color-active);
+}
+.ow-player-Player .ow-player-audio-menu-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+}
+.ow-player-Player .ow-player-audio-menu-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: transparent;
+}
+.ow-player-Player .ow-player-audio-menu-panel {
+  position: relative;
+  z-index: 1;
+  width: min(22rem, 34vw);
+  min-width: 20rem;
+  height: 100dvh;
+  margin: 0;
+  padding: 1.25rem;
+  border-left: 1px solid var(--b-color-border-subtle);
+  border-radius: 0;
+  background: var(--b-color-background);
+  color: var(--b-color-text);
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+}
+.ow-player-Player .ow-player-audio-menu-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--b-color-border-subtle);
+}
+.ow-player-Player .ow-player-audio-menu-close {
+  flex: 0 0 auto;
+  color: var(--b-color-text-secondary);
+}
+.ow-player-Player .ow-player-audio-menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+.ow-player-Player .ow-player-audio-menu-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.ow-player-Player .ow-player-audio-menu-section-title {
+  margin: 0;
+  color: var(--b-color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ow-player-Player .ow-player-audio-menu-note {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-md);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-text-tertiary);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+.ow-player-Player .ow-player-audio-option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.ow-player-Player .ow-player-audio-option,
+.ow-player-Player .ow-player-audio-action {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-md);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  text-align: left;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color;
+}
+.ow-player-Player .ow-player-audio-option svg,
+.ow-player-Player .ow-player-audio-action svg {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-player-Player .ow-player-audio-option:hover:not(:disabled),
+  .ow-player-Player .ow-player-audio-action:hover:not(:disabled) {
+    color: var(--b-color-text);
+    background: var(--b-color-hover);
+    border-color: var(--b-color-border);
+  }
+}
+.ow-player-Player .ow-player-audio-option:disabled, .ow-player-Player .ow-player-audio-option.ow-player-disabled,
+.ow-player-Player .ow-player-audio-action:disabled,
+.ow-player-Player .ow-player-audio-action.ow-player-disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+.ow-player-Player .ow-player-audio-option.ow-player-active,
+.ow-player-Player .ow-player-audio-action.ow-player-active {
+  color: var(--b-color-text);
+  border-color: var(--b-color-focus);
+  background: var(--b-color-active);
+}
+.ow-player-Player .ow-player-audio-action {
+  justify-content: flex-start;
+}
+.ow-player-Player .ow-player-audio-action > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--b-color-text-tertiary);
+}
+.ow-player-Player .ow-player-audio-option-copy,
+.ow-player-Player .ow-player-audio-action > span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.ow-player-Player .ow-player-audio-option-label {
+  color: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.ow-player-Player .ow-player-audio-option-description {
+  color: var(--b-color-text-tertiary);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+.ow-player-Player .ow-player-content {
+  width: min(100%, 30rem);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.ow-player-Player .ow-player-art-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.ow-player-Player .ow-player-album-art {
+  position: relative;
+  width: min(100%, 19rem);
+  aspect-ratio: 1;
+}
+.ow-player-Player .ow-player-album-art.ow-player-framed {
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: none;
+}
+.ow-player-Player .ow-player-album-art.ow-player-framed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 2rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+.ow-player-Player .ow-player-title-block {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+.ow-player-Player .ow-player-eyebrow {
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.ow-player-Player .ow-player-title {
+  width: 100%;
+  max-width: min(100%, 24rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+.ow-player-Player .ow-player-artist-name {
+  width: 100%;
+  max-width: min(100%, 22rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ow-player-Player .ow-player-album-line {
+  width: 100%;
+  min-width: 0;
+  max-width: min(100%, 22rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 0.625rem;
+}
+.ow-player-Player .ow-player-album-line > * {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ow-player-Player .ow-player-album-line > :first-child {
+  flex: 0 1 auto;
+}
+.ow-player-Player .ow-player-album-line > :last-child {
+  flex: 0 0 auto;
+}
+.ow-player-Player .ow-player-progress-section {
+  width: 100%;
+  padding-top: 0.25rem;
+}
+.ow-player-Player .ow-player-progress {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background: var(--b-color-border);
+  border-radius: var(--b-radius-full);
+  cursor: pointer;
+}
+.ow-player-Player .ow-player-progress:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 4px;
+}
+.ow-player-Player .ow-player-progress .ow-player-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--b-radius-full);
+  background: var(--b-gradient-primary);
+  transform-origin: left;
+}
+.ow-player-Player .ow-player-progress .ow-player-thumb {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-text);
+  transform: translate(-50%, -50%);
+  box-shadow: none;
+}
+.ow-player-Player .ow-player-time-info {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--b-spacing-md);
+}
+.ow-player-Player .ow-player-controls {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: center;
+  gap: 0.625rem;
+}
+.ow-player-Player .ow-player-control-button,
+.ow-player-Player .ow-player-play-button {
+  justify-self: center;
+  width: clamp(2.75rem, 10vw, 3.25rem);
+  height: clamp(2.75rem, 10vw, 3.25rem);
+  border-radius: var(--b-radius-full);
+  border: none;
+  background: transparent;
+  color: var(--b-color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color;
+}
+.ow-player-Player .ow-player-control-button svg,
+.ow-player-Player .ow-player-play-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-player-Player .ow-player-control-button:hover,
+  .ow-player-Player .ow-player-play-button:hover {
+    color: var(--b-color-text);
+    background: var(--b-color-hover);
+  }
+}
+.ow-player-Player .ow-player-control-button.ow-player-active,
+.ow-player-Player .ow-player-play-button.ow-player-active {
+  color: var(--b-color-point-light);
+}
+.ow-player-Player .ow-player-play-button {
+  width: clamp(4.25rem, 14vw, 4.75rem);
+  height: clamp(4.25rem, 14vw, 4.75rem);
+  color: var(--b-color-background);
+  background: var(--b-gradient-primary);
+  box-shadow: none;
+}
+.ow-player-Player .ow-player-play-button svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-player-Player .ow-player-play-button:hover {
+    color: var(--b-color-background);
+    background: var(--b-gradient-primary);
+  }
+}
+.ow-player-Player .ow-player-secondary-actions {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+}
+.ow-player-Player .ow-player-secondary-action {
+  min-height: 2.25rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--b-color-border-subtle);
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color var(--b-transition-fast);
+  transition-property: color, background-color, border-color;
+}
+.ow-player-Player .ow-player-secondary-action svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-player-Player .ow-player-secondary-action:hover {
+    color: var(--b-color-text);
+    background: var(--b-color-hover);
+    border-color: var(--b-color-border);
+  }
+}
+.ow-player-Player.ow-player-immersive .ow-player-content {
+  text-shadow: none;
+}
+.ow-player-Player.ow-player-immersive .ow-player-progress {
+  background: var(--b-color-surface-input);
+}
+.ow-player-Player.ow-player-immersive .ow-player-secondary-action {
+  background: var(--b-color-surface-subtle);
+}
+.ow-player-Player .ow-player-empty-state {
+  width: min(100%, 28rem);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+.ow-player-Player .ow-player-empty-icon {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 1.5rem;
+  border: 1px solid var(--b-color-border);
+  background: var(--b-color-surface-item);
+  color: var(--b-color-point-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ow-player-Player .ow-player-empty-icon svg {
+  width: 2rem;
+  height: 2rem;
+}
+.ow-player-Player .ow-player-empty-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.ow-player-Player .ow-player-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.ow-player-Player .ow-player-empty-button {
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--b-radius-full);
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-color-surface-item);
+  color: var(--b-color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color;
+}
+.ow-player-Player .ow-player-empty-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-player-Player .ow-player-empty-button:hover {
+    color: var(--b-color-text);
+    background: var(--b-color-surface-input);
+    border-color: var(--b-color-border);
+  }
+}
+.ow-player-Player .ow-player-empty-button.ow-player-empty-button-primary {
+  color: var(--b-color-text);
+}
+@media (max-width: 1023px) {
+  .ow-player-Player .ow-player-container {
+    padding-top: 0;
+  }
+  .ow-player-Player .ow-player-top-bar {
+    width: auto;
+    height: 4rem;
+    margin: 0 -1rem 0.875rem;
+    padding: 0 0.75rem;
+    background: var(--b-color-background);
+    border-bottom: 1px solid var(--b-color-border-subtle);
+  }
+  .ow-player-Player .ow-player-utility-button {
+    width: 40px;
+    height: 40px;
+    color: inherit;
+  }
+  .ow-player-Player .ow-player-utility-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+@media (max-width: 640px) {
+  .ow-player-Player .ow-player-top-bar {
+    gap: var(--b-spacing-sm);
+  }
+  .ow-player-Player .ow-player-audio-menu-layer {
+    display: block;
+  }
+  .ow-player-Player .ow-player-audio-menu-backdrop {
+    display: none;
+  }
+  .ow-player-Player .ow-player-audio-menu-panel {
+    width: 100vw;
+    min-width: 0;
+    height: 100dvh;
+    margin: 0;
+    padding: 1rem;
+    border: 0;
+    border-radius: 0;
+  }
+  .ow-player-Player .ow-player-content {
+    gap: 1.25rem;
+  }
+  .ow-player-Player .ow-player-album-art {
+    width: min(100%, 16rem);
+  }
+  .ow-player-Player .ow-player-title {
+    max-width: min(100%, 21rem);
+  }
+  .ow-player-Player .ow-player-artist-name,
+  .ow-player-Player .ow-player-album-line {
+    max-width: min(100%, 20rem);
+  }
+  .ow-player-Player .ow-player-controls {
+    gap: 0.5rem;
+  }
+  .ow-player-Player .ow-player-secondary-actions {
+    gap: 0.5rem;
+  }
+  .ow-player-Player .ow-player-empty-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .ow-player-Player .ow-player-empty-actions .ow-player-empty-button {
+    width: 100%;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-playlist-playlistRow {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  padding: 0 var(--b-spacing-md);
+  column-gap: var(--b-spacing-xs);
+}
+
+.ow-playlist-dragHandle {
+  justify-self: center;
+  cursor: grab;
+  touch-action: none;
+}
+
+.ow-playlist-playlistItemShell {
+  flex: 1;
+  min-width: 0;
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-playlist-detail-sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--b-spacing-md) var(--b-spacing-lg);
+  margin-bottom: var(--b-spacing-sm);
+  gap: var(--b-spacing-md);
+}
+
+.ow-playlist-detail-pageCopy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.ow-playlist-detail-pageTitle,
+.ow-playlist-detail-pageSummary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ow-playlist-detail-pageTitleSelection {
+  display: none;
+}
+
+.ow-playlist-detail-topBarActions {
+  display: inline-flex;
+  align-items: center;
+  justify-self: end;
+  gap: 0.5rem;
+}
+
+.ow-playlist-detail-editButton,
+.ow-playlist-detail-summaryAction {
+  min-height: 2.25rem;
+  padding: 0.42rem 0.8rem;
+  border-radius: var(--b-radius-md);
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color;
+}
+.ow-playlist-detail-editButton:focus-visible,
+.ow-playlist-detail-summaryAction:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-playlist-detail-editButton:hover:not(:disabled),
+  .ow-playlist-detail-summaryAction:hover:not(:disabled) {
+    color: var(--b-color-text);
+    background: var(--b-color-hover);
+    border-color: var(--b-color-border-subtle);
+  }
+}
+.ow-playlist-detail-editButton:disabled,
+.ow-playlist-detail-summaryAction:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ow-playlist-detail-editButton.ow-playlist-detail-active {
+  color: var(--b-color-text);
+}
+
+.ow-playlist-detail-item {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  padding: 0 var(--b-spacing-md);
+  column-gap: var(--b-spacing-xs);
+}
+
+.ow-playlist-detail-rowControl {
+  justify-self: center;
+}
+
+.ow-playlist-detail-dragControl {
+  cursor: grab;
+  touch-action: none;
+}
+
+.ow-playlist-detail-listContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.ow-playlist-detail-musicItemShell {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .ow-playlist-detail-sectionHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-queue-dnd-item-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 4.25rem;
+  border-radius: 1rem;
+  border: 1px solid transparent;
+  background: var(--b-color-surface-subtle);
+  transition: var(--b-transition-fast);
+  transition-property: background-color, border-color, opacity;
+}
+.ow-queue-dnd-item-item.ow-queue-dnd-item-current {
+  background: var(--b-color-surface-item);
+  border-color: var(--b-color-focus);
+  box-shadow: none;
+}
+.ow-queue-dnd-item-item.ow-queue-dnd-item-past {
+  opacity: 0.68;
+}
+.ow-queue-dnd-item-item.ow-queue-dnd-item-selected {
+  border-color: var(--b-color-focus);
+  background: var(--b-color-surface-item);
+}
+
+@supports (content-visibility: auto) {
+  .ow-queue-dnd-item-item {
+    content-visibility: auto;
+    contain-intrinsic-size: 4.25rem;
+  }
+}
+.ow-queue-dnd-item-leading-button,
+.ow-queue-dnd-item-row-action,
+.ow-queue-dnd-item-leading-index {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--b-radius-full);
+  color: var(--b-color-text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ow-queue-dnd-item-leading-button,
+.ow-queue-dnd-item-row-action {
+  border: none;
+  background: transparent;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color;
+}
+.ow-queue-dnd-item-leading-button svg,
+.ow-queue-dnd-item-row-action svg {
+  width: 1rem;
+  height: 1rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-queue-dnd-item-leading-button:hover,
+  .ow-queue-dnd-item-row-action:hover {
+    color: var(--b-color-text);
+    background: var(--b-color-hover);
+  }
+}
+
+.ow-queue-dnd-item-leading-index {
+  margin-left: 0.25rem;
+  background: var(--b-color-surface-subtle);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.ow-queue-dnd-item-leading-button {
+  margin-left: 0.25rem;
+}
+.ow-queue-dnd-item-leading-button.ow-queue-dnd-item-active {
+  color: var(--b-color-point);
+  background: var(--b-color-active);
+}
+.ow-queue-dnd-item-leading-button.ow-queue-dnd-item-active svg {
+  fill: none;
+  color: currentColor;
+}
+
+.ow-queue-dnd-item-drag-handle {
+  cursor: grab;
+  touch-action: none;
+}
+
+.ow-queue-dnd-item-row-button {
+  flex: 1;
+  min-width: 0;
+  padding: 0.625rem 0;
+  border: none;
+  background: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  text-align: left;
+}
+
+.ow-queue-dnd-item-cover {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 0.95rem;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 10px 20px rgba(2, 8, 11, 0.12);
+}
+
+.ow-queue-dnd-item-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ow-queue-dnd-item-title-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.ow-queue-dnd-item-title,
+.ow-queue-dnd-item-meta {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ow-queue-dnd-item-current-pill {
+  flex-shrink: 0;
+  padding: 0.2rem 0.45rem;
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-border-subtle);
+  color: var(--b-color-text-secondary);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.ow-queue-dnd-item-row-action {
+  margin-right: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .ow-queue-dnd-item-item {
+    gap: 0.375rem;
+    min-height: 4.125rem;
+  }
+  .ow-queue-dnd-item-row-button {
+    gap: 0.75rem;
+    padding-right: 0.125rem;
+  }
+  .ow-queue-dnd-item-cover {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-queue-Queue {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--b-gradient-page);
+}
+
+.ow-queue-container {
+  flex: 1;
+  width: min(100%, 56rem);
+  min-height: 0;
+  margin: 0 auto;
+  padding: 0 1rem calc(1.5rem + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ow-queue-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  flex-shrink: 0;
+  width: 100%;
+  padding: calc(env(safe-area-inset-top) + 0.875rem) 1rem 0.875rem;
+  background: var(--b-gradient-sticky);
+}
+
+.ow-queue-top-bar-inner {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ow-queue-utility-button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: var(--b-radius-full);
+  background: transparent;
+  color: var(--b-color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color;
+}
+.ow-queue-utility-button svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.ow-queue-utility-button:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-queue-utility-button:hover {
+    color: var(--b-color-text);
+    background: var(--b-color-hover);
+  }
+}
+
+.ow-queue-page-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.ow-queue-page-title,
+.ow-queue-page-summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ow-queue-page-title-selection {
+  display: none;
+}
+
+.ow-queue-top-bar-spacer {
+  width: 44px;
+  height: 44px;
+  justify-self: end;
+}
+
+.ow-queue-top-bar-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-self: end;
+  gap: 0.5rem;
+}
+
+.ow-queue-edit-button,
+.ow-queue-summary-action {
+  min-height: 44px;
+  padding: 0.625rem 0.875rem;
+  border-radius: var(--b-radius-full);
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-color-surface-subtle);
+  color: var(--b-color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color;
+}
+.ow-queue-edit-button:focus-visible,
+.ow-queue-summary-action:focus-visible {
+  outline: 2px solid var(--b-color-focus);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-queue-edit-button:hover:not(:disabled),
+  .ow-queue-summary-action:hover:not(:disabled) {
+    color: var(--b-color-text);
+    background: var(--b-color-hover);
+    border-color: var(--b-color-border);
+  }
+}
+.ow-queue-edit-button:disabled,
+.ow-queue-summary-action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ow-queue-edit-button.active {
+  color: var(--b-color-text);
+}
+
+.ow-queue-overview {
+  padding: 1rem;
+  border-radius: 1.5rem;
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-color-surface-item);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ow-queue-overview-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ow-queue-eyebrow {
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.ow-queue-overview-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  color: var(--b-color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.ow-queue-overview-track {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ow-queue-overview-art {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 1.25rem;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
+.ow-queue-overview-copy {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ow-queue-overview-title {
+  line-height: 1.05;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.ow-queue-overview-note {
+  line-height: 1.5;
+}
+
+.ow-queue-selection-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ow-queue-list-shell {
+  padding-bottom: 0.5rem;
+}
+
+.ow-queue-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.ow-queue-virtual-list {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ow-queue-virtual-row {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.ow-queue-drag-source-hidden {
+  opacity: 0.16;
+}
+
+.ow-queue-drag-overlay {
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.36));
+}
+
+.ow-queue-drop-indicator {
+  position: absolute;
+  left: 4.5rem;
+  right: 0.5rem;
+  height: 0.2rem;
+  margin-top: -0.1rem;
+  border-radius: var(--b-radius-full);
+  background: var(--b-color-point-light);
+  box-shadow: 0 0 0 1px var(--b-color-border);
+  list-style: none;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ow-queue-section-label {
+  padding: 0.5rem 0.25rem 0.125rem;
+  color: var(--b-color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+
+.ow-queue-section-label-current {
+  color: var(--b-color-text-tertiary);
+}
+
+.ow-queue-section-spacer {
+  pointer-events: none;
+  list-style: none;
+}
+
+.ow-queue-selection-actions {
+  position: sticky;
+  bottom: max(0.75rem, env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+}
+
+.ow-queue-action-button,
+.ow-queue-empty-button {
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--b-radius-full);
+  border: 1px solid var(--b-color-border-subtle);
+  background: var(--b-color-surface-modal);
+  color: var(--b-color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition: var(--b-transition-fast);
+  transition-property: color, background-color, border-color;
+}
+.ow-queue-action-button svg,
+.ow-queue-empty-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-queue-action-button:hover,
+  .ow-queue-empty-button:hover {
+    color: var(--b-color-text);
+    background: var(--b-color-surface-modal);
+    border-color: var(--b-color-border);
+  }
+}
+
+.ow-queue-action-button-primary,
+.ow-queue-empty-button-primary {
+  color: var(--b-color-background);
+  background: var(--b-gradient-primary);
+  border-color: transparent;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-queue-action-button-primary:hover,
+  .ow-queue-empty-button-primary:hover {
+    color: var(--b-color-background);
+    background: var(--b-gradient-primary);
+    border-color: transparent;
+  }
+}
+
+.ow-queue-empty-state {
+  flex: 1;
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.ow-queue-empty-icon {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 1.5rem;
+  border: 1px solid var(--b-color-border);
+  background: var(--b-color-surface-item);
+  color: var(--b-color-point-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ow-queue-empty-icon svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.ow-queue-empty-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 24rem;
+}
+
+.ow-queue-empty-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1023px) {
+  .ow-queue-top-bar {
+    height: 4rem;
+    padding: 0 0.75rem;
+    background: var(--b-color-background);
+    border-bottom: 1px solid var(--b-color-border-subtle);
+    backdrop-filter: none;
+  }
+  .ow-queue-top-bar-inner {
+    height: 100%;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    gap: 0.5rem;
+  }
+  .ow-queue-utility-button {
+    width: 40px;
+    height: 40px;
+    color: inherit;
+  }
+  .ow-queue-utility-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .ow-queue-page-copy {
+    justify-content: center;
+    gap: 0;
+  }
+  .ow-queue-page-title {
+    font-size: 0.9375rem;
+    line-height: 1.2;
+  }
+  .ow-queue-page-title-selecting .ow-queue-page-title-default {
+    display: none;
+  }
+  .ow-queue-page-title-selecting .ow-queue-page-title-selection {
+    display: inline;
+  }
+  .ow-queue-page-summary {
+    display: none;
+  }
+  .ow-queue-top-bar-spacer {
+    width: 40px;
+    height: 40px;
+  }
+  .ow-queue-top-bar-actions {
+    gap: 0.375rem;
+  }
+  .ow-queue-edit-button,
+  .ow-queue-summary-action {
+    min-height: 2.25rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 640px) {
+  .ow-queue-container {
+    padding-inline: 0.875rem;
+  }
+  .ow-queue-overview {
+    padding: 0.875rem;
+  }
+  .ow-queue-overview-track {
+    align-items: flex-start;
+  }
+  .ow-queue-overview-art {
+    width: 4rem;
+    height: 4rem;
+  }
+  .ow-queue-overview-header,
+  .ow-queue-selection-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ow-queue-top-bar {
+    padding-inline: 0.75rem;
+  }
+  .ow-queue-section-label {
+    padding-top: 0.5rem;
+  }
+  .ow-queue-selection-actions {
+    grid-template-columns: 1fr;
+  }
+  .ow-queue-empty-actions {
+    flex-direction: column;
+  }
+  .ow-queue-empty-button {
+    width: 100%;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-connectors-section-connectorList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--b-color-border-subtle);
+}
+
+.ow-connectors-section-connector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  gap: var(--b-spacing-md);
+  min-height: 4.5rem;
+  padding: var(--b-spacing-md) 0;
+  border-bottom: 1px solid var(--b-color-border-subtle);
+}
+.ow-connectors-section-connector:last-child {
+  border-bottom: none;
+}
+@media (max-width: 640px) {
+  .ow-connectors-section-connector {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--b-spacing-sm);
+  }
+}
+
+.ow-connectors-section-connectorCopy {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--b-spacing-xs);
+}
+
+.ow-connectors-section-userAgent {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .ow-connectors-section-userAgent {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+.ow-connectors-section-date {
+  font-size: 0.75rem;
+  color: var(--b-color-text-muted);
+}
+
+.ow-connectors-section-thisDevice,
+.ow-connectors-section-kick {
+  flex-shrink: 0;
+  padding: var(--b-spacing-xs) var(--b-spacing-sm);
+  border-radius: var(--b-radius-full);
+  font-size: 0.75rem;
+}
+
+.ow-connectors-section-thisDevice {
+  color: var(--b-color-text-tertiary);
+  background-color: var(--b-color-hover);
+}
+
+.ow-connectors-section-kick {
+  cursor: pointer;
+  color: var(--b-color-text-secondary);
+  background-color: transparent;
+  border: 1px solid var(--b-color-border-subtle);
+  transition: var(--b-transition-fast);
+  transition-property: border-color, color, background-color;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ow-connectors-section-kick:hover {
+    color: var(--b-color-text);
+    border-color: rgba(255, 152, 152, 0.28);
+    background-color: rgba(255, 152, 152, 0.08);
+  }
+}
+
+.ow-play-mode-section-settingItem {
+  margin-bottom: 24px;
+}
+.ow-play-mode-section-settingItem p {
+  margin: 0;
+  line-height: 1.5;
+}
+.ow-play-mode-section-settingItem .ow-play-mode-section-description {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.ow-play-mode-section-selectGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+@media (min-width: 768px) {
+  .ow-play-mode-section-selectGroup {
+    flex-direction: row;
+    gap: 24px;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-synchronization-section-buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--b-spacing-sm);
+}
+
+.ow-synchronization-section-reportRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--b-spacing-md);
+  min-height: 4.25rem;
+  padding: var(--b-spacing-md) 0;
+  border-bottom: 1px solid var(--b-color-border-subtle);
+}
+
+.ow-synchronization-section-reportCopy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ow-synchronization-section-progressContainer {
+  margin-bottom: var(--b-spacing-sm);
+  width: min(18rem, 100%);
+}
+.ow-synchronization-section-progressContainer .ow-synchronization-section-progressBar {
+  height: 3px;
+  background-color: var(--b-color-hover);
+  border-radius: var(--b-radius-full);
+  overflow: hidden;
+  margin-bottom: var(--b-spacing-sm);
+}
+.ow-synchronization-section-progressContainer .ow-synchronization-section-progressIndicator {
+  height: 100%;
+  width: 30%;
+  background: var(--b-gradient-primary);
+  border-radius: var(--b-radius-full);
+}
+.ow-synchronization-section-progressContainer .ow-synchronization-section-progressIndicator.ow-synchronization-section-animating {
+  animation: progress 1.5s ease-in-out infinite;
+}
+.ow-synchronization-section-progressContainer .ow-synchronization-section-progressMessage {
+  margin: 0;
+}
+
+@keyframes progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+@media (max-width: 720px) {
+  .ow-synchronization-section-buttonContainer {
+    justify-content: flex-start;
+  }
+  .ow-synchronization-section-reportRow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
+.ow-troubleshooting-section-buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--b-spacing-sm);
+}
+@media (max-width: 720px) {
+  .ow-troubleshooting-section-buttonContainer {
+    justify-content: flex-start;
+  }
+}
+
 }

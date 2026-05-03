@@ -9,7 +9,6 @@ import type { ReactNode } from 'react';
 
 import { Button, Text } from '~/components/shared';
 
-import styles from './ModalProvider.module.scss';
 
 const AlertModal = ({ open, options, onClose }: AlertComponentProps) => {
     return (
@@ -22,7 +21,7 @@ const AlertModal = ({ open, options, onClose }: AlertComponentProps) => {
             }}>
             <AlertDialog.Portal>
                 <AlertDialog.Overlay
-                    className={styles.overlay}
+                    className={'ow-modal-provider-overlay'}
                     onClick={() => {
                         if (options.dismissible) {
                             onClose();
@@ -30,26 +29,26 @@ const AlertModal = ({ open, options, onClose }: AlertComponentProps) => {
                     }}
                 />
 
-                <AlertDialog.Content className={styles.content}>
-                    <div className={styles.header}>
+                <AlertDialog.Content className={'ow-modal-provider-content'}>
+                    <div className={'ow-modal-provider-header'}>
                         <AlertDialog.Title asChild>
-                            <Text as="h2" size="md" weight="semibold" className={styles.title}>
+                            <Text as="h2" size="md" weight="semibold" className={'ow-modal-provider-title'}>
                                 {options.title}
                             </Text>
                         </AlertDialog.Title>
 
                         {options.description && (
                             <AlertDialog.Description asChild>
-                                <Text as="p" variant="secondary" size="sm" className={styles.description}>
+                                <Text as="p" variant="secondary" size="sm" className={'ow-modal-provider-description'}>
                                     {options.description}
                                 </Text>
                             </AlertDialog.Description>
                         )}
                     </div>
 
-                    <div className={styles.actions}>
+                    <div className={'ow-modal-provider-actions'}>
                         <AlertDialog.Action asChild>
-                            <Button className={styles.button} variant="primary" onClick={onClose}>
+                            <Button className={'ow-modal-provider-button'} variant="primary" onClick={onClose}>
                                 {options.confirmLabel}
                             </Button>
                         </AlertDialog.Action>
@@ -71,7 +70,7 @@ const ConfirmModal = ({ open, options, onCancel, onConfirm }: ConfirmComponentPr
             }}>
             <AlertDialog.Portal>
                 <AlertDialog.Overlay
-                    className={styles.overlay}
+                    className={'ow-modal-provider-overlay'}
                     onClick={() => {
                         if (options.dismissible) {
                             onCancel();
@@ -79,33 +78,33 @@ const ConfirmModal = ({ open, options, onCancel, onConfirm }: ConfirmComponentPr
                     }}
                 />
 
-                <AlertDialog.Content className={styles.content}>
-                    <div className={styles.header}>
+                <AlertDialog.Content className={'ow-modal-provider-content'}>
+                    <div className={'ow-modal-provider-header'}>
                         <AlertDialog.Title asChild>
-                            <Text as="h2" size="md" weight="semibold" className={styles.title}>
+                            <Text as="h2" size="md" weight="semibold" className={'ow-modal-provider-title'}>
                                 {options.title}
                             </Text>
                         </AlertDialog.Title>
 
                         {options.description && (
                             <AlertDialog.Description asChild>
-                                <Text as="p" variant="secondary" size="sm" className={styles.description}>
+                                <Text as="p" variant="secondary" size="sm" className={'ow-modal-provider-description'}>
                                     {options.description}
                                 </Text>
                             </AlertDialog.Description>
                         )}
                     </div>
 
-                    <div className={styles.actions}>
+                    <div className={'ow-modal-provider-actions'}>
                         <AlertDialog.Cancel asChild>
-                            <Button className={styles.button} variant="secondary" onClick={onCancel}>
+                            <Button className={'ow-modal-provider-button'} variant="secondary" onClick={onCancel}>
                                 {options.cancelLabel}
                             </Button>
                         </AlertDialog.Cancel>
 
                         <AlertDialog.Action asChild>
                             <Button
-                                className={styles.button}
+                                className={'ow-modal-provider-button'}
                                 variant={options.tone === 'danger' ? 'danger' : 'primary'}
                                 onClick={onConfirm}>
                                 {options.confirmLabel}

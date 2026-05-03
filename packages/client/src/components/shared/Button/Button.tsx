@@ -1,6 +1,5 @@
-import styles from './Button.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
 
@@ -27,9 +26,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
             ref={ref}
             type={type}
             className={cx(
-                'Button',
-                `variant-${variant}`,
-                `size-${size}`,
+                'ow-button-Button',
+                `ow-button-variant-${variant}`,
+                `ow-button-size-${size}`,
                 { fullWidth },
                 className
             )}
@@ -39,6 +38,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
     );
 });
 
-Button.displayName = 'Button';
+Button.displayName = 'ow-button-Button';
 
 export default Button;

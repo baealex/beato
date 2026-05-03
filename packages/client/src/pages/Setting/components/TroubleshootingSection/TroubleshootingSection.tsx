@@ -1,6 +1,5 @@
 import { Button, SettingSection, SettingItem } from '~/components/shared';
 
-import styles from './TroubleshootingSection.module.scss';
 
 const AlertIcon = () => (
     <svg
@@ -26,7 +25,7 @@ export const TroubleshootingSection = () => {
             <SettingItem
                 title="Refresh Application"
                 description="Reload the application to resolve common issues.">
-                <div className={styles.buttonContainer}>
+                <div className={'ow-troubleshooting-section-buttonContainer'}>
                     <Button onClick={() => window.location.reload()}>
                         Refresh App
                     </Button>
@@ -35,7 +34,7 @@ export const TroubleshootingSection = () => {
             <SettingItem
                 title="Give Feedback"
                 description="Give feedback to help us improve the application.">
-                <div className={styles.buttonContainer}>
+                <div className={'ow-troubleshooting-section-buttonContainer'}>
                     <Button onClick={() => window.open('https://feedback.baejino.com/s/nfhsuyckehiwfgbpuzesy6dp', '_blank')}>
                         Give Feedback
                     </Button>

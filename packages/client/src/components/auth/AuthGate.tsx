@@ -1,12 +1,11 @@
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
 import { appShell } from '~/config/app-shell';
 import { Button, Tag, Text } from '~/components/shared';
 import { Music } from '~/icon';
 
-import styles from './AuthGate.module.scss';
 
-const cx = classNames.bind(styles);
+const cx = classNames;
 
 type AuthGateState = 'loading' | 'error';
 
@@ -22,30 +21,30 @@ export default function AuthGate({
     onRetry
 }: AuthGateProps) {
     return (
-        <div className={cx('AuthGate')}>
-            <section className={cx('panel')}>
-                <div className={cx('brandLockup')}>
-                    <span className={cx('mark')} aria-hidden="true">
+        <div className={cx('ow-auth-gate-AuthGate')}>
+            <section className={cx('ow-auth-gate-panel')}>
+                <div className={cx('ow-auth-gate-brandLockup')}>
+                    <span className={cx('ow-auth-gate-mark')} aria-hidden="true">
                         <Music />
                     </span>
-                    <Text as="span" variant="secondary" size="xs" weight="bold" className={cx('eyebrow')}>
+                    <Text as="span" variant="secondary" size="xs" weight="bold" className={cx('ow-auth-gate-eyebrow')}>
                         {state === 'loading'
                             ? 'Checking Session'
                             : 'Session Check Failed'}
                     </Text>
                 </div>
-                <Text as="h1" size="2xl" weight="bold" className={cx('title')}>
+                <Text as="h1" size="2xl" weight="bold" className={cx('ow-auth-gate-title')}>
                     {appShell.brand.name}
                 </Text>
-                <Text as="p" variant="secondary" className={cx('description')}>
+                <Text as="p" variant="secondary" className={cx('ow-auth-gate-description')}>
                     {state === 'loading'
                         ? 'Checking whether this listening space is open or requires the shared password.'
                         : state === 'error'
                             ? 'Ocean Wave could not verify the current auth state yet. Retry once the server is reachable.'
                             : null}
                 </Text>
-                {errorMessage && <div className={cx('error')}>{errorMessage}</div>}
-                <div className={cx('actions')}>
+                {errorMessage && <div className={cx('ow-auth-gate-error')}>{errorMessage}</div>}
+                <div className={cx('ow-auth-gate-actions')}>
                     {state === 'loading' ? (
                         <Tag tone="accent" selected>Verifying session...</Tag>
                     ) : (

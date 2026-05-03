@@ -1,4 +1,3 @@
-import styles from './GridImage.module.scss';
 
 import Image from '../Image';
 
@@ -14,7 +13,7 @@ export default function GridImage({
     const col = images.length >= 16 ? 4 : images.length >= 9 ? 3 : images.length >= 4 ? 2 : 1;
 
     return (
-        <div className={`${styles.GridImage} ${className} ${styles[`col-${col}`]}`}>
+        <div className={`${'ow-grid-image-GridImage'} ${className} ${`ow-grid-image-col-${col}`}`}>
             {images.length === 0 && (
                 <Image />
             )}

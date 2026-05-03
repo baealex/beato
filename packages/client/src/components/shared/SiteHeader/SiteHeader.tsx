@@ -1,4 +1,3 @@
-import styles from './SiteHeader.module.scss';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -24,7 +23,7 @@ export default function SiteHeader() {
         const el = ref.current;
 
         if (el) {
-            const activeItem = el.querySelector<HTMLAnchorElement>(`a.${styles.active}`);
+            const activeItem = el.querySelector<HTMLAnchorElement>(`a.${'ow-site-header-active'}`);
 
             if (activeItem) {
                 const { left, width } = activeItem.getBoundingClientRect();
@@ -47,14 +46,14 @@ export default function SiteHeader() {
     };
 
     return (
-        <header className={styles.header}>
-            <nav ref={ref} className={styles.nav} aria-label={`${appShell.brand.name} navigation`}>
+        <header className={'ow-site-header-header'}>
+            <nav ref={ref} className={'ow-site-header-nav'} aria-label={`${appShell.brand.name} navigation`}>
                 {NAVIGATION_GROUPS.map((group) => (
                     <div
                         key={group.id}
                         className={[
-                            styles.group,
-                            group.id === 'utility' ? styles.utilityGroup : ''
+                            'ow-site-header-group',
+                            group.id === 'utility' ? 'ow-site-header-utilityGroup' : ''
                         ].join(' ')}>
                         <ul>
                             {group.items.map((item) => (
@@ -62,11 +61,11 @@ export default function SiteHeader() {
                                     <Link
                                         to={item.path}
                                         className={[
-                                            styles.link,
-                                            isActive(item.path) ? styles.active : ''
+                                            'ow-site-header-link',
+                                            isActive(item.path) ? 'ow-site-header-active' : ''
                                         ].join(' ')}>
                                         <item.icon />
-                                        <span className={styles.label}>{item.label}</span>
+                                        <span className={'ow-site-header-label'}>{item.label}</span>
                                     </Link>
                                 </li>
                             ))}

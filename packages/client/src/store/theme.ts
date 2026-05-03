@@ -1,29 +1,27 @@
 import { BaseStore } from './base-store';
 
 export type PlayerVisualizerMode =
-    | 'puffy'
     | 'disk'
     | 'round'
-    | 'line'
-    | 'ring'
-    | 'digital';
+    | 'line';
 
 interface ThemeState {
     playerVisualizerMode: PlayerVisualizerMode;
 }
 
 const PLAYER_VISUALIZER_MODES = new Set<PlayerVisualizerMode>([
-    'puffy',
     'disk',
     'round',
-    'line',
-    'ring',
-    'digital'
+    'line'
 ]);
+
+const resolveRetiredVisualizerMode = (mode: string) => (
+    mode === 'ring' ? 'round' : mode
+);
 
 const resolveLegacyVisualizerMode = (playerAlbumArtStyle: string): PlayerVisualizerMode => {
     if (!playerAlbumArtStyle) {
-        return 'puffy';
+        return 'disk';
     }
 
     if (playerAlbumArtStyle === 'disk') {
@@ -34,7 +32,8 @@ const resolveLegacyVisualizerMode = (playerAlbumArtStyle: string): PlayerVisuali
         return 'disk';
     }
 
-    const [, legacyMode = 'round'] = playerAlbumArtStyle.split(':');
+    const [, rawLegacyMode = 'round'] = playerAlbumArtStyle.split(':');
+    const legacyMode = resolveRetiredVisualizerMode(rawLegacyMode);
 
     if (PLAYER_VISUALIZER_MODES.has(legacyMode as PlayerVisualizerMode)) {
         return legacyMode as PlayerVisualizerMode;
@@ -47,11 +46,15 @@ const resolveVisualizerMode = (
     savedMode: string | null,
     playerAlbumArtStyle: string
 ): PlayerVisualizerMode => {
-    if (savedMode && PLAYER_VISUALIZER_MODES.has(savedMode as PlayerVisualizerMode)) {
-        return savedMode as PlayerVisualizerMode;
+    if (savedMode) {
+        const normalizedMode = resolveRetiredVisualizerMode(savedMode);
+
+        if (PLAYER_VISUALIZER_MODES.has(normalizedMode as PlayerVisualizerMode)) {
+            return normalizedMode as PlayerVisualizerMode;
+        }
     }
 
-    if (savedMode === 'off') {
+    if (savedMode === 'off' || savedMode === 'puffy') {
         return 'disk';
     }
 

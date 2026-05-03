@@ -1,43 +1,49 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
   <title id="title">Ocean Wave</title>
-  <desc id="desc">A simple Ocean Wave symbol: an O ring with a calm wave inside.</desc>
+  <desc id="desc">A minimal black Ocean Wave app mark with one green wave signal.</desc>
   <defs>
-    <linearGradient id="bg" x1="104" y1="64" x2="408" y2="448" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#0b3440"/>
-      <stop offset="1" stop-color="#031014"/>
-    </linearGradient>
-    <linearGradient id="ring" x1="132" y1="112" x2="380" y2="408" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#eafffb"/>
-      <stop offset="0.45" stop-color="#8ff7ed"/>
-      <stop offset="1" stop-color="#2eb8bd"/>
-    </linearGradient>
-    <linearGradient id="wave" x1="136" y1="266" x2="376" y2="244" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#a7fff6"/>
-      <stop offset="1" stop-color="#46d7cf"/>
-    </linearGradient>
-    <clipPath id="rounded">
-      <rect width="512" height="512" rx="112"/>
+    <clipPath id="app-mask">
+      <rect width="512" height="512" rx="112" />
     </clipPath>
+    <linearGradient id="surface" x1="96" y1="48" x2="416" y2="464" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#18181B" />
+      <stop offset="1" stop-color="#09090B" />
+    </linearGradient>
+    <linearGradient id="edge" x1="116" y1="88" x2="396" y2="424" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3F3F46" />
+      <stop offset="1" stop-color="#18181B" />
+    </linearGradient>
+    <linearGradient id="primary" x1="128" y1="286" x2="384" y2="226" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1DB954" />
+      <stop offset="1" stop-color="#1ED760" />
+    </linearGradient>
   </defs>
 
-  <g clip-path="url(#rounded)">
-    <rect width="512" height="512" fill="url(#bg)"/>
-    <circle cx="164" cy="104" r="180" fill="#5eead4" opacity="0.1"/>
+  <g clip-path="url(#app-mask)">
+    <rect width="512" height="512" fill="url(#surface)" />
+    <path d="M0 352c68-40 130-54 196-41 82 16 132 62 220 38 36-10 68-29 96-57v220H0Z" fill="#18181B" opacity="0.72" />
   </g>
 
-  <path
-    d="M256 96c-88.37 0-160 71.63-160 160s71.63 160 160 160 160-71.63 160-160S344.37 96 256 96Zm0 66c51.91 0 94 42.09 94 94s-42.09 94-94 94-94-42.09-94-94 42.09-94 94-94Z"
-    fill="url(#ring)"
-    fill-rule="evenodd"/>
+  <circle cx="256" cy="256" r="158" fill="none" stroke="url(#edge)" stroke-width="28" />
+  <circle cx="256" cy="256" r="110" fill="none" stroke="#27272A" stroke-width="2" opacity="0.9" />
 
   <path
-    d="M132 270c34-34 72-48 114-42 29 4 47 17 68 26 22 10 43 9 66-8-12 36-43 58-82 58-27 0-46-10-67-19-30-13-60-17-99-15Z"
-    fill="url(#wave)"/>
+    d="M126 278c36-42 78-58 126-49 34 6 55 27 86 27 24 0 42-11 58-30"
+    fill="none"
+    stroke="url(#primary)"
+    stroke-width="34"
+    stroke-linecap="round"
+    stroke-linejoin="round" />
 
   <path
-    d="M143 302c30-17 62-23 96-14 26 7 45 21 73 20 22-1 40-9 58-24-18 43-56 66-105 62-41-3-72-26-122-44Z"
-    fill="#eafffb"
-    opacity="0.82"/>
+    d="M158 321c30-18 59-23 91-14 31 9 50 26 83 18 14-3 27-10 40-20"
+    fill="none"
+    stroke="#1ED760"
+    stroke-width="14"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    opacity="0.62" />
 
-  <rect x="14" y="14" width="484" height="484" rx="98" fill="none" stroke="#c4f4f8" stroke-opacity="0.1" stroke-width="2"/>
+  <circle cx="256" cy="256" r="176" fill="none" stroke="#F4F4F5" stroke-opacity="0.08" stroke-width="2" />
+  <rect x="14" y="14" width="484" height="484" rx="98" fill="none" stroke="#F4F4F5" stroke-opacity="0.08" stroke-width="2" />
 </svg>

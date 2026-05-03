@@ -1,6 +1,5 @@
-import styles from './StickyHeader.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
 
@@ -14,13 +13,13 @@ interface StickyHeaderActionsProps {
 
 const StickyHeader = ({ children }: StickyHeaderProps) => {
     return (
-        <div className={cx('StickyHeader')}>{children}</div>
+        <div className={cx('ow-sticky-header-StickyHeader')}>{children}</div>
     );
 };
 
 export const StickyHeaderActions = ({ children }: StickyHeaderActionsProps) => {
     return (
-        <div className={cx('actions')}>{children}</div>
+        <div className={cx('ow-sticky-header-actions')}>{children}</div>
     );
 };
 

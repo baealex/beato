@@ -1,8 +1,9 @@
-import placeholderStyles from './Image.module.scss';
 
 import {
     useState, useEffect, type ImgHTMLAttributes, type ReactNode, type ReactEventHandler
 } from 'react';
+
+import { DEFAULT_ALBUM_ART } from '~/modules/image';
 
 interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> {
     src?: string;
@@ -17,34 +18,43 @@ export default function Image({
     className,
     style,
     onError,
+    onLoad,
     ...props
 }: ImageProps) {
-    const [failed, setFailed] = useState(!src);
+    void icon;
+
+    const [failed, setFailed] = useState(false);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        setFailed(!src);
+        setFailed(false);
+        setLoaded(false);
     }, [src]);
+
+    const effectiveSrc = !src || failed ? DEFAULT_ALBUM_ART : src;
 
     const handleError: ReactEventHandler<HTMLImageElement> = (event) => {
         onError?.(event);
-        setFailed(true);
+
+        if (effectiveSrc !== DEFAULT_ALBUM_ART) {
+            setLoaded(false);
+            setFailed(true);
+        }
     };
 
-    if (failed) {
-        if (icon) {
-            const classes = [placeholderStyles.placeholder, className].filter(Boolean).join(' ');
-            return <div className={classes} style={style}>{icon}</div>;
-        }
-        return null;
-    }
+    const handleLoad: ReactEventHandler<HTMLImageElement> = (event) => {
+        setLoaded(true);
+        onLoad?.(event);
+    };
 
     return (
         <img
-            src={src}
+            src={effectiveSrc}
             loading={loading}
-            className={className}
+            className={['ow-image', loaded ? 'ow-image-loaded' : '', className].filter(Boolean).join(' ')}
             style={style}
             onError={handleError}
+            onLoad={handleLoad}
             {...props}
         />
     );

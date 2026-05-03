@@ -39,14 +39,22 @@ export class WebAudioChannel implements AudioChannel {
 
                         this.audio.volume = 0;
                         this.backgroundAudio.volume = 1;
+                        webAudioContext.setGain(this.backgroundAudio, 1);
 
                         this.mixInterval = setInterval(() => {
-                            this.audio.volume = Math.round((this.audio.volume + 0.1) * 10) / 10;
-                            this.backgroundAudio.volume = Math.round((this.backgroundAudio.volume - 0.1) * 10) / 10;
+                            const nextAudioVolume = Math.round((this.audio.volume + 0.1) * 10) / 10;
+                            const nextBackgroundAudioVolume = Math.round((this.backgroundAudio.volume - 0.1) * 10) / 10;
+
+                            this.audio.volume = nextAudioVolume;
+                            this.backgroundAudio.volume = nextBackgroundAudioVolume;
+                            webAudioContext.setGain(this.audio, nextAudioVolume);
+                            webAudioContext.setGain(this.backgroundAudio, nextBackgroundAudioVolume);
 
                             if (this.audio.volume >= 1) {
                                 this.audio.volume = 1;
                                 this.backgroundAudio.volume = 0;
+                                webAudioContext.setGain(this.audio, 1);
+                                webAudioContext.setGain(this.backgroundAudio, 0);
                                 this.backgroundAudio.pause();
                                 webAudioContext.disconnect(this.backgroundAudio);
                                 clearInterval(this.mixInterval!);
@@ -100,10 +108,11 @@ export class WebAudioChannel implements AudioChannel {
     }
 
     play() {
-        if (!webAudioContext.initialized) {
+        if (!webAudioContext.initialized()) {
             webAudioContext.init();
         }
         webAudioContext.connect(this.audio);
+        webAudioContext.setGain(this.audio, this.audio.volume);
         this.audio.play();
     }
 

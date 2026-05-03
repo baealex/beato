@@ -1,6 +1,6 @@
 import type { QueueTone } from '~/pages/Queue/QueueDndItem';
 
-export const QUEUE_TRACK_CARD_HEIGHT = 84;
+export const QUEUE_TRACK_CARD_HEIGHT = 72;
 export const QUEUE_TRACK_ROW_GAP = 8;
 export const QUEUE_TRACK_ROW_HEIGHT = QUEUE_TRACK_CARD_HEIGHT + QUEUE_TRACK_ROW_GAP;
 export const QUEUE_SECTION_ROW_HEIGHT = 30;

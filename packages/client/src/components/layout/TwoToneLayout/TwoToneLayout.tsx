@@ -1,10 +1,7 @@
-import styles from './TwoToneLayout.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
-
-import { useDominantColor } from '~/hooks';
 
 interface TwoToneLayoutProps {
     backgroundImage?: string;
@@ -19,37 +16,23 @@ const TwoToneLayout = ({
     primaryAction,
     children
 }: TwoToneLayoutProps) => {
-    const color = useDominantColor(backgroundImage);
-
-    const gradientStyle: React.CSSProperties = color
-        ? {
-            background: `
-                radial-gradient(ellipse 120% 60% at 50% -10%,
-                    rgba(${color.r}, ${color.g}, ${color.b}, 0.55) 0%,
-                    rgba(${color.r}, ${color.g}, ${color.b}, 0.18) 45%,
-                    transparent 100%
-                )
-            `
-        }
-        : {};
-
     return (
-        <div className={cx('TwoToneLayout', { hasPrimaryAction: !!primaryAction })}>
-            <div className={cx('header')}>
+        <div className={cx('ow-two-tone-layout-TwoToneLayout', { 'ow-two-tone-layout-hasPrimaryAction': !!primaryAction })}>
+            <div className={cx('ow-two-tone-layout-header')}>
                 {backgroundImage && (
-                    <div className={cx('background')} style={gradientStyle} />
+                    <div className={cx('ow-two-tone-layout-background')} />
                 )}
-                <div className={cx('headerContent')}>
+                <div className={cx('ow-two-tone-layout-headerContent')}>
                     {header}
                     {primaryAction && (
-                        <div className={cx('primaryAction')}>
+                        <div className={cx('ow-two-tone-layout-primaryAction')}>
                             {primaryAction}
                         </div>
                     )}
                 </div>
             </div>
 
-            <div className={cx('content')}>
+            <div className={cx('ow-two-tone-layout-content')}>
                 {children}
             </div>
         </div>

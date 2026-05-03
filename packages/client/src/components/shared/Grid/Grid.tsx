@@ -1,6 +1,5 @@
-import styles from './Grid.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
 
@@ -10,7 +9,7 @@ interface GridProps {
 
 const Grid = ({ children }: GridProps) => {
     return (
-        <div className={cx('Grid')}>{children}</div>
+        <div className={cx('ow-grid-Grid')}>{children}</div>
     );
 };
 

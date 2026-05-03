@@ -1,6 +1,5 @@
-import styles from './Badge.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
 
@@ -22,13 +21,13 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(({
     return (
         <span
             ref={ref}
-            className={cx('Badge', `tone-${tone}`, `size-${size}`, className)}
+            className={cx('ow-badge-Badge', `ow-badge-tone-${tone}`, `ow-badge-size-${size}`, className)}
             {...props}>
             {children}
         </span>
     );
 });
 
-Badge.displayName = 'Badge';
+Badge.displayName = 'ow-badge-Badge';
 
 export default Badge;

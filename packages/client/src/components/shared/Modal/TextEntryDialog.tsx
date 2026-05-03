@@ -3,7 +3,6 @@ import Input from '~/components/shared/Input';
 import Text from '~/components/shared/Text';
 
 import * as Dialog from '@baejino/react-ui/modal/dialog';
-import styles from './TextEntryDialog.module.scss';
 
 interface TextEntryDialogProps {
     open: boolean;
@@ -41,11 +40,11 @@ export default function TextEntryDialog({
                 }
             }}>
             <Dialog.Portal>
-                <Dialog.Overlay className={styles.overlay} />
+                <Dialog.Overlay className={'ow-text-entry-dialog-overlay'} />
 
-                <Dialog.Content className={styles.content}>
+                <Dialog.Content className={'ow-text-entry-dialog-content'}>
                     <form
-                        className={styles.form}
+                        className={'ow-text-entry-dialog-form'}
                         onSubmit={(event) => {
                             event.preventDefault();
 
@@ -55,16 +54,16 @@ export default function TextEntryDialog({
 
                             onConfirm(trimmedValue);
                         }}>
-                        <div className={styles.header}>
+                        <div className={'ow-text-entry-dialog-header'}>
                             <Dialog.Title asChild>
-                                <Text as="h2" size="md" weight="semibold" className={styles.title}>
+                                <Text as="h2" size="md" weight="semibold" className={'ow-text-entry-dialog-title'}>
                                     {title}
                                 </Text>
                             </Dialog.Title>
 
                             {description && (
                                 <Dialog.Description asChild>
-                                    <Text as="p" variant="secondary" size="sm" className={styles.description}>
+                                    <Text as="p" variant="secondary" size="sm" className={'ow-text-entry-dialog-description'}>
                                         {description}
                                     </Text>
                                 </Dialog.Description>
@@ -79,16 +78,16 @@ export default function TextEntryDialog({
                             onChange={(event) => onValueChange(event.currentTarget.value)}
                         />
 
-                        <div className={styles.actions}>
+                        <div className={'ow-text-entry-dialog-actions'}>
                             <Dialog.Close asChild>
-                                <Button className={styles.button} variant="secondary">
+                                <Button className={'ow-text-entry-dialog-button'} variant="secondary">
                                     {cancelLabel}
                                 </Button>
                             </Dialog.Close>
 
                             <Button
                                 type="submit"
-                                className={styles.button}
+                                className={'ow-text-entry-dialog-button'}
                                 variant="primary"
                                 disabled={!trimmedValue}>
                                 {confirmLabel}

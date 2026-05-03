@@ -1,26 +1,24 @@
 import {
     useEffect,
     useState,
-    type CSSProperties,
-    type KeyboardEvent as ReactKeyboardEvent
+    type KeyboardEvent as ReactKeyboardEvent,
+    type ReactNode
 } from 'react';
 
-import styles from './Player.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import { useNavigate } from 'react-router-dom';
 import { useAppStore as useStore } from '~/store/base-store';
 
 import {
     MusicPlayerDiskStyle,
-    MusicPlayerFluffyStyle,
     MusicPlayerVisualizerStyle
 } from '~/components/music';
-import { Text } from '~/components/shared';
+import { IconTextButton, Surface, Text } from '~/components/shared';
 import * as Icon from '~/icon';
 
-import { useBack, useDominantColor, useStoreValue } from '~/hooks';
+import { useBack, useStoreValue } from '~/hooks';
 
 import { getImage } from '~/modules/image';
 import { makePlayTime } from '~/modules/time';
@@ -36,11 +34,6 @@ const PLAYER_VISUALIZER_MODES: Array<{
     description: string;
 }> = [
     {
-        value: 'puffy',
-        label: 'Puffy',
-        description: 'Soft album motion'
-    },
-    {
         value: 'disk',
         label: 'CD',
         description: 'Simple disk player'
@@ -54,16 +47,6 @@ const PLAYER_VISUALIZER_MODES: Array<{
         value: 'line',
         label: 'Trace',
         description: 'Low spectrum trace'
-    },
-    {
-        value: 'ring',
-        label: 'Halo',
-        description: 'Album edge glow'
-    },
-    {
-        value: 'digital',
-        label: 'Constellation',
-        description: 'Connected digital field'
     }
 ];
 
@@ -80,40 +63,82 @@ const MIX_MODES = [
     }
 ] as const;
 
-interface RGB {
-    r: number;
-    g: number;
-    b: number;
+const PLAYER_PRIMARY_COLOR = {
+    r: 30,
+    g: 215,
+    b: 96
+} as const;
+
+interface AudioMenuSectionProps {
+    titleId: string;
+    title: string;
+    description: string;
+    children: ReactNode;
 }
 
-const DEFAULT_AMBIENT_COLOR = {
-    r: 70,
-    g: 215,
-    b: 207
-} as const satisfies RGB;
+const AudioMenuSection = ({
+    titleId,
+    title,
+    description,
+    children
+}: AudioMenuSectionProps) => (
+    <section className={cx('ow-player-audio-menu-section')} aria-labelledby={titleId}>
+        <div className={cx('ow-player-audio-menu-section-header')}>
+            <h3 id={titleId} className={cx('ow-player-audio-menu-section-title')}>
+                {title}
+            </h3>
+            <Text as="p" variant="tertiary" size="xs">
+                {description}
+            </Text>
+        </div>
 
-const mixChannel = (from: number, to: number, amount: number) => Math.round(from + (to - from) * amount);
-const mixColor = (from: RGB, to: RGB, amount: number): RGB => ({
-    r: mixChannel(from.r, to.r, amount),
-    g: mixChannel(from.g, to.g, amount),
-    b: mixChannel(from.b, to.b, amount)
-});
-const rgbVar = (color: RGB) => `${color.r}, ${color.g}, ${color.b}`;
-const createAmbientStyle = (accentColor: RGB | null | undefined) => {
-    const accent = accentColor ?? DEFAULT_AMBIENT_COLOR;
-    const deep = mixColor(accent, {
-        r: 3,
-        g: 10,
-        b: 13
-    }, 0.52);
-    const muted = mixColor(accent, DEFAULT_AMBIENT_COLOR, 0.34);
+        {children}
+    </section>
+);
 
-    return {
-        '--player-accent': rgbVar(accent),
-        '--player-deep': rgbVar(deep),
-        '--player-muted': rgbVar(muted)
-    } as CSSProperties;
-};
+interface AudioMenuOptionProps {
+    label: string;
+    description: ReactNode;
+    active?: boolean;
+    disabled?: boolean;
+    leadingIcon?: ReactNode;
+    onClick: () => void;
+    pressed?: boolean;
+    variant?: 'option' | 'action';
+}
+
+const AudioMenuOption = ({
+    label,
+    description,
+    active = false,
+    disabled = false,
+    leadingIcon,
+    onClick,
+    pressed,
+    variant = 'option'
+}: AudioMenuOptionProps) => (
+    <button
+        type="button"
+        className={cx(
+            variant === 'action'
+                ? 'ow-player-audio-action'
+                : 'ow-player-audio-option',
+            {
+                'ow-player-active': active,
+                'ow-player-disabled': disabled
+            }
+        )}
+        aria-pressed={pressed}
+        disabled={disabled}
+        onClick={onClick}>
+        {leadingIcon}
+        <span className={cx('ow-player-audio-option-copy')}>
+            <span className={cx('ow-player-audio-option-label')}>{label}</span>
+            <span className={cx('ow-player-audio-option-description')}>{description}</span>
+        </span>
+        {variant === 'option' && active && <Icon.Check />}
+    </button>
+);
 
 export default function PlayerDetail() {
     const back = useBack();
@@ -136,7 +161,6 @@ export default function PlayerDetail() {
         ? musicMap.get(currentTrackId)
         : null;
     const coverImage = currentMusic ? getImage(currentMusic.album.cover) : '';
-    const accentColor = useDominantColor(coverImage || undefined);
     const duration = currentMusic?.duration || 0;
     const queuePosition = selected !== null ? selected + 1 : null;
     const publishedYear = currentMusic?.album?.publishedYear?.trim() || '';
@@ -196,10 +220,8 @@ export default function PlayerDetail() {
         }
     };
 
-    const isStabilityModeEnabled = Boolean(localStorage.getItem('stability-mode::on'));
-    const playerEffectMode = isStabilityModeEnabled ? 'disk' : playerVisualizerMode;
-    const isVisualizerEffect = !['puffy', 'disk'].includes(playerEffectMode);
-    const ambientStyle = createAmbientStyle(accentColor);
+    const playerEffectMode = playerVisualizerMode;
+    const isVisualizerEffect = playerEffectMode !== 'disk';
 
     useEffect(() => {
         if (!isAudioMenuOpen) {
@@ -226,14 +248,14 @@ export default function PlayerDetail() {
     }, [currentMusic]);
 
     return (
-        <div className={cx('Player', { immersive: Boolean(currentMusic) })} style={ambientStyle}>
-            {currentMusic && <div className={cx('ambient-background')} aria-hidden="true" />}
+        <div className={cx('ow-player-Player', { 'ow-player-immersive': Boolean(currentMusic) })}>
+            {currentMusic && <div className={cx('ow-player-ambient-background')} aria-hidden="true" />}
 
-            <div className={cx('container')}>
-                <div className={cx('top-bar')}>
+            <div className={cx('ow-player-container')}>
+                <div className={cx('ow-player-top-bar')}>
                     <button
                         type="button"
-                        className={cx('utility-button')}
+                        className={cx('ow-player-utility-button')}
                         aria-label="Go back"
                         onClick={back}>
                         <Icon.ChevronLeft />
@@ -242,7 +264,7 @@ export default function PlayerDetail() {
                     {currentMusic && (
                         <button
                             type="button"
-                            className={cx('utility-button', 'audio-menu-trigger', { active: isAudioMenuOpen })}
+                            className={cx('ow-player-utility-button', 'ow-player-audio-menu-trigger', { 'ow-player-active': isAudioMenuOpen })}
                             aria-label="Open audio menu"
                             aria-haspopup="dialog"
                             aria-expanded={isAudioMenuOpen}
@@ -253,168 +275,113 @@ export default function PlayerDetail() {
                 </div>
 
                 {currentMusic && isAudioMenuOpen && (
-                    <div className={cx('audio-menu-layer')}>
+                    <div className={cx('ow-player-audio-menu-layer')}>
                         <button
                             type="button"
-                            className={cx('audio-menu-backdrop')}
+                            className={cx('ow-player-audio-menu-backdrop')}
                             aria-label="Close audio menu"
                             onClick={() => setIsAudioMenuOpen(false)}
                         />
 
-                        <aside
-                            className={cx('audio-menu-panel')}
+                        <Surface
+                            as="aside"
+                            variant="panel"
+                            radius="none"
+                            className={cx('ow-player-audio-menu-panel')}
                             role="dialog"
                             aria-modal="true"
                             aria-label="Audio menu">
-                            <header className={cx('audio-menu-header')}>
+                            <header className={cx('ow-player-audio-menu-header')}>
                                 <div>
-                                    <Text as="h2" size="title" weight="bold">
-                                        Audio Menu
+                                    <Text as="h2" size="md" weight="semibold">
+                                        Audio
                                     </Text>
-                                    <Text as="p" variant="tertiary" size="sm">
-                                        Visualizer and playback tools.
+                                    <Text as="p" variant="tertiary" size="xs">
+                                        Visualizer and playback tools
                                     </Text>
                                 </div>
 
                                 <button
                                     type="button"
-                                    className={cx('utility-button', 'audio-menu-close')}
+                                    className={cx('ow-player-utility-button', 'ow-player-audio-menu-close')}
                                     aria-label="Close audio menu"
                                     onClick={() => setIsAudioMenuOpen(false)}>
                                     <Icon.Close />
                                 </button>
                             </header>
 
-                            <section className={cx('audio-menu-section')} aria-labelledby="player-effects-title">
-                                <div className={cx('audio-menu-section-header')}>
-                                    <h3 id="player-effects-title" className={cx('audio-menu-section-title')}>
-                                        Player Effect
-                                    </h3>
-                                    <Text as="p" variant="tertiary" size="xs">
-                                        Choose how the album art reacts.
-                                    </Text>
-                                </div>
-
-                                {isStabilityModeEnabled && (
-                                    <div className={cx('audio-menu-note')}>
-                                        Stability mode is on. CD is used until visual effects are re-enabled in Settings.
-                                    </div>
-                                )}
-
-                                <div className={cx('audio-option-list')} aria-label="Visualizer mode">
+                            <AudioMenuSection
+                                titleId="player-effects-title"
+                                title="Player Effect"
+                                description="Choose how the album art reacts.">
+                                <div className={cx('ow-player-audio-option-list')} aria-label="Visualizer mode">
                                     {PLAYER_VISUALIZER_MODES.map(({ value, label, description }) => (
-                                        <button
+                                        <AudioMenuOption
                                             key={value}
-                                            type="button"
-                                            className={cx('audio-option', {
-                                                active: playerEffectMode === value,
-                                                disabled: isStabilityModeEnabled
-                                            })}
-                                            aria-pressed={playerEffectMode === value}
-                                            disabled={isStabilityModeEnabled}
-                                            onClick={() => themeStore.setPlayerVisualizerMode(value)}>
-                                            <span className={cx('audio-option-copy')}>
-                                                <span className={cx('audio-option-label')}>{label}</span>
-                                                <span className={cx('audio-option-description')}>{description}</span>
-                                            </span>
-                                            {playerEffectMode === value && <Icon.Check />}
-                                        </button>
+                                            label={label}
+                                            description={description}
+                                            active={playerEffectMode === value}
+                                            pressed={playerEffectMode === value}
+                                            onClick={() => themeStore.setPlayerVisualizerMode(value)}
+                                        />
                                     ))}
                                 </div>
-                            </section>
+                            </AudioMenuSection>
 
-                            <section className={cx('audio-menu-section')} aria-labelledby="transition-title">
-                                <div className={cx('audio-menu-section-header')}>
-                                    <h3 id="transition-title" className={cx('audio-menu-section-title')}>
-                                        Transition
-                                    </h3>
-                                    <Text as="p" variant="tertiary" size="xs">
-                                        Control how tracks blend.
-                                    </Text>
-                                </div>
-
-                                <div className={cx('audio-option-list')} aria-label="Transition effect">
+                            <AudioMenuSection
+                                titleId="transition-title"
+                                title="Transition"
+                                description="Control how tracks blend.">
+                                <div className={cx('ow-player-audio-option-list')} aria-label="Transition effect">
                                     {MIX_MODES.map(({ value, label, description }) => (
-                                        <button
+                                        <AudioMenuOption
                                             key={value}
-                                            type="button"
-                                            className={cx('audio-option', { active: mixMode === value })}
-                                            aria-pressed={mixMode === value}
-                                            onClick={() => queueStore.setMixMode(value)}>
-                                            <span className={cx('audio-option-copy')}>
-                                                <span className={cx('audio-option-label')}>{label}</span>
-                                                <span className={cx('audio-option-description')}>{description}</span>
-                                            </span>
-                                            {mixMode === value && <Icon.Check />}
-                                        </button>
+                                            label={label}
+                                            description={description}
+                                            active={mixMode === value}
+                                            pressed={mixMode === value}
+                                            onClick={() => queueStore.setMixMode(value)}
+                                        />
                                     ))}
                                 </div>
-                            </section>
+                            </AudioMenuSection>
 
-                            <section className={cx('audio-menu-section')} aria-labelledby="audio-tools-title">
-                                <div className={cx('audio-menu-section-header')}>
-                                    <h3 id="audio-tools-title" className={cx('audio-menu-section-title')}>
-                                        Audio Tools
-                                    </h3>
-                                    <Text as="p" variant="tertiary" size="xs">
-                                        Tune output and stability.
-                                    </Text>
-                                </div>
-
-                                <button
-                                    type="button"
-                                    className={cx('audio-action')}
-                                    disabled={isStabilityModeEnabled}
+                            <AudioMenuSection
+                                titleId="audio-tools-title"
+                                title="Audio Tools"
+                                description="Tune output and playback.">
+                                <AudioMenuOption
+                                    variant="action"
+                                    label="Open Equalizer"
+                                    description="Adjust frequency bands and presets"
+                                    leadingIcon={<Icon.Settings />}
                                     onClick={() => {
                                         setIsAudioMenuOpen(false);
                                         navigate('/equalizer');
-                                    }}>
-                                    <Icon.Settings />
-                                    <span>
-                                        <span className={cx('audio-option-label')}>Open Equalizer</span>
-                                        <span className={cx('audio-option-description')}>
-                                            {isStabilityModeEnabled
-                                                ? 'Paused while stability mode is on'
-                                                : 'Adjust frequency bands and presets'}
-                                        </span>
-                                    </span>
-                                </button>
+                                    }}
+                                />
 
-                                <button
-                                    type="button"
-                                    className={cx('audio-action')}
+                                <AudioMenuOption
+                                    variant="action"
+                                    label="Playback Settings"
+                                    description="Quality and queue behavior"
+                                    leadingIcon={<Icon.Gear />}
                                     onClick={() => {
                                         setIsAudioMenuOpen(false);
                                         navigate('/setting');
-                                    }}>
-                                    <Icon.Gear />
-                                    <span>
-                                        <span className={cx('audio-option-label')}>Playback Settings</span>
-                                        <span className={cx('audio-option-description')}>
-                                            Quality, stability mode, and queue behavior
-                                        </span>
-                                    </span>
-                                </button>
-                            </section>
-                        </aside>
+                                    }}
+                                />
+                            </AudioMenuSection>
+                        </Surface>
                     </div>
                 )}
 
                 {currentMusic ? (
-                    <div className={cx('content')}>
-                        <div className={cx('art-wrap')}>
-                            <div className={cx('album-art', {
-                                framed: isVisualizerEffect,
-                                halo: playerEffectMode === 'ring'
+                    <div className={cx('ow-player-content')}>
+                        <div className={cx('ow-player-art-wrap')}>
+                            <div className={cx('ow-player-album-art', {
+                                'ow-player-framed': isVisualizerEffect
                             })}>
-                                {playerEffectMode === 'puffy' && (
-                                    <MusicPlayerFluffyStyle
-                                        isPlaying={isPlaying}
-                                        src={coverImage}
-                                        alt={currentMusic.album.name}
-                                    />
-                                )}
-
                                 {playerEffectMode === 'disk' && (
                                     <MusicPlayerDiskStyle
                                         isPlaying={isPlaying}
@@ -429,22 +396,22 @@ export default function PlayerDetail() {
                                         isPlaying={isPlaying}
                                         src={coverImage}
                                         alt={currentMusic.album.name}
-                                        accentColor={accentColor}
+                                        accentColor={PLAYER_PRIMARY_COLOR}
                                     />
                                 )}
                             </div>
                         </div>
 
-                        <div className={cx('title-block')}>
+                        <div className={cx('ow-player-title-block')}>
                             <Text
                                 as="span"
                                 variant="muted"
                                 size="xs"
                                 weight="medium"
-                                className={cx('eyebrow')}>
+                                className={cx('ow-player-eyebrow')}>
                                 Now playing
                             </Text>
-                            <Text as="h1" size="2xl" weight="bold" className={cx('title')}>
+                            <Text as="h1" size="2xl" weight="bold" className={cx('ow-player-title')}>
                                 {currentMusic.name}
                             </Text>
 
@@ -453,11 +420,11 @@ export default function PlayerDetail() {
                                 variant="secondary"
                                 size="md"
                                 weight="medium"
-                                className={cx('artist-name')}>
+                                className={cx('ow-player-artist-name')}>
                                 {currentMusic.artist.name}
                             </Text>
 
-                            <div className={cx('album-line')}>
+                            <div className={cx('ow-player-album-line')}>
                                 <Text as="span" variant="tertiary" size="sm" weight="medium">
                                     {currentMusic.album.name}
                                 </Text>
@@ -470,9 +437,9 @@ export default function PlayerDetail() {
                             </div>
                         </div>
 
-                        <div className={cx('progress-section')}>
+                        <div className={cx('ow-player-progress-section')}>
                             <div
-                                className={cx('progress')}
+                                className={cx('ow-player-progress')}
                                 role="slider"
                                 tabIndex={duration > 0 ? 0 : -1}
                                 aria-label="Seek playback position"
@@ -485,15 +452,15 @@ export default function PlayerDetail() {
                                 onMouseMove={handleMoveProgress}
                                 onTouchMove={handleMoveProgress}>
                                 <div
-                                    className={cx('bar')}
+                                    className={cx('ow-player-bar')}
                                     style={{ transform: `scaleX(${progress / 100})` }}
                                 />
                                 <div
-                                    className={cx('thumb')}
+                                    className={cx('ow-player-thumb')}
                                     style={{ left: `${progress}%` }}
                                 />
                             </div>
-                            <div className={cx('time-info')}>
+                            <div className={cx('ow-player-time-info')}>
                                 <Text variant="tertiary" size="sm">
                                     {makePlayTime(currentTime)}
                                 </Text>
@@ -503,10 +470,10 @@ export default function PlayerDetail() {
                             </div>
                         </div>
 
-                        <div className={cx('controls')}>
+                        <div className={cx('ow-player-controls')}>
                             <button
                                 type="button"
-                                className={cx('control-button', { active: shuffle })}
+                                className={cx('ow-player-control-button', { 'ow-player-active': shuffle })}
                                 aria-label={shuffle ? 'Disable shuffle' : 'Enable shuffle'}
                                 onClick={() => queueStore.toggleShuffle()}>
                                 <Icon.Shuffle />
@@ -514,7 +481,7 @@ export default function PlayerDetail() {
 
                             <button
                                 type="button"
-                                className={cx('control-button')}
+                                className={cx('ow-player-control-button')}
                                 aria-label="Previous track"
                                 onClick={() => queueStore.prev()}>
                                 <Icon.SkipBack />
@@ -522,7 +489,7 @@ export default function PlayerDetail() {
 
                             <button
                                 type="button"
-                                className={cx('play-button')}
+                                className={cx('ow-player-play-button')}
                                 aria-label={isPlaying ? 'Pause playback' : 'Resume playback'}
                                 onClick={() => isPlaying ? queueStore.pause() : queueStore.play()}>
                                 {isPlaying ? <Icon.Pause /> : <Icon.Play />}
@@ -530,7 +497,7 @@ export default function PlayerDetail() {
 
                             <button
                                 type="button"
-                                className={cx('control-button')}
+                                className={cx('ow-player-control-button')}
                                 aria-label="Next track"
                                 onClick={() => queueStore.next()}>
                                 <Icon.SkipForward />
@@ -538,7 +505,7 @@ export default function PlayerDetail() {
 
                             <button
                                 type="button"
-                                className={cx('control-button')}
+                                className={cx('ow-player-control-button')}
                                 aria-label={`Repeat mode ${repeatMode}`}
                                 onClick={() => queueStore.changeRepeatMode()}>
                                 {repeatMode === 'all' && <Icon.Repeat />}
@@ -547,39 +514,39 @@ export default function PlayerDetail() {
                             </button>
                         </div>
 
-                        <div className={cx('secondary-actions')}>
-                            <button
-                                type="button"
-                                className={cx('secondary-action')}
-                                onClick={() => navigate(`/artist/${currentMusic.artist.id}`)}>
-                                <Icon.Music />
-                                <span>Artist</span>
-                            </button>
-                            <button
-                                type="button"
-                                className={cx('secondary-action')}
-                                onClick={() => navigate(`/album/${currentMusic.album.id}`)}>
-                                <Icon.Disc />
-                                <span>Album</span>
-                            </button>
+                        <div className={cx('ow-player-secondary-actions')}>
+                            <IconTextButton
+                                className={cx('ow-player-secondary-action')}
+                                size="sm"
+                                icon={<Icon.Music />}
+                                label="Artist"
+                                onClick={() => navigate(`/artist/${currentMusic.artist.id}`)}
+                            />
+                            <IconTextButton
+                                className={cx('ow-player-secondary-action')}
+                                size="sm"
+                                icon={<Icon.Disc />}
+                                label="Album"
+                                onClick={() => navigate(`/album/${currentMusic.album.id}`)}
+                            />
                             {queuePosition !== null && (
-                                <button
-                                    type="button"
-                                    className={cx('secondary-action')}
-                                    onClick={() => navigate('/queue')}>
-                                    <Icon.ListMusic />
-                                    <span>Queue {queuePosition}/{queueLength}</span>
-                                </button>
+                                <IconTextButton
+                                    className={cx('ow-player-secondary-action')}
+                                    size="sm"
+                                    icon={<Icon.ListMusic />}
+                                    label={`Queue ${queuePosition}/${queueLength}`}
+                                    onClick={() => navigate('/queue')}
+                                />
                             )}
                         </div>
                     </div>
                 ) : (
-                    <div className={cx('empty-state')}>
-                        <div className={cx('empty-icon')}>
+                    <Surface variant="panel" radius="2xl" padding="lg" className={cx('ow-player-empty-state')}>
+                        <div className={cx('ow-player-empty-icon')}>
                             <Icon.Music />
                         </div>
 
-                        <div className={cx('empty-copy')}>
+                        <div className={cx('ow-player-empty-copy')}>
                             <Text as="h1" size="2xl" weight="bold">
                                 Nothing is playing.
                             </Text>
@@ -588,23 +555,21 @@ export default function PlayerDetail() {
                             </Text>
                         </div>
 
-                        <div className={cx('empty-actions')}>
-                            <button
-                                type="button"
-                                className={cx('empty-button', 'empty-button-primary')}
-                                onClick={() => navigate('/')}>
-                                <Icon.Music />
-                                <span>Open library</span>
-                            </button>
-                            <button
-                                type="button"
-                                className={cx('empty-button')}
-                                onClick={() => navigate('/queue')}>
-                                <Icon.ListMusic />
-                                <span>Open queue</span>
-                            </button>
+                        <div className={cx('ow-player-empty-actions')}>
+                            <IconTextButton
+                                className={cx('ow-player-empty-button', 'ow-player-empty-button-primary')}
+                                icon={<Icon.Music />}
+                                label="Open library"
+                                onClick={() => navigate('/')}
+                            />
+                            <IconTextButton
+                                className={cx('ow-player-empty-button')}
+                                icon={<Icon.ListMusic />}
+                                label="Open queue"
+                                onClick={() => navigate('/queue')}
+                            />
                         </div>
-                    </div>
+                    </Surface>
                 )}
             </div>
         </div>

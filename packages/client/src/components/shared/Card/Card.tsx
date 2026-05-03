@@ -1,6 +1,5 @@
-import styles from './Card.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 type CardVariant = 'elevated' | 'flat' | 'outlined';
 type CardPadding = 'none' | 'sm' | 'md' | 'lg';
@@ -30,10 +29,10 @@ const Card = ({
     return (
         <div
             className={cx(
-                'Card',
-                `variant-${variant}`,
-                `padding-${padding}`,
-                `radius-${radius}`,
+                'ow-card-Card',
+                `ow-card-variant-${variant}`,
+                `ow-card-padding-${padding}`,
+                `ow-card-radius-${radius}`,
                 {
                     interactive,
                     overflow

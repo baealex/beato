@@ -3,9 +3,8 @@ import type {
     CSSProperties
 } from 'react';
 
-import styles from './QueueDndItem.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import { Image, Text } from '~/components/shared';
 import * as Icon from '~/icon';
@@ -45,11 +44,11 @@ export default function QueueItem({
         <li
             data-queue-index={index}
             style={style}
-            className={cx('item', tone, className, { selected: isSelected })}>
+            className={cx('ow-queue-dnd-item-item', `ow-queue-dnd-item-${tone}`, className, { 'ow-queue-dnd-item-selected': isSelected })}>
             {isSelectMode ? (
                 <button
                     type="button"
-                    className={cx('leading-button', { active: isSelected })}
+                    className={cx('ow-queue-dnd-item-leading-button', { 'ow-queue-dnd-item-active': isSelected })}
                     aria-label={isSelected ? `Unselect ${music.name}` : `Select ${music.name}`}
                     aria-pressed={isSelected}
                     onClick={onSelect}>
@@ -58,7 +57,7 @@ export default function QueueItem({
             ) : (
                 <button
                     type="button"
-                    className={cx('leading-button', 'drag-handle')}
+                    className={cx('ow-queue-dnd-item-leading-button', 'ow-queue-dnd-item-drag-handle')}
                     aria-label={`Reorder ${music.name}`}
                     onPointerDown={onReorderPointerDown}>
                     <Icon.Menu />
@@ -67,7 +66,7 @@ export default function QueueItem({
 
             <button
                 type="button"
-                className={cx('row-button')}
+                className={cx('ow-queue-dnd-item-row-button')}
                 onClick={isSelectMode ? onSelect : onClick}
                 onContextMenu={(e) => {
                     e.preventDefault();
@@ -77,33 +76,29 @@ export default function QueueItem({
                     }
                 }}>
                 <Image
-                    className={cx('cover')}
+                    className={cx('ow-queue-dnd-item-cover')}
                     src={music.album.cover}
                     alt={music.album.name}
                     loading="eager"
                     icon={<Icon.Disc />}
                 />
 
-                <div className={cx('copy')}>
-                    <div className={cx('title-line')}>
+                <div className={cx('ow-queue-dnd-item-copy')}>
+                    <div className={cx('ow-queue-dnd-item-title-line')}>
                         <Text
                             as="span"
-                            size="md"
-                            weight={tone === 'current' ? 'semibold' : 'medium'}
-                            className={cx('title')}>
+                            size="sm"
+                            weight="medium"
+                            className={cx('ow-queue-dnd-item-title')}>
                             {music.name}
                         </Text>
                         {tone === 'current' && (
-                            <span className={cx('current-pill')}>Now</span>
+                            <span className={cx('ow-queue-dnd-item-current-pill')}>Now</span>
                         )}
                     </div>
 
-                    <Text as="span" variant="secondary" size="sm" className={cx('meta')}>
+                    <Text as="span" variant="secondary" size="sm" className={cx('ow-queue-dnd-item-meta')}>
                         {music.artist.name}
-                    </Text>
-
-                    <Text as="span" variant="tertiary" size="sm" className={cx('submeta')}>
-                        {music.album.name}
                     </Text>
                 </div>
             </button>
@@ -111,7 +106,7 @@ export default function QueueItem({
             {!isSelectMode && (
                 <button
                     type="button"
-                    className={cx('row-action')}
+                    className={cx('ow-queue-dnd-item-row-action')}
                     aria-label={`Open actions for ${music.name}`}
                     onClick={onOpenActions}>
                     <Icon.VerticalDots />

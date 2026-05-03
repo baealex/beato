@@ -9,15 +9,15 @@ import { arrayMove } from '@dnd-kit/sortable';
 import {
     ActionBar,
     ActionBarButton,
-    Button,
     IconButton,
     SortableItem,
-    StickyHeader,
+    Text,
     VerticalSortable
 } from '~/components/shared';
-import { MusicActionPanelContent, MusicListItem, MusicSelector } from '~/components/music';
+import { MusicActionPanelContent, MusicListItem } from '~/components/music';
 import { PlaylistPanelContent, PlaylistSummary } from '~/components/playlist';
 import * as Icon from '~/icon';
+import { Play } from '~/icon';
 
 import { panel } from '~/modules/panel';
 import { useResetQueue } from '~/hooks';
@@ -37,7 +37,6 @@ import {
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
 import { TwoToneLayout } from '~/components/layout';
-import styles from './PlaylistDetail.module.scss';
 
 export default function PlaylistDetail() {
     const navigate = useNavigate();
@@ -111,27 +110,74 @@ export default function PlaylistDetail() {
         return null;
     }
 
+    const playlistMusics = playlist.musics ?? [];
+    const playlistHeaderMusics = playlist.headerMusics ?? playlistMusics.slice(0, 16);
+    const backgroundImage = playlistHeaderMusics
+        .map(({ id }) => musicMap.get(id)?.album.cover)
+        .find(Boolean) || '';
+
     return (
         <TwoToneLayout
+            backgroundImage={backgroundImage}
             header={(
                 <PlaylistSummary {...playlist} />
+            )}
+            primaryAction={(
+                <button onClick={() => void resetQueue(playlistMusics.map(({ id }) => id))}>
+                    <Play />
+                </button>
             )}>
-            <StickyHeader>
-                <div className={styles.headerControl}>
-                    <MusicSelector
-                        active={isSelectMode}
-                        label={isSelectMode ? `${selectedItems.length} selected` : `${playlist.musics.length} musics`}
-                        onClick={() => setIsSelectMode(!isSelectMode)}
-                        onSelectAll={() => setSelectedItems(playlist.musics.map(({ id }) => id))}
-                    />
+            <div className={'ow-playlist-detail-sectionHeader'}>
+                <div className={'ow-playlist-detail-pageCopy'}>
+                    <Text
+                        as="h2"
+                        size="title"
+                        weight="semibold"
+                        className={`ow-playlist-detail-pageTitle ${isSelectMode ? 'ow-playlist-detail-pageTitleSelecting' : ''}`}>
+                        {isSelectMode && (
+                            <span className={'ow-playlist-detail-pageTitleSelection'}>
+                                {selectedItems.length} selected
+                            </span>
+                        )}
+                        <span className={'ow-playlist-detail-pageTitleDefault'}>Songs</span>
+                    </Text>
+                    <Text as="p" variant="muted" size="xs" className={'ow-playlist-detail-pageSummary'}>
+                        {isSelectMode
+                            ? `${selectedItems.length} selected`
+                            : `${playlistMusics.length} songs`}
+                    </Text>
                 </div>
-                <Button onClick={() => void resetQueue(playlist.musics.map(({ id }) => id))}>
-                    <Icon.Play /> Play
-                </Button>
-            </StickyHeader >
-            <div className={styles.listContent}>
-                <VerticalSortable items={playlist.musics.map(({ id }) => id)} onDragEnd={handleDragEnd}>
-                    {playlist.musics.map(({ id }) => {
+
+                <div className={'ow-playlist-detail-topBarActions'}>
+                    {isSelectMode ? (
+                        <>
+                            <button
+                                type="button"
+                                className={'ow-playlist-detail-summaryAction'}
+                                disabled={selectedItems.length === playlistMusics.length}
+                                onClick={() => setSelectedItems(playlistMusics.map(({ id }) => id))}>
+                                Select all
+                            </button>
+                            <button
+                                type="button"
+                                className={'ow-playlist-detail-editButton ow-playlist-detail-active'}
+                                onClick={() => setIsSelectMode(false)}>
+                                Done
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            type="button"
+                            className={'ow-playlist-detail-editButton'}
+                            onClick={() => setIsSelectMode(true)}>
+                            Edit
+                        </button>
+                    )}
+                </div>
+            </div>
+            <div className={'ow-playlist-detail-listContent'}>
+                <VerticalSortable items={playlistMusics.map(({ id }) => id)} onDragEnd={handleDragEnd}>
+                    {playlistMusics.map(({ id }) => {
                         const music = musicMap.get(id);
 
                         if (!music) return null;
@@ -155,13 +201,13 @@ export default function PlaylistDetail() {
                                 id={music.id}
                                 key={music.id}
                                 render={({ listeners }) => (
-                                    <div className={styles.item}>
+                                    <div className={'ow-playlist-detail-item'}>
                                         {isSelectMode ? (
                                             <IconButton
                                                 aria-label={isSelected ? `Unselect ${music.name}` : `Select ${music.name}`}
                                                 aria-pressed={isSelected}
                                                 active={isSelected}
-                                                className={styles.rowControl}
+                                                className={'ow-playlist-detail-rowControl'}
                                                 onClick={() => {
                                                     if (selectedItems.includes(music.id)) {
                                                         setSelectedItems(selectedItems.filter(item => item !== music.id));
@@ -174,12 +220,12 @@ export default function PlaylistDetail() {
                                         ) : (
                                             <IconButton
                                                 aria-label={`Reorder ${music.name}`}
-                                                className={`${styles.rowControl} ${styles.dragControl}`}
+                                                className={`${'ow-playlist-detail-rowControl'} ${'ow-playlist-detail-dragControl'}`}
                                                 {...listeners}>
                                                 <Icon.Menu />
                                             </IconButton>
                                         )}
-                                        <div className={styles.musicItemShell}>
+                                        <div className={'ow-playlist-detail-musicItemShell'}>
                                             <MusicListItem
                                                 albumName={music.album.name}
                                                 albumCover={music.album.cover}

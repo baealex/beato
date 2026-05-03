@@ -1,6 +1,5 @@
-import styles from './ArtistSummary.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import { Image, Text } from '~/components/shared';
 import { User } from '~/icon';
@@ -17,13 +16,13 @@ const ArtistSummary = ({
     listenedCount
 }: ArtistSummaryProps) => {
     return (
-        <div className={cx('ArtistSummary')}>
-            <div className={cx('cover')}>
-                <div className={cx('cover-inner')}>
-                    <Image className={cx('cover-img')} src={cover} alt={name} icon={<User />} />
+        <div className={cx('ow-artist-summary-ArtistSummary')}>
+            <div className={cx('ow-artist-summary-cover')}>
+                <div className={cx('ow-artist-summary-cover-inner')}>
+                    <Image className={cx('ow-artist-summary-cover-img')} src={cover} alt={name} icon={<User />} />
                 </div>
             </div>
-            <Text as="h1" size="xl" weight="bold" className={cx('name')}>
+            <Text as="h1" size="xl" weight="bold" className={cx('ow-artist-summary-name')}>
                 {name}
             </Text>
             {listenedCount > 0 && (

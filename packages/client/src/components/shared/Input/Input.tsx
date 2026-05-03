@@ -1,6 +1,5 @@
-import styles from './Input.module.scss';
-import classNames from 'classnames/bind';
-const cx = classNames.bind(styles);
+import classNames from 'classnames';
+const cx = classNames;
 
 import React from 'react';
 
@@ -24,9 +23,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({
         <input
             ref={ref}
             className={cx(
-                'Input',
-                `size-${inputSize}`,
-                `tone-${tone}`,
+                'ow-input-Input',
+                `ow-input-size-${inputSize}`,
+                `ow-input-tone-${tone}`,
                 { fullWidth },
                 className
             )}
@@ -35,6 +34,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({
     );
 });
 
-Input.displayName = 'Input';
+Input.displayName = 'ow-input-Input';
 
 export default Input;

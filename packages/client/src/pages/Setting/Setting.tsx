@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { useModal } from '~/components/app/ModalProvider';
 import Text from '~/components/shared/Text';
 import { appCopy } from '~/config/copy';
@@ -10,17 +8,13 @@ import {
     AudioSettingsSection,
     ConnectorsSection,
     PlayModeSection,
-    StabilityModeSection,
     SynchronizationSection,
     TroubleshootingSection
 } from './components';
 
-import styles from './Setting.module.scss';
 
 export default function Setting() {
     const { confirm } = useModal();
-    const [isStabilityModeEnabled] = useState(Boolean(localStorage.getItem('stability-mode::on')));
-    const isAppChannel = Boolean(window.AppChannel);
 
     const handleClickSyncMusic = async (force: boolean) => {
         if (
@@ -38,28 +32,27 @@ export default function Setting() {
     };
 
     return (
-        <div className={styles.container}>
-            <div className={styles.settingsHeader}>
-                <Text as="h1" size="xl" weight="bold">
+        <div className="mx-auto min-h-full w-full max-w-[860px] px-4 py-6 text-[var(--b-color-text)] sm:px-6 sm:py-10 lg:px-10 lg:py-12">
+            <div className="mb-8 lg:mb-12 after:mt-2 after:block after:max-w-[30rem] after:text-sm after:leading-relaxed after:text-[var(--b-color-text-tertiary)] after:content-['Tune_how_Ocean_Wave_behaves.']">
+                <Text as="h1" size="xl" weight="bold" className="text-[clamp(2rem,5vw,3.25rem)] leading-[0.98] tracking-[-0.055em]">
                     {appCopy.settings.title}
                 </Text>
             </div>
 
-            <div className={styles.settingsContent}>
+            <div className="flex flex-col gap-8 lg:gap-12">
                 <SynchronizationSection onSyncMusic={handleClickSyncMusic} />
                 <PlayModeSection />
-                <AudioSettingsSection shouldStable={isAppChannel || isStabilityModeEnabled} />
+                <AudioSettingsSection />
                 <ConnectorsSection />
-                {!isAppChannel && <StabilityModeSection />}
                 <TroubleshootingSection />
             </div>
 
-            <div className={styles.poweredBy}>
+            <div className="mt-12 flex min-h-8 items-center justify-center gap-2 pb-[max(48px,calc(48px+env(safe-area-inset-bottom)))] text-center text-xs text-[var(--b-color-text-muted)]">
                 <img
                     src="/ocean-wave.svg"
                     alt=""
                     aria-hidden="true"
-                    className={styles.poweredByIcon}
+                    className="h-[1.125rem] w-[1.125rem] rounded-md opacity-70"
                 />
                 <span>Powered by {appShell.brand.name}</span>
             </div>
