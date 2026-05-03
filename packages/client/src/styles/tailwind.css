@@ -1434,66 +1434,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-action-bar-ActionBar {
-  position: sticky;
-  bottom: max(0.75rem, env(safe-area-inset-bottom));
-  z-index: 8;
-  width: min(34rem, 100% - 2rem);
-  margin: var(--b-spacing-lg) auto 0;
-  padding: 0.375rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  gap: 0.375rem;
-  border: 1px solid var(--b-color-border-subtle);
-  border-radius: var(--b-radius-xl);
-  background: var(--b-color-surface-modal);
-}
-
-.ow-action-bar-ActionBarButton {
-  min-height: 2.75rem;
-  padding: 0.55rem 0.75rem;
-  border: 1px solid transparent;
-  border-radius: var(--b-radius-lg);
-  background: transparent;
-  color: var(--b-color-text-secondary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  font-size: 0.75rem;
-  font-weight: 600;
-  gap: 0.5rem;
-  transition: var(--b-transition-fast);
-  transition-property: color, background-color, border-color, transform;
-}
-.ow-action-bar-ActionBarButton svg {
-  width: 0.95rem;
-  height: 0.95rem;
-  flex-shrink: 0;
-}
-.ow-action-bar-ActionBarButton:focus-visible {
-  outline: 2px solid var(--b-color-focus);
-  outline-offset: 2px;
-}
-.ow-action-bar-ActionBarButton:active {
-  transform: scale(0.98);
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-action-bar-ActionBarButton:hover {
-    color: var(--b-color-text);
-    border-color: var(--b-color-border-subtle);
-    background: var(--b-color-hover);
-  }
-}
-.ow-action-bar-ActionBarButton:first-child {
-  color: var(--b-color-background);
-  background: var(--b-color-point);
-  border-color: var(--b-color-point);
-}
-.ow-action-bar-ActionBarButton:last-child {
-  color: rgba(254, 202, 202, 0.92);
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -1671,62 +1611,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-card-Card.ow-card-variant-elevated {
-  background: var(--b-color-background-layer-1);
-  box-shadow: var(--b-card-shadow-main);
-}
-.ow-card-Card.ow-card-variant-flat {
-  background: var(--b-color-background-layer-1);
-}
-.ow-card-Card.ow-card-variant-outlined {
-  background: var(--b-color-background-layer-1);
-  border: 1px solid var(--b-color-border-subtle);
-}
-.ow-card-Card.ow-card-padding-none {
-  padding: 0;
-}
-.ow-card-Card.ow-card-padding-sm {
-  padding: var(--b-spacing-sm);
-}
-.ow-card-Card.ow-card-padding-md {
-  padding: var(--b-spacing-md);
-}
-.ow-card-Card.ow-card-padding-lg {
-  padding: var(--b-spacing-lg);
-}
-.ow-card-Card.ow-card-radius-md {
-  border-radius: var(--b-radius-md);
-}
-.ow-card-Card.ow-card-radius-lg {
-  border-radius: var(--b-radius-lg);
-}
-.ow-card-Card.ow-card-radius-xl {
-  border-radius: var(--b-radius-xl);
-}
-.ow-card-Card.ow-card-radius-2xl {
-  border-radius: var(--b-radius-2xl);
-}
-.ow-card-Card.ow-card-overflow {
-  overflow: hidden;
-}
-.ow-card-Card.ow-card-interactive {
-  cursor: pointer;
-  transition: var(--b-transition-fast);
-  transition-property: box-shadow, background-color, border-color;
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-card-Card.ow-card-interactive:hover {
-    box-shadow: var(--b-card-shadow-hover);
-  }
-  .ow-card-Card.ow-card-interactive.ow-card-variant-outlined:hover {
-    border-color: var(--b-color-border);
-    box-shadow: none;
-  }
-}
-.ow-card-Card.ow-card-interactive:active {
-  transform: scale(0.99);
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -2048,120 +1932,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-flex-flex {
-  display: flex;
-}
-.ow-flex-flex.ow-flex-d-column {
-  flex-direction: column;
-}
-.ow-flex-flex.ow-flex-d-row {
-  flex-direction: row;
-}
-.ow-flex-flex.ow-flex-d-row-reverse {
-  flex-direction: row-reverse;
-}
-.ow-flex-flex.ow-flex-d-column-reverse {
-  flex-direction: column-reverse;
-}
-.ow-flex-flex.ow-flex-j-start {
-  justify-content: flex-start;
-}
-.ow-flex-flex.ow-flex-j-end {
-  justify-content: flex-end;
-}
-.ow-flex-flex.ow-flex-j-center {
-  justify-content: center;
-}
-.ow-flex-flex.ow-flex-j-between {
-  justify-content: space-between;
-}
-.ow-flex-flex.ow-flex-j-around {
-  justify-content: space-around;
-}
-.ow-flex-flex.ow-flex-j-evenly {
-  justify-content: space-evenly;
-}
-.ow-flex-flex.ow-flex-a-start {
-  align-items: flex-start;
-}
-.ow-flex-flex.ow-flex-a-end {
-  align-items: flex-end;
-}
-.ow-flex-flex.ow-flex-a-center {
-  align-items: center;
-}
-.ow-flex-flex.ow-flex-a-baseline {
-  align-items: baseline;
-}
-.ow-flex-flex.ow-flex-a-stretch {
-  align-items: stretch;
-}
-.ow-flex-flex.ow-flex-w-wrap {
-  flex-wrap: wrap;
-}
-.ow-flex-flex.ow-flex-w-nowrap {
-  flex-wrap: nowrap;
-}
-.ow-flex-flex.ow-flex-w-reverse {
-  flex-wrap: wrap-reverse;
-}
-
-/* BACKGROUNDS */
-/* TEXT */
-/* ACCENT */
-/* BUTTONS */
-/* INTERACTIVE */
-/* BORDERS */
-/* SHADOWS */
-/* APP SHELL */
-/* GRADIENTS */
-/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
-/* TRANSITIONS */
-/* SPACING */
-/* BORDER RADIUS */
-/* BREAKPOINTS */
-/* CONTROL SIZES */
-/* LEGACY - deprecated, use new variables */
-.ow-grid-Grid {
-  display: grid;
-  grid-gap: var(--b-spacing-md);
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  padding: var(--b-spacing-md) var(--b-spacing-lg);
-  list-style: none;
-}
-@media (max-width: 768px) {
-  .ow-grid-Grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.ow-grid-image-GridImage {
-  display: grid;
-  aspect-ratio: 1;
-  overflow: hidden;
-}
-.ow-grid-image-GridImage.ow-grid-image-col-1 {
-  grid-template-columns: repeat(1, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-}
-.ow-grid-image-GridImage.ow-grid-image-col-2 {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-}
-.ow-grid-image-GridImage.ow-grid-image-col-3 {
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-}
-.ow-grid-image-GridImage.ow-grid-image-col-4 {
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-}
-.ow-grid-image-GridImage img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -2194,109 +1964,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-icon-text-button-IconTextButton {
-  min-height: 2.5rem;
-  padding: 0.5rem 0.8rem;
-  border: 1px solid var(--b-color-border-subtle);
-  border-radius: var(--b-radius-md);
-  background: var(--b-color-surface-subtle);
-  color: var(--b-color-text-secondary);
-  font: inherit;
-  font-size: 0.75rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.55rem;
-  text-align: left;
-  transition: var(--b-transition-fast);
-  transition-property: color, background-color, border-color, transform;
-}
-.ow-icon-text-button-IconTextButton:focus-visible {
-  outline: 2px solid var(--b-color-focus);
-  outline-offset: 3px;
-}
-.ow-icon-text-button-IconTextButton:active:not(:disabled) {
-  transform: scale(0.98);
-}
-.ow-icon-text-button-IconTextButton:disabled {
-  opacity: 0.42;
-  cursor: not-allowed;
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-icon-text-button-IconTextButton:hover:not(:disabled) {
-    color: var(--b-color-text);
-    border-color: var(--b-color-border);
-    background: var(--b-color-hover);
-  }
-}
-
-.ow-icon-text-button-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex: 0 0 auto;
-}
-.ow-icon-text-button-icon svg {
-  width: 1rem;
-  height: 1rem;
-}
-
-.ow-icon-text-button-copy {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-}
-
-.ow-icon-text-button-label,
-.ow-icon-text-button-meta {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ow-icon-text-button-label {
-  color: inherit;
-}
-
-.ow-icon-text-button-meta {
-  color: var(--b-color-text-tertiary);
-  font-size: 0.6875rem;
-  font-weight: 400;
-}
-
-.ow-icon-text-button-variant-primary {
-  color: var(--b-color-background);
-  border-color: var(--b-color-point);
-  background: var(--b-color-point);
-}
-.ow-icon-text-button-variant-primary .ow-icon-text-button-meta {
-  color: rgba(0, 0, 0, 0.64);
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-icon-text-button-variant-primary:hover:not(:disabled) {
-    color: var(--b-color-background);
-    border-color: var(--b-color-point-dark);
-    background: var(--b-color-point-dark);
-  }
-}
-
-.ow-icon-text-button-variant-ghost {
-  background: transparent;
-  color: var(--b-color-text-tertiary);
-}
-
-.ow-icon-text-button-size-sm {
-  min-height: 2.25rem;
-  padding: 0.42rem 0.7rem;
-}
-
-.ow-icon-text-button-size-lg {
-  min-height: 2.75rem;
-  padding: 0.6rem 0.9rem;
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -2313,35 +1980,22 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-
-.ow-image {
-  color: transparent;
-  opacity: 0;
-  background: var(--b-color-surface-subtle);
-  transition: opacity var(--b-transition-normal);
-}
-
-.ow-image-loaded {
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ow-image {
-    transition: none;
-  }
-}
-
-.ow-image-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--b-color-active);
-}
-.ow-image-placeholder svg {
-  width: 38%;
-  height: 38%;
-  color: var(--b-color-text-muted);
-}
+/* BACKGROUNDS */
+/* TEXT */
+/* ACCENT */
+/* BUTTONS */
+/* INTERACTIVE */
+/* BORDERS */
+/* SHADOWS */
+/* APP SHELL */
+/* GRADIENTS */
+/* SURFACES — hardcoded rgba 대신 이 변수를 쓴다 */
+/* TRANSITIONS */
+/* SPACING */
+/* BORDER RADIUS */
+/* BREAKPOINTS */
+/* CONTROL SIZES */
+/* LEGACY - deprecated, use new variables */
 
 /* BACKGROUNDS */
 /* TEXT */
