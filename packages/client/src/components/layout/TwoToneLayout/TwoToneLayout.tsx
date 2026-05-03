@@ -11,17 +11,13 @@ interface TwoToneLayoutProps {
 }
 
 const TwoToneLayout = ({
-    backgroundImage,
     header,
     primaryAction,
     children
 }: TwoToneLayoutProps) => {
     return (
         <div className="relative min-h-full">
-            <div className="relative z-[3]">
-                {backgroundImage && (
-                    <div className="pointer-events-none absolute inset-0 z-0 bg-[var(--b-color-background-layer-1)]" />
-                )}
+            <div className="relative z-[3] border-b border-[var(--b-color-border-subtle)]">
                 <div className="relative z-[1] px-[var(--b-spacing-lg)] py-[calc(var(--b-spacing-2xl)+var(--b-spacing-lg))]">
                     {header}
                     {primaryAction && (
