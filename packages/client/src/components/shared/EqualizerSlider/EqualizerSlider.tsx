@@ -53,22 +53,59 @@ const EqualizerSlider = ({
     } as CSSProperties;
     const isVertical = orientation === 'vertical';
 
+    if (isVertical) {
+        return (
+            <div className="flex h-full min-h-[22rem] min-w-0 flex-col items-center justify-between gap-3 rounded-[var(--b-radius-lg)] px-1 py-2">
+                <div className="flex min-w-0 flex-col items-center gap-1 text-center">
+                    <span className="max-w-full truncate text-sm font-semibold text-[var(--b-color-text)]">{displayName}</span>
+                    <span className="max-w-full truncate text-xs text-[var(--b-color-text-muted)]">
+                        {frequency}
+                        {tone && ` · ${tone}`}
+                    </span>
+                </div>
+
+                <div className="flex h-40 w-8 shrink-0 items-center justify-center">
+                    <input
+                        className={cx(sliderInputClass, 'w-40 -rotate-90')}
+                        type="range"
+                        name={name}
+                        min={min}
+                        max={max}
+                        value={value}
+                        disabled={disabled}
+                        aria-label={`${displayName} gain`}
+                        aria-orientation={orientation}
+                        style={sliderStyle}
+                        onChange={onChange}
+                    />
+                </div>
+
+                <div className="flex flex-col items-center justify-center gap-2">
+                    <span className="text-center text-xs font-semibold text-[var(--b-color-text-secondary)]">{valueLabel}</span>
+                    <button
+                        type="button"
+                        className="rounded-full border border-[var(--b-color-border-subtle)] bg-transparent px-2.5 py-1 text-xs font-semibold text-[var(--b-color-text-tertiary)] transition-[color,background-color,border-color] duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)] disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:border-[var(--b-color-border)] enabled:hover:bg-[var(--b-color-hover)] enabled:hover:text-[var(--b-color-text)]"
+                        disabled={disabled || value === 0}
+                        onClick={onReset}>
+                        Reset
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className={cx(
-            'grid grid-cols-[minmax(7rem,0.8fr)_minmax(8rem,1.5fr)_auto] items-center gap-4 py-3',
-            'max-md:grid-cols-1 max-md:gap-2',
-            isVertical && 'flex h-full min-h-56 flex-col items-center justify-between gap-3 py-0'
-        )}>
-            <div className={cx('flex min-w-0 flex-col gap-1', isVertical && 'items-center text-center')}>
+        <div className="grid grid-cols-[minmax(7rem,0.8fr)_minmax(8rem,1.5fr)_auto] items-center gap-4 py-3 max-md:grid-cols-1 max-md:gap-2">
+            <div className="flex min-w-0 flex-col gap-1">
                 <span className="text-sm font-semibold text-[var(--b-color-text)]">{displayName}</span>
                 <span className="text-xs text-[var(--b-color-text-muted)]">
                     {frequency}
                     {tone && ` · ${tone}`}
                 </span>
             </div>
-            <div className={cx('min-w-0', isVertical && 'flex h-40 w-8 items-center justify-center')}>
+            <div className="min-w-0">
                 <input
-                    className={cx(sliderInputClass, isVertical && 'w-40 -rotate-90')}
+                    className={sliderInputClass}
                     type="range"
                     name={name}
                     min={min}
@@ -81,7 +118,7 @@ const EqualizerSlider = ({
                     onChange={onChange}
                 />
             </div>
-            <div className={cx('flex items-center justify-end gap-2', isVertical && 'flex-col justify-center')}>
+            <div className="flex items-center justify-end gap-2">
                 <span className="min-w-14 text-right text-xs font-semibold text-[var(--b-color-text-secondary)]">{valueLabel}</span>
                 <button
                     type="button"

@@ -75,7 +75,7 @@ export default function SiteHeader() {
                                                 'text-[var(--b-color-text-secondary)] hover:border-[var(--b-color-border-subtle)] hover:bg-[var(--b-color-surface-subtle)] hover:text-[var(--b-color-text)]',
                                                 'lg:rounded-[var(--b-radius-lg)] lg:text-[var(--b-color-text-tertiary)] lg:before:absolute lg:before:left-0 lg:before:h-[18px] lg:before:w-[3px] lg:before:rounded-full lg:before:bg-transparent lg:before:content-[""]',
                                                 '[&_svg]:h-[1.18rem] [&_svg]:w-[1.18rem] [&_svg]:shrink-0 [&_svg]:transition-colors [&_svg]:duration-150',
-                                                active && 'border-[var(--b-color-border-subtle)] bg-[var(--b-color-active)] text-[var(--b-color-text)] [&_svg]:text-[var(--b-color-point-light)] lg:before:bg-[var(--b-color-point-light)]'
+                                                active && 'border-[var(--b-color-border-subtle)] bg-[var(--b-color-active)] text-[var(--b-color-point-light)] [&_svg]:text-[var(--b-color-point-light)] lg:before:bg-[var(--b-color-point-light)]'
                                             )}>
                                             <item.icon />
                                             <span className="whitespace-nowrap">{item.label}</span>
