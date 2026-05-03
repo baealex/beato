@@ -1,18 +1,13 @@
 import { useAppStore as useStore } from '~/store/base-store';
 import {
-    useState,
-    useEffect,
-    useCallback,
     useMemo,
     type ChangeEvent
 } from 'react';
 
-import { useModal } from '~/components/app/ModalProvider';
 import { Button, Card, PageContainer, Text } from '~/components/shared';
 import EqualizerPreset from '~/components/shared/EqualizerPreset';
 import type { Preset } from '~/components/shared/EqualizerPreset';
 import EqualizerSlider from '~/components/shared/EqualizerSlider';
-import { TextEntryDialog } from '~/components/shared/Modal';
 import {
     EQUALIZER_BAND_IDS,
     createFlatEqualizerState,
@@ -88,18 +83,33 @@ const FLAT_VALUES: EqualizerValues = createFlatEqualizerState();
 
 const DEFAULT_PRESETS: Preset[] = [
     {
-        id: 'flat',
-        name: 'Flat',
+        id: 'studio-flat',
+        name: 'Studio Flat',
         values: FLAT_VALUES
+    },
+    {
+        id: 'v-curve',
+        name: 'V Curve',
+        values: {
+            ...FLAT_VALUES,
+            lowBass: 4,
+            bass: 3,
+            lowMid: -1,
+            mid: -2,
+            highMid: -1,
+            presence: 3,
+            treble: 4
+        }
     },
     {
         id: 'bass-boost',
         name: 'Bass Boost',
         values: {
             ...FLAT_VALUES,
-            lowBass: 5,
-            bass: 6,
+            lowBass: 6,
+            bass: 5,
             lowMid: 2,
+            presence: -1,
             treble: 1
         }
     },
@@ -110,177 +120,68 @@ const DEFAULT_PRESETS: Preset[] = [
             ...FLAT_VALUES,
             lowBass: 2,
             bass: 3,
-            lowMid: 2,
-            highMid: -1,
-            presence: -2
-        }
-    },
-    {
-        id: 'pop',
-        name: 'Pop',
-        values: {
-            ...FLAT_VALUES,
-            lowBass: 2,
-            bass: 2,
-            mid: -1,
-            presence: 3,
-            treble: 2
-        }
-    },
-    {
-        id: 'rock',
-        name: 'Rock',
-        values: {
-            ...FLAT_VALUES,
-            lowBass: 3,
-            bass: 4,
-            lowMid: 1,
-            highMid: 3,
-            presence: 3,
-            treble: 2
-        }
-    },
-    {
-        id: 'jazz',
-        name: 'Jazz',
-        values: {
-            ...FLAT_VALUES,
-            lowBass: 2,
-            bass: 1,
-            lowMid: 2,
+            lowMid: 3,
             mid: 1,
-            presence: 2,
-            treble: 3
+            highMid: -1,
+            presence: -2,
+            treble: -1
         }
     },
     {
-        id: 'classical',
-        name: 'Classical',
-        values: {
-            ...FLAT_VALUES,
-            lowBass: 1,
-            bass: 1,
-            lowMid: 1,
-            presence: 2,
-            treble: 3
-        }
-    },
-    {
-        id: 'bright',
-        name: 'Bright',
+        id: 'vocal-focus',
+        name: 'Vocal Focus',
         values: {
             ...FLAT_VALUES,
             lowBass: -2,
             bass: -1,
-            highMid: 2,
-            presence: 3,
-            treble: 4
-        }
-    },
-    {
-        id: 'night',
-        name: 'Night',
-        values: {
-            ...FLAT_VALUES,
-            lowBass: -3,
-            bass: -2,
-            presence: -2,
-            treble: -3
-        }
-    },
-    {
-        id: 'loudness',
-        name: 'Loudness',
-        values: {
-            ...FLAT_VALUES,
-            lowBass: 4,
-            bass: 3,
-            presence: 2,
-            treble: 3
-        }
-    },
-    {
-        id: 'treble-boost',
-        name: 'Treble Boost',
-        values: {
-            ...FLAT_VALUES,
-            mid: 2,
-            highMid: 3,
-            presence: 5,
-            treble: 6
-        }
-    },
-    {
-        id: 'vocal',
-        name: 'Vocal',
-        values: {
-            ...FLAT_VALUES,
-            lowBass: -3,
-            bass: -2,
-            mid: 2,
+            lowMid: 1,
+            mid: 3,
             highMid: 4,
             presence: 3,
             treble: -1
         }
+    },
+    {
+        id: 'bright-air',
+        name: 'Bright Air',
+        values: {
+            ...FLAT_VALUES,
+            lowBass: -2,
+            bass: -1,
+            mid: 1,
+            highMid: 2,
+            presence: 4,
+            treble: 5
+        }
+    },
+    {
+        id: 'punch',
+        name: 'Punch',
+        values: {
+            ...FLAT_VALUES,
+            lowBass: 3,
+            bass: 4,
+            lowMid: -1,
+            mid: 1,
+            highMid: 3,
+            presence: 2,
+            treble: 1
+        }
+    },
+    {
+        id: 'late-night',
+        name: 'Late Night',
+        values: {
+            ...FLAT_VALUES,
+            lowBass: -3,
+            bass: -2,
+            lowMid: 1,
+            highMid: -1,
+            presence: -2,
+            treble: -3
+        }
     }
 ];
-
-const parseCustomPresets = (savedPresets: string | null) => {
-    if (!savedPresets) {
-        return [];
-    }
-
-    try {
-        const parsedPresets: unknown = JSON.parse(savedPresets);
-
-        if (!Array.isArray(parsedPresets)) {
-            return [];
-        }
-
-        return parsedPresets.flatMap((preset): Preset[] => {
-            const isValidPreset = Boolean(
-                preset &&
-                typeof preset === 'object' &&
-                typeof (preset as Preset).id === 'string' &&
-                (preset as Preset).id.startsWith('custom-') &&
-                typeof (preset as Preset).name === 'string'
-            );
-
-            if (!isValidPreset) {
-                return [];
-            }
-
-            const values = normalizeEqualizerValues((preset as Preset).values);
-
-            if (!values) {
-                return [];
-            }
-
-            return [{
-                id: (preset as Preset).id,
-                name: (preset as Preset).name,
-                values
-            }];
-        });
-    } catch {
-        return [];
-    }
-};
-
-const normalizeEqualizerValues = (values: unknown): EqualizerValues | null => {
-    if (!values || typeof values !== 'object') {
-        return null;
-    }
-
-    const record = values as Partial<Record<keyof EqualizerValues, unknown>>;
-    const normalized = createFlatEqualizerState();
-
-    EQUALIZER_BAND_IDS.forEach((id) => {
-        normalized[id] = typeof record[id] === 'number' ? record[id] : 0;
-    });
-
-    return normalized;
-};
 
 const isSameCurve = (a: EqualizerValues, b: EqualizerValues) => {
     return EQUALIZER_BAND_IDS.every((id) => a[id] === b[id]);
@@ -311,23 +212,11 @@ const getToneSummary = (values: EqualizerValues) => {
 };
 
 const Equalizer = () => {
-    const { confirm } = useModal();
     const [equalizerState, setEqState] = useStore(equalizerStore);
-    const [presets, setPresets] = useState<Preset[]>([]);
-    const [isSavePresetDialogOpen, setIsSavePresetDialogOpen] = useState(false);
-    const [presetNameDraft, setPresetNameDraft] = useState('');
-    const loadPresets = useCallback(() => {
-        const savedPresets = localStorage.getItem('audio::eq::presets');
-        setPresets([...DEFAULT_PRESETS, ...parseCustomPresets(savedPresets)]);
-    }, []);
-
-    useEffect(() => {
-        loadPresets();
-    }, [loadPresets]);
 
     const activePreset = useMemo(() => {
-        return presets.find((preset) => isSameCurve(preset.values, equalizerState)) ?? null;
-    }, [equalizerState, presets]);
+        return DEFAULT_PRESETS.find((preset) => isSameCurve(preset.values, equalizerState)) ?? null;
+    }, [equalizerState]);
     const isFlat = isSameCurve(equalizerState, FLAT_VALUES);
     const toneSummary = getToneSummary(equalizerState);
 
@@ -353,51 +242,6 @@ const Equalizer = () => {
         setEqState(() => ({ ...FLAT_VALUES }));
     };
 
-    const handleOpenSavePresetDialog = () => {
-        setPresetNameDraft('');
-        setIsSavePresetDialogOpen(true);
-    };
-
-    const handleCloseSavePresetDialog = () => {
-        setIsSavePresetDialogOpen(false);
-        setPresetNameDraft('');
-    };
-
-    const handleSaveCurrentAsPreset = (presetName: string) => {
-        const trimmedPresetName = presetName.trim();
-
-        if (!trimmedPresetName) {
-            return;
-        }
-
-        const newPreset: Preset = {
-            id: `custom-${Date.now()}`,
-            name: trimmedPresetName,
-            values: { ...equalizerState }
-        };
-
-        const customPresets = [...presets.filter(p => p.id.startsWith('custom-')), newPreset];
-        localStorage.setItem('audio::eq::presets', JSON.stringify(customPresets));
-
-        setPresets([...DEFAULT_PRESETS, ...customPresets]);
-        handleCloseSavePresetDialog();
-    };
-
-    const handleDeletePreset = async (presetId: string) => {
-        const confirmDelete = await confirm({
-            title: 'Delete preset?',
-            description: 'This custom preset will be removed from saved equalizer settings.',
-            confirmLabel: 'Delete preset',
-            tone: 'danger'
-        });
-        if (!confirmDelete) return;
-
-        const customPresets = presets.filter(p => p.id.startsWith('custom-') && p.id !== presetId);
-
-        localStorage.setItem('audio::eq::presets', JSON.stringify(customPresets));
-
-        setPresets([...DEFAULT_PRESETS, ...customPresets]);
-    };
 
     return (
         <PageContainer width="full" className={layoutClass.container}>
@@ -418,11 +262,9 @@ const Equalizer = () => {
                             </div>
                         </div>
                         <EqualizerPreset
-                            presets={presets}
+                            presets={DEFAULT_PRESETS}
                             activePresetId={activePreset?.id ?? null}
                             onSelectPreset={handlePresetSelect}
-                            onSaveCurrentAsPreset={handleOpenSavePresetDialog}
-                            onDeletePreset={handleDeletePreset}
                         />
                     </div>
                 </Card>
@@ -462,7 +304,7 @@ const Equalizer = () => {
                                             frequency={frequency}
                                             tone={tone}
                                             value={equalizerState[id]}
-                                                            orientation="vertical"
+                                            orientation="vertical"
                                             onChange={handleSliderChange(id)}
                                             onReset={() => handleBandReset(id)}
                                         />
@@ -473,18 +315,6 @@ const Equalizer = () => {
                     </div>
                 </Card>
             </section>
-
-            <TextEntryDialog
-                open={isSavePresetDialogOpen}
-                title="Save preset"
-                description="Store the current equalizer curve as a reusable preset."
-                value={presetNameDraft}
-                placeholder="Late night"
-                confirmLabel="Save preset"
-                onValueChange={setPresetNameDraft}
-                onConfirm={handleSaveCurrentAsPreset}
-                onClose={handleCloseSavePresetDialog}
-            />
         </PageContainer>
     );
 };
