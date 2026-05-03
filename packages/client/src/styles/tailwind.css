@@ -1698,76 +1698,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-button-Button {
-  min-width: 2.25rem;
-  min-height: 2.25rem;
-  padding: 0.42rem 0.8rem;
-  border: 1px solid transparent;
-  border-radius: var(--b-radius-md);
-  color: var(--b-color-text-secondary);
-  font: inherit;
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.25;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  background: var(--b-color-secondary-button);
-  transition: var(--b-transition-fast);
-  transition-property: background-color, border-color, color, transform;
-}
-.ow-button-Button svg {
-  width: 0.95rem;
-  height: 0.95rem;
-  flex-shrink: 0;
-}
-.ow-button-Button:focus-visible {
-  outline: none;
-  border-color: var(--b-color-focus);
-  box-shadow: 0 0 0 3px var(--b-color-focus-ring);
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-button-Button:hover {
-    color: var(--b-color-text);
-    border-color: var(--b-color-border-subtle);
-    background: var(--b-color-hover);
-  }
-}
-.ow-button-Button.ow-button-size-sm {
-  min-width: 2.25rem;
-  min-height: 2.25rem;
-  padding: 0.42rem 0.65rem;
-}
-.ow-button-Button.ow-button-fullWidth {
-  width: 100%;
-}
-.ow-button-Button.ow-button-variant-primary {
-  color: var(--b-color-background);
-  border-color: var(--b-color-point);
-  background: var(--b-color-point);
-  box-shadow: none;
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-button-Button.ow-button-variant-primary:hover {
-    color: var(--b-color-background);
-    border-color: var(--b-color-point-dark);
-    background: var(--b-color-point-dark);
-  }
-}
-.ow-button-Button.ow-button-variant-danger {
-  border-color: transparent;
-  background: rgba(239, 68, 68, 0.14);
-  color: rgba(254, 202, 202, 0.92);
-  box-shadow: none;
-}
-.ow-button-Button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -2291,55 +2221,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-icon-button-IconButton {
-  border: 0;
-  border-radius: var(--b-radius-full);
-  background: transparent;
-  color: var(--b-color-text-tertiary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: var(--b-transition-fast);
-  transition-property: color, background-color, border-color;
-}
-.ow-icon-button-IconButton svg {
-  width: 1rem;
-  height: 1rem;
-}
-.ow-icon-button-IconButton:focus-visible {
-  outline: 2px solid var(--b-color-focus);
-  outline-offset: 2px;
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-icon-button-IconButton:hover {
-    color: var(--b-color-text);
-    background: var(--b-color-hover);
-  }
-}
-.ow-icon-button-IconButton.ow-icon-button-active {
-  color: var(--b-color-point);
-  background: var(--b-color-active);
-}
-.ow-icon-button-IconButton.ow-icon-button-active svg {
-  fill: none;
-  color: currentColor;
-}
-@media (hover: hover) and (pointer: fine) {
-  .ow-icon-button-IconButton.ow-icon-button-tone-danger:hover {
-    color: var(--b-color-text);
-    background: rgba(255, 152, 152, 0.08);
-  }
-}
-.ow-icon-button-IconButton.ow-icon-button-size-sm {
-  width: 40px;
-  height: 40px;
-}
-.ow-icon-button-IconButton.ow-icon-button-size-md {
-  width: 44px;
-  height: 44px;
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -3519,47 +3400,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-surface-Surface {
-  border: 1px solid var(--b-color-border-subtle);
-  color: var(--b-color-text);
-}
-
-.ow-surface-variant-subtle {
-  background: var(--b-color-surface-subtle);
-}
-
-.ow-surface-variant-panel {
-  background: var(--b-color-background-layer-1);
-}
-
-.ow-surface-variant-modal {
-  background: var(--b-color-surface-modal);
-}
-
-.ow-surface-radius-none {
-  border-radius: 0;
-}
-
-.ow-surface-radius-lg {
-  border-radius: var(--b-radius-lg);
-}
-
-.ow-surface-radius-xl {
-  border-radius: var(--b-radius-xl);
-}
-
-.ow-surface-radius-2xl {
-  border-radius: var(--b-radius-2xl);
-}
-
-.ow-surface-padding-md {
-  padding: var(--b-spacing-md);
-}
-
-.ow-surface-padding-lg {
-  padding: var(--b-spacing-lg);
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
@@ -3619,62 +3459,6 @@ button {
 /* BREAKPOINTS */
 /* CONTROL SIZES */
 /* LEGACY - deprecated, use new variables */
-.ow-text-Text {
-  margin: 0;
-  padding: 0;
-  line-height: 1.45;
-}
-.ow-text-Text.ow-text-variant-primary {
-  color: var(--b-color-text);
-}
-.ow-text-Text.ow-text-variant-secondary {
-  color: var(--b-color-text-secondary);
-}
-.ow-text-Text.ow-text-variant-tertiary {
-  color: var(--b-color-text-tertiary);
-}
-.ow-text-Text.ow-text-variant-muted {
-  color: var(--b-color-text-muted);
-}
-.ow-text-Text.ow-text-size-xs {
-  font-size: 0.75rem;
-}
-.ow-text-Text.ow-text-size-sm {
-  font-size: 0.875rem;
-}
-.ow-text-Text.ow-text-size-md {
-  font-size: 1rem;
-}
-.ow-text-Text.ow-text-size-title {
-  font-size: 1.25rem;
-  line-height: 1.25;
-}
-.ow-text-Text.ow-text-size-xl {
-  font-size: 1.5rem;
-  line-height: 1.25;
-}
-.ow-text-Text.ow-text-size-2xl {
-  font-size: 2rem;
-  line-height: 1.12;
-}
-.ow-text-Text.ow-text-weight-normal {
-  font-weight: 400;
-}
-.ow-text-Text.ow-text-weight-medium {
-  font-weight: 500;
-}
-.ow-text-Text.ow-text-weight-semibold {
-  font-weight: 600;
-}
-.ow-text-Text.ow-text-weight-bold {
-  font-weight: 700;
-}
-.ow-text-Text.ow-text-truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 /* BACKGROUNDS */
 /* TEXT */
 /* ACCENT */
