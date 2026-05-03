@@ -1,15 +1,15 @@
 import classNames from 'classnames';
-const cx = classNames;
-
-import { useAppStore as useStore } from '~/store/base-store';
 import { useNavigate } from 'react-router-dom';
 
 import { Image } from '~/components/shared';
-import * as Icon from '~/icon';
-
 import { useStoreValue } from '~/hooks';
+import * as Icon from '~/icon';
+import { useAppStore as useStore } from '~/store/base-store';
 import { musicStore } from '~/store/music';
 import { queueStore } from '~/store/queue';
+
+const controlButtonClassName = 'relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-[var(--b-color-text)] transition-[background-color,color,transform] duration-150 hover:bg-[var(--b-color-hover)] active:scale-95 [&_svg]:h-[1.125rem] [&_svg]:w-[1.125rem]';
+const secondaryControlClassName = 'text-[var(--b-color-text-secondary)]';
 
 const MusicPlayer = () => {
     const navigate = useNavigate();
@@ -52,9 +52,9 @@ const MusicPlayer = () => {
     };
 
     return (
-        <div className={cx('ow-music-player-MusicPlayer')}>
+        <div className="lg:col-span-2">
             <div
-                className={cx('ow-music-player-progress')}
+                className="h-[3px] w-full cursor-pointer overflow-hidden bg-[var(--b-color-background)] transition-[height] duration-150 hover:h-[5px]"
                 role="progressbar"
                 aria-valuenow={progress}
                 aria-valuemin={0}
@@ -63,62 +63,69 @@ const MusicPlayer = () => {
                 onMouseMove={handleMoveProgress}
                 onTouchMove={handleMoveProgress}>
                 <div
-                    className={cx('ow-music-player-bar')}
+                    className="h-full w-full bg-[var(--b-color-point)]"
                     style={{ transform: `translateX(-${100 - progress}%)` }}
                 />
             </div>
-            <div className={cx('ow-music-player-content')}>
+            <div className="flex items-center justify-between gap-[var(--b-spacing-md)] px-[var(--b-spacing-md)] py-[var(--b-spacing-sm)] lg:px-[var(--b-spacing-lg)]">
                 <button
-                    className={cx('ow-music-player-trackInfo')}
+                    type="button"
+                    className="flex min-w-0 flex-1 cursor-pointer items-center gap-[var(--b-spacing-sm)] border-0 bg-transparent p-0 text-left lg:gap-[var(--b-spacing-md)]"
                     onClick={() => currentMusic && navigate('/player')}>
-                    <div className={cx('ow-music-player-albumArt')}>
+                    <div className="h-12 w-12 shrink-0 overflow-hidden rounded-[var(--b-radius-md)]">
                         <Image
-                            className={cx('ow-music-player-art')}
+                            className="h-full w-full object-cover"
                             src={currentMusic?.album.cover}
                             alt={currentMusic?.album.name ?? ''}
                             loading="eager"
                             icon={<Icon.Disc />}
                         />
                     </div>
-                    <div className={cx('ow-music-player-meta')}>
-                        <span className={cx('ow-music-player-title')}>
+                    <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                        <span className="truncate text-sm font-medium text-[var(--b-color-text)]">
                             {currentMusic?.name ?? 'No music'}
                         </span>
-                        <span className={cx('ow-music-player-artist')}>
+                        <span className="truncate text-xs text-[var(--b-color-text-tertiary)]">
                             {currentMusic?.artist.name ?? ''}
                         </span>
                     </div>
                 </button>
-                <div className={cx('ow-music-player-controls')}>
+                <div className="flex items-center gap-[var(--b-spacing-xs)]">
                     <button
-                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary')}
+                        type="button"
+                        className={classNames(controlButtonClassName, secondaryControlClassName, 'max-[768px]:hidden')}
                         onClick={() => queueStore.changeRepeatMode()}>
                         {repeatMode === 'all' && <Icon.Repeat />}
                         {repeatMode === 'one' && <Icon.Infinite />}
                         {repeatMode === 'none' && <Icon.RightLeft />}
                     </button>
                     <button
-                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary')}
+                        type="button"
+                        className={classNames(controlButtonClassName, secondaryControlClassName, 'max-[768px]:hidden')}
                         onClick={() => queueStore.prev()}>
                         <Icon.SkipBack />
                     </button>
                     <button
-                        className={cx('ow-music-player-controlButton', 'ow-music-player-primary')}
+                        type="button"
+                        className={classNames(controlButtonClassName, 'h-11 w-11 bg-[var(--b-color-point)] text-black hover:bg-[var(--b-color-point-dark)] [&_svg]:h-5 [&_svg]:w-5')}
                         onClick={() => isPlaying ? queueStore.pause() : queueStore.play()}>
                         {isPlaying ? <Icon.Pause /> : <Icon.Play />}
                     </button>
                     <button
-                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary')}
+                        type="button"
+                        className={classNames(controlButtonClassName, secondaryControlClassName)}
                         onClick={() => queueStore.next()}>
                         <Icon.SkipForward />
                     </button>
                     <button
-                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary', { 'ow-music-player-active': shuffle })}
+                        type="button"
+                        className={classNames(controlButtonClassName, secondaryControlClassName, shuffle && 'text-[var(--b-color-point)]')}
                         onClick={() => queueStore.toggleShuffle()}>
                         <Icon.Shuffle />
                     </button>
                     <button
-                        className={cx('ow-music-player-controlButton', 'ow-music-player-secondary', 'ow-music-player-queue')}
+                        type="button"
+                        className={classNames(controlButtonClassName, secondaryControlClassName, 'max-[768px]:hidden lg:flex')}
                         onClick={() => navigate('/queue')}>
                         <Icon.ListMusic />
                     </button>
