@@ -1,6 +1,7 @@
 import { useAppStore as useStore } from '~/store/base-store';
 
 import { Image, PanelContent } from '~/components/shared';
+import { panelContentClass } from '~/components/shared/PanelContent';
 import { PlaylistPanelContent } from '~/components/playlist';
 
 import * as Icon from '~/icon';
@@ -38,19 +39,19 @@ export default function MusicActionPanelContent({
                 <>
                     {onAlbumClick && (
                         <button
-                            className="ow-panel-content-panel-album clickable linkable"
+                            className={`clickable linkable ${panelContentClass.albumLink}`}
                             onClick={() => {
                                 panel.close();
                                 setTimeout(onAlbumClick, 100);
                             }}>
                             <Image
-                                className="ow-panel-content-panel-cover"
+                                className={panelContentClass.cover}
                                 src={music.album.cover}
                                 alt={music.album.name}
                             />
                             <div>
-                                <div className="ow-panel-content-panel-sub-title">Album</div>
-                                <div className="ow-panel-content-panel-sub-content">
+                                <div className={panelContentClass.subTitle}>Album</div>
+                                <div className={panelContentClass.subContent}>
                                     {music.album.name}
                                 </div>
                             </div>
@@ -58,14 +59,14 @@ export default function MusicActionPanelContent({
                     )}
                     {onArtistClick && (
                         <button
-                            className="ow-panel-content-panel-artist clickable linkable"
+                            className={`clickable linkable ${panelContentClass.artistLink}`}
                             onClick={() => {
                                 panel.close();
                                 setTimeout(onArtistClick, 100);
                             }}>
                             <div>
-                                <div className="ow-panel-content-panel-sub-title">Artist</div>
-                                <div className="ow-panel-content-panel-sub-content">
+                                <div className={panelContentClass.subTitle}>Artist</div>
+                                <div className={panelContentClass.subContent}>
                                     {music.artist.name}
                                 </div>
                             </div>

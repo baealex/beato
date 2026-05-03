@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { useModal } from '~/components/app/ModalProvider';
 import { GridImage, PanelContent } from '~/components/shared';
+import { panelContentClass } from '~/components/shared/PanelContent';
 import { TextEntryDialog } from '~/components/shared/Modal';
 import * as Icon from '~/icon';
 
@@ -50,20 +51,20 @@ export default function PlaylistActionPanelContent({
             <PanelContent
                 header={onPlaylistClick && (
                     <button
-                        className="ow-panel-content-panel-album clickable linkable"
+                        className={`clickable linkable ${panelContentClass.albumLink}`}
                         onClick={() => {
                             panel.close();
                             setTimeout(onPlaylistClick, 100);
                         }}>
                         <GridImage
-                            className="ow-panel-content-album-cover-grid"
+                            className={panelContentClass.coverGrid}
                             images={playlist.headerMusics.map(music => musicMap.get(music.id)?.album.cover ?? '')}
                         />
                         <div>
-                            <div className="ow-panel-content-panel-sub-title">
+                            <div className={panelContentClass.subTitle}>
                                 {playlist.musicCount} songs
                             </div>
-                            <div className="ow-panel-content-panel-sub-content">
+                            <div className={panelContentClass.subContent}>
                                 {playlist.name}
                             </div>
                         </div>

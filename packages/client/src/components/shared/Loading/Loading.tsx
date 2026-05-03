@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+const waveDelays = ['0ms', '200ms', '400ms', '600ms', '800ms'];
+
 const Loading = () => {
     const [shouldShow, setShouldShow] = useState(false);
 
@@ -13,13 +15,15 @@ const Loading = () => {
 
     return (
         shouldShow && (
-            <div className={'ow-loading-Loading'}>
-                <div className={'ow-loading-sound-wave'}>
-                    <div />
-                    <div />
-                    <div />
-                    <div />
-                    <div />
+            <div className="flex flex-1 items-center justify-center">
+                <div className="flex h-10 w-15 items-center justify-between gap-2">
+                    {waveDelays.map((delay) => (
+                        <div
+                            key={delay}
+                            className="block h-1.5 w-2.5 rounded-lg bg-[var(--b-color-point-dark)] animate-[audio-wave_2.2s_infinite_ease-in-out] motion-reduce:h-3 motion-reduce:animate-none motion-reduce:transform-none"
+                            style={{ animationDelay: delay }}
+                        />
+                    ))}
                 </div>
             </div>
         )
