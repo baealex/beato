@@ -4,7 +4,6 @@ import type {
 } from 'react';
 
 import classNames from 'classnames';
-const cx = classNames;
 
 import { Image, Text } from '~/components/shared';
 import * as Icon from '~/icon';
@@ -12,6 +11,8 @@ import * as Icon from '~/icon';
 import type { Music } from '~/models/type';
 
 import type { QueueTone } from './QueueDndItem';
+
+const cx = classNames;
 
 interface QueueItemProps {
     className?: string;
@@ -26,6 +27,14 @@ interface QueueItemProps {
     onReorderPointerDown?: ButtonHTMLAttributes<HTMLButtonElement>['onPointerDown'];
     style?: CSSProperties;
 }
+
+const queueItemToneClass: Record<QueueTone, string> = {
+    current: 'border-[var(--b-color-focus)] bg-[var(--b-color-surface-item)]',
+    past: 'opacity-70',
+    upcoming: ''
+};
+
+const iconButtonClass = 'inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-0 bg-transparent text-[var(--b-color-text-muted)] transition-[color,background-color] duration-150 hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] [&_svg]:h-4 [&_svg]:w-4';
 
 export default function QueueItem({
     className,
@@ -44,11 +53,16 @@ export default function QueueItem({
         <li
             data-queue-index={index}
             style={style}
-            className={cx('ow-queue-dnd-item-item', `ow-queue-dnd-item-${tone}`, className, { 'ow-queue-dnd-item-selected': isSelected })}>
+            className={cx(
+                'flex min-h-[4.25rem] items-center gap-2 rounded-2xl border border-transparent bg-[var(--b-color-surface-subtle)] transition-[background-color,border-color,opacity] duration-150 [content-visibility:auto] [contain-intrinsic-size:4.25rem] max-sm:min-h-[4.125rem] max-sm:gap-1.5',
+                queueItemToneClass[tone],
+                isSelected && 'border-[var(--b-color-focus)] bg-[var(--b-color-surface-item)]',
+                className
+            )}>
             {isSelectMode ? (
                 <button
                     type="button"
-                    className={cx('ow-queue-dnd-item-leading-button', { 'ow-queue-dnd-item-active': isSelected })}
+                    className={cx(iconButtonClass, 'ml-1', isSelected && 'bg-[var(--b-color-active)] text-[var(--b-color-point)] [&_svg]:fill-none [&_svg]:text-current')}
                     aria-label={isSelected ? `Unselect ${music.name}` : `Select ${music.name}`}
                     aria-pressed={isSelected}
                     onClick={onSelect}>
@@ -57,7 +71,7 @@ export default function QueueItem({
             ) : (
                 <button
                     type="button"
-                    className={cx('ow-queue-dnd-item-leading-button', 'ow-queue-dnd-item-drag-handle')}
+                    className={cx(iconButtonClass, 'ml-1 cursor-grab touch-none')}
                     aria-label={`Reorder ${music.name}`}
                     onPointerDown={onReorderPointerDown}>
                     <Icon.Menu />
@@ -66,7 +80,7 @@ export default function QueueItem({
 
             <button
                 type="button"
-                className={cx('ow-queue-dnd-item-row-button')}
+                className="flex min-w-0 flex-1 items-center gap-3.5 border-0 bg-transparent py-2.5 text-left text-inherit max-sm:gap-3 max-sm:pr-0.5"
                 onClick={isSelectMode ? onSelect : onClick}
                 onContextMenu={(e) => {
                     e.preventDefault();
@@ -76,28 +90,28 @@ export default function QueueItem({
                     }
                 }}>
                 <Image
-                    className={cx('ow-queue-dnd-item-cover')}
+                    className="h-[3.25rem] w-[3.25rem] shrink-0 rounded-[0.95rem] object-cover shadow-[0_10px_20px_rgba(2,8,11,0.12)] max-sm:h-12 max-sm:w-12"
                     src={music.album.cover}
                     alt={music.album.name}
                     loading="eager"
                     icon={<Icon.Disc />}
                 />
 
-                <div className={cx('ow-queue-dnd-item-copy')}>
-                    <div className={cx('ow-queue-dnd-item-title-line')}>
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
+                    <div className="flex min-w-0 items-center gap-2">
                         <Text
                             as="span"
                             size="sm"
                             weight="medium"
-                            className={cx('ow-queue-dnd-item-title')}>
+                            className="truncate">
                             {music.name}
                         </Text>
                         {tone === 'current' && (
-                            <span className={cx('ow-queue-dnd-item-current-pill')}>Now</span>
+                            <span className="shrink-0 rounded-full bg-[var(--b-color-border-subtle)] px-2 py-0.5 text-[0.6875rem] font-semibold uppercase tracking-normal text-[var(--b-color-text-secondary)]">Now</span>
                         )}
                     </div>
 
-                    <Text as="span" variant="secondary" size="sm" className={cx('ow-queue-dnd-item-meta')}>
+                    <Text as="span" variant="secondary" size="sm" className="truncate">
                         {music.artist.name}
                     </Text>
                 </div>
@@ -106,7 +120,7 @@ export default function QueueItem({
             {!isSelectMode && (
                 <button
                     type="button"
-                    className={cx('ow-queue-dnd-item-row-action')}
+                    className={cx(iconButtonClass, 'mr-1')}
                     aria-label={`Open actions for ${music.name}`}
                     onClick={onOpenActions}>
                     <Icon.VerticalDots />
