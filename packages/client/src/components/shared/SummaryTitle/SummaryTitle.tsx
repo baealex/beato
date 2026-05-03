@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-const cx = classNames;
-
 import React from 'react';
 import Text, { type TextElement } from '../Text';
+
+const cx = classNames;
 
 interface SummaryTitleProps {
     as?: TextElement;
@@ -16,7 +16,7 @@ const SummaryTitle = ({ as = 'div', className, children }: SummaryTitleProps) =>
             as={as}
             size="title"
             weight="bold"
-            className={cx('ow-summary-title-SummaryTitle', className)}>
+            className={cx('max-w-[450px] text-center', className)}>
             {children}
         </Text>
     );
