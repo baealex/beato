@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-const cx = classNames;
-
 import { useEffect, useState } from 'react';
 
 import * as Icon from '~/icon';
+
+const cx = classNames;
 
 interface SearchFieldProps {
     value: string;
@@ -41,11 +41,17 @@ export default function SearchField({
     };
 
     return (
-        <label className={cx('ow-search-field-SearchField')}>
-            <Icon.Search className={cx('ow-search-field-icon')} />
+        <label
+            className={cx(
+                'flex min-h-9 flex-1 basis-72 items-center gap-2 rounded-[var(--b-radius-md)] border border-[var(--b-color-border-subtle)]',
+                'min-w-[min(100%,16rem)] max-w-md bg-[var(--b-color-surface-subtle)] p-0.5 transition-[border-color,background-color,box-shadow] duration-150',
+                'focus-within:border-[var(--b-color-focus)] focus-within:shadow-[0_0_0_3px_var(--b-color-focus-ring)]',
+                'max-sm:w-full max-sm:max-w-none max-sm:basis-full'
+            )}>
+            <Icon.Search className={cx('ml-2.5 h-4 w-4 shrink-0 text-[var(--b-color-text-muted)]')} />
             <input
                 value={draftValue}
-                className={cx('ow-search-field-input')}
+                className={cx('min-w-0 flex-1 border-0 bg-transparent text-xs font-semibold text-[var(--b-color-text-secondary)] outline-none placeholder:text-[var(--b-color-text-muted)]')}
                 placeholder={placeholder}
                 aria-label={ariaLabel}
                 onCompositionStart={() => setIsComposing(true)}
@@ -65,7 +71,7 @@ export default function SearchField({
             {draftValue && (
                 <button
                     type="button"
-                    className={cx('ow-search-field-clearButton')}
+                    className={cx('mr-0.5 flex h-7 w-7 items-center justify-center rounded-full text-[var(--b-color-text-secondary)] transition-[color,background-color] duration-150 hover:bg-white/[0.06] hover:text-[var(--b-color-text)] [&_svg]:h-3.5 [&_svg]:w-3.5')}
                     aria-label="Clear search"
                     onClick={handleClear}>
                     <Icon.Close />
