@@ -66,7 +66,7 @@ const EqualizerSlider = ({
 
                 <div className="flex h-40 w-8 shrink-0 items-center justify-center">
                     <input
-                        className={cx(sliderInputClass, 'w-40 -rotate-90')}
+                        className={cx(sliderInputClass, 'h-40 w-1.5 [writing-mode:vertical-lr] [direction:rtl]')}
                         type="range"
                         name={name}
                         min={min}
