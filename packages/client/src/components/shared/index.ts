@@ -18,6 +18,7 @@ export { AlbumArtwork, ArtistArtwork, PlaylistArtwork, TrackArtwork } from './Li
 export { default as Observer } from './Observer';
 export { default as PanelContent } from './PanelContent';
 export { default as PageContainer } from './PageContainer';
+export type { PageContainerPadding, PageContainerProps, PageContainerWidth } from './PageContainer';
 export { default as SearchField } from './SearchField';
 export { default as Select } from './Select';
 export { SettingSection, SettingItem, InfoBox } from './SettingSection';

@@ -4,7 +4,7 @@ import {
     type ChangeEvent
 } from 'react';
 
-import { Button, Card, PageContainer, Text } from '~/components/shared';
+import { Button, Card, Text } from '~/components/shared';
 import EqualizerPreset from '~/components/shared/EqualizerPreset';
 import type { Preset } from '~/components/shared/EqualizerPreset';
 import EqualizerSlider from '~/components/shared/EqualizerSlider';
@@ -18,7 +18,6 @@ type EqualizerValues = Preset['values'];
 type EqualizerBand = keyof EqualizerValues;
 
 const layoutClass = {
-    container: 'flex min-h-full flex-col gap-4 text-[var(--b-color-text)]',
     status: 'bg-[var(--b-color-glow-ambient)]',
     panel: 'min-w-0 bg-[var(--b-color-surface-subtle)]',
     panelBody: 'flex flex-col gap-4',
@@ -244,7 +243,7 @@ const Equalizer = () => {
 
 
     return (
-        <PageContainer width="full" className={layoutClass.container}>
+        <>
             <section aria-labelledby="equalizer-presets-title">
                 <Card variant="outlined" padding="md" radius="lg" className={layoutClass.panel}>
                     <div className={layoutClass.panelBody}>
@@ -315,7 +314,7 @@ const Equalizer = () => {
                     </div>
                 </Card>
             </section>
-        </PageContainer>
+        </>
     );
 };
 

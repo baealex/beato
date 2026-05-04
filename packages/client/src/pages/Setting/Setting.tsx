@@ -1,5 +1,5 @@
 import { useModal } from '~/components/app/ModalProvider';
-import Text from '~/components/shared/Text';
+import { Text } from '~/components/shared';
 import { appCopy } from '~/config/copy';
 import { appShell } from '~/config/app-shell';
 import { socket } from '~/socket';
@@ -32,10 +32,13 @@ export default function Setting() {
     };
 
     return (
-        <div className="mx-auto min-h-full w-full max-w-[860px] px-4 py-6 text-[var(--b-color-text)] sm:px-6 sm:py-10 lg:px-10 lg:py-12">
-            <div className="mb-8 lg:mb-12 after:mt-2 after:block after:max-w-[30rem] after:text-sm after:leading-relaxed after:text-[var(--b-color-text-tertiary)] after:content-['Tune_how_Ocean_Wave_behaves.']">
+        <>
+            <div className="mb-8 lg:mb-12">
                 <Text as="h1" size="xl" weight="bold" className="text-[clamp(2rem,5vw,3.25rem)] leading-[0.98] tracking-[-0.055em]">
                     {appCopy.settings.title}
+                </Text>
+                <Text as="p" variant="tertiary" size="sm" className="mt-2 max-w-[30rem] leading-relaxed">
+                    Tune how Ocean Wave behaves.
                 </Text>
             </div>
 
@@ -56,6 +59,6 @@ export default function Setting() {
                 />
                 <span>Powered by {appShell.brand.name}</span>
             </div>
-        </div>
+        </>
     );
 }

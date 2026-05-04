@@ -15,7 +15,7 @@ import {
     MusicPlayerDiskStyle,
     MusicPlayerVisualizerStyle
 } from '~/components/music';
-import { IconTextButton, Surface, Text } from '~/components/shared';
+import { IconTextButton, PageContainer, Surface, Text } from '~/components/shared';
 import * as Icon from '~/icon';
 
 import { useBack, useStoreValue } from '~/hooks';
@@ -64,9 +64,9 @@ const MIX_MODES = [
 ] as const;
 
 const PLAYER_PRIMARY_COLOR = {
-    r: 30,
-    g: 215,
-    b: 96
+    r: 139,
+    g: 92,
+    b: 246
 } as const;
 
 const playerUtilityButtonClass = 'inline-flex h-11 w-11 items-center justify-center rounded-full border-0 bg-transparent text-[var(--b-color-text-secondary)] transition-[color,background-color] duration-150 hover:bg-[var(--b-color-hover)] hover:text-[var(--b-color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--b-color-focus)] max-lg:h-10 max-lg:w-10 max-lg:text-inherit [&_svg]:h-[1.125rem] [&_svg]:w-[1.125rem] max-lg:[&_svg]:h-5 max-lg:[&_svg]:w-5';
@@ -380,7 +380,7 @@ export default function PlayerDetail() {
                 )}
 
                 {currentMusic ? (
-                    <div className="m-auto flex w-[min(100%,30rem)] flex-col items-center gap-6 max-sm:gap-5">
+                    <PageContainer width="player" padding="none" className="m-auto flex flex-col items-center gap-6 max-sm:gap-5">
                         <div className="flex w-full justify-center">
                             <div className={cx(
                                 'relative aspect-square w-[min(100%,19rem)] max-sm:w-[min(100%,16rem)]',
@@ -543,7 +543,7 @@ export default function PlayerDetail() {
                                 />
                             )}
                         </div>
-                    </div>
+                    </PageContainer>
                 ) : (
                     <Surface variant="panel" radius="2xl" padding="lg" className="m-auto flex w-[min(100%,28rem)] flex-col items-center gap-6 text-center">
                         <div className="flex h-20 w-20 items-center justify-center rounded-[1.5rem] border border-[var(--b-color-border)] bg-[var(--b-color-surface-item)] text-[var(--b-color-point-light)] [&_svg]:h-8 [&_svg]:w-8">

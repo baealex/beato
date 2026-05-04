@@ -24,7 +24,13 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Home />
+                element: <Home />,
+                handle: {
+                    pageFrame: {
+                        width: 'wide',
+                        className: 'flex flex-col gap-[clamp(1rem,2.4vw,1.5rem)]'
+                    }
+                }
             },
             {
                 path: '/library',
@@ -48,7 +54,14 @@ const router = createBrowserRouter([
             },
             {
                 path: '/setting',
-                element: <Setting />
+                element: <Setting />,
+                handle: {
+                    pageFrame: {
+                        width: 'content',
+                        padding: 'content',
+                        className: 'min-h-full'
+                    }
+                }
             },
             {
                 path: '/album/:id',
@@ -64,7 +77,13 @@ const router = createBrowserRouter([
             },
             {
                 path: '/equalizer',
-                element: <Equalizer />
+                element: <Equalizer />,
+                handle: {
+                    pageFrame: {
+                        width: 'wide',
+                        className: 'flex min-h-full flex-col gap-4'
+                    }
+                }
             },
             {
                 path: '/player',

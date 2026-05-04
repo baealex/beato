@@ -23,16 +23,16 @@ export interface VisualizerPalette {
     underlayAlpha: number;
 }
 
-const IDENTITY_GREEN_HUE = 141;
+const IDENTITY_VIOLET_HUE = 258;
 const ALBUM_HUE_IDENTITY_PULL = 0;
 
 export const DEFAULT_VISUALIZER_PALETTE: VisualizerPalette = {
-    hueStart: IDENTITY_GREEN_HUE,
+    hueStart: IDENTITY_VIOLET_HUE,
     hueRange: 0,
-    saturation: 98,
-    lightnessBase: 54,
+    saturation: 90,
+    lightnessBase: 58,
     lightnessRange: 10,
-    glowHue: IDENTITY_GREEN_HUE,
+    glowHue: IDENTITY_VIOLET_HUE,
     scrimAlpha: 0.22,
     underlayAlpha: 0.34
 };
@@ -52,40 +52,40 @@ const getLuminance = ({ r, g, b }: RGB) => (
 ) / 255;
 
 const rgbToHue = ({ r, g, b }: RGB) => {
-    const red = r / 255;
-    const green = g / 255;
-    const blue = b / 255;
-    const max = Math.max(red, green, blue);
-    const min = Math.min(red, green, blue);
+    const rChannel = r / 255;
+    const gChannel = g / 255;
+    const bChannel = b / 255;
+    const max = Math.max(rChannel, gChannel, bChannel);
+    const min = Math.min(rChannel, gChannel, bChannel);
     const delta = max - min;
 
     if (delta === 0) {
-        return IDENTITY_GREEN_HUE;
+        return IDENTITY_VIOLET_HUE;
     }
 
-    if (max === red) {
-        return normalizeHue(60 * (((green - blue) / delta) % 6));
+    if (max === rChannel) {
+        return normalizeHue(60 * (((gChannel - bChannel) / delta) % 6));
     }
 
-    if (max === green) {
-        return normalizeHue(60 * ((blue - red) / delta + 2));
+    if (max === gChannel) {
+        return normalizeHue(60 * ((bChannel - rChannel) / delta + 2));
     }
 
-    return normalizeHue(60 * ((red - green) / delta + 4));
+    return normalizeHue(60 * ((rChannel - gChannel) / delta + 4));
 };
 
 export const createVividVisualizerPalette = (accentColor?: RGB | null): VisualizerPalette => {
-    const albumHue = accentColor ? rgbToHue(accentColor) : IDENTITY_GREEN_HUE;
+    const albumHue = accentColor ? rgbToHue(accentColor) : IDENTITY_VIOLET_HUE;
     const luminance = accentColor ? getLuminance(accentColor) : 0.5;
     const seedHue = accentColor
-        ? mixHue(albumHue, IDENTITY_GREEN_HUE, ALBUM_HUE_IDENTITY_PULL)
-        : IDENTITY_GREEN_HUE;
+        ? mixHue(albumHue, IDENTITY_VIOLET_HUE, ALBUM_HUE_IDENTITY_PULL)
+        : IDENTITY_VIOLET_HUE;
 
     return {
         hueStart: seedHue,
         hueRange: 0,
-        saturation: 98,
-        lightnessBase: 54,
+        saturation: 90,
+        lightnessBase: 58,
         lightnessRange: 10,
         glowHue: seedHue - 12,
         scrimAlpha: clamp(0.14 + luminance * 0.18, 0.14, 0.32),
@@ -118,7 +118,7 @@ export const visualizerUnderlayColor = (
 ) => {
     const resolvedPalette = palette ?? DEFAULT_VISUALIZER_PALETTE;
 
-    return `rgba(0, 10, 12, ${resolvedPalette.underlayAlpha * alpha})`;
+    return `rgba(12, 8, 20, ${resolvedPalette.underlayAlpha * alpha})`;
 };
 
 export const drawVisualizerContrastLayer = (
@@ -134,9 +134,9 @@ export const drawVisualizerContrastLayer = (
     ctx.save();
 
     const scrim = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    scrim.addColorStop(0, `rgba(0, 12, 16, ${resolvedPalette.scrimAlpha * 0.7})`);
-    scrim.addColorStop(0.55, `rgba(0, 8, 12, ${resolvedPalette.scrimAlpha * 0.36})`);
-    scrim.addColorStop(1, `rgba(0, 8, 12, ${resolvedPalette.scrimAlpha})`);
+    scrim.addColorStop(0, `rgba(14, 10, 24, ${resolvedPalette.scrimAlpha * 0.7})`);
+    scrim.addColorStop(0.55, `rgba(10, 8, 18, ${resolvedPalette.scrimAlpha * 0.36})`);
+    scrim.addColorStop(1, `rgba(8, 6, 14, ${resolvedPalette.scrimAlpha})`);
     ctx.fillStyle = scrim;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 

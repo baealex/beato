@@ -1,11 +1,18 @@
 import classNames from 'classnames';
 import { Suspense, useEffect, useRef } from 'react';
-import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
+import {
+    Outlet,
+    useLocation,
+    useMatches,
+    useSearchParams
+} from 'react-router-dom';
 
 import SiteHeader from '../shared/SiteHeader';
 import SubPageHeader from '../shared/SubPageHeader';
 import MusicPlayer from '../music/MusicPlayer';
 import Loading from '../shared/Loading';
+import PageContainer from '../shared/PageContainer';
+import type { PageContainerProps } from '../shared/PageContainer';
 import {
     isSubPagePath,
     resolveSubPagePresentation,
@@ -16,6 +23,11 @@ import {
 const cx = classNames;
 
 type SubPagePresentation = ReturnType<typeof resolveSubPagePresentation>;
+type PageFrameConfig = Omit<PageContainerProps, 'children'>;
+
+interface RouteHandle {
+    pageFrame?: PageFrameConfig;
+}
 
 const subPageFrameClass: Record<SubPagePresentation, string> = {
     stacked: 'pt-0',
@@ -35,12 +47,25 @@ const subPageContentClass: Record<SubPagePresentation, string> = {
     fullscreen: 'flex flex-1 w-full min-w-0 overflow-hidden bg-transparent'
 };
 
+const resolvePageFrame = (matches: ReturnType<typeof useMatches>): PageFrameConfig | null => {
+    for (const match of [...matches].reverse()) {
+        const handle = match.handle as RouteHandle | undefined;
+
+        if (handle?.pageFrame) {
+            return handle.pageFrame;
+        }
+    }
+
+    return null;
+};
+
 interface SiteLayoutProps {
     disablePlayer?: boolean;
 }
 
 export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     const location = useLocation();
+    const matches = useMatches();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -51,6 +76,19 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
     const subPagePresentation = resolveSubPagePresentation(location.pathname);
     const hasSubPageHeader = shouldRenderSubPageHeader(location.pathname);
     const hideMiniPlayer = shouldHideMiniPlayer(location.pathname);
+    const pageFrame = resolvePageFrame(matches);
+
+    const renderOutlet = () => {
+        const outlet = (
+            <Suspense fallback={<Loading />}>
+                <Outlet />
+            </Suspense>
+        );
+
+        return pageFrame
+            ? <PageContainer {...pageFrame}>{outlet}</PageContainer>
+            : outlet;
+    };
 
     useEffect(() => {
         searchParamsRef.current = searchParams;
@@ -102,9 +140,7 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
             <div className={cx('relative flex min-h-0 flex-1 overflow-hidden', isSubPage && 'lg:col-[1/3]')}>
                 {!isSubPage && (
                     <div ref={containerRef} className={cx('main-container min-h-0 w-full min-w-0 flex-1')}>
-                        <Suspense fallback={<Loading />}>
-                            <Outlet />
-                        </Suspense>
+                        {renderOutlet()}
                     </div>
                 )}
                 {isSubPage && (
@@ -129,16 +165,12 @@ export default function SiteLayout({ disablePlayer = false }: SiteLayoutProps) {
                                             'main-container min-h-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.52)_0%,rgba(9,9,11,0)_100%)] lg:bg-transparent',
                                             subPageContentClass[subPagePresentation]
                                         )}>
-                                        <Suspense fallback={<Loading />}>
-                                            <Outlet />
-                                        </Suspense>
+                                        {renderOutlet()}
                                     </div>
                                 </>
                             ) : (
                                 <div className={cx('min-h-0 bg-[linear-gradient(180deg,rgba(9,9,11,0.52)_0%,rgba(9,9,11,0)_100%)] lg:bg-transparent', subPageContentClass[subPagePresentation])}>
-                                    <Suspense fallback={<Loading />}>
-                                        <Outlet />
-                                    </Suspense>
+                                    {renderOutlet()}
                                 </div>
                             )}
                         </div>
