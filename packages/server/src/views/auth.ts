@@ -67,10 +67,10 @@ const renderLoginPage = (input: {
             --text-primary: rgba(250, 250, 250, 0.94);
             --text-secondary: rgba(228, 228, 231, 0.72);
             --text-muted: rgba(161, 161, 170, 0.52);
-            --primary: #1ed760;
-            --primary-hover: #1fdf64;
-            --primary-text: #06130a;
-            --focus-ring: rgba(30, 215, 96, 0.16);
+            --primary: #8b5cf6;
+            --primary-hover: #a78bfa;
+            --primary-text: #09090b;
+            --focus-ring: rgba(139, 92, 246, 0.2);
             --error-bg: rgba(78, 18, 22, 0.58);
             --error-border: rgba(247, 113, 113, 0.28);
             --error-text: #ffd9d9;
@@ -201,7 +201,7 @@ const renderLoginPage = (input: {
         }
 
         input:focus {
-            border-color: rgba(30, 215, 96, 0.42);
+            border-color: rgba(139, 92, 246, 0.46);
             background: #3f3f46;
             box-shadow: 0 0 0 3px var(--focus-ring);
         }

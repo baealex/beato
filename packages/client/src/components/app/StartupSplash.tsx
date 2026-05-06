@@ -1,6 +1,6 @@
 export default function StartupSplash() {
     return (
-        <div className="fixed inset-0 z-[10000] grid place-items-center bg-[radial-gradient(circle_at_50%_42%,rgba(30,215,96,0.14),transparent_26rem),rgba(9,9,11,0.78)] p-[var(--b-spacing-lg)] backdrop-blur-[18px] backdrop-saturate-[0.92]" role="status" aria-live="polite" aria-label="Loading music library">
+        <div className="fixed inset-0 z-[10000] grid place-items-center bg-[radial-gradient(circle_at_50%_42%,rgba(139,92,246,0.16),transparent_26rem),rgba(9,9,11,0.78)] p-[var(--b-spacing-lg)] backdrop-blur-[18px] backdrop-saturate-[0.92]" role="status" aria-live="polite" aria-label="Loading music library">
             <div className="flex min-w-[min(20rem,100%)] flex-col items-center gap-[var(--b-spacing-md)] rounded-[var(--b-radius-2xl)] border border-[rgba(244,244,245,0.1)] bg-[rgba(18,18,20,0.82)] p-[var(--b-spacing-xl)]">
                 <img className="h-20 w-20 rounded-[1.35rem]" src="/ocean-wave.svg" alt="" aria-hidden="true" />
                 <div className="flex flex-col items-center gap-1 text-center">

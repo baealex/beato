@@ -8,7 +8,7 @@ import type {
 import { useAppStore as useStore } from '~/store/base-store';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ActionBar, ActionBarButton, Button, Text } from '~/components/shared';
+import { ActionBar, ActionBarButton, Button, PageContainer, Text } from '~/components/shared';
 import { MusicActionPanelContent } from '~/components/music';
 import { PlaylistPanelContent } from '~/components/playlist';
 import * as Icon from '~/icon';
@@ -540,7 +540,7 @@ export default function Queue() {
                 </div>
             </div>
 
-            <div className="mx-auto flex min-h-0 w-[min(100%,38rem)] flex-1 flex-col gap-4 px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] max-sm:px-3.5">
+            <PageContainer width="focus" padding="focus" className="flex min-h-0 flex-1 flex-col gap-4">
                 {items.length > 0 ? (
                     <>
                         <div className="pb-2" ref={listRef}>
@@ -609,7 +609,7 @@ export default function Queue() {
                         </ActionBarButton>
                     </ActionBar>
                 )}
-            </div>
+            </PageContainer>
         </div>
     );
 }

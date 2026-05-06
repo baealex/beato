@@ -28,9 +28,9 @@ export function AlbumArtwork({
                 aria-hidden="true"
                 className={cx(
                     'absolute right-0 top-2 h-12 w-12 rounded-full border border-[var(--b-color-border-subtle)] opacity-75',
-                    'bg-[#18181b] transition-all duration-150 group-hover/row:border-[rgba(30,215,96,0.45)] group-hover/row:opacity-90 group-hover/row:shadow-[0_0_0_3px_rgba(30,215,96,0.08)]',
+                    'bg-[#18181b] transition-all duration-150 group-hover/row:border-[rgba(139,92,246,0.48)] group-hover/row:opacity-90 group-hover/row:shadow-[0_0_0_3px_rgba(139,92,246,0.1)]',
                     '[background-image:radial-gradient(circle_at_center,rgba(9,9,11,1)_0_15%,rgba(244,244,245,0.22)_16%_20%,transparent_21%),linear-gradient(135deg,transparent_0_42%,rgba(244,244,245,0.26)_43%_47%,transparent_48%_100%)]',
-                    'group-hover/row:[background-image:radial-gradient(circle_at_center,rgba(9,9,11,1)_0_15%,rgba(30,215,96,0.85)_16%_20%,transparent_21%),linear-gradient(135deg,transparent_0_42%,rgba(30,215,96,0.32)_43%_47%,transparent_48%_100%)]'
+                    'group-hover/row:[background-image:radial-gradient(circle_at_center,rgba(9,9,11,1)_0_15%,rgba(139,92,246,0.88)_16%_20%,transparent_21%),linear-gradient(135deg,transparent_0_42%,rgba(139,92,246,0.34)_43%_47%,transparent_48%_100%)]'
                 )}
             />
             <Image
@@ -53,8 +53,8 @@ export function ArtistArtwork({
             <span
                 aria-hidden="true"
                 className={cx(
-                    'absolute -inset-1 rounded-full border border-[var(--b-color-border-subtle)] border-t-[rgba(30,215,96,0.34)]',
-                    'rotate-[18deg] transition-transform duration-150 group-hover/row:-rotate-[10deg] group-hover/row:scale-[1.04] group-hover/row:border-[rgba(30,215,96,0.44)]'
+                    'absolute -inset-1 rounded-full border border-[var(--b-color-border-subtle)] border-t-[rgba(139,92,246,0.38)]',
+                    'rotate-[18deg] transition-transform duration-150 group-hover/row:-rotate-[10deg] group-hover/row:scale-[1.04] group-hover/row:border-[rgba(139,92,246,0.48)]'
                 )}
             />
             <Image

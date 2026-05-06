@@ -62,7 +62,7 @@ export default function QueueItem({
             {isSelectMode ? (
                 <button
                     type="button"
-                    className={cx(iconButtonClass, 'ml-1', isSelected && '!bg-[rgba(30,215,96,0.16)] !text-[var(--b-color-point-light)] hover:!bg-[rgba(30,215,96,0.22)] hover:!text-[var(--b-color-point-light)] [&_svg]:fill-none [&_svg]:text-current')}
+                    className={cx(iconButtonClass, 'ml-1', isSelected && '!bg-[rgba(139,92,246,0.18)] !text-[var(--b-color-point-light)] hover:!bg-[rgba(139,92,246,0.24)] hover:!text-[var(--b-color-point-light)] [&_svg]:fill-none [&_svg]:text-current')}
                     aria-label={isSelected ? `Unselect ${music.name}` : `Select ${music.name}`}
                     aria-pressed={isSelected}
                     onClick={onSelect}>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
   <title id="title">Ocean Wave</title>
-  <desc id="desc">A minimal black Ocean Wave app mark with one green wave signal.</desc>
+  <desc id="desc">A minimal black Ocean Wave app mark with one violet wave signal.</desc>
   <defs>
     <clipPath id="app-mask">
       <rect width="512" height="512" rx="112" />
@@ -14,8 +14,8 @@
       <stop offset="1" stop-color="#18181B" />
     </linearGradient>
     <linearGradient id="primary" x1="128" y1="286" x2="384" y2="226" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#1DB954" />
-      <stop offset="1" stop-color="#1ED760" />
+      <stop offset="0" stop-color="#7C3AED" />
+      <stop offset="1" stop-color="#A78BFA" />
     </linearGradient>
   </defs>
 
@@ -38,7 +38,7 @@
   <path
     d="M158 321c30-18 59-23 91-14 31 9 50 26 83 18 14-3 27-10 40-20"
     fill="none"
-    stroke="#1ED760"
+    stroke="#8B5CF6"
     stroke-width="14"
     stroke-linecap="round"
     stroke-linejoin="round"

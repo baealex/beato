@@ -96,9 +96,9 @@ export default function Home() {
     ];
 
     return (
-        <div className="mx-auto flex w-[min(100%,72rem)] flex-col gap-[clamp(1rem,2.4vw,1.5rem)] p-[clamp(1rem,3vw,2rem)] pb-[calc(clamp(1.5rem,4vw,3rem)+env(safe-area-inset-bottom))] text-[var(--b-color-text)] max-sm:p-[var(--b-spacing-md)] max-sm:pb-[calc(var(--b-spacing-xl)+env(safe-area-inset-bottom))]">
+        <>
             <Surface as="section" variant="panel" radius="2xl" className="relative grid min-h-[clamp(15rem,34vw,22rem)] grid-cols-[minmax(9rem,0.44fr)_minmax(0,1fr)] items-center gap-[clamp(1.25rem,4vw,3rem)] overflow-hidden rounded-[var(--b-radius-2xl)] border border-[var(--b-color-border-subtle)] bg-[var(--b-color-surface-subtle)] p-[clamp(1rem,3vw,1.5rem)] shadow-[var(--b-card-shadow-main)] max-[900px]:min-h-0 max-[900px]:grid-cols-1 max-sm:rounded-[var(--b-radius-xl)]">
-                <div className="relative flex min-w-0 justify-center before:absolute before:left-1/2 before:top-1/2 before:h-[78%] before:w-[78%] before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:border before:border-[rgba(30,215,96,0.22)] before:content-[''] after:absolute after:left-1/2 after:top-1/2 after:h-[92%] after:w-[92%] after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-[var(--b-radius-2xl)] after:border after:border-[rgba(244,244,245,0.08)] after:content-['']">
+                <div className="relative flex min-w-0 justify-center before:absolute before:left-1/2 before:top-1/2 before:h-[78%] before:w-[78%] before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:border before:border-[rgba(139,92,246,0.26)] before:content-[''] after:absolute after:left-1/2 after:top-1/2 after:h-[92%] after:w-[92%] after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-[var(--b-radius-2xl)] after:border after:border-[rgba(244,244,245,0.08)] after:content-['']">
                     {currentMusic ? (
                         <Image
                             className="relative z-[1] aspect-square w-[min(100%,12.5rem)] rounded-[var(--b-radius-2xl)] border border-[rgba(244,244,245,0.08)] object-cover shadow-[0_18px_42px_rgba(0,0,0,0.28)] max-sm:w-[min(100%,14rem)] max-sm:rounded-[var(--b-radius-xl)]"
@@ -349,6 +349,6 @@ export default function Home() {
                     </div>
                 </Surface>
             )}
-        </div>
+        </>
     );
 }
